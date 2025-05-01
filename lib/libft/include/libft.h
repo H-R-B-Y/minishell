@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:21:04 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/03/02 17:18:43 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/01 14:23:52 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -443,7 +443,7 @@ t_list			*ft_lstget(t_list *lst, size_t index);
  * @param param Parameter to pass to the function
  */
 void			ft_lstiter_param(t_list *lst,
-					void (*f)(t_list *, void *),
+					void (*f)(void *, void *),
 					void *param);
 
 // Experimental

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 11:39:56 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/01 12:13:10 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/01 12:20:27 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,24 @@ t_tokentype	bin_token(const char *raw_token)
 	if (*raw_token == '\'' || *raw_token == '"')
 		return (WORD);
 	if (*raw_token == '|')
+	{
 		if (raw_token[1] && raw_token[1] == raw_token[0])
 			return (OR_IF);
 		return (PIPE);
+	}
 	if (*raw_token == '>' || *raw_token == '<')
-		if (raw_token[1] && raw_token[0] == raw_token[1])
+	{	if (raw_token[1] && raw_token[0] == raw_token[1])
 			return (REDIRECT_APPEND + (2 * (raw_token[0] == '<')));
 		return (REDIRECT_OUT + (2 * (2 * (raw_token[0] == '<'))));
+	}
 	if (*raw_token == ';')
 		return (AFTER);
 	if (*raw_token == '&')
+	{
 		if (raw_token[1] && raw_token[0] == raw_token[1])
 			return (AND_IF);
 		return (AMP);
+	}
 	if (*raw_token == '(' || *raw_token == ')')
 		return (LPAREN + (*raw_token == ')'));
 	return (WORD);

@@ -1,28 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstiter_param_bonus.c                           :+:      :+:    :+:   */
+/*   token_operators.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/18 12:52:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/01 14:23:39 by hbreeze          ###   ########.fr       */
+/*   Created: 2025/05/01 13:12:14 by hbreeze           #+#    #+#             */
+/*   Updated: 2025/05/01 14:42:37 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./include/libft.h"
+#include "../../include/minishell.h"
 
-void	ft_lstiter_param(t_list *lst,
-		void (*f)(void *, void *), void *param)
+const char *operators(void)
 {
-	t_list	*index;
+	const static char *operators = "<>;&|()";
+	
+	return (operators);
+}
 
-	if (!lst || !f)
-		return ;
-	index = lst;
-	while (index)
-	{
-		f(index->content, param);
-		index = index->next;
-	}
+int	isoperator(char c)
+{
+	return (!!(unsigned long int)ft_strrchr(operators(), c));
 }

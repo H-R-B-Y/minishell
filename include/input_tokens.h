@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/01 12:13:24 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/01 19:09:13 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define INPUT_TOKENS_H
 
 #include "libft.h"
-
 
 /**
  * @brief token types for tokens parsed from arguments
@@ -54,7 +53,22 @@ enum e_tokentype
 	TOKEN_COUNT
 };
 
+/**
+ * @brief Get the token type of a token
+ * @param raw_token the raw token string to check
+ * @returns the token type for the raw token
+ */
 t_tokentype	bin_token(const char *raw_token);
+
+/**
+ * @brief Creates a new list node from a raw token
+ * @param raw_token the raw token string
+ * @returns a list node containing a new token
+ * 
+ * The contents of the new node will be a token struct ptr
+ * the token struct will contain the raw token data as well as
+ * the token type.
+ */
 t_list		*bin_and_create_token(char *raw_token);
 
 /*
@@ -66,13 +80,13 @@ Debugging token type:
  * @param type the token type to get
  * @returns string representation of the token type
  */
-char	*token_type_to_string(t_tokentype type);
+const char	*token_type_to_string(t_tokentype type);
 
 /**
  * @brief print the tokens type
  * @note does not print a new line
  */
-void	*print_token_type(t_tokentype type);
+void	print_token_type(t_tokentype type);
 
 /**
  * @brief token type struct, provides information about a token
@@ -89,6 +103,7 @@ struct s_token
 {
 	t_tokentype	type;
 	char		*raw;
+	char		*text;
 	int			variables_expanded;
 	int			heredoc_deliminator;
 };
@@ -109,12 +124,33 @@ t_token	*create_token(t_tokentype type, char *raw_token);
  * The value of the ptrptr will be set to null, the token will be free'd
  * if the del_raw pointer is not null it will be called on the raw token data
  */
-void	destroy_token(t_token **token, void (*del_raw)(char *));
+void	destroy_token(t_token *token, void (*del_raw)(void *));
 
 /**
  * @brief prints the token type and the tokens raw data in columns
  * @param token the token to print
  */
-void	print_token(t_token *token, size_t column_width);
+void	print_token(t_token *token, int column_width);
+
+
+/*
+Other functions
+*/
+/**
+ * @brief returns true if the character is an operator
+ * @param c the character to check
+ * 
+ * note that the operators are: < > ; & | ( )
+ */
+int		isoperator(char c);
+
+/*
+Main function that we care about
+*/
+
+t_list *tokenise(char *str);
+
+
+int	cleanse_validate_tokens(t_list *tokens);
 
 #endif

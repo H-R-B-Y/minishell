@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/01 11:10:58 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/01 13:17:48 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,6 @@
 
 # include "./libft.h"
 # include "./input_tokens.h"
-
-int g_signalrecv = 0;
-
 
 
 #endif

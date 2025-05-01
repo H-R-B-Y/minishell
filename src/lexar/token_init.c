@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/01 11:24:27 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/01 17:08:28 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,19 @@ t_token	*create_token(t_tokentype type, char *raw_token)
 	t_token	*tok;
 
 	tok = malloc(sizeof(t_token));
+	ft_bzero(tok, sizeof(t_token));
 	tok->raw = raw_token;
 	tok->type = type;
-	tok->heredoc_deliminator = 0;
-	tok->variables_expanded = 0;
+	return (tok);
 }
 
-void	destroy_token(t_token **token, void (*del_raw)(char *))
+void	destroy_token(t_token *token, void (*del_raw)(void *))
 {
-	if (!token || !*token)
+	if (!token)
 		return ;
-	if ((*token)->raw && del_raw)
-		del_raw((*token)->raw);
-	free((*token));
-	*token = 0;
+	if (token->text)
+		free(token->text);
+	if (token->raw && del_raw)
+		del_raw(token->raw);
+	free(token);
 }
