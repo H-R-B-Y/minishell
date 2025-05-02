@@ -15,13 +15,14 @@ LIBFT			:= $(LIBFT_DIR)/libft.a
 
 SRC_DIR			:= ./src
 SRCS			:= \
+				$(SRC_DIR)/lexar/cleanse_validate_tokens.c \
 				$(SRC_DIR)/lexar/token_binning.c \
 				$(SRC_DIR)/lexar/token_init.c \
 				$(SRC_DIR)/lexar/token_operators.c \
+				$(SRC_DIR)/lexar/token_skipping.c \
 				$(SRC_DIR)/lexar/token_util.c \
 				$(SRC_DIR)/lexar/tokeniser.c \
 				\
-				$(SRC_DIR)/post_lexar/cleanse_validate_tokens.c \
 				\
 
 TEST_SCRIPT		:=
