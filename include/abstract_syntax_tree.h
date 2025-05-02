@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/02 12:18:35 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/02 13:20:35 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,7 @@
 # define ABSTRACT_SYNTAX_TREE_H
 
 # include "libft.h"
-
-typedef enum e_asttype	t_astype;
-enum e_asttype
-{
-	AST_NONE,
-	AST_COMMAND,
-	AST_AND,
-	AST_OR,
-	AST_SEQ,
-	AST_PIPE,
-	AST_SUBSHELL,
-	AST_TYPE_COUNT
-};
+# include "input_tokens.h"
 
 typedef enum e_redir_type	t_redirect_type;
 enum e_redir_type
@@ -52,6 +40,19 @@ struct s_redirect_desc
 	int	to_fd;
 };
 
+typedef enum e_asttype	t_astype;
+enum e_asttype
+{
+	AST_NONE,
+	AST_COMMAND,
+	AST_AND,
+	AST_OR,
+	AST_SEQ,
+	AST_PIPE,
+	AST_SUBSHELL,
+	AST_TYPE_COUNT
+};
+
 typedef struct s_astnode	t_astnode;
 struct	s_astnode
 {
@@ -59,16 +60,21 @@ struct	s_astnode
 	t_astnode	*left_node;
 	t_astnode	*right_node;
 
+	t_token		*token;
+
 	char		**cmdv;
 	t_list		*redirect; // store the redirect descriptors in the list.
 	char		**envp;
 };
 
+t_astnode	*create_ast_node(t_astype type, t_token *token, t_astnode *left, t_astnode *right);
+void		destroy_ast_node(t_astnode *node, void (*del_cmdv)(void *), void (*del_envp)(void *));
+
 // internal struct for keeping track of what has been consumed? 
 
 struct s_ast_internal
 {
-	char	**tokens;
+	t_token	**tokens;
 	size_t	count;
 
 	size_t	consumed;
@@ -76,12 +82,15 @@ struct s_ast_internal
 	t_astnode	*right_node; // Might not be needed
 };
 
-t_astnode	produce_ast(char **tokens, size_t count);
+t_astnode	*produce_ast(t_token **tokens, size_t count);
+void		destroy_ast(t_astnode *head);
 
-t_astnode	ast_parse_seperators();
-t_astnode	ast_parse_and_or();
-t_astnode	ast_parse_pipe();
-t_astnode	ast_parse_command();
-t_astnode	ast_parse_subcommand();
+t_astnode	*ast_parse_seperators(struct s_ast_internal *meta);
+t_astnode	*ast_parse_and_or(struct s_ast_internal *meta);
+t_astnode	*ast_parse_pipe(struct s_ast_internal *meta);
+t_astnode	*ast_parse_command(struct s_ast_internal *meta);
+t_astnode	*ast_parse_subcommand(struct s_ast_internal *meta);
+
+size_t		ast_consume_words(struct s_ast_internal *meta, t_astnode *node);
 
 #endif

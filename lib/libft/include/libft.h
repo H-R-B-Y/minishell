@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:21:04 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/01 14:23:52 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/02 13:23:57 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -435,6 +435,8 @@ t_list			*ft_lstmap(t_list *lst, void *(*f)(void *),
  * @return Pointer to the list item or 0 if the index is out of bounds
  */
 t_list			*ft_lstget(t_list *lst, size_t index);
+
+void			**ft_lstarr(t_list *lst);
 
 /**
  * @brief Function to iterate over a list with a parameter

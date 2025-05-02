@@ -1,27 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   produce_syntax_tree.c                              :+:      :+:    :+:   */
+/*   ft_lstarr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/02 12:20:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/02 13:20:43 by hbreeze          ###   ########.fr       */
+/*   Created: 2025/05/02 13:24:09 by hbreeze           #+#    #+#             */
+/*   Updated: 2025/05/02 13:46:07 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "./include/libft.h"
 
-t_astnode	*produce_ast(t_token **tokens, size_t count)
+void	**ft_lstarr(t_list *lst)
 {
-	struct s_ast_internal	meta;
-	t_astnode				*head;
+	size_t	size;
+	size_t	i;
+	void	**arr;
 
-	meta.tokens = tokens;
-	meta.count = count; 
-	meta.consumed = 0;
-	meta.left_node = 0;
-	meta.right_node = 0;
-	head = ast_parse_seperators(&meta);
-	return (head);
+	if (!lst)
+		return ((void *)0);
+	size = ft_lstsize(lst);
+	arr = ft_calloc(size + 1, sizeof(void *));
+	if (!arr)
+		return ((void *)0);
+	i = 0;
+	while (i < size)
+	{
+		arr[i] = ft_lstget(lst, i)->content;
+		i++;
+	}
+	arr[size] = 0;
+	return (arr);
 }
