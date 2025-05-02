@@ -19,6 +19,18 @@ tokens are not valid
 
 question is, if tokens arent valid do we just not make the execution tree?
 
-in bash when there is a quote that has not got a matching quote, or bracket without a matching bracket it goes into a new readline mode prompting the user to close the quote / match the bracket
+in bash when there is a quote that has not got a matching quote, or bracket without a matching bracket it goes into a new readline mode prompting the user to close the quote / match the bracket.
+
+Note: when bash prompts to close the bracket, it has different signal handlers
+try running 
+```sh
+$ echo "
+dquote> 
+```
+and press ctrl+d, this is a different signal handler?
 
 
+## we should do all other syntax checks during the tree construction
+
+so other syntax errors are: 
+// TODO: note down bash syntax errors
