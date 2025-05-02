@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/02 16:35:15 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/02 18:15:20 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,17 @@ struct	s_astnode
 	t_astnode	*left_node;
 	t_astnode	*right_node;
 
-	t_token		*token;
+	t_token		**tokens;
+	size_t		token_count;
 
 	char		**cmdv;
 	t_list		*redirect; // store the redirect descriptors in the list.
 	char		**envp;
+
+	int			return_code;
 };
 
-t_astnode	*create_ast_node(t_astype type, t_token *token, t_astnode *left, t_astnode *right);
+t_astnode	*create_ast_node(t_astype type, t_token **token, t_astnode *left, t_astnode *right);
 void		destroy_ast_node(t_astnode *node, void (*del_cmdv)(void *), void (*del_envp)(void *));
 
 // internal struct for keeping track of what has been consumed? 

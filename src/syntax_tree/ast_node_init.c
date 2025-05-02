@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 12:20:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/02 16:31:04 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/02 17:41:28 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	temp(void *n)
 	printf("This function has not been implemented yet");
 }
 
-t_astnode	*create_ast_node(t_astype type, t_token *token, t_astnode *left, t_astnode *right)
+t_astnode	*create_ast_node(t_astype type, t_token **token, t_astnode *left, t_astnode *right)
 {
 	t_astnode	*me;
 
@@ -27,7 +27,8 @@ t_astnode	*create_ast_node(t_astype type, t_token *token, t_astnode *left, t_ast
 	me->type = type;
 	me->left_node = left;
 	me->right_node = right;
-	me->token = token;
+	me->tokens = token;
+	me->token_count = ft_arrlen((void *)token);
 	return (me);
 }
 void	destroy_ast_node(t_astnode *node,

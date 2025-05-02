@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:21:04 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/02 13:23:57 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/02 17:47:13 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -485,5 +485,7 @@ t_list			*ft_arrlist(void **chunks);
  */
 void			**ft_arrmap(void **arr, void *(*f)(void *),
 					void (*del)(void *));
+
+void			ft_arriter(void **arr, void *(*f)(void *));
 
 #endif

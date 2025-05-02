@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 12:20:37 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/02 13:58:39 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/02 17:44:15 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ size_t	ast_consume_words(struct s_ast_internal *meta, t_astnode *node)
 {
 	size_t	consumed;
 	size_t	i;
-	char	**cmdv;
 
 	// So we need to return how many nodes have been consumed
 	consumed = 0;
@@ -28,14 +27,14 @@ size_t	ast_consume_words(struct s_ast_internal *meta, t_astnode *node)
 		|| meta->tokens[meta->consumed + consumed]->type == TOK_REDIR_IN
 		|| meta->tokens[meta->consumed + consumed]->type == TOK_REDIR_OUT))
 		consumed++;
-	cmdv = ft_calloc(consumed + 1, sizeof(char *));
+	node->tokens = calloc(consumed + 1, sizeof(t_token *));
 	i = 0;
 	while (i < consumed)
 	{
-		cmdv[i] = meta->tokens[meta->consumed + i]->text;
+		node->tokens[i] = meta->tokens[meta->consumed + i];
 		i++;
 	}
-	node->cmdv = cmdv;
+	node->token_count = consumed;
 	return (consumed);
 }
 
