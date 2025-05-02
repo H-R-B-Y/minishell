@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/02 13:29:51 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/02 16:46:51 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void readline_loop(void)
 			// produce ast
 			tok_arr = (void *)ft_lstarr(tokens);
 			tree = produce_ast(tok_arr, ft_arrlen((void *)tok_arr));
+			print_ast(tree, "|	|");
 		}
 		free(buff);
 		buff = readline("minishell-$ ");

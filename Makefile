@@ -24,6 +24,7 @@ SRCS			:= \
 				$(SRC_DIR)/lexar/tokeniser.c \
 				\
 				$(SRC_DIR)/syntax_tree/ast_node_init.c \
+				$(SRC_DIR)/syntax_tree/print_ast.c \
 				$(SRC_DIR)/syntax_tree/produce_syntax_tree.c \
 				$(SRC_DIR)/syntax_tree/syntax_heirarchy.c \
 				$(SRC_DIR)/syntax_tree/syntax_util.c \

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 12:20:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/02 13:55:46 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/02 16:58:41 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ t_astnode	*ast_parse_command(struct s_ast_internal *meta)
 {
 	t_astnode	*lr[2];
 
+	lr[0] = 0;
 	if (meta->tokens[meta->consumed]
 		&& meta->tokens[meta->consumed]->type == TOK_LPAREN)
 		lr[0] = ast_parse_subcommand(meta);
@@ -41,7 +42,7 @@ t_astnode	*ast_parse_command(struct s_ast_internal *meta)
 		|| meta->tokens[meta->consumed]->type == TOK_REDIR_IN
 		|| meta->tokens[meta->consumed]->type == TOK_REDIR_OUT))
 	{
-		lr[0] = create_ast_node(AST_COMMAND, meta->tokens[meta->consumed], lr[0], 0);
+		lr[0] = create_ast_node(AST_COMMAND, meta->tokens[meta->consumed], 0, 0);
 		meta->consumed += ast_consume_words(meta, lr[0]);
 	}
 	return (lr[0]);
@@ -73,10 +74,10 @@ t_astnode	*ast_parse_and_or(struct s_ast_internal *meta)
 	{
 		if (meta->tokens[meta->consumed]->type == TOK_AND_IF)
 			lr[0] = create_ast_node(AST_AND, meta->tokens[meta->consumed], lr[0], 0);
-		else if (meta->tokens[meta->consumed]->type == TOK_AND_IF)
+		else if (meta->tokens[meta->consumed]->type == TOK_OR_IF)
 			lr[0] = create_ast_node(AST_OR, meta->tokens[meta->consumed], lr[0], 0);
 		meta->consumed++;
-		lr[0] = ast_parse_pipe(meta);
+		lr[0]->right_node = ast_parse_pipe(meta);
 	}
 	return (lr[0]);
 }

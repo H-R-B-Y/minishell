@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 12:20:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/02 13:50:43 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/02 16:31:04 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,7 @@ static void	temp(void *n)
 t_astnode	*create_ast_node(t_astype type, t_token *token, t_astnode *left, t_astnode *right)
 {
 	t_astnode	*me;
-	static const char *node_types[AST_TYPE_COUNT] = 
-	{"NONE", "COMMAND", "AND", "OR", "SEQ", "PIPE", "SUBSHELL"};
 
-	printf("Created ast node %s\n", node_types[type]);
 	me = malloc(sizeof(t_astnode));
 	ft_bzero(me, sizeof(t_astnode));
 	me->type = type;

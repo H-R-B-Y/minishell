@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/02 13:20:35 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/02 16:35:15 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,5 +92,7 @@ t_astnode	*ast_parse_command(struct s_ast_internal *meta);
 t_astnode	*ast_parse_subcommand(struct s_ast_internal *meta);
 
 size_t		ast_consume_words(struct s_ast_internal *meta, t_astnode *node);
+
+void	print_ast(t_astnode *head, char *indent);
 
 #endif
