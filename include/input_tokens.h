@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/01 19:09:13 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/02 11:03:58 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,40 +17,40 @@
 
 /**
  * @brief token types for tokens parsed from arguments
- * @param TOKEN_NONE token none, if this token is returned there was an error
- * @param WORD default type for string that is not a special token
- * @param PIPE token for '|'
- * @param REDIRECT_OUT token for '>'
- * @param REDIRECT_APPEND token for '>>'
- * @param REDIRECT_IN token for '<'
- * @param HEREDOC token for '<<'
- * @param AFTER token for ';'
- * @param AND_IF token for '$$'
- * @param OR_IF token for '||'
- * @param LPAREN token for '('
- * @param RPAREN token for ')'
- * @param AMP token for '&'
- * @param END_TOKEN token for end of the input line
- * @param TOKEN_COUNT count of number of valid token types
+ * @param TOK_NONE token none, if this token is returned there was an error
+ * @param TOK_WORD default type for string that is not a special token
+ * @param TOK_PIPE token for '|'
+ * @param TOK_REDIR_OUT token for '>'
+ * @param TOK_REDIR_APPEND token for '>>'
+ * @param TOK_REDIR_IN token for '<'
+ * @param TOK_HEREDOC token for '<<'
+ * @param TOK_AFTER token for ';'
+ * @param TOK_AND_IF token for '$$'
+ * @param TOK_OR_IF token for '||'
+ * @param TOK_LPAREN token for '('
+ * @param TOK_RPAREN token for ')'
+ * @param TOK_AMP token for '&'
+ * @param TOK_END token for end of the input line
+ * @param TOK_COUNT count of number of valid token types
  */
 typedef enum e_tokentype	t_tokentype;
 enum e_tokentype
 {
-	TOKEN_NONE,
-	WORD,
-	PIPE,
-	REDIRECT_OUT,
-	REDIRECT_APPEND,
-	REDIRECT_IN,
-	HEREDOC,
-	AFTER,
-	AND_IF,
-	OR_IF,
-	LPAREN,
-	RPAREN,
-	AMP,
-	END_TOKEN,
-	TOKEN_COUNT
+	TOK_NONE,
+	TOK_WORD,
+	TOK_PIPE,
+	TOK_REDIR_OUT,
+	TOK_REDIR_APPEND,
+	TOK_REDIR_IN,
+	TOK_HEREDOC,
+	TOK_AFTER,
+	TOK_AND_IF,
+	TOK_OR_IF,
+	TOK_LPAREN,
+	TOK_RPAREN,
+	TOK_AMP,
+	TOK_END,
+	TOK_COUNT
 };
 
 /**
