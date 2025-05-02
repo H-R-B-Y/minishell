@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 11:24:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/01 19:09:00 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/02 11:03:58 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 const char	*token_type_to_string(t_tokentype type)
 {
-	const static char	*types[TOKEN_COUNT] = {
+	const static char	*types[TOK_COUNT] = {
 		"None", "Word", "Pipe", "Redirect out (>)",
 		"Redirect append (>>)", "Redirect in (<)", "Heredoc",
 		"After (;)", "And", "Or", "Open parenthesis",
