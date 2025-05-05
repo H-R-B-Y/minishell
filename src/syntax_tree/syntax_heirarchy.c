@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 12:20:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/02 17:52:19 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/02 19:26:28 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ t_astnode	*ast_parse_command(struct s_ast_internal *meta)
 		&& (meta->tokens[meta->consumed]->type == TOK_WORD
 		|| meta->tokens[meta->consumed]->type == TOK_HEREDOC
 		|| meta->tokens[meta->consumed]->type == TOK_REDIR_IN
-		|| meta->tokens[meta->consumed]->type == TOK_REDIR_OUT))
+		|| meta->tokens[meta->consumed]->type == TOK_REDIR_OUT
+		|| meta->tokens[meta->consumed]->type == TOK_REDIR_APPEND))
 	{
 		lr[0] = create_ast_node(AST_COMMAND, 0, 0, 0);
 		meta->consumed += ast_consume_words(meta, lr[0]);
