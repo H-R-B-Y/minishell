@@ -68,6 +68,9 @@ fclean: clean rm pre post
 
 re: fclean all
 
+norm:
+		@python3 tools/norm_toline/norm_to_line.py ./include ./src
+
 pre:
 		@echo
 		@echo "   /)  /)",
@@ -78,7 +81,7 @@ post:
 		@echo "\b\b\b\b\b\b\b\b\b\b\b\b\bDone  ꒱ ‧₊˚⭒"
 		@echo 
 
-.PHONY: all clean fclean re test pre post rm coverage
+.PHONY: all clean fclean re test pre post rm coverage norm
 
 coverage:
 ifeq ($(TEST_SCRIPT),)
