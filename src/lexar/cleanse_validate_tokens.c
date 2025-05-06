@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:52:30 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/02 11:07:11 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/06 11:18:02 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	quotes_are_matched(char *str)
 		return (1);
 	quote = *str;
 	if (ft_strlen(str) > 1 && str[ft_strlen(str) - 1] == quote
-		&& (str[ft_strlen(str) - 2] != '\\' || quote == '\''))//TODO: double quote can be escaped
+		&& (str[ft_strlen(str) - 2] != '\\' || quote == '\'')) //TODO: double quote can be escaped
 		return (1);
 	return (0);
 }
@@ -39,7 +39,7 @@ char	*remove_quotes_from_string(char *str)
 void	cleanup_word(t_token *token)
 {
 	char	*str;
-	
+
 	str = 0;
 	if (!token || token->type != TOK_WORD)
 		return ;
@@ -72,7 +72,7 @@ static int	_handle_token(t_list *node, t_token *tok, long int *parenthesis)
 	{
 		if (!node->next || ((t_token *)node->next->content)->type != TOK_WORD)
 			invalid += 1;
-		else 
+		else
 			((t_token *)node->next->content)->heredoc_deliminator = 1;
 	}
 	return (invalid);
@@ -98,4 +98,3 @@ int	cleanse_validate_tokens(t_list *tokens)
 		return (0);
 	return (1);
 }
-

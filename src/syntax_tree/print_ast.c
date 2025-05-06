@@ -6,10 +6,9 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 16:27:31 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/02 18:04:07 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/06 11:27:05 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../include/minishell.h"
 
@@ -21,12 +20,13 @@ void	_print_indents(char *indent, size_t depth)
 
 void	_print_ast_type(t_astnode *head)
 {
-	static const char *node_types[AST_TYPE_COUNT] = 
-	{"NONE", "COMMAND", "AND", "OR", "SEQ", "PIPE", "SUBSHELL"};
+	static const char	*node_types[AST_TYPE_COUNT]
+		= {"NONE", "COMMAND", "AND", "OR", "SEQ", "PIPE", "SUBSHELL"};
 
 	printf("%s", node_types[head->type]);
 }
-static inline void _print_token_str(t_token *tok)
+
+static inline void	_print_token_str(t_token *tok)
 {
 	if (!tok)
 		return ;
