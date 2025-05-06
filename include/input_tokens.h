@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/06 11:22:51 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/06 11:52:07 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,17 @@
 # define INPUT_TOKENS_H
 
 # include "libft.h"
+
+typedef enum e_tokerr	t_tokerr;
+enum e_tokerr
+{
+	TOK_ERR_NONE,
+	UNCLOSED_SINGLEQUOTE,
+	UNCLOSED_DOUBLEQUOTE,
+	UNCLOSED_PARENTHESIS,
+	HEREDOC_WITHOUT_WORD,
+	TOKEN_ERROR_COUNT
+};
 
 /**
  * @brief token types for tokens parsed from arguments
@@ -149,6 +160,10 @@ Main function that we care about
 
 t_list		*tokenise(char *str);
 
-int			cleanse_validate_tokens(t_list *tokens);
+
+const char	*token_err_type_to_string(t_tokerr err);
+void		print_token_error(t_tokerr err);
+
+t_tokerr	cleanse_validate_tokens(t_list *tokens);
 
 #endif
