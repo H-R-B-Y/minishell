@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:52:30 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/06 11:54:31 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/07 10:56:18 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ static int	_handle_token(t_list *node, t_token *tok, long int *parenthesis)
 	else if (tok->type == TOK_WORD)
 	{
 		if (*tok->raw == '"' || *tok->raw == '\'')
-			return (UNCLOSED_SINGLEQUOTE + (1 * (*tok->raw == '"')));
+			if (!quotes_are_matched(tok->raw))
+				return (UNCLOSED_SINGLEQUOTE + (1 * (*tok->raw == '"')));
 		cleanup_word(tok);
 	}
 	else if (tok->type == TOK_HEREDOC)
@@ -93,7 +94,7 @@ t_tokerr	cleanse_validate_tokens(t_list *tokens)
 		tok = ((t_token *)node->content);
 		err = _handle_token(node, tok, &parenthesis);
 		node = node->next;
-		if (err || parenthesis >= 0)
+		if (err || parenthesis < 0)
 			break ;
 	}
 	if (err)

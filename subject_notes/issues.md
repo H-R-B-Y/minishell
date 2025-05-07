@@ -34,3 +34,32 @@ and press ctrl+d, this is a different signal handler?
 
 so other syntax errors are: 
 // TODO: note down bash syntax errors
+
+
+
+## Just found something interesting not sure where to write this:
+
+using zsh it is hard to see what goes on here but in bash it is simple:
+
+```sh
+sleep 10 && << EOF | cat && echo "
+```
+
+execution order would suggest (in my mind)
+1. quotes need to be closed
+2. sleep for 10 seconds
+3. read into the heredoc
+4. contents of heredoc is cat'd
+5. echo is printed
+
+what actually happens:
+1. bash does not start the execution process because there is an unclosed quote.
+2. upon closing the quote we still do not enter execution because there is an open heredoc
+3. upon closing the heredoc the contents of the heredoc is written out then the contents of the quote
+
+this means that the heredoc is opened before the execution of anything,
+perhaps this needs to be done somewhere before the AST execution pipeline?
+
+truthfully i am not really interested in replicating bash 100%, I know that I personaly wont mind if
+we wait until the stage in the AST where we need the heredoc to finish it, but some evaluators might not be kind 
+to this way of doing things?

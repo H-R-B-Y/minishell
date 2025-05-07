@@ -23,6 +23,9 @@ SRCS			:= \
 				$(SRC_DIR)/lexar/token_util.c \
 				$(SRC_DIR)/lexar/tokeniser.c \
 				\
+				$(SRC_DIR)/readline_loop/readline_loop_execution.c \
+				$(SRC_DIR)/readline_loop/readline_loop.c \
+				\
 				$(SRC_DIR)/syntax_tree/ast_node_init.c \
 				$(SRC_DIR)/syntax_tree/print_ast.c \
 				$(SRC_DIR)/syntax_tree/produce_syntax_tree.c \

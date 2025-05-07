@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/06 11:52:07 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/07 09:55:35 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,17 +131,23 @@ t_token		*create_token(t_tokentype type, char *raw_token);
  * @brief destroy a token (and optionally its contents)
  * @param token a pointer to a pointer to a token
  * @param del_raw (optional) function pointer to free the raw token
+ * @param del_str (optional) funciton pointer to free the str of the token
  * 
  * The value of the ptrptr will be set to null, the token will be free'd
  * if the del_raw pointer is not null it will be called on the raw token data
  */
-void		destroy_token(t_token *token, void (*del_raw)(void *));
+void	destroy_token(t_token *token, void (*del_raw)(void *), void (*del_str)(void *));
+
 
 /**
  * @brief prints the token type and the tokens raw data in columns
  * @param token the token to print
  */
 void		print_token(t_token *token, int column_width);
+
+
+void	free_token_list(t_list *list, void (*del_raw)(void *), void (*del_str)(void *));
+void	free_token_vector(t_token **vec, void (*del_raw)(void *), void (*del_str)(void *));
 
 /*
 Other functions
