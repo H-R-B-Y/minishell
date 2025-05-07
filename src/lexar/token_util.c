@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 11:24:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/06 11:51:45 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/07 11:40:38 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,9 @@ const char	*token_err_type_to_string(t_tokerr err)
 		"UNCLOSED_DOUBLEQUOTE",
 		"UNCLOSED_PARENTHESIS",
 		"HEREDOC_WITHOUT_WORD",
+		"OPEN_CONDITION_AND",
+		"OPEN_CONDITION_OR",
+		"UNFINISHED_PIPE",
 	};
 
 	return (errors[err]);

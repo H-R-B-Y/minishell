@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:52:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/07 10:53:05 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/07 11:34:00 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,7 @@ int	readline_loop(t_minishell *shell)
 	ft_lstclear(&shell->tokens, 0);
 	shell->current_tree = produce_ast(shell->tokenv, ft_arrlen((void *)shell->tokenv));
 	print_ast(shell->current_tree, "|	|");
+	add_history(shell->current_line);
 	return (readline_cleanup(), 0);
 }
 

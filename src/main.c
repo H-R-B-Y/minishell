@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/07 10:23:02 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/07 11:32:31 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int main()
 	add_history("(this\n) && should work");
 	add_history("\"this\n should\"\nwork");
 	shell.prompt = "minishell -> ";
-	readline_loop(&shell);
+	while (!readline_loop(&shell))
+		;
 	return (0);
 }

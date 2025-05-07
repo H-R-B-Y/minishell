@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/07 09:55:35 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/07 11:40:18 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@ enum e_tokerr
 	UNCLOSED_DOUBLEQUOTE,
 	UNCLOSED_PARENTHESIS,
 	HEREDOC_WITHOUT_WORD,
+	OPEN_CONDITION_AND,
+	OPEN_CONDITION_OR,
+	UNFINISHED_PIPE,
 	TOKEN_ERROR_COUNT
 };
 

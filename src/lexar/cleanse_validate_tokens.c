@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:52:30 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/07 10:56:18 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/07 11:46:13 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	quotes_are_matched(char *str)
 
 	if (!str || !*str)
 		return (1);
-	if (!(*str == '"' || *str == '\''))
+	if (!ft_strchr("\"'", *str))
 		return (1);
 	quote = *str;
 	if (ft_strlen(str) > 1 && str[ft_strlen(str) - 1] == quote
@@ -45,7 +45,7 @@ void	cleanup_word(t_token *token)
 		return ;
 	if (*(token->raw) == '\'')
 		token->variables_expanded = 1;
-	if (*(token->raw) == '\'' || *(token->raw) == '"')
+	if (ft_strchr("\"'", *token->raw))
 		str = remove_quotes_from_string(token->raw);
 	if (!str)
 		str = ft_strdup(token->raw);
@@ -93,6 +93,11 @@ t_tokerr	cleanse_validate_tokens(t_list *tokens)
 	{
 		tok = ((t_token *)node->content);
 		err = _handle_token(node, tok, &parenthesis);
+		if (!node->next)
+			if (tok->type == TOK_AND_IF || tok->type == TOK_OR_IF
+				|| tok->type == TOK_PIPE)
+				return (OPEN_CONDITION_AND + (1 * (tok->type == TOK_OR_IF))
+					+ (2 * (tok->type == TOK_PIPE)));
 		node = node->next;
 		if (err || parenthesis < 0)
 			break ;
