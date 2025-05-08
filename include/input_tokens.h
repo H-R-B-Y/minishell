@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/08 13:32:40 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/08 14:06:27 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,6 @@
 # define INPUT_TOKENS_H
 
 # include "libft.h"
-
-// hbreeze:
-// TODO: There are a bunch of errors missing here
-// such as "~$ &&" and "~$ ||" and "~$ &" these are parsing errors
-// so we just discard the current prompt, cleanup, and wait for the next line.
-// in the case of these errors we still need to add them to history.
 
 // hbreeze:
 // NOTE: the order of these should not be changed, to add new errors add them,
