@@ -1,31 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   token_util2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/08 12:32:09 by hbreeze          ###   ########.fr       */
+/*   Created: 2025/05/08 12:32:10 by hbreeze           #+#    #+#             */
+/*   Updated: 2025/05/08 12:32:29 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
-void	ft_clear_screen(void)
+void	print_token_list(t_list *list)
 {
-	printf("\033[2J\033[H");
-	fflush(stdout);
-}
+	t_list *next;
 
-int main()
-{
-	t_minishell	shell;
-
-	add_history("(this\n) && should work");
-	add_history("\"this\n should\"\nwork");
-	shell.prompt = "minishell -> ";
-	while (!readline_loop(&shell))
-		;
-	return (0);
+	next = list;
+	while (next)
+	{
+		print_token(next->content, 25);
+		next = next->next;
+	}
 }

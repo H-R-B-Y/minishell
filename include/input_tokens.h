@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/07 11:40:18 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/08 13:32:40 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,28 @@
 
 # include "libft.h"
 
+// hbreeze:
+// TODO: There are a bunch of errors missing here
+// such as "~$ &&" and "~$ ||" and "~$ &" these are parsing errors
+// so we just discard the current prompt, cleanup, and wait for the next line.
+// in the case of these errors we still need to add them to history.
+
+// hbreeze:
+// NOTE: the order of these should not be changed, to add new errors add them,
+//		underneath the token_error_count. also the token error to string
+//		function will need to be updated
+
 typedef enum e_tokerr	t_tokerr;
 enum e_tokerr
 {
 	TOK_ERR_NONE,
-	UNCLOSED_SINGLEQUOTE,
-	UNCLOSED_DOUBLEQUOTE,
-	UNCLOSED_PARENTHESIS,
+	UNCLOSED_SINGLEQUOTE, // Fixable
+	UNCLOSED_DOUBLEQUOTE, // Fixable
+	UNCLOSED_PARENTHESIS, // Fixable
 	HEREDOC_WITHOUT_WORD,
-	OPEN_CONDITION_AND,
-	OPEN_CONDITION_OR,
-	UNFINISHED_PIPE,
+	OPEN_CONDITION_AND, // Fixable
+	OPEN_CONDITION_OR, // Fixable
+	UNFINISHED_PIPE, // Fixable
 	TOKEN_ERROR_COUNT
 };
 

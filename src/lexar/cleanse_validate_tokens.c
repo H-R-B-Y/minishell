@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:52:30 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/07 11:46:13 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/08 13:31:20 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,15 @@ void	cleanup_word(t_token *token)
 	token->text = str;
 }
 
+// hbreeze:
+// TODO: there are a bunch of other errors that need to be called out at this stage
+//		parsing errors like when and or or doesnt have tokens on the left
+//		or when disown has no left token.
+
+// hbreeze:
+// NOTE: about the above todo, we need to be able to check the last node?
+//		so we should probably change the linked list to be a double linked list.
+//		this shouldnt be a problem as i have the code for this in my PUSH_SWAP
 static int	_handle_token(t_list *node, t_token *tok, long int *parenthesis)
 {
 	if (tok->type == TOK_RPAREN) // TODO: this does not hadle the case )(
@@ -75,7 +84,8 @@ static int	_handle_token(t_list *node, t_token *tok, long int *parenthesis)
 	return (TOK_ERR_NONE);
 }
 
-// TODO: we should return why the tokens are invalid:
+// hbreeze:
+// DONE:TODO: we should return why the tokens are invalid.
 // unclosed quotes means go back to readline to find the end of the sequence 
 // unclosed parenthesis means go back to readline to find the end of the sequence
 // this means we should keep appending tokens from the newline until the tokens are valid
