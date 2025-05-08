@@ -2,6 +2,22 @@
 # To Do (global)
 
 ---
+### Update todo:
+assigned to: N/A
+
+The TODO list is not complete and will need to be updated regularly.
+
+---
+
+---
+### Update diagram
+assigned to: 
+
+Diagram needs to be updated, doesnt need to be synced to current state of codebase, but it would be nice to have as it can help with debugging.
+
+---
+
+---
 ### Document AST and Tokeniser
 assigned to: harvey
 
@@ -28,6 +44,8 @@ assigned to:
 Signal handlers need to be setup to handle SIGINT and whatever is sent with `ctrl + \` (SIGTERM or SIGSEGV????).
 
 we should also be able to handle SIGCHLD in some way as we will be running programs in the background, but this is optional as subject doesnt specify we need to handle `&` tokens.
+
+we also need a function to be able to restore the original signal handlers, for the forks!
 
 ---
 
@@ -64,6 +82,26 @@ I think we can categories these errors as fixable and unfixable:
 ---
 
 ---
+### Token validation and newlines
+assigned to: 
+
+something strange happens in bash when newlines are present, i cant seem to find what actually happens:
+
+if you use a heredoc and close it, use the history item it created, the newlines persist in the history record.
+
+if you use a parenthesis and dont close it, add a few lines, then close it, use the history item, you can see that the history item doesnt use the newlines, instead using `;`.
+
+if you use quotes dont close them, enter a few lines, then close the quotes, use the history
+then you get the value in the quotes on newlines in the history item.
+
+if you use an AND or OR and dont put the right token, on a newline put a valid token, then use the history item it creates, the newlines are not present.
+
+
+I am not sure if we need to replicate this 1:1 or if we leave it as it is because the way we have it now it works pretty well, i think.
+
+---
+
+---
 ### Redirection and HEREDOC handling
 assigned to: 
 
@@ -87,6 +125,36 @@ After constructing a valid AST we need to execute the tree,
 we traverse the tree from top down the left nodes and then down the right nodes.
 
 certain nodes will need to be run in parallel depending on the parent nodes.
+
+---
+
+---
+### Built ins
+assigned to: 
+
+The subject states that we need to have the following builtins:
+
+- echo with option -n
+- cd with only a relative or absolute path
+- pwd with no options
+- export with no options
+- unset with no options
+- env with no options or arguments
+- exit with no options
+
+These can just be functions callable from the AST exector.
+
+---
+
+---
+### Error handling
+assigned to: 
+
+Need to be able to handle things like command not found, file not found, not enough permissions to read/write/execute a file, parsing errors, errors caused by signals.
+
+in bash these errors are typically handled by just returning to the prompt.
+
+for us to be able to do this, we will need to cleanup everything before returning to the prompt.
 
 ---
 

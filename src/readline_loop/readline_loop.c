@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:52:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/07 11:34:00 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/08 15:01:40 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,57 +15,6 @@
 void readline_cleanup(void)
 {
 	return ;
-}
-
-
-void readline_handle_multiline(t_minishell *shell, char *new_line)
-{
-	char	**newlines;
-	char	**temp;
-	size_t	lengths[2];
-
-	newlines = ft_split(new_line, '\n');
-	if (!newlines[1])
-		ft_arrclear((void *)newlines, free);
-	lengths[0] = ft_arrlen((void *)shell->extra_lines);
-	lengths[1] = ft_arrlen((void *)newlines);
-	temp = ft_calloc(lengths[0] + lengths[1] + 1, sizeof(char *));
-	if (!temp)
-		return ;
-	ft_memmove(temp, shell->extra_lines, lengths[0] * sizeof(char *));
-	ft_memmove(temp + lengths[0], newlines, lengths[1] * sizeof(char *));
-	ft_arrclear((void *)shell->extra_lines, 0);
-	ft_arrclear((void *)newlines, 0);
-	shell->extra_lines = temp;
-}
-
-
-/*
-Function to be called when we need to expect more input from the user
-within the prompt.
-
-i.e. when unclosed parenthesis or unclosed quotes
-*/
-char	*readline_subloop(t_minishell *shell, char *prompt)
-{
-	char	*str;
-	// size_t	len;
-
-	if (shell->extra_lines && *shell->extra_lines)
-	{
-		// len = ft_arrlen((void *)shell->extra_lines);
-		str = ft_strdup(shell->extra_lines[0]);
-		free(shell->extra_lines[0]);
-		ft_memmove(shell->extra_lines, &shell->extra_lines[1],
-			(ft_arrlen((void *)&shell->extra_lines[1]) + 1) * sizeof(char *));
-		return (str);
-	}
-	else
-	{
-		str = readline(prompt);
-		// if newline in the extra lines here then they need to be appended to the extra lines in the shell
-		return (str);
-	}
 }
 
 char	*join_with_sep(char *str1, char *str2, char *sep)
@@ -88,6 +37,68 @@ char	*join_with_sep(char *str1, char *str2, char *sep)
 	return (out);
 }
 
+char *_pop_line(t_minishell *shell)
+{
+	char	*str;
+
+	str = shell->extra_lines[0];
+	ft_memmove(shell->extra_lines, &shell->extra_lines[1],
+		(ft_arrlen((void *)&shell->extra_lines[1]) + 1) * sizeof(char *));
+	return (str);
+}
+
+char *readline_handle_multiline(t_minishell *shell, char *new_line)
+{
+	char	**newlines;
+	char	**temp;
+	size_t	lengths[2];
+
+	newlines = ft_split(new_line, '\n');
+	if (!newlines[1])
+		ft_arrclear((void *)newlines, free);
+	lengths[0] = ft_arrlen((void *)shell->extra_lines);
+	lengths[1] = ft_arrlen((void *)newlines);
+	temp = ft_calloc(lengths[0] + lengths[1] + 1, sizeof(char *));
+	if (!temp)
+		return ((void *)0);
+	ft_memmove(temp, shell->extra_lines, lengths[0] * sizeof(char *));
+	ft_memmove(temp + lengths[0], newlines, lengths[1] * sizeof(char *));
+	ft_arrclear((void *)shell->extra_lines, 0);
+	ft_arrclear((void *)newlines, 0);
+	shell->extra_lines = temp;
+	return (_pop_line(shell));
+}
+
+
+/*
+Function to be called when we need to expect more input from the user
+within the prompt.
+
+i.e. when unclosed parenthesis or unclosed quotes
+*/
+char	*readline_subloop(t_minishell *shell, char *prompt)
+{
+	char	*str;
+	char	*extra_line;
+
+	if (shell->extra_lines && *shell->extra_lines)
+		return (_pop_line(shell));
+	else
+	{
+		str = readline(prompt);
+		extra_line = join_with_sep(shell->current_line, str, "\n");
+		free(shell->current_line);
+		shell->current_line = extra_line;
+		if (!str || !*str)
+			return (0); // this doesnt need to distinquish between as SIGINT and EOF it will be handled in the readline loop.
+		else if (ft_strchr(str, '\n'))
+			return (readline_handle_multiline(shell, str));
+		return (str);
+	}
+}
+
+
+
 int	tokenise_and_validate(t_minishell *shell)
 {
 	t_tokerr	err;
@@ -101,15 +112,11 @@ int	tokenise_and_validate(t_minishell *shell)
 		buff[0] = readline_subloop(shell, (void *)token_err_type_to_string(err));
 		if (buff[0])
 		{
-			buff[1] = join_with_sep(shell->current_line, buff[0], "\n");
-			free(shell->current_line);
-			shell->current_line = buff[1];
 			if (ft_strchr(buff[0], '\n'))
 			{
-				readline_handle_multiline(shell, buff[0]);
+				buff[2] = readline_handle_multiline(shell, buff[0]);
 				free(buff[0]);
-				buff[0] = readline_subloop(shell, "");
-				if (!buff[0])
+				if (!buff[2])
 					return (1);
 			}
 			buff[1] = join_with_sep(shell->current_pipeline, buff[0], "");
@@ -125,24 +132,7 @@ int	tokenise_and_validate(t_minishell *shell)
 	return (0);
 }
 
-/*
-Note: there is alot that needs to happen before we acutally begin to read lines, such as:
-- get envp
-- test if we are a tty 
-- setup signal handlers
 
-some optional stuff that i would love to try and do would be to add the current git repo to the prompt, but
-we can see how feasible that is down the line.
-*/
-
-
-
-/*
-we need to be able to run this in a loop
-we need to return something, perhaps a status code?
-
-keep it as int for now, can be re-written later if we need to return something else;
-*/
 int	readline_loop(t_minishell *shell)
 {
 	shell->current_line = readline(shell->prompt);
@@ -154,15 +144,17 @@ int	readline_loop(t_minishell *shell)
 			return (readline_cleanup(), 1);
 	}
 	if (ft_strchr(shell->current_line, '\n'))
-	{
-		readline_handle_multiline(shell, shell->current_line);
-		shell->current_pipeline = readline_subloop(shell, "");
-	}
+		shell->current_pipeline = readline_handle_multiline(shell, shell->current_line);
 	else
 		shell->current_pipeline = ft_strdup(shell->current_line);
 	if (tokenise_and_validate(shell))
+	{
 		if (errno == EINTR)
 			return (readline_cleanup(), 0);
+		return (1);
+	}
+	// I am thinking that once we get a valid token list here we can exit this function and handle
+	// the AST construcion outside in the main?
 	print_token_list(shell->tokens);
 	shell->tokenv = (void *)ft_lstarr(shell->tokens);
 	ft_lstclear(&shell->tokens, 0);
