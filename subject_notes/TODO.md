@@ -118,6 +118,27 @@ from the stdin into a temp file.
 ---
 
 ---
+### Handle the * operator
+assigned to: 
+
+This seems like it will be a bit of a nightmare, im not to sure how to handle it
+or where to handle it.
+
+it should allow us to run a command and post fill the contents of a directory? i think.
+
+for example:
+`cat ./*`
+will cat all files and folders in the current directory.
+it will include errors and it will error when you try to cat a folder so we dont need to check anything, just run the command for everything.
+
+but it can be used anywhere, like:
+`cat ~/*`
+will cat the contents of the home directory, it does not appear to work on hidden files such as those prepended with a `.`
+
+
+---
+
+---
 ### AST execution
 assigned to: 
 

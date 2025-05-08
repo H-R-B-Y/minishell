@@ -24,6 +24,7 @@ SRCS			:= \
 				$(SRC_DIR)/lexar/token_util2.c \
 				$(SRC_DIR)/lexar/tokeniser.c \
 				\
+				$(SRC_DIR)/readline_loop/readline_cleanup.c \
 				$(SRC_DIR)/readline_loop/readline_loop_execution.c \
 				$(SRC_DIR)/readline_loop/readline_loop.c \
 				\
@@ -33,6 +34,9 @@ SRCS			:= \
 				$(SRC_DIR)/syntax_tree/syntax_consume.c \
 				$(SRC_DIR)/syntax_tree/syntax_heirarchy.c \
 				$(SRC_DIR)/syntax_tree/syntax_util.c \
+				\
+				$(SRC_DIR)/utility/pop_line.c \
+				$(SRC_DIR)/utility/str_join_with_sep.c \
 				\
 
 TEST_SCRIPT		:=
