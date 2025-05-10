@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/10 13:28:30 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/10 15:43:40 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 # define NEW_LEXAR_H
 
 # include "libft.h"
+
+# define ETOPTR (void *)(unsigned long int)
+# define PTRTOE (int)(unsigned long int)
 
 /*
 start by checking the internal state ok the tokeniser.
@@ -77,12 +80,12 @@ enum e_tokparsecont
 	CONTINUATION_ERROR_COUNT
 };
 
-struct	s_tokeniserint
+typedef struct s_tokeniserint	t_tokeniserinternal;
+struct s_tokeniserint
 {
 	t_list		*parse_stack;
-	t_tokcont	cont;
 	t_tokstate	state;
-	t_list		tokens;
+	t_list		*tokens;
 };
 
 /**
@@ -102,6 +105,8 @@ struct	s_tokeniserint
  * @param TOK_AMP token for '&'
  * @param TOK_END token for end of the input line
  * @param TOK_COUNT count of number of valid token types
+ * 
+ * @warning DO NOT CHANGE THE ORDER HERE!!!!!!
  */
 typedef enum e_tokentype	t_tokentype;
 enum e_tokentype
@@ -138,5 +143,9 @@ struct s_token
 	int			heredoc_deliminator;
 };
 
+t_token	*create_token(t_tokentype type, char *raw_token);
+void	destroy_token(t_token *token, void (*del_raw)(void *));
+void	free_token_list(t_list *list, void (*del_raw)(void *));
+void	free_token_vector(t_token **vec, void (*del_raw)(void *));
 
 #endif

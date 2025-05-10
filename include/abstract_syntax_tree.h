@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/08 17:27:18 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/10 15:22:21 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 # define ABSTRACT_SYNTAX_TREE_H
 
 # include "libft.h"
-# include "input_tokens.h"
+# include "./new_lexar.h"
+// # include "input_tokens.h"
 
 /**
  * @brief I created this because i think we might need it, not because we do

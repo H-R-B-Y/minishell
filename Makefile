@@ -14,19 +14,23 @@ LIBFT_DIR		:= $(abspath $(LIB_DIR)/libft)
 LIBFT			:= $(LIBFT_DIR)/libft.a
 
 SRC_DIR			:= ./src
+
+# $(SRC_DIR)/lexar/cleanse_validate_tokens.c \
+# $(SRC_DIR)/lexar/token_binning.c \
+# $(SRC_DIR)/lexar/token_init.c \
+# $(SRC_DIR)/lexar/token_operators.c \
+# $(SRC_DIR)/lexar/token_skipping.c \
+# $(SRC_DIR)/lexar/token_util.c \
+# $(SRC_DIR)/lexar/token_util2.c \
+# $(SRC_DIR)/lexar/tokeniser.c \
+#
+
+# $(SRC_DIR)/readline_loop/readline_cleanup.c \
+# $(SRC_DIR)/readline_loop/readline_loop_execution.c \
+# $(SRC_DIR)/readline_loop/readline_loop.c \
+
+
 SRCS			:= \
-				$(SRC_DIR)/lexar/cleanse_validate_tokens.c \
-				$(SRC_DIR)/lexar/token_binning.c \
-				$(SRC_DIR)/lexar/token_init.c \
-				$(SRC_DIR)/lexar/token_operators.c \
-				$(SRC_DIR)/lexar/token_skipping.c \
-				$(SRC_DIR)/lexar/token_util.c \
-				$(SRC_DIR)/lexar/token_util2.c \
-				$(SRC_DIR)/lexar/tokeniser.c \
-				\
-				$(SRC_DIR)/readline_loop/readline_cleanup.c \
-				$(SRC_DIR)/readline_loop/readline_loop_execution.c \
-				$(SRC_DIR)/readline_loop/readline_loop.c \
 				\
 				$(SRC_DIR)/syntax_tree/ast_node_init.c \
 				$(SRC_DIR)/syntax_tree/print_ast.c \

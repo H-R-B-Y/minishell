@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/08 16:41:46 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/10 13:43:43 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@
 # include <term.h>
 
 # include "./libft.h"
-# include "./input_tokens.h"
+// # include "./input_tokens.h"
+# include "./new_lexar.h"
 # include "./abstract_syntax_tree.h"
 
 
@@ -54,6 +55,8 @@ struct s_minishell
 	t_list		*tokens;
 	t_token		**tokenv;
 	t_astnode	*current_tree;
+
+	t_tokeniserinternal	tok_internal;
 
 	/*
 	i think the best way to handle this would be to keep concatinating

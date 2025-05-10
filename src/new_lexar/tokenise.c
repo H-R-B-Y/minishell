@@ -6,11 +6,14 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/10 13:00:16 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/10 15:58:41 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+void	_begin_parsing(t_tokeniserinternal *meta, char *str);
+
 
 /*
 I want to rewrite the lexar to better handle inputs
@@ -34,7 +37,38 @@ so quotes and bracket errors are caught here instead of being tested for afterwa
 
 
 */
-t_list	*tokensise(char *str)
+
+void	cleanup_internal(struct s_tokeniserint *meta)
 {
-	
+	if (meta->parse_stack != 0)
+	{
+		ft_lstclear(&meta->parse_stack, 0);
+		meta->parse_stack = 0;
+	}
+	if (meta->tokens != 0)
+	{
+		free_token_list(meta->tokens, free);
+		meta->tokens = 0;
+	}
+}
+
+t_list	*tokensise(t_tokeniserinternal *meta, char *str)
+{
+	if (!str)
+		return (cleanup_internal(meta), 0);
+	if (meta->state == PARSE_OK || meta->state == PARSE_ERROR)
+	{
+		cleanup_internal(meta);
+		meta->state = PARSE_OK;
+		_begin_parsing(meta, str);
+	}
+	else if (meta->state == PARSE_CONTINUE)
+		_begin_parsing(meta, str);
+	// parsing has happened
+	if (meta->state != PARSE_ERROR)
+		if (t_lstsize(meta->parse_stack) > 0)
+			meta->state = PARSE_CONTINUE;
+	else
+		cleanup_internal(meta);
+	return (meta->tokens);
 }
