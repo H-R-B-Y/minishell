@@ -6,11 +6,13 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 13:12:14 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/07 11:31:57 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/10 16:37:09 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+int	isoperator(char c);
 
 size_t	skip_quoted(char *str, size_t i)
 {
@@ -58,18 +60,3 @@ size_t	skip_word(char *str, size_t i)
 	return (i - start);
 }
 
-size_t	skip_token(char *str, size_t i)
-{
-	size_t	start;
-
-	start = i;
-	if (str[i] == '\'' || str[i] == '"')
-		i += skip_quoted(str, i);
-	else if (ft_strchr("<>&|", str[i]))
-		i += skip_potential_double(str, i);
-	else if (ft_strchr("();", str[i]))
-		i++;
-	else
-		i += skip_word(str, i);
-	return (i - start);
-}

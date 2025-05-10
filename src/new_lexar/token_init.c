@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/10 15:42:37 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/10 18:50:26 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_token	*create_token(t_tokentype type, char *raw_token)
 	ft_bzero(tok, sizeof(t_token));
 	tok->raw = raw_token;
 	tok->type = type;
+	tok->trimmed = ft_strtrim(raw_token, " \t\v\b\r\f");
 	return (tok);
 }
 

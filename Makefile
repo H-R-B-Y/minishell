@@ -31,6 +31,16 @@ SRC_DIR			:= ./src
 
 
 SRCS			:= \
+				$(SRC_DIR)/new_lexar/token_binning.c \
+				$(SRC_DIR)/new_lexar/token_continuation.c \
+				$(SRC_DIR)/new_lexar/token_init.c \
+				$(SRC_DIR)/new_lexar/token_operators.c \
+				$(SRC_DIR)/new_lexar/token_skip.c \
+				$(SRC_DIR)/new_lexar/token_skipping.c \
+				$(SRC_DIR)/new_lexar/token_util.c \
+				$(SRC_DIR)/new_lexar/token_util2.c \
+				$(SRC_DIR)/new_lexar/tokenise_begin.c \
+				$(SRC_DIR)/new_lexar/tokenise.c \
 				\
 				$(SRC_DIR)/syntax_tree/ast_node_init.c \
 				$(SRC_DIR)/syntax_tree/print_ast.c \

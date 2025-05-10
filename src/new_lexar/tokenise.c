@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/10 15:58:41 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/10 17:50:35 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	cleanup_internal(struct s_tokeniserint *meta)
 t_list	*tokensise(t_tokeniserinternal *meta, char *str)
 {
 	if (!str)
-		return (cleanup_internal(meta), 0);
+		return (cleanup_internal(meta), (void *)0);
 	if (meta->state == PARSE_OK || meta->state == PARSE_ERROR)
 	{
 		cleanup_internal(meta);
@@ -63,12 +63,15 @@ t_list	*tokensise(t_tokeniserinternal *meta, char *str)
 		_begin_parsing(meta, str);
 	}
 	else if (meta->state == PARSE_CONTINUE)
+	{
 		_begin_parsing(meta, str);
+		if (ft_lstsize(meta->parse_stack) == 0)
+			meta->state = PARSE_OK;
+	}
 	// parsing has happened
-	if (meta->state != PARSE_ERROR)
-		if (t_lstsize(meta->parse_stack) > 0)
-			meta->state = PARSE_CONTINUE;
-	else
+	if (meta->state == PARSE_ERROR)
 		cleanup_internal(meta);
+	if (ft_lstsize(meta->parse_stack) > 0)
+		meta->state = PARSE_CONTINUE;
 	return (meta->tokens);
 }

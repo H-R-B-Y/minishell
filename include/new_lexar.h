@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/10 15:43:40 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/10 18:47:08 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 
 # define ETOPTR (void *)(unsigned long int)
 # define PTRTOE (int)(unsigned long int)
+# define LCONT (PTRTOE ft_lstlast(meta->parse_stack)->content)
+# define POPCONT free(ft_lstpop_back(&meta->parse_stack))
 
 /*
 start by checking the internal state ok the tokeniser.
@@ -45,10 +47,10 @@ we start with a loop to check that we have not got to the end of the string,
 
 !! if we encounter a newline character and we in a cont:
 	EXPECTING WORD = replace the newline with space?
-	EXPECTING_HEREDOC = PARSE_ERROR
-	EXPECTING_QUOTE = newline is a word token
-	EXPECTING_DQUOTE = newline is a word token
-	EXPECTING_PARENTHESIS = newline becomes a ;
+	EXPECT_HEREDOC = PARSE_ERROR
+	EXPECT_QUOTE = newline is a word token
+	EXPECT_DQUOTE = newline is a word token
+	EXPECT_PAREN = newline becomes a ;
 
 !! if we encounter a newline character and we not in a cont:
 	this probably means that there is a heredoc?
@@ -72,12 +74,12 @@ typedef enum e_tokparsecont	t_tokcont;
 enum e_tokparsecont
 {
 	NONE,
-	EXPECTING_WORD, // && / || expect word or sequence
-	EXPECTING_HEREDOC, // << expects a word
-	EXPECTING_QUOTE, // expects '
-	EXPECTING_DQUOTE, // expects " but not \"
-	EXPECTING_PARENTHESIS, // expects )
-	CONTINUATION_ERROR_COUNT
+	EXPECT_WORD, // && / || expect word or sequence
+	EXPECT_HEREDOC, // << expects a word
+	EXPECT_QUOTE, // expects '
+	EXPECT_DQUOTE, // expects " but not \"
+	EXPECT_PAREN, // expects )
+	CONT_ERROR_COUNT
 };
 
 typedef struct s_tokeniserint	t_tokeniserinternal;
@@ -125,6 +127,7 @@ enum e_tokentype
 	TOK_RPAREN,
 	TOK_AMP,
 	TOK_END,
+	TOK_NEWLINE, // Special case
 	TOK_COUNT
 };
 
@@ -140,6 +143,7 @@ struct s_token
 {
 	t_tokentype	type;
 	char		*raw;
+	char		*trimmed;
 	int			heredoc_deliminator;
 };
 
@@ -147,5 +151,10 @@ t_token	*create_token(t_tokentype type, char *raw_token);
 void	destroy_token(t_token *token, void (*del_raw)(void *));
 void	free_token_list(t_list *list, void (*del_raw)(void *));
 void	free_token_vector(t_token **vec, void (*del_raw)(void *));
+
+
+void	print_token(t_token *token, int column_width);
+
+t_list	*tokensise(t_tokeniserinternal *meta, char *str);
 
 #endif

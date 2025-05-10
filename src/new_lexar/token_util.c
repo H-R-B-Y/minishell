@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 11:24:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/08 16:33:21 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/10 18:51:28 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,22 @@ const char	*token_type_to_string(t_tokentype type)
 		"None", "Word", "Pipe", "Redirect out (>)",
 		"Redirect append (>>)", "Redirect in (<)", "Heredoc",
 		"After (;)", "And", "Or", "Open parenthesis",
-		"Close parenthesis", "Disown (&)", "End of input"
+		"Close parenthesis", "Disown (&)", "End of input",
+		"New line"
 	};
 
 	return (types[type]);
 }
 
-const char	*token_err_type_to_string(t_tokerr err)
+const char	*token_err_type_to_string(t_tokcont err)
 {
-	static const char	*errors[TOKEN_ERROR_COUNT] = {
+	static const char	*errors[CONT_ERROR_COUNT] = {
 		"TOK_ERR_NONE",
-		"UNCLOSED_SINGLEQUOTE",
-		"UNCLOSED_DOUBLEQUOTE",
-		"UNCLOSED_PARENTHESIS",
-		"OPEN_CONDITION_AND",
-		"OPEN_CONDITION_OR",
-		"HEREDOC_WITHOUT_WORD",
-		"UNFINISHED_PIPE",
+		"Expecting word",
+		"Expecting heredoc",
+		"Expecting quote",
+		"Expecting double quote",
+		"Expecting parenthesis"
 	};
 
 	return (errors[err]);
@@ -45,13 +44,13 @@ void	print_token_type(t_tokentype type)
 	printf("%s", token_type_to_string(type));
 }
 
-void	print_token_error(t_tokerr err)
+void	print_token_error(t_tokcont err)
 {
 	printf("%s", token_err_type_to_string(err));
 }
 
 void	print_token(t_token *token, int column_width)
 {
-	printf("%-*s;  %*s; %*s\n", column_width, token_type_to_string(token->type),
-		column_width, token->raw, column_width, token->text);
+	printf("%-*s;  %*s\n", column_width, token_type_to_string(token->type),
+		column_width, token->raw);
 }
