@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:52:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/08 16:32:36 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/10 12:49:04 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,16 @@ int	_cleanup_nextlines(t_minishell *shell, char *buff, t_tokerr err)
 		temp[2] = readline_handle_multiline(shell, buff);
 		if (!temp[2])
 			return (1);
+		buff = temp[2];
 	}
-	temp[1] = str_join_with_sep(shell->current_pipeline,
-		buff, (void *)err_join[err]);
+	// This has a huge flaw
+	if (err == UNCLOSED_PARENTHESIS
+		&& ft_strchr(";&", shell->current_pipeline[ft_strlen(shell->current_pipeline) - 1]))
+		temp[1] = str_join_with_sep(shell->current_pipeline,
+			buff, "");
+	else
+		temp[1] = str_join_with_sep(shell->current_pipeline,
+			buff, (void *)err_join[err]);
 	free(shell->current_pipeline);
 	shell->current_pipeline = temp[1];
 	return (0);
