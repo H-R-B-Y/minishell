@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/06 11:23:55 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/07 10:19:34 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ size_t	skip_whitespace(char *str, size_t i)
 	return (i - start);
 }
 
-int	cleanup_tokens(t_list *tokens, void (*del_raw)(void *))
+int	cleanup_tokens(t_list *tokens, void (*del_raw)(void *),
+	void (del_str)(void *))
 {
 	t_list	*head;
 	t_list	*prev;
@@ -33,7 +34,7 @@ int	cleanup_tokens(t_list *tokens, void (*del_raw)(void *))
 	head = tokens->next;
 	while (prev)
 	{
-		destroy_token(prev->content, del_raw);
+		destroy_token(prev->content, del_raw, del_str); // TODO: this function needs to be passed both the cleanup functions!!!!
 		free(prev);
 		prev = head;
 		head = head->next;
@@ -64,6 +65,6 @@ t_list	*tokenise(char *str)
 		}
 	}
 	if (tokens[1] == 0 && tokens[0])
-		return (cleanup_tokens(tokens[0], &free), (void *)0);
+		return (cleanup_tokens(tokens[0], &free, &free), (void *)0);
 	return (tokens[0]);
 }

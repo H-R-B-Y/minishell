@@ -1,29 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   produce_syntax_tree.c                              :+:      :+:    :+:   */
+/*   readline_cleanup.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/02 12:20:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/06 19:59:06 by hbreeze          ###   ########.fr       */
+/*   Created: 2025/05/08 15:45:18 by hbreeze           #+#    #+#             */
+/*   Updated: 2025/05/08 16:13:42 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-t_astnode	*produce_ast(t_token **tokens, size_t count)
-{
-	struct s_ast_internal	meta;
-	t_astnode				*head;
 
-	if (!tokens || !*tokens || !count)
-		return ((void *)0);
-	meta.tokens = tokens;
-	meta.count = count;
-	meta.consumed = 0;
-	meta.left_node = 0;
-	meta.right_node = 0;
-	head = ast_parse_seperators(&meta);
-	return (head);
+/*
+What needs to be cleaned up within the readline loop 
+that isnt useful elsewhere? 
+
+*/
+
+void readline_cleanup(void)
+{
+	return ;
 }
