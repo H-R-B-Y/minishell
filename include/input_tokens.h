@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/06 11:52:07 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/08 17:35:13 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,34 @@
 
 # include "libft.h"
 
+// hbreeze:
+// NOTE: The order of this enum should be :
+// 		NONE , Fixable errors, unfixable errors, error count
+
+/**
+ * @brief enum for the errors that might occur
+ * @param TOK_ERR_NONE Error for 
+ * @param UNCLOSED_SINGLEQUOTE
+ * @param UNCLOSED_DOUBLEQUOTE
+ * @param UNCLOSED_PARENTHESIS
+ * @param OPEN_CONDITION_AND
+ * @param OPEN_CONDITION_OR
+ * @param UNFINISHED_PIPE
+ * @param HEREDOC_WITHOUT_WORD
+ * @param TOKEN_ERROR_COUNT
+ */
 typedef enum e_tokerr	t_tokerr;
 enum e_tokerr
 {
-	TOK_ERR_NONE,
-	UNCLOSED_SINGLEQUOTE,
-	UNCLOSED_DOUBLEQUOTE,
-	UNCLOSED_PARENTHESIS,
+	TOK_ERR_NONE, // Nonetype
+	UNCLOSED_SINGLEQUOTE, // Fixable
+	UNCLOSED_DOUBLEQUOTE, // Fixable
+	UNCLOSED_PARENTHESIS, // Fixable
+	OPEN_CONDITION_AND, // Fixable
+	OPEN_CONDITION_OR, // Fixable
+	UNFINISHED_PIPE, // Fixable
 	HEREDOC_WITHOUT_WORD,
-	TOKEN_ERROR_COUNT
+	TOKEN_ERROR_COUNT // Count of errors
 };
 
 /**
@@ -107,7 +126,6 @@ void		print_token_type(t_tokentype type);
  * been expanded (Might remove)
  * @param heredoc_deliminator flag for if this string is the heredoc end
  * of line deliminator (Might remove)
- * 
  */
 typedef struct s_token		t_token;
 struct s_token
@@ -131,17 +149,23 @@ t_token		*create_token(t_tokentype type, char *raw_token);
  * @brief destroy a token (and optionally its contents)
  * @param token a pointer to a pointer to a token
  * @param del_raw (optional) function pointer to free the raw token
+ * @param del_str (optional) funciton pointer to free the str of the token
  * 
  * The value of the ptrptr will be set to null, the token will be free'd
  * if the del_raw pointer is not null it will be called on the raw token data
  */
-void		destroy_token(t_token *token, void (*del_raw)(void *));
+void	destroy_token(t_token *token, void (*del_raw)(void *), void (*del_str)(void *));
+
 
 /**
  * @brief prints the token type and the tokens raw data in columns
  * @param token the token to print
  */
 void		print_token(t_token *token, int column_width);
+
+
+void	free_token_list(t_list *list, void (*del_raw)(void *), void (*del_str)(void *));
+void	free_token_vector(t_token **vec, void (*del_raw)(void *), void (*del_str)(void *));
 
 /*
 Other functions
@@ -157,13 +181,38 @@ int			isoperator(char c);
 /*
 Main function that we care about
 */
-
+/**
+ * @brief tokenise a string
+ * @param str the string we need to tokenise
+ * @returns list of tokens created from the string
+ */
 t_list		*tokenise(char *str);
 
-
+/**
+ * @brief get the string for a given token error.
+ * @param err the token error to get the string from
+ * @returns constant char representation of the error
+ */
 const char	*token_err_type_to_string(t_tokerr err);
+
+/**
+ * @brief print a token error (without a newline)
+ * @param err the error to print
+ */
 void		print_token_error(t_tokerr err);
 
+/**
+ * @brief validate and cleanse a token list
+ * @param tokens the token list
+ * @returns a token error value
+ * 
+ * validation has a few steps (and these need to be updated) and 
+ * when an error is found this function returns immediately.
+ * 
+ * cleansing just strips quotes from word tokens, but im not sure
+ * if we should actually be doing this here or if it would be better 
+ * suited to being done at the command prep stage
+ */
 t_tokerr	cleanse_validate_tokens(t_list *tokens);
 
 #endif

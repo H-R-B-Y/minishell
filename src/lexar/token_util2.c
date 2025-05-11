@@ -1,29 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   produce_syntax_tree.c                              :+:      :+:    :+:   */
+/*   token_util2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/02 12:20:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/06 19:59:06 by hbreeze          ###   ########.fr       */
+/*   Created: 2025/05/08 12:32:10 by hbreeze           #+#    #+#             */
+/*   Updated: 2025/05/08 12:32:29 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-t_astnode	*produce_ast(t_token **tokens, size_t count)
+void	print_token_list(t_list *list)
 {
-	struct s_ast_internal	meta;
-	t_astnode				*head;
+	t_list *next;
 
-	if (!tokens || !*tokens || !count)
-		return ((void *)0);
-	meta.tokens = tokens;
-	meta.count = count;
-	meta.consumed = 0;
-	meta.left_node = 0;
-	meta.right_node = 0;
-	head = ast_parse_seperators(&meta);
-	return (head);
+	next = list;
+	while (next)
+	{
+		print_token(next->content, 25);
+		next = next->next;
+	}
 }

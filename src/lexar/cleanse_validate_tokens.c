@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 16:52:30 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/06 11:54:31 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/08 13:31:20 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	quotes_are_matched(char *str)
 
 	if (!str || !*str)
 		return (1);
-	if (!(*str == '"' || *str == '\''))
+	if (!ft_strchr("\"'", *str))
 		return (1);
 	quote = *str;
 	if (ft_strlen(str) > 1 && str[ft_strlen(str) - 1] == quote
@@ -45,13 +45,22 @@ void	cleanup_word(t_token *token)
 		return ;
 	if (*(token->raw) == '\'')
 		token->variables_expanded = 1;
-	if (*(token->raw) == '\'' || *(token->raw) == '"')
+	if (ft_strchr("\"'", *token->raw))
 		str = remove_quotes_from_string(token->raw);
 	if (!str)
 		str = ft_strdup(token->raw);
 	token->text = str;
 }
 
+// hbreeze:
+// TODO: there are a bunch of other errors that need to be called out at this stage
+//		parsing errors like when and or or doesnt have tokens on the left
+//		or when disown has no left token.
+
+// hbreeze:
+// NOTE: about the above todo, we need to be able to check the last node?
+//		so we should probably change the linked list to be a double linked list.
+//		this shouldnt be a problem as i have the code for this in my PUSH_SWAP
 static int	_handle_token(t_list *node, t_token *tok, long int *parenthesis)
 {
 	if (tok->type == TOK_RPAREN) // TODO: this does not hadle the case )(
@@ -61,7 +70,8 @@ static int	_handle_token(t_list *node, t_token *tok, long int *parenthesis)
 	else if (tok->type == TOK_WORD)
 	{
 		if (*tok->raw == '"' || *tok->raw == '\'')
-			return (UNCLOSED_SINGLEQUOTE + (1 * (*tok->raw == '"')));
+			if (!quotes_are_matched(tok->raw))
+				return (UNCLOSED_SINGLEQUOTE + (1 * (*tok->raw == '"')));
 		cleanup_word(tok);
 	}
 	else if (tok->type == TOK_HEREDOC)
@@ -74,7 +84,8 @@ static int	_handle_token(t_list *node, t_token *tok, long int *parenthesis)
 	return (TOK_ERR_NONE);
 }
 
-// TODO: we should return why the tokens are invalid:
+// hbreeze:
+// DONE:TODO: we should return why the tokens are invalid.
 // unclosed quotes means go back to readline to find the end of the sequence 
 // unclosed parenthesis means go back to readline to find the end of the sequence
 // this means we should keep appending tokens from the newline until the tokens are valid
@@ -92,8 +103,13 @@ t_tokerr	cleanse_validate_tokens(t_list *tokens)
 	{
 		tok = ((t_token *)node->content);
 		err = _handle_token(node, tok, &parenthesis);
+		if (!node->next)
+			if (tok->type == TOK_AND_IF || tok->type == TOK_OR_IF
+				|| tok->type == TOK_PIPE)
+				return (OPEN_CONDITION_AND + (1 * (tok->type == TOK_OR_IF))
+					+ (2 * (tok->type == TOK_PIPE)));
 		node = node->next;
-		if (err || parenthesis >= 0)
+		if (err || parenthesis < 0)
 			break ;
 	}
 	if (err)

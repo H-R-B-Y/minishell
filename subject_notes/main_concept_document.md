@@ -137,6 +137,9 @@ parent:
 
 that should be all the node type, if not i will update the list later.
 
+note that the execution tree uses ALOT of forks, we need to be very careful here that we avoid fork bombing. 
+we could very quickly crash if we create a fork bomb so we need to be absolutely sure that this cannot happen.
+
 
 ## Command prep
 
