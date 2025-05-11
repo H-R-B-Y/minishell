@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 13:12:14 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/02 10:50:01 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/06 11:24:24 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ size_t	skip_quoted(char *str, size_t i)
 	start = i;
 	i++;
 	while (str[i] && (str[i] != quote
-		|| (str[i] == quote && i > 1 && str[i - 1] == '\\' && quote == '"')))//TODO: double quote can be escaped
+			|| (str[i] == quote && i > 1
+			&& str[i - 1] == '\\' && quote == '"')))//TODO: double quote can be escaped
 		i++;
 	if (str[i])
 		i++;
@@ -47,7 +48,11 @@ size_t	skip_word(char *str, size_t i)
 	{
 		if (str[i] == '\'' || str[i] == '"')
 			i += skip_quoted(str, i);
-		else if (str[i] == '\\' && (ft_iswhitespace(str[i+1]) || isoperator(str[i+1]) || str[i+1] == '\\' || str[i+1] == '"' || str[i+1] == '\''))
+		else if (str[i] == '\\' && (ft_iswhitespace(str[i + 1])
+				|| isoperator(str[i + 1])
+				|| str[i + 1] == '\\'
+				|| str[i + 1] == '"'
+				|| str[i + 1] == '\''))
 			i += 2;
 		else
 			i++;

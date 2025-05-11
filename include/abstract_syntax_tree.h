@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/02 18:15:20 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/06 11:23:28 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "libft.h"
 # include "input_tokens.h"
 
-typedef enum e_redir_type	t_redirect_type;
+typedef enum e_redir_type		t_redirect_type;
 enum e_redir_type
 {
 	REDIRECT_INPUT,
@@ -24,23 +24,20 @@ enum e_redir_type
 	REDIRECT_HEREDOC,
 };
 
+// Need some information about what we are redirecting
+// if we need a pipe we should store it here
+// not sure if this will be usefull
 typedef struct s_redirect_desc	t_redirect_desc;
 struct s_redirect_desc
 {
 	t_redirect_type	type;
-	// Need some information about what we are redirecting
-	// if we need a pipe we should store it here
-	
-	// not sure if this will be usefull
-	int	is_pipe;
-	int	pipe[2];
-
-	// Just gonna use some placeholders
-	int	from_fd;
-	int	to_fd;
+	int				is_pipe;
+	int				pipe[2];
+	int				from_fd;
+	int				to_fd;
 };
 
-typedef enum e_asttype	t_astype;
+typedef enum e_asttype			t_astype;
 enum e_asttype
 {
 	AST_NONE,
@@ -53,7 +50,7 @@ enum e_asttype
 	AST_TYPE_COUNT
 };
 
-typedef struct s_astnode	t_astnode;
+typedef struct s_astnode		t_astnode;
 struct	s_astnode
 {
 	t_astype	type;
@@ -70,17 +67,19 @@ struct	s_astnode
 	int			return_code;
 };
 
-t_astnode	*create_ast_node(t_astype type, t_token **token, t_astnode *left, t_astnode *right);
-void		destroy_ast_node(t_astnode *node, void (*del_cmdv)(void *), void (*del_envp)(void *));
+t_astnode	*create_ast_node(t_astype type,
+				t_token **token, t_astnode *left, t_astnode *right);
+void		destroy_ast_node(t_astnode *node,
+				void (*del_cmdv)(void *), void (*del_envp)(void *));
 
 // internal struct for keeping track of what has been consumed? 
 
 struct s_ast_internal
 {
-	t_token	**tokens;
-	size_t	count;
+	t_token		**tokens;
+	size_t		count;
 
-	size_t	consumed;
+	size_t		consumed;
 	t_astnode	*left_node; // Might not be needed
 	t_astnode	*right_node; // Might not be needed
 };
@@ -96,6 +95,6 @@ t_astnode	*ast_parse_subcommand(struct s_ast_internal *meta);
 
 size_t		ast_consume_words(struct s_ast_internal *meta, t_astnode *node);
 
-void	print_ast(t_astnode *head, char *indent);
+void		print_ast(t_astnode *head, char *indent);
 
 #endif

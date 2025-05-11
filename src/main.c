@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/02 19:28:44 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/06 11:53:36 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void readline_loop(void)
 	t_token	**tok_arr;
 	t_astnode	*tree;
 	
-	static char *arr[2] = {"not ", ""}; //TODO: remove this 
+	static char *arr[2] = {"", "not "}; //TODO: remove this 
 
 	buff = readline("minishell-$ ");
 	while (buff)
@@ -49,8 +49,10 @@ void readline_loop(void)
 		{
 			tokens = tokenise(buff);
 			int valid = cleanse_validate_tokens(tokens);
+			if (valid)
+				{print_token_error(valid);printf("\n");}
 			print_token_list(tokens);
-			printf("tokens are %svalid\n", arr[valid]);
+			printf("tokens are %svalid\n", arr[!!valid]);
 			// produce ast
 			tok_arr = (void *)ft_lstarr(tokens);
 			tree = produce_ast(tok_arr, ft_arrlen((void *)tok_arr));
