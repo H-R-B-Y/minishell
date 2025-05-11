@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 12:20:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/02 13:20:43 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/06 11:26:37 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_astnode	*produce_ast(t_token **tokens, size_t count)
 	t_astnode				*head;
 
 	meta.tokens = tokens;
-	meta.count = count; 
+	meta.count = count;
 	meta.consumed = 0;
 	meta.left_node = 0;
 	meta.right_node = 0;

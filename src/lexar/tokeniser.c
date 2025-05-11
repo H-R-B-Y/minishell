@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/02 11:11:10 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/06 11:23:55 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	cleanup_tokens(t_list *tokens, void (*del_raw)(void *))
 	return (0);
 }
 
-t_list *tokenise(char *str)
+t_list	*tokenise(char *str)
 {
 	t_list	*tokens[2];
 	size_t	ends[2];

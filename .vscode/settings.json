@@ -1,6 +1,8 @@
 {
 	"files.associations": {
 		"minishell.h": "c",
-		"libft.h": "c"
+		"libft.h": "c",
+		"term.h": "c",
+		"abstract_syntax_tree.h": "c"
 	}
 }

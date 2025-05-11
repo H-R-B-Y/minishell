@@ -6,14 +6,25 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/02 11:03:58 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/06 11:52:07 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef INPUT_TOKENS_H
 # define INPUT_TOKENS_H
 
-#include "libft.h"
+# include "libft.h"
+
+typedef enum e_tokerr	t_tokerr;
+enum e_tokerr
+{
+	TOK_ERR_NONE,
+	UNCLOSED_SINGLEQUOTE,
+	UNCLOSED_DOUBLEQUOTE,
+	UNCLOSED_PARENTHESIS,
+	HEREDOC_WITHOUT_WORD,
+	TOKEN_ERROR_COUNT
+};
 
 /**
  * @brief token types for tokens parsed from arguments
@@ -86,7 +97,7 @@ const char	*token_type_to_string(t_tokentype type);
  * @brief print the tokens type
  * @note does not print a new line
  */
-void	print_token_type(t_tokentype type);
+void		print_token_type(t_tokentype type);
 
 /**
  * @brief token type struct, provides information about a token
@@ -98,7 +109,7 @@ void	print_token_type(t_tokentype type);
  * of line deliminator (Might remove)
  * 
  */
-typedef struct s_token	t_token;
+typedef struct s_token		t_token;
 struct s_token
 {
 	t_tokentype	type;
@@ -114,7 +125,7 @@ struct s_token
  * @param raw_token the raw string of the token
  * @returns head allocated token struct
  */
-t_token	*create_token(t_tokentype type, char *raw_token);
+t_token		*create_token(t_tokentype type, char *raw_token);
 
 /**
  * @brief destroy a token (and optionally its contents)
@@ -124,14 +135,13 @@ t_token	*create_token(t_tokentype type, char *raw_token);
  * The value of the ptrptr will be set to null, the token will be free'd
  * if the del_raw pointer is not null it will be called on the raw token data
  */
-void	destroy_token(t_token *token, void (*del_raw)(void *));
+void		destroy_token(t_token *token, void (*del_raw)(void *));
 
 /**
  * @brief prints the token type and the tokens raw data in columns
  * @param token the token to print
  */
-void	print_token(t_token *token, int column_width);
-
+void		print_token(t_token *token, int column_width);
 
 /*
 Other functions
@@ -142,15 +152,18 @@ Other functions
  * 
  * note that the operators are: < > ; & | ( )
  */
-int		isoperator(char c);
+int			isoperator(char c);
 
 /*
 Main function that we care about
 */
 
-t_list *tokenise(char *str);
+t_list		*tokenise(char *str);
 
 
-int	cleanse_validate_tokens(t_list *tokens);
+const char	*token_err_type_to_string(t_tokerr err);
+void		print_token_error(t_tokerr err);
+
+t_tokerr	cleanse_validate_tokens(t_list *tokens);
 
 #endif
