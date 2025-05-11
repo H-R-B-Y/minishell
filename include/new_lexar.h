@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/10 18:47:08 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/11 12:06:15 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,6 @@ enum e_tokentype
 	TOK_RPAREN,
 	TOK_AMP,
 	TOK_END,
-	TOK_NEWLINE, // Special case
 	TOK_COUNT
 };
 

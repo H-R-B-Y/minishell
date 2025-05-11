@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 11:24:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/10 18:51:28 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/11 12:09:19 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ const char	*token_type_to_string(t_tokentype type)
 		"None", "Word", "Pipe", "Redirect out (>)",
 		"Redirect append (>>)", "Redirect in (<)", "Heredoc",
 		"After (;)", "And", "Or", "Open parenthesis",
-		"Close parenthesis", "Disown (&)", "End of input",
-		"New line"
+		"Close parenthesis", "Disown (&)", "End of input"
 	};
 
 	return (types[type]);

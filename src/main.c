@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/10 18:38:25 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/11 12:25:54 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ int main()
 	shell.prompt = "minishell -> ";
 	while (!0)
 	{
-		shell.tokens = tokensise(&shell.tok_internal, readline(shell.prompt));
+		char *c = readline(shell.prompt);
+		printf("%s", c);
+		shell.tokens = tokensise(&shell.tok_internal, c);
 		while (shell.tok_internal.state == PARSE_CONTINUE)
 			shell.tokens = tokensise(&shell.tok_internal, readline(shell.prompt));
 		if (shell.tok_internal.state == PARSE_ERROR)
