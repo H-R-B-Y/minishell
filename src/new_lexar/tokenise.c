@@ -6,13 +6,14 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/10 17:50:35 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/11 13:32:53 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 void	_begin_parsing(t_tokeniserinternal *meta, char *str);
+size_t	_parse_to_close(t_tokeniserinternal *meta, char *str);
 
 
 /*
@@ -64,7 +65,7 @@ t_list	*tokensise(t_tokeniserinternal *meta, char *str)
 	}
 	else if (meta->state == PARSE_CONTINUE)
 	{
-		_begin_parsing(meta, str);
+		_begin_parsing(meta, str + _parse_to_close(meta, str));
 		if (ft_lstsize(meta->parse_stack) == 0)
 			meta->state = PARSE_OK;
 	}

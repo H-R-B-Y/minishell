@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 13:12:14 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/11 12:12:06 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/11 13:15:55 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,10 @@
 
 int	isoperator(char c);
 
-size_t	skip_quoted(char *str, size_t i)
+size_t	skip_quoted(char *str, size_t i, char quote)
 {
 	size_t	start;
-	char	quote;
 
-	quote = str[i];
 	start = i;
 	i++;
 	while (str[i] && (str[i] != quote
@@ -49,7 +47,7 @@ size_t	skip_word(char *str, size_t i)
 	while (str[i] && !ft_iswhitespace(str[i]) && !isoperator(str[i]))
 	{
 		if (str[i] == '\'' || str[i] == '"')
-			i += skip_quoted(str, i);
+			i += skip_quoted(str, i + 1, str[i]) + 1;
 		else if (str[i] == '\\' && (ft_iswhitespace(str[i + 1])
 				|| isoperator(str[i + 1])
 				|| ft_strchr("\\\"'", str[i + 1]))) // TODO: check that single quotes cannot be escaped.
