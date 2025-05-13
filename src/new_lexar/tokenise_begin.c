@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 13:50:15 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/13 13:28:38 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/13 13:45:25 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,11 @@ void	_parse_loop_internals(t_tokeniserinternal *meta, t_list *token)
 		meta->state = PARSE_ERROR;
 		return ;
 	}
+	// TODO: we need to check for errors here:
+	// and / or symbols with no left word
+	// heredoc without word should be checked
+	// continuation needs to check that we are not waiting
+	// on multiple different and / or entries
 	update_continuation(meta, ((t_token *)token->content)->type);
 	if (meta->state == PARSE_ERROR)
 	{

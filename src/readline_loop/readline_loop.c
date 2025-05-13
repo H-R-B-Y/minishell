@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:52:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/13 13:29:11 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/13 13:37:04 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*readline_subloop(t_minishell *shell, char *prompt)
 		extra_line = str_join_with_sep(shell->current_line, str, "\n");
 		free(shell->current_line);
 		shell->current_line = extra_line;
-		if (!str || !*str)
+		if (!str)
 			return (0);
 		else if (ft_strchr(str, '\n'))
 			return (readline_handle_multiline(shell, str));
@@ -88,7 +88,7 @@ int	readline_loop(t_minishell *shell)
 {
 	readline_cleanup(shell);
 	shell->current_line = readline(shell->prompt);
-	if (!shell->current_line || !*shell->current_line)
+	if (!shell->current_line)
 		return (errno != EINTR);
 	if (ft_strchr(shell->current_line, '\n'))
 		shell->current_pipeline
