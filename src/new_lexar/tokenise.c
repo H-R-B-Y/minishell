@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/13 13:28:46 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/13 17:30:20 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,11 @@ t_list	*tokenise(t_tokeniserinternal *meta, char *str)
 	}
 	// parsing has happened
 	if (meta->state == PARSE_ERROR)
+	{
+		printf("%s\n", meta->error_reason);
+		free(meta->error_reason);
 		return (cleanup_internal(meta), (void *)0);
+	}
 	if (ft_lstsize(meta->parse_stack) > 0)
 	{
 		meta->state = PARSE_CONTINUE;

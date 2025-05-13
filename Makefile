@@ -31,7 +31,9 @@ SRC_DIR			:= ./src
 
 
 SRCS			:= \
+				$(SRC_DIR)/new_lexar/check_errors.c \
 				$(SRC_DIR)/new_lexar/quote_isnt_escaped.c \
+				$(SRC_DIR)/new_lexar/set_error.c \
 				$(SRC_DIR)/new_lexar/token_binning.c \
 				$(SRC_DIR)/new_lexar/token_continuation.c \
 				$(SRC_DIR)/new_lexar/token_init.c \
@@ -55,6 +57,7 @@ SRCS			:= \
 				\
 				$(SRC_DIR)/utility/pop_line.c \
 				$(SRC_DIR)/utility/str_join_with_sep.c \
+				$(SRC_DIR)/utility/str_vec_join.c \
 				\
 
 TEST_SCRIPT		:=

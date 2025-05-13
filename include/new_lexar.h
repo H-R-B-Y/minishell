@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/13 13:26:39 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/13 17:15:33 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ struct s_tokeniserint
 	t_list		*parse_stack;
 	t_tokstate	state;
 	t_list		*tokens;
+	char		*error_reason;
 };
 
 /**
@@ -348,5 +349,13 @@ void	_begin_parsing(t_tokeniserinternal *meta, char *str);
  */
 size_t	_parse_to_close(t_tokeniserinternal *meta, char *str);
 
+void	handle_end_token(t_tokeniserinternal *meta, t_list *last_token,
+			t_list *next_token);
+void	check_single_error(t_tokeniserinternal *meta, t_list *next_token);
+void	check_for_parse_errors(t_tokeniserinternal *meta, t_list *last_token,
+			t_list *next_token);
+
+
+void	 tokeniser_set_error(t_tokeniserinternal *meta, char *error);
 
 #endif

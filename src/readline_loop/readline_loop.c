@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:52:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/13 13:37:04 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/13 18:30:27 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	tokenise_and_validate(t_minishell *shell)
 		shell->tokens = tokenise(&shell->tok_internal, buff);
 	}
 	if (shell->tok_internal.state == PARSE_ERROR)
-		return (1);
+		return (0);
 	return (0);
 }
 
