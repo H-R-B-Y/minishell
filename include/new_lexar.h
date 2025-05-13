@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/11 12:06:15 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/11 13:56:36 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,14 +146,54 @@ struct s_token
 	int			heredoc_deliminator;
 };
 
+/**
+ * @brief Create a token object
+ * 
+ * @param type 
+ * @param raw_token 
+ * @return t_token* 
+ */
 t_token	*create_token(t_tokentype type, char *raw_token);
+
+/**
+ * @brief 
+ * t_token	*create_token(t_tokentype type, char *raw_token);
+ * @param token 
+ * @param del_raw 
+ */
 void	destroy_token(t_token *token, void (*del_raw)(void *));
+
+/**
+ * @brief 
+ * 
+ * @param list 
+ * @param del_raw 
+ */
 void	free_token_list(t_list *list, void (*del_raw)(void *));
+
+/**
+ * @brief 
+ * 
+ * @param vec 
+ * @param del_raw 
+ */
 void	free_token_vector(t_token **vec, void (*del_raw)(void *));
 
-
+/**
+ * @brief 
+ * 
+ * @param token 
+ * @param column_width 
+ */
 void	print_token(t_token *token, int column_width);
 
+/**
+ * @brief 
+ * 
+ * @param meta 
+ * @param str 
+ * @return t_list* 
+ */
 t_list	*tokensise(t_tokeniserinternal *meta, char *str);
 
 #endif
