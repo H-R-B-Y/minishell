@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/11 13:56:36 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/13 09:35:58 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ enum e_tokparsecont
 	EXPECT_QUOTE, // expects '
 	EXPECT_DQUOTE, // expects " but not \"
 	EXPECT_PAREN, // expects )
+	ESCAPED_NEWLINE,
 	CONT_ERROR_COUNT
 };
 

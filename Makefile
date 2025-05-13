@@ -31,6 +31,7 @@ SRC_DIR			:= ./src
 
 
 SRCS			:= \
+				$(SRC_DIR)/new_lexar/quote_isnt_escaped.c \
 				$(SRC_DIR)/new_lexar/token_binning.c \
 				$(SRC_DIR)/new_lexar/token_continuation.c \
 				$(SRC_DIR)/new_lexar/token_init.c \

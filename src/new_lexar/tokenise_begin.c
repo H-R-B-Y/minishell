@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 13:50:15 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/11 13:34:52 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/13 11:31:49 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ size_t	skip_token(t_tokeniserinternal *meta, char *str, size_t i);
 t_list	*bin_and_create_token(t_tokeniserinternal *meta, char *raw_token);
 void	append_anon_token(t_tokeniserinternal *meta, t_tokentype type, char *str);
 size_t	skip_quoted(char *str, size_t i, char quote);
+size_t	skip_word(t_tokeniserinternal *meta, char *str, size_t i, char quote);
 
 void	_delete_newline(t_list **token)
 {
@@ -68,28 +69,56 @@ void	_begin_parsing(t_tokeniserinternal *meta, char *str)
 		append_anon_token(meta, TOK_AFTER, ft_strdup(";"));
 }
 
-size_t	_parse_to_close(t_tokeniserinternal *meta, char *str)
+size_t	_skip_quoted_internal(t_tokeniserinternal *meta, char *str, size_t i, char quote);
+int	quote_closed(char *str, size_t i, char quote);
+
+size_t	_parse_close_quote(t_tokeniserinternal *meta, char *str,
+	t_token *amend, char quote)
 {
-	char	quote;
-	t_token	*amend;
 	size_t	ends[2];
 	char	*temp[2];
 
-	if (!meta->parse_stack || !meta->tokens
-		|| (LCONT != EXPECT_QUOTE && LCONT != EXPECT_DQUOTE))
-		return (0);
-	quote = '\'' - (5 * (LCONT == EXPECT_DQUOTE));
-	amend = (t_token *)(ft_lstlast(meta->tokens)->content);
 	ends[0] = 0;
-	ends[1] = skip_quoted(str, 0 + 1, quote) + 1;
+	ends[1] = skip_word(meta, str, ends[0], quote);
 	temp[0] = ft_substr(str, ends[0], ends[1]);
 	temp[1] = str_join_with_sep(amend->raw, temp[0], "\n");
 	free(amend->raw);
 	free(amend->trimmed);
 	amend->raw = temp[1];
 	amend->trimmed =  ft_strtrim(amend->raw, " \t\v\b\r\f");
-	if (temp[0][ends[1] - 1] == quote)
-		POPCONT;
 	free(temp[0]);
 	return (ends[1]);
+}
+
+
+
+size_t	_parse_escaped_newline(t_tokeniserinternal *meta, char *str,
+	t_token *amend)
+{
+	size_t	ends[2];
+	// char	*temp[2];
+	
+	(void)amend;
+	ends[0] = 0;
+	ends[1] = skip_word(meta, str, ends[0], 0);
+	return (0);
+}
+
+size_t	_parse_to_close(t_tokeniserinternal *meta, char *str)
+{
+	t_token	*amend;
+	t_tokcont	lcont;
+
+	if (!meta->parse_stack || !meta->tokens)
+		return (0);
+	lcont = LCONT;
+	if (lcont != EXPECT_QUOTE && lcont != EXPECT_DQUOTE
+		&& lcont != ESCAPED_NEWLINE)
+		return (0);
+	amend = (t_token *)(ft_lstlast(meta->tokens)->content);
+	if (lcont == EXPECT_DQUOTE || lcont == EXPECT_QUOTE)
+		return (_parse_close_quote(meta, str, amend,
+			('\'' - (5 * (lcont == EXPECT_DQUOTE)))));
+	else
+		return (_parse_escaped_newline(meta, str, amend));
 }
