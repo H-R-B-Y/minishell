@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/13 11:53:11 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/13 13:26:39 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,51 +15,15 @@
 
 # include "libft.h"
 
+/**
+ * the following definitions should probably be moved out of the global scope!
+ * 
+ */
+
 # define ETOPTR (void *)(unsigned long int)
 # define PTRTOE (int)(unsigned long int)
 # define LCONT (PTRTOE ft_lstlast(meta->parse_stack)->content)
 # define POPCONT free(ft_lstpop_back(&meta->parse_stack))
-
-/*
-start by checking the internal state ok the tokeniser.
-
-if there is a continuation on the stack and the status is parse continue
-	then we keep parsing as a continuation of the previous token list.
-if there is continuation on the stack and the status is parse ok or parse error
-	then we clear the stack and the token list, and parse afresh.
-
-if there is a continuation on the stack and we are in parse continue,
-	we get provided ONLY the next part of the line, not the entire line again,
-	so we need to keep track of the list from the previous line.
-
-we start with a loop to check that we have not got to the end of the string, 
-	we have a start index and an end index for the current token, we increment the end ptr
-	until it reaches an end token, if the end token is in a valid state then we take a substring
-		if the end token is not valid:
-			AND / OR / SEQ token and last token was not word or RPAREN
-			RPAREN when there is no LPAREN on the stack
-		then we set error status (and cleanup?)
-	when we have the subtring we can bin the type and create t_token and add to list.
-
-!! maybe we need to have a token for newline?
-!! if we encounter a newline and we are not in a CONT state, then we
-!! should replace the token with a sequence? 
-
-!! if we encounter a newline character and we in a cont:
-	EXPECTING WORD = replace the newline with space?
-	EXPECT_HEREDOC = PARSE_ERROR
-	EXPECT_QUOTE = newline is a word token
-	EXPECT_DQUOTE = newline is a word token
-	EXPECT_PAREN = newline becomes a ;
-
-!! if we encounter a newline character and we not in a cont:
-	this probably means that there is a heredoc?
-
-
-!! we also need to be able to escape whitespace?
-
-*/
-
 
 typedef enum e_tokeniserstate	t_tokstate;
 enum e_tokeniserstate
@@ -150,67 +114,238 @@ struct s_token
 /**
  * @brief Create a token object
  * 
- * @param type 
- * @param raw_token 
- * @return t_token* 
+ * @param type the token type for the new token
+ * @param raw_token the raw token string
+ * @return t_token* allocated new token
  */
 t_token	*create_token(t_tokentype type, char *raw_token);
 
 /**
- * @brief 
- * t_token	*create_token(t_tokentype type, char *raw_token);
- * @param token 
- * @param del_raw 
+ * @brief delete a token
+ * 
+ * Deletes a token and optionally free's the raw string 
+ * data in the token. 
+ * 
+ * When a token is destroyed it's stripped data is free'd also.
+ * 
+ * @param token the token to delete
+ * @param del_raw (optional) function to free the raw string
  */
 void	destroy_token(t_token *token, void (*del_raw)(void *));
 
 /**
- * @brief 
+ * @brief free a linked list of tokens
  * 
- * @param list 
- * @param del_raw 
+ * @param list the list of tokens to free
+ * @param del_raw (optional) function to free the raw strings
  */
 void	free_token_list(t_list *list, void (*del_raw)(void *));
 
 /**
- * @brief 
+ * @brief free a token list
  * 
- * @param vec 
- * @param del_raw 
+ * @param vec the list of tokens to free
+ * @param del_raw (optional) function to free the raw string
  */
 void	free_token_vector(t_token **vec, void (*del_raw)(void *));
 
 /**
- * @brief 
+ * @brief print a token in a formatted column
  * 
- * @param token 
- * @param column_width 
+ * @param token the token to print out
+ * @param column_width the width of the columns
  */
 void	print_token(t_token *token, int column_width);
 
 /**
- * @brief 
+ * @brief tokenise a given string
  * 
- * @param meta 
- * @param str 
- * @return t_list* 
+ * Parsing the token list can be a multi-step process
+ * once the function has returned you will need to check
+ * the internal struct's state which will be one of three
+ * potential states:
+ * - PARSE_OK - this means the parsing was successful
+ * - PARSE_CONTINUE - this means the tokens were left in a partial state
+ * - PARSE_ERROR - this means the input string was invalid
+ * 
+ * @param meta the internal parsing struct
+ * @param str the string to parse
+ * @return t_list* either a list of tokens or NULL
  */
 t_list	*tokenise(t_tokeniserinternal *meta, char *str);
+
+/**
+ * @brief skip a quoted string
+ * 
+ * This function is a bit funky, 
+ * if we are parsing a newline with 
+ * unclosed quotes from the previous line
+ * this is not the function to use.
+ * 
+ * @param str the string pointer we are tokenising
+ * @param i the index in the string we are starting at
+ * @param quote the quote character we are trying to close
+ * @return size_t the count of characters up to and including the closing quote
+ */
 size_t	skip_quoted(char *str, size_t i, char quote);
+
+/**
+ * @brief skip a potential double symbol
+ * 
+ * Double symbols are characters that MIGHT
+ * be followed by a matching symbol representing a different
+ * type of token, for example pipe | could actually be a
+ * OR token if the following character is another |
+ * 
+ * @param str the string we are tokenising
+ * @param i the index in the string we are looking at
+ * @return size_t either 1 or 2 for single or double
+ */
 size_t	skip_potential_double(char *str, size_t i);
+
+/**
+ * @brief skip a word token
+ * 
+ * Words are quite difficult, this is one word: hello
+ * this is also one word: hello"world"
+ * but this is two words: hello world
+ * and this is one word: hello" world"
+ * 
+ * @param meta the internal parsing struct
+ * @param str the string we are tokenising
+ * @param i the index in the string we are looking at
+ * @param quote a optional quote character used when continuing from a newline
+ * @return size_t the number of characters in the word token
+ */
 size_t	skip_word(t_tokeniserinternal *meta, char *str, size_t i, char quote);
+
+/**
+ * @brief check if a charcter is an operator
+ * 
+ * This function might not be needed anymore
+ * 
+ * @param c the character to check
+ * @return int true of false flag
+ */
 int		isoperator(char c);
+
+/**
+ * @brief check if a quote is closed
+ * 
+ * This might not be needed anymore,
+ * it was initially implemented for escaped quotes, but 
+ * I have given up on trying to make that work.
+ * 
+ * @param str the string we are looking at
+ * @param i the index of the potential closing quote
+ * @param quote the quote we are trying to match
+ * @return int true or false flag
+ */
 int		quote_closed(char *str, size_t i, char quote);
+
+/**
+ * @brief Check a token for a potential continuation state
+ * 
+ * @param meta the internal struct for parsing
+ * @param type the token type of the token we are checking.
+ */
 void	update_continuation(t_tokeniserinternal *meta, t_tokentype type);
+
+/**
+ * @brief skip whitespace 
+ * 
+ * @param str the string we are tokenising
+ * @param i the index in the string we are starting from
+ * @return size_t the number of characters we can skip
+ */
 size_t	token_skip_whitespace(char *str, size_t i);
+
+/**
+ * @brief generic function to skip all tokens
+ * 
+ * this is the parent function to all the skipping sub functions
+ * this function will determine what needs to be skipped in order to
+ * produce the next token
+ * 
+ * @param meta the internal struct for parsing
+ * @param str the string we are currently tokenising
+ * @param i the index in the string that we are working from
+ * @return size_t the number of characters we can skip to complete a token
+ */
 size_t	skip_token(t_tokeniserinternal *meta, char *str, size_t i);
+
+/**
+ * @brief find the type of the token and create a new token struct
+ * 
+ * binning a token just means we are finding which bin it goes in
+ * by getting the type of the token we can then create a new token 
+ * struct and add it to a list item so it can later be appended to
+ * the token list.
+ * 
+ * @param meta the internal parsing data
+ * @param raw_token the raw token string to bin
+ * @return t_list* a new list item containing the new token struct
+ */
 t_list	*bin_and_create_token(t_tokeniserinternal *meta, char *raw_token);
-void	append_anon_token(t_tokeniserinternal *meta, t_tokentype type, char *str);
-size_t	skip_quoted(char *str, size_t i, char quote);
-size_t	skip_word(t_tokeniserinternal *meta, char *str, size_t i, char quote);
-size_t	_skip_quoted_internal(t_tokeniserinternal *meta, char *str, size_t i, char quote);
-int		quote_closed(char *str, size_t i, char quote);
+
+/**
+ * @brief create an anonymous token and append it to the token list
+ * 
+ * by anonymous here i just mean that the token doesnt have to be part of the
+ * actual string being parsed
+ * 
+ * @param meta the internal data for the parser
+ * @param type the type of the anonymous token
+ * @param str the raw string data for the anonymous token
+ */
+void	append_anon_token(t_tokeniserinternal *meta,
+			t_tokentype type, char *str);
+
+/**
+ * @brief internal function for skipping quoted strings
+ * 
+ * this code is black magic i dont know how to explain lol
+ * 
+ * basically we cant just skip quotes because we need to check a few things
+ * if we are on a newline and we are trying to close quotes on a previous line
+ * this function will make sure that that happens, if we are not doing that then 
+ * we can continue skipping quotes as usual.
+ * 
+ * The difference is subtle but the quote argument is what allows us to close
+ * quotes from a previous line.
+ * 
+ * @param meta the internal data for the parser
+ * @param str the string we are tokenising
+ * @param i the index of the string we are parsing from
+ * @param quote (optional) quote that needs to be closed from a previous line
+ * @return size_t the number of chars in the quoted string including the qutoes
+ */
+size_t	_skip_quoted_internal(t_tokeniserinternal *meta, char *str,
+			size_t i, char quote);
+
+/**
+ * @brief begin parsing a string, we need to ensure the internal data is clean
+ * 
+ * This function does not return anything but will populate the list
+ * inside of the meta struct.
+ * 
+ * @param meta internal parsing data
+ * @param str the string we are parsing
+ */
 void	_begin_parsing(t_tokeniserinternal *meta, char *str);
+
+/**
+ * @brief assist in closing quotes or parenthesis on newline
+ * 
+ * again here this is a bad function, but not really sure what else i can do
+ * if there is a closing quote or parenthesis from the previous line
+ * it needs to be handled in a specific way before we let the parser continue
+ * parsing the rest of the line.
+ * 
+ * @param meta the internal metadata for the parser
+ * @param str the string we are parsing
+ * @return size_t the number of characters to skip
+ */
 size_t	_parse_to_close(t_tokeniserinternal *meta, char *str);
 
 

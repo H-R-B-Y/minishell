@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 11:39:56 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/10 17:00:37 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/13 13:27:30 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	update_continuation(t_tokeniserinternal *meta,
 	else if (type == TOK_LPAREN)
 		ft_lstadd_back(&meta->parse_stack, ft_lstnew(ETOPTR EXPECT_PAREN));
 	else if (type == TOK_WORD && meta->parse_stack && ft_strchr("\1\2",
-		(PTRTOE ft_lstlast(meta->parse_stack)->content))) // Segfault because nothing in the stack lol
+		(PTRTOE ft_lstlast(meta->parse_stack)->content))) 
 		POPCONT;
 	else if (type == TOK_RPAREN)
 	{

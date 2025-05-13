@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 13:50:15 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/13 12:24:28 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/13 13:28:38 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,8 @@ size_t	_parse_to_close(t_tokeniserinternal *meta, char *str)
 		return (_parse_close_quote(meta, str,
 			(t_token *)(ft_lstlast(meta->tokens)->content),
 			('\'' - (5 * (lcont == EXPECT_DQUOTE)))));
-	// if expecting parenthesis we should insert sequence if the next token is a word
-	// if the next token is a word or redirect insert a sequence, if the token is not a word or redirect it MUST be 
+	// if the next token is a word or redirect insert a sequence,
+	// if the token is not a word or redirect it MUST be 
 	// a parenthesis
 	if (lcont == EXPECT_PAREN) 
 		return (printf("expecting parenthesis not finished\n"), 0);

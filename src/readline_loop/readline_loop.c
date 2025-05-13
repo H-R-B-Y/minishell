@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:52:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/13 12:07:33 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/13 13:29:11 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ within the prompt.
 
 i.e. when unclosed parenthesis or unclosed quotes
 */
-char	*readline_subloop(t_minishell *shell, char *prompt) // the prompt here doesnt really look right
+char	*readline_subloop(t_minishell *shell, char *prompt)
 {
 	char	*str;
 	char	*extra_line;
@@ -59,7 +59,7 @@ char	*readline_subloop(t_minishell *shell, char *prompt) // the prompt here does
 		free(shell->current_line);
 		shell->current_line = extra_line;
 		if (!str || !*str)
-			return (0); // this doesnt need to distinquish between as SIGINT and EOF it will be handled in the readline loop.
+			return (0);
 		else if (ft_strchr(str, '\n'))
 			return (readline_handle_multiline(shell, str));
 		return (str);
@@ -91,7 +91,8 @@ int	readline_loop(t_minishell *shell)
 	if (!shell->current_line || !*shell->current_line)
 		return (errno != EINTR);
 	if (ft_strchr(shell->current_line, '\n'))
-		shell->current_pipeline = readline_handle_multiline(shell, shell->current_line);
+		shell->current_pipeline
+			= readline_handle_multiline(shell, shell->current_line);
 	else
 		shell->current_pipeline = ft_strdup(shell->current_line);
 	if (tokenise_and_validate(shell))

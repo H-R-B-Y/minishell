@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/10 15:22:21 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/13 12:56:29 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 /**
  * @brief I created this because i think we might need it, not because we do
  * 
- * I think when we build the command nodes and check for redirects we should store the 
- * type of redirect
+ * I think when we build the command nodes and check for redirects we
+ * should store the type of redirect
  */
 typedef enum e_redir_type		t_redirect_type;
 enum e_redir_type
@@ -36,8 +36,8 @@ enum e_redir_type
 // if we need a pipe we should store it here
 // not sure if this will be usefull
 /**
- * @brief this might be helpful later, but i am not sure if this is the best way to do it
- * so this is a placeholder
+ * @brief this might be helpful later, but i am not sure if this is the best
+ * way to do it so this is a placeholder
  * 
  * @param type redirect type
  * @param pipe pipe ends if applicable
