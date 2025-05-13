@@ -6,14 +6,14 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:52:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/10 12:49:04 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/13 12:07:33 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 char	*_pop_line(t_minishell *shell);
-void	readline_cleanup(void);
+void	readline_cleanup(t_minishell *shell);
 
 char	*readline_handle_multiline(t_minishell *shell, char *new_line)
 {
@@ -66,61 +66,27 @@ char	*readline_subloop(t_minishell *shell, char *prompt) // the prompt here does
 	}
 }
 
-int	_cleanup_nextlines(t_minishell *shell, char *buff, t_tokerr err)
-{
-	char				*temp[3];
-	static const char	*err_join[TOKEN_ERROR_COUNT]
-		= {"", "\n", "\n", "; ", "", "", "", ""}; // TODO: this might need to be moved somewhere else im not sure this will be sufficient if we add more errors.
-
-	if (ft_strchr(buff, '\n'))
-	{
-		temp[2] = readline_handle_multiline(shell, buff);
-		if (!temp[2])
-			return (1);
-		buff = temp[2];
-	}
-	// This has a huge flaw
-	if (err == UNCLOSED_PARENTHESIS
-		&& ft_strchr(";&", shell->current_pipeline[ft_strlen(shell->current_pipeline) - 1]))
-		temp[1] = str_join_with_sep(shell->current_pipeline,
-			buff, "");
-	else
-		temp[1] = str_join_with_sep(shell->current_pipeline,
-			buff, (void *)err_join[err]);
-	free(shell->current_pipeline);
-	shell->current_pipeline = temp[1];
-	return (0);
-}
-
 int	tokenise_and_validate(t_minishell *shell)
 {
-	t_tokerr	err;
 	char		*buff;
 
-	shell->tokens = tokenise(shell->current_pipeline);
-	err = cleanse_validate_tokens(shell->tokens);
-	while (err) // This needs to be a list of fixable errors
+	shell->tokens = tokenise(&shell->tok_internal, shell->current_pipeline);
+	while (shell->tok_internal.state == PARSE_CONTINUE)
 	{
-		free_token_list(shell->tokens, free, free);
-		buff = readline_subloop(shell, (void *)token_err_type_to_string(err));
-		if (buff)
-		{
-			err = _cleanup_nextlines(shell, buff, err);
-			free(buff);
-			if (err)
-				return (1);
-		}
-		else
+		buff = readline_subloop(shell, "print_error_string_here ? ");
+		if (!buff)
 			return (1);
-		shell->tokens = tokenise(shell->current_pipeline);
-		err = cleanse_validate_tokens(shell->tokens);
+		shell->tokens = tokenise(&shell->tok_internal, buff);
 	}
+	if (shell->tok_internal.state == PARSE_ERROR)
+		return (1);
 	return (0);
 }
 
 
 int	readline_loop(t_minishell *shell)
 {
+	readline_cleanup(shell);
 	shell->current_line = readline(shell->prompt);
 	if (!shell->current_line || !*shell->current_line)
 		return (errno != EINTR);

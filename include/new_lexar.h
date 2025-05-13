@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/13 09:35:58 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/13 11:53:11 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,6 +195,23 @@ void	print_token(t_token *token, int column_width);
  * @param str 
  * @return t_list* 
  */
-t_list	*tokensise(t_tokeniserinternal *meta, char *str);
+t_list	*tokenise(t_tokeniserinternal *meta, char *str);
+size_t	skip_quoted(char *str, size_t i, char quote);
+size_t	skip_potential_double(char *str, size_t i);
+size_t	skip_word(t_tokeniserinternal *meta, char *str, size_t i, char quote);
+int		isoperator(char c);
+int		quote_closed(char *str, size_t i, char quote);
+void	update_continuation(t_tokeniserinternal *meta, t_tokentype type);
+size_t	token_skip_whitespace(char *str, size_t i);
+size_t	skip_token(t_tokeniserinternal *meta, char *str, size_t i);
+t_list	*bin_and_create_token(t_tokeniserinternal *meta, char *raw_token);
+void	append_anon_token(t_tokeniserinternal *meta, t_tokentype type, char *str);
+size_t	skip_quoted(char *str, size_t i, char quote);
+size_t	skip_word(t_tokeniserinternal *meta, char *str, size_t i, char quote);
+size_t	_skip_quoted_internal(t_tokeniserinternal *meta, char *str, size_t i, char quote);
+int		quote_closed(char *str, size_t i, char quote);
+void	_begin_parsing(t_tokeniserinternal *meta, char *str);
+size_t	_parse_to_close(t_tokeniserinternal *meta, char *str);
+
 
 #endif

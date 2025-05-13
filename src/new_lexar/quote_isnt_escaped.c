@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 10:18:10 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/13 10:27:47 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/13 11:36:35 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ int	quote_closed(char *str, size_t i, char quote)
 		return (1);
 	if (str[i] == quote && quote == '"')
 	{
-		if (i > 0 && str[i - 1] == '\\')
-			return (0);
 		return (1);
 	}
 	return (0);

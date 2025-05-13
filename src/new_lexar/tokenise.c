@@ -6,14 +6,12 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/11 13:32:53 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/13 12:14:06 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	_begin_parsing(t_tokeniserinternal *meta, char *str);
-size_t	_parse_to_close(t_tokeniserinternal *meta, char *str);
 
 
 /*
@@ -53,8 +51,10 @@ void	cleanup_internal(struct s_tokeniserint *meta)
 	}
 }
 
-t_list	*tokensise(t_tokeniserinternal *meta, char *str)
+t_list	*tokenise(t_tokeniserinternal *meta, char *str)
 {
+	t_list	*out;
+
 	if (!str)
 		return (cleanup_internal(meta), (void *)0);
 	if (meta->state == PARSE_OK || meta->state == PARSE_ERROR)
@@ -71,8 +71,13 @@ t_list	*tokensise(t_tokeniserinternal *meta, char *str)
 	}
 	// parsing has happened
 	if (meta->state == PARSE_ERROR)
-		cleanup_internal(meta);
+		return (cleanup_internal(meta), (void *)0);
 	if (ft_lstsize(meta->parse_stack) > 0)
+	{
 		meta->state = PARSE_CONTINUE;
-	return (meta->tokens);
+		return ((void *)0);
+	}
+	out = meta->tokens;
+	meta->tokens = 0;
+	return (out);
 }

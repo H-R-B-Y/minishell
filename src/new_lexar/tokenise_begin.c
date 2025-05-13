@@ -6,19 +6,11 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/10 13:50:15 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/13 11:31:49 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/13 12:24:28 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-void	update_continuation(t_tokeniserinternal *meta, t_tokentype type);
-size_t	token_skip_whitespace(char *str, size_t i);
-size_t	skip_token(t_tokeniserinternal *meta, char *str, size_t i);
-t_list	*bin_and_create_token(t_tokeniserinternal *meta, char *raw_token);
-void	append_anon_token(t_tokeniserinternal *meta, t_tokentype type, char *str);
-size_t	skip_quoted(char *str, size_t i, char quote);
-size_t	skip_word(t_tokeniserinternal *meta, char *str, size_t i, char quote);
 
 void	_delete_newline(t_list **token)
 {
@@ -63,14 +55,12 @@ void	_begin_parsing(t_tokeniserinternal *meta, char *str)
 			ft_substr(str, end[0], end[1])));
 		end[0] += end[1];
 	}
-	if (meta->tokens
-		&& ((t_token *)ft_lstlast(meta->tokens)->content)->type == TOK_WORD
-		&& meta->parse_stack && LCONT == EXPECT_PAREN)
-		append_anon_token(meta, TOK_AFTER, ft_strdup(";"));
+	// This should be done when appending the next lines tokens
+	// if (meta->tokens
+	// 	&& ((t_token *)ft_lstlast(meta->tokens)->content)->type == TOK_WORD
+	// 	&& meta->parse_stack && LCONT == EXPECT_PAREN)
+	// 	append_anon_token(meta, TOK_AFTER, ft_strdup(";"));
 }
-
-size_t	_skip_quoted_internal(t_tokeniserinternal *meta, char *str, size_t i, char quote);
-int	quote_closed(char *str, size_t i, char quote);
 
 size_t	_parse_close_quote(t_tokeniserinternal *meta, char *str,
 	t_token *amend, char quote)
@@ -90,35 +80,21 @@ size_t	_parse_close_quote(t_tokeniserinternal *meta, char *str,
 	return (ends[1]);
 }
 
-
-
-size_t	_parse_escaped_newline(t_tokeniserinternal *meta, char *str,
-	t_token *amend)
-{
-	size_t	ends[2];
-	// char	*temp[2];
-	
-	(void)amend;
-	ends[0] = 0;
-	ends[1] = skip_word(meta, str, ends[0], 0);
-	return (0);
-}
-
 size_t	_parse_to_close(t_tokeniserinternal *meta, char *str)
 {
-	t_token	*amend;
 	t_tokcont	lcont;
 
 	if (!meta->parse_stack || !meta->tokens)
 		return (0);
 	lcont = LCONT;
-	if (lcont != EXPECT_QUOTE && lcont != EXPECT_DQUOTE
-		&& lcont != ESCAPED_NEWLINE)
-		return (0);
-	amend = (t_token *)(ft_lstlast(meta->tokens)->content);
-	if (lcont == EXPECT_DQUOTE || lcont == EXPECT_QUOTE)
-		return (_parse_close_quote(meta, str, amend,
+	if (lcont == EXPECT_QUOTE || lcont == EXPECT_DQUOTE)
+		return (_parse_close_quote(meta, str,
+			(t_token *)(ft_lstlast(meta->tokens)->content),
 			('\'' - (5 * (lcont == EXPECT_DQUOTE)))));
-	else
-		return (_parse_escaped_newline(meta, str, amend));
+	// if expecting parenthesis we should insert sequence if the next token is a word
+	// if the next token is a word or redirect insert a sequence, if the token is not a word or redirect it MUST be 
+	// a parenthesis
+	if (lcont == EXPECT_PAREN) 
+		return (printf("expecting parenthesis not finished\n"), 0);
+	return (0);
 }
