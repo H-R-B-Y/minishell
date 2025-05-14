@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   syntax_util.c                                      :+:      :+:    :+:   */
+/*   syntax_consume.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 12:20:37 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/08 12:33:26 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/14 17:31:46 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,7 @@ size_t	ast_consume_words(struct s_ast_internal *meta, t_astnode *node)
 	size_t	consumed;
 	size_t	i;
 
-	// So we need to return how many nodes have been consumed
 	consumed = 0;
-	// We need to set the cmdv variable in the node
-	// We also need to construct any redirects
-	//		NOTE: this does not need to occur in this stage, it should be done
-	//			in the command prep stage.
 	while (meta->tokens[meta->consumed]
 		&& meta->tokens[meta->consumed + consumed]
 		&& (meta->tokens[meta->consumed + consumed]->type == TOK_WORD

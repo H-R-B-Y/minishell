@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/14 14:25:24 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/14 17:31:20 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,6 @@ t_astnode	*create_ast_node(t_astype type,
  */
 void		destroy_ast_node(t_astnode *node,
 				void (*del_cmdv)(void *), void (*del_envp)(void *));
-
 
 /**
  * @brief internal struct for ast construction

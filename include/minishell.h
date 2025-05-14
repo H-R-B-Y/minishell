@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/14 14:20:40 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/14 17:31:27 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@
 // # include "./new_lexar.h"
 # include "./fsm_tokeniser.h"
 # include "./abstract_syntax_tree.h"
-
 
 /**
  * @brief the main struct for storing minishell state
@@ -66,7 +65,6 @@ struct s_minishell
 
 	then run the execution tree.
 	*/
-
 	// this is everything we have read for the current pipeline.
 	char		*current_line;
 	// this is everything we are tokenising and running
