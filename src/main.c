@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/14 14:21:36 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/14 17:26:39 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,19 @@ int main()
 	t_minishell	shell;
 
 	ft_bzero(&shell, sizeof(t_minishell));
-	add_history("(this\n) && should work");
-	add_history("\"this\n should\"\nwork");
-	add_history("(this &&\nhas a seperator)");
+	// add_history("(this\n) && should work");
+	// add_history("\"this\n should\"\nwork");
+	// add_history("(this &&\nhas a seperator)");
 	shell.prompt = "minishell -> ";
 	while (1)
 	{
 		char *line = readline(shell.prompt);
-		tokenise(line);
+		if (!line)
+			break ;
+		t_tokretcode rc = tokenise(line);
+		printf("Retcode %s\n", tokretcode_str(rc));
+		if (rc != PARSE_CONT)
+			reset_fsm();
 	}
+	reset_fsm();
 }

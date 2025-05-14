@@ -46,6 +46,7 @@ SRC_DIR			:= ./src
 
 SRCS			:= \
 				$(SRC_DIR)/fsm_tokeniser/fsm_tokeniser.c \
+				src/fsm_tokeniser/fsm_utils.c \
 				src/fsm_tokeniser/token_operators.c \
 				$(SRC_DIR)/fsm_tokeniser/token_skipping.c \
 				$(SRC_DIR)/fsm_tokeniser/tokeniser.c \

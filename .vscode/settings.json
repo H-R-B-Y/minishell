@@ -5,6 +5,7 @@
 		"term.h": "c",
 		"abstract_syntax_tree.h": "c",
 		"compare": "c",
-		"type_traits": "c"
+		"type_traits": "c",
+		"fsm_tokeniser.h": "c"
 	}
 }

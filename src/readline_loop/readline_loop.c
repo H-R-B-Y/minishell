@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:52:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/13 18:30:27 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/14 17:26:39 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	tokenise_and_validate(t_minishell *shell)
 	char		*buff;
 
 	shell->tokens = tokenise(&shell->tok_internal, shell->current_pipeline);
-	while (shell->tok_internal.state == PARSE_CONTINUE)
+	while (shell->tok_internal.state == PARSE_CONT)
 	{
 		buff = readline_subloop(shell, "print_error_string_here ? ");
 		if (!buff)

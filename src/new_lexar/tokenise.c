@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/13 17:30:20 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/14 17:26:39 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_list	*tokenise(t_tokeniserinternal *meta, char *str)
 		meta->state = PARSE_OK;
 		_begin_parsing(meta, str);
 	}
-	else if (meta->state == PARSE_CONTINUE)
+	else if (meta->state == PARSE_CONT)
 	{
 		_begin_parsing(meta, str + _parse_to_close(meta, str));
 		if (ft_lstsize(meta->parse_stack) == 0)
@@ -53,7 +53,7 @@ t_list	*tokenise(t_tokeniserinternal *meta, char *str)
 	}
 	if (ft_lstsize(meta->parse_stack) > 0)
 	{
-		meta->state = PARSE_CONTINUE;
+		meta->state = PARSE_CONT;
 		return ((void *)0);
 	}
 	out = meta->tokens;

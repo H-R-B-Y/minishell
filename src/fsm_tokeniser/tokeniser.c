@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:22:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/14 14:34:00 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/14 17:29:06 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,20 +93,52 @@ t_tokentype	tokenise_type(char *str)
 {
 	char *substring;
 
-	substring = ft_substr(str, TOKENISER.index_start, TOKENISER.index_end);
+	substring = ft_substr(str, TOKENISER.index_start,
+		TOKENISER.index_end - TOKENISER.index_start);
 	TOKENISER.current_type = bin_token(substring);
 	TOKENISER.current_token = ft_calloc(1, sizeof(t_token));
-	(*TOKENISER.current_token) = (t_token){
-		.heredoc_deliminator = 0,
-		.raw = substring,
-		.type = TOKENISER.current_type,
-	};
+	(*TOKENISER.current_token) = (t_token){.heredoc_deliminator = 0,
+		.raw = substring, .type = TOKENISER.current_type,};
+	if (TOKENISER.current_type == TOK_WORD && TOKENISER.previous_line)
+	{
+		substring = ft_strjoin(TOKENISER.previous_line, substring);
+		free(TOKENISER.current_token->raw);
+		TOKENISER.current_token->raw = substring;
+		free(TOKENISER.previous_line);
+		TOKENISER.previous_line = 0;
+	}
 	return (TOKENISER.current_type);
 }
 
 t_tokentype		handle_operator(char *str)
 {
-	
+	char	c;
+
+	if (!isoperator(str[TOKENISER.index_start]))
+		return (TOK_NONE);
+	c = str[TOKENISER.index_start];
+	if (c != ';' && c != '(' && c != ')'
+		&& c == str[TOKENISER.index_start + 1])
+		TOKENISER.index_end = TOKENISER.index_start + 2;
+	else
+		TOKENISER.index_end = TOKENISER.index_start + 1;
+	return (tokenise_type(str));
+}
+
+void	handle_unclosed_quote(char *str)
+{
+	char	temp;
+
+	if (!TOKENISER.previous_line)
+		TOKENISER.previous_line = ft_substr(str, TOKENISER.index_start,
+			TOKENISER.index_end - TOKENISER.index_start);
+	else
+	{
+		temp = ft_strjoin(TOKENISER.previous_line, ft_substr(str,
+			TOKENISER.index_start, TOKENISER.index_end - TOKENISER.index_start));
+		free(TOKENISER.previous_line);
+		TOKENISER.previous_line = temp;
+	}
 }
 
 t_tokentype		next_token_type(char *str)
@@ -128,58 +160,74 @@ t_tokentype		next_token_type(char *str)
 				CUR_QUOTEMODE = QUOTE_DOUBLE;
 			else if (isoperator(str[TOKENISER.index_end]))
 				return (tokenise_type(str));
-			else if (ft_iswhitespace(str[TOKENISER.index_end]))
+			else if (ft_iswhitespace(str[TOKENISER.index_end])
+				|| str[TOKENISER.index_end] == '\0')
 				return (tokenise_type(str));
 		}
-		else if (CUR_QUOTEMODE == QUOTE_DOUBLE && str[TOKENISER.index_end] == '"')
+		else if (CUR_QUOTEMODE == QUOTE_DOUBLE
+			&& str[TOKENISER.index_end] == '"')
 			CUR_QUOTEMODE = QUOTE_NONE;
-		else if (CUR_QUOTEMODE == QUOTE_SINGLE && str[TOKENISER.index_end] == '\'')
+		else if (CUR_QUOTEMODE == QUOTE_SINGLE
+			&& str[TOKENISER.index_end] == '\'')
 			CUR_QUOTEMODE = QUOTE_NONE;
 		TOKENISER.index_end++;
 	}
 	if (CUR_QUOTEMODE != QUOTE_NONE)
-		return (TOK_INCOMPLETE_STRING);
+		return (handle_unclosed_quote(str), TOK_INCOMPLETE_STRING);
+	else if (TOKENISER.index_start < TOKENISER.index_end)
+		return (tokenise_type(str));
 	return (TOK_EOF);
 }
-
-
 
 t_tokretcode	set_retcode(t_tokretcode code)
 {
 	FSM.retcode = code;
+	if (code == PARSE_CONT)
+	{
+		TOKENISER.index_end = 0;
+		TOKENISER.index_start = 0;
+	}
 	return (code);
+}
+
+void	state_change(t_fsmstate next_state)
+{
+	printf("handle transition: %s to %s\n", fsmstate_str(FSM.state),
+		fsmstate_str(next_state));
+	if (next_state != ST_END && next_state != ST_WRNG)
+		ft_lstadd_back(&(FSM.tokens), ft_lstnew(tokeniser_pop_token()));
+	FSM.last_state = FSM.state;
+	FSM.state = next_state;
 }
 
 t_tokretcode	correct_retcode(char *str)
 {
-	(void)str;
-	if (FSM.state == ST_WRONG || FSM.paren_count < 0)
+	if (FSM.paren_count < 0)
 		return (set_retcode(PARSE_ERROR));
+	else if (FSM.state == ST_WRNG && FSM.last_state == ST_OPRA)
+		return (state_change(FSM.last_state), set_retcode(PARSE_CONT));
+	else if (TOKENISER.current_type == TOK_INCOMPLETE_STRING)
+		return (set_retcode(PARSE_CONT));
+	else if (FSM.state == ST_END && FSM.paren_count > 0)
+		return (state_change(FSM.last_state), set_retcode(PARSE_CONT));
 	else if (FSM.state == ST_END)
-	{
-		if (FSM.paren_count > 0)
-			return (set_retcode(PARSE_CONTINUE));
-		else if (TOKENISER.quote_mode != QUOTE_NONE)
-			return (set_retcode(PARSE_CONTINUE));
-		return (set_retcode(PARSE_OK));
-	}
+		return (state_change(ST_STRT), set_retcode(PARSE_OK));
 	return (set_retcode(PARSE_ERROR));
 }
 
-void	handle_token_type(void)
+int	handle_token_type(char *str)
 {
 	if (TOKENISER.current_type == TOK_LPAREN)
 		FSM.paren_count++;
 	if (TOKENISER.current_type == TOK_RPAREN)
 		FSM.paren_count--;
+	if (FSM.paren_count < 0)
+		return (0);
+	if (TOKENISER.current_type == TOK_INCOMPLETE_STRING)
+		return (0);
+	return (1);
 }
 
-void	handle_state_change(t_fsmstate next_state)
-{
-	(void)next_state;
-	printf("handle state transition here\n");
-	ft_lstadd_back(&(FSM.tokens), ft_lstnew(TOKENISER.current_token));
-}
 
 t_tokretcode	tokenise(char *str)
 {
@@ -187,19 +235,15 @@ t_tokretcode	tokenise(char *str)
 
 	if (!str || FSM.retcode == PARSE_ERROR)
 		return (reset_fsm(), PARSE_ERROR);
-	while (TOKENISER.current_type != TOK_EOF)
+	while (FSM.state != ST_END)
 	{
 		TOKENISER.current_type = next_token_type(str);
-		handle_token_type();
-		if (TOKENISER.current_type == TOK_INCOMPLETE_STRING
-			|| FSM.paren_count < 0)
+		if (!handle_token_type(str))
 			return (correct_retcode(str));
 		next_state = fsm_check_transition(FSM.state, TOKENISER.current_type);
-		if (next_state == ST_WRONG)
-			return (set_retcode(PARSE_ERROR));
-		else
-			handle_state_change(next_state);
-		FSM.state = next_state;
+		state_change(next_state);
+		if (next_state == ST_WRNG)
+			return (correct_retcode(str));
 	}
 	return (correct_retcode(str));
 }

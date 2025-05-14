@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/14 12:04:43 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/14 17:26:39 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef enum e_tokeniserstate	t_tokstate;
 enum e_tokeniserstate
 {
 	PARSE_OK,
-	PARSE_CONTINUE,
+	PARSE_CONT,
 	PARSE_ERROR,
 	TOKENISER_STATES
 };
@@ -165,7 +165,7 @@ void	print_token(t_token *token, int column_width);
  * the internal struct's state which will be one of three
  * potential states:
  * - PARSE_OK - this means the parsing was successful
- * - PARSE_CONTINUE - this means the tokens were left in a partial state
+ * - PARSE_CONT - this means the tokens were left in a partial state
  * - PARSE_ERROR - this means the input string was invalid
  * 
  * @param meta the internal parsing struct

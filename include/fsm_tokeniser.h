@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/14 14:27:00 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/14 17:26:39 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ enum e_tokentype
 	TOK_AMP,
 	TOK_EOF,
 	TOK_INCOMPLETE_STRING,
-	TOK_INCOMPLETE_SUBSHELL,
 	TOK_COUNT
 };
 
@@ -108,6 +107,7 @@ struct s_tokint
 	size_t			index_end;
 	t_tokentype		current_type;
 	t_quote_mode	quote_mode;
+	char			*previous_line;
 	t_token			*current_token;
 };
 
@@ -120,7 +120,7 @@ typedef enum e_tokretcode	t_tokretcode;
 enum e_tokretcode
 {
 	PARSE_OK,
-	PARSE_CONTINUE,
+	PARSE_CONT,
 	PARSE_ERROR,
 	TOKENISER_RETURNCODE_COUNT
 };
@@ -129,18 +129,20 @@ enum e_tokretcode
 typedef enum e_fsmstate	t_fsmstate;
 enum e_fsmstate
 {
-	ST_WRONG,
-	ST_START,
+	ST_WRNG,
+	ST_STRT,
 	ST_WORD,
-	ST_OPERATOR,
-	ST_SUBSHELL,
-	ST_HEREDOC,
-	ST_REDIRECT,
+	ST_OPRA,
+	ST_SEQ,
+	ST_LSSH,
+	ST_RSSH,
+	ST_HDOC,
+	ST_REDR,
 	ST_END,
 	STATE_COUNT
 };
 
-# define TRNSCOUNT 20
+# define TRNSCOUNT 27
 
 /**
  * @brief transition data
@@ -181,6 +183,7 @@ typedef struct s_fsmdata	t_fsmdata;
 struct s_fsmdata
 {
 	t_fsmstate		state;
+	t_fsmstate		last_state;
 	t_tokretcode	retcode;
 	t_list			*tokens;
 	long int		paren_count;
@@ -197,6 +200,8 @@ t_fsmstate	fsm_check_transition(t_fsmstate current_state, t_tokentype next_token
 t_tokretcode	tokenise(char *str);
 
 
+t_token	*tokeniser_pop_token(void);
+
 /**
  * @brief check if a charcter is an operator
  * 
@@ -206,5 +211,8 @@ t_tokretcode	tokenise(char *str);
  * @return int true of false flag
  */
 int		isoperator(char c);
+
+const char *tokretcode_str(t_tokretcode code);
+const char *fsmstate_str(t_fsmstate state);
 
 #endif
