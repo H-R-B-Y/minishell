@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_util.c                                       :+:      :+:    :+:   */
+/*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:36:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/14 17:36:21 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/14 18:17:29 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,13 @@ void	free_token_vector(t_token **vec, void (*del_raw)(void *))
 	i = 0;
 	while (vec[i])
 		destroy_token(vec[i++], del_raw);
+}
+
+void	append_anon_token(t_tokentype type, char *str)
+{
+	t_token	*tok;
+
+	tok = malloc(sizeof(t_token));
+	*tok = (t_token){.heredoc_deliminator=0,.raw=str,.type=type};
+	ft_lstadd_back(&(fsm())->tokens, ft_lstnew(tok));
 }

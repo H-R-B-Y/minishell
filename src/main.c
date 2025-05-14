@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/14 17:26:39 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/14 18:30:07 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int main()
 			break ;
 		t_tokretcode rc = tokenise(line);
 		printf("Retcode %s\n", tokretcode_str(rc));
+		if (rc == PARSE_OK)
+			print_token_list(fsm()->tokens);
 		if (rc != PARSE_CONT)
 			reset_fsm();
 	}

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/14 17:35:47 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/14 18:37:47 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,6 @@
 
 # include "libft.h"
 # include <stdio.h>
-
-# define FSM (*fsm())
-# define TOKENISER (*fsm()).tokeniser_internals
-# define CUR_QUOTEMODE (*fsm()).tokeniser_internals.quote_mode
 
 /*
 This section covers the main token types, 
@@ -111,6 +107,7 @@ struct s_tokint
 	t_token			*current_token;
 };
 
+t_tokint	*tokeniser(void);
 
 /*
 This section covers the main fsm and creating the token list.
@@ -142,7 +139,7 @@ enum e_fsmstate
 	STATE_COUNT
 };
 
-# define TRNSCOUNT 27
+# define TRNSCOUNT 32
 
 /**
  * @brief transition data
@@ -222,13 +219,23 @@ t_token	*create_token(t_tokentype type, char *raw_token);
 void	destroy_token(t_token *token, void (*del_raw)(void *));
 void	free_token_list(t_list *list, void (*del_raw)(void *));
 void	free_token_vector(t_token **vec, void (*del_raw)(void *));
-
+void	append_anon_token(t_tokentype type, char *str);
 
 t_tokentype	bin_token(const char *raw_token);
 t_tokentype	tokenise_type(char *str);
 
 
-void		handle_operator(char *str);
+void	handle_operator(char *str);
 void	handle_unclosed_quote(char *str);
+int		handle_token_type(void);
+void	handle_subshell_newline(void);
+
+void	state_change(t_fsmstate next_state);
+
+const char	*token_type_to_string(t_tokentype type);
+void		print_token_type(t_tokentype type);
+void		print_token(t_token *token, int column_width);
+void		print_token_list(t_list *list);
+
 
 #endif

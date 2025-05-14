@@ -1,5 +1,5 @@
 NAME			:= minishell
-CFLAGS			:= -Wextra -Wall -Werror -O0 -g3
+CFLAGS			:= -Wextra -Wall -Werror -Ofast -g3
 #CFLAGS			:= 
 
 MAKEFLAGS		+= --no-print-directory
@@ -46,9 +46,13 @@ SRC_DIR			:= ./src
 
 SRCS			:= \
 				$(SRC_DIR)/fsm_tokeniser/fsm_tokeniser.c \
-				src/fsm_tokeniser/fsm_utils.c \
-				src/fsm_tokeniser/token_operators.c \
+				$(SRC_DIR)/fsm_tokeniser/fsm_utils.c \
+				$(SRC_DIR)/fsm_tokeniser/token_binning.c \
+				$(SRC_DIR)/fsm_tokeniser/token_handlers.c \
+				$(SRC_DIR)/fsm_tokeniser/token_operators.c \
+				$(SRC_DIR)/fsm_tokeniser/token_prining.c \
 				$(SRC_DIR)/fsm_tokeniser/token_skipping.c \
+				$(SRC_DIR)/fsm_tokeniser/token_utils.c \
 				$(SRC_DIR)/fsm_tokeniser/tokeniser.c \
 				\
 				$(SRC_DIR)/syntax_tree/ast_node_init.c \
