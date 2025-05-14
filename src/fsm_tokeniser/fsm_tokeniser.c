@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:19:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/14 17:22:24 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/14 17:49:15 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,9 @@ const t_fsmtransition	*_fsm_trns(void)
 		{ST_LSSH, "\12", ST_LSSH}, {ST_RSSH, "\15", ST_END},
 		{ST_RSSH, "\13", ST_RSSH}, {ST_RSSH, "\2\10\11", ST_OPRA},
 		{ST_RSSH, "\7\14", ST_SEQ}, {ST_RSSH, "\3\4\5", ST_REDR},
-		{ST_RSSH, "\6", ST_HDOC}, {ST_SEQ, "\15", ST_END}
+		{ST_RSSH, "\6", ST_HDOC}, {ST_SEQ, "\15", ST_END},
+		{ST_SEQ, "\1", ST_WORD}, {ST_SEQ, "\3\4\5", ST_REDR},
+		{ST_SEQ, "\6", ST_HDOC}, {ST_SEQ, "\15", ST_END}
 		
 	};
 

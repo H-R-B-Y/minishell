@@ -6,20 +6,12 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 15:25:40 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/14 17:26:39 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/14 17:33:32 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/fsm_tokeniser.h"
 
-// typedef enum e_tokretcode	t_tokretcode;
-// enum e_tokretcode
-// {
-// 	PARSE_OK,
-// 	PARSE_CONT,
-// 	PARSE_ERROR,
-// 	TOKENISER_RETURNCODE_COUNT
-// };
 const char *tokretcode_str(t_tokretcode code)
 {
 	const char *strs[TOKENISER_RETURNCODE_COUNT + 1] = {

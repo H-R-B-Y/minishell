@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/14 17:26:39 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/14 17:35:47 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,8 @@ struct s_fsmdata
 t_fsmdata	*fsm(void);
 void	reset_fsm(void);
 const t_fsmtransition	*_fsm_trns(void);
-t_fsmstate	fsm_check_transition(t_fsmstate current_state, t_tokentype next_token);
+t_fsmstate	fsm_check_transition(t_fsmstate current_state,
+				t_tokentype next_token);
 
 
 t_tokretcode	tokenise(char *str);
@@ -214,5 +215,20 @@ int		isoperator(char c);
 
 const char *tokretcode_str(t_tokretcode code);
 const char *fsmstate_str(t_fsmstate state);
+
+void	tokeniser_skip_whitespace(char *str);
+
+t_token	*create_token(t_tokentype type, char *raw_token);
+void	destroy_token(t_token *token, void (*del_raw)(void *));
+void	free_token_list(t_list *list, void (*del_raw)(void *));
+void	free_token_vector(t_token **vec, void (*del_raw)(void *));
+
+
+t_tokentype	bin_token(const char *raw_token);
+t_tokentype	tokenise_type(char *str);
+
+
+void		handle_operator(char *str);
+void	handle_unclosed_quote(char *str);
 
 #endif
