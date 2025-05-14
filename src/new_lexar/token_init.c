@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/11 12:08:58 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/14 14:22:21 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,6 @@ t_token	*create_token(t_tokentype type, char *raw_token)
 	ft_bzero(tok, sizeof(t_token));
 	tok->raw = raw_token;
 	tok->type = type;
-	// We probably should make sure not to do this for certain tokens???
-	// like you shouldn't trim "\ " or anything escaped?
-	// but idk how to handle this correctly, we need to keep the
-	// spacing in the raw to reconstruct the history item.
-	tok->trimmed = ft_strtrim(raw_token, " \t\v\b\r\f");
 	return (tok);
 }
 
