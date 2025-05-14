@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/14 19:26:01 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/14 19:28:07 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ int main()
 	t_minishell	shell;
 
 	ft_bzero(&shell, sizeof(t_minishell));
-	// add_history("(this\n) && should work");
-	// add_history("\"this\n should\"\nwork");
-	// add_history("(this &&\nhas a seperator)");
+	add_history("(this\n) && should work");
+	add_history("\"this\n should\"\nwork");
+	add_history("(this &&\nhas a seperator)");
 	shell.prompt = "minishell -> ";
 	while (!readline_loop(&shell))
 	{
