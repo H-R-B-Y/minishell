@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/14 18:37:47 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/14 19:25:25 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,7 @@ struct s_fsmdata
 	t_list			*tokens;
 	long int		paren_count;
 	t_tokint		tokeniser_internals;
+	char			*str_condition;
 };
 
 
@@ -212,6 +213,7 @@ int		isoperator(char c);
 
 const char *tokretcode_str(t_tokretcode code);
 const char *fsmstate_str(t_fsmstate state);
+t_list	*fsm_pop_list(void);
 
 void	tokeniser_skip_whitespace(char *str);
 

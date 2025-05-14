@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:22:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/14 18:33:59 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/14 19:06:30 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ t_tokentype		next_token_type(char *str)
 		return (TOK_EOF);
 	if (ft_iswhitespace(str[(*tokeniser()).index_start]))
 		tokeniser_skip_whitespace(str);
-	if (tokeniser()->quote_mode == QUOTE_NONE && isoperator(str[(*tokeniser()).index_start]))
+	if (tokeniser()->quote_mode == QUOTE_NONE
+		&& isoperator(str[(*tokeniser()).index_start]))
 		return (handle_operator(str), tokenise_type(str));
 	while (str[(*tokeniser()).index_end])
 	{
@@ -50,13 +51,20 @@ t_tokentype		next_token_type(char *str)
 	return (TOK_EOF);
 }
 
-t_tokretcode	set_retcode(t_tokretcode code)
+t_tokretcode	set_retcode(t_tokretcode code, char *str_condition)
 {
 	(*fsm()).retcode = code;
 	if (code == PARSE_CONT)
 	{
 		(*tokeniser()).index_end = 0;
 		(*tokeniser()).index_start = 0;
+
+	}
+	if (str_condition)
+	{
+		if (fsm()->str_condition)
+			free(fsm()->str_condition);
+		fsm()->str_condition = str_condition;
 	}
 	return (code);
 }
@@ -72,20 +80,22 @@ void	state_change(t_fsmstate next_state)
 t_tokretcode	correct_retcode()
 {
 	if ((*fsm()).paren_count < 0)
-		return (set_retcode(PARSE_ERROR));
+		return (set_retcode(PARSE_ERROR,
+			ft_strdup("parenthesis dont make sense")));
 	else if ((*fsm()).state == ST_WRNG && (*fsm()).last_state == ST_OPRA)
-		return (state_change((*fsm()).last_state), set_retcode(PARSE_CONT));
+		return (state_change((*fsm()).last_state), set_retcode(PARSE_CONT,
+			ft_strdup("operation not finished")));
 	else if ((*tokeniser()).current_type == TOK_INCOMPLETE_STRING)
-		return (set_retcode(PARSE_CONT));
+		return (set_retcode(PARSE_CONT, ft_strdup("incomplete string")));
 	else if ((*fsm()).state == ST_END && (*fsm()).paren_count > 0)
 	{
 		state_change((*fsm()).last_state);
 		handle_subshell_newline();
-		return ( set_retcode(PARSE_CONT));
+		return (set_retcode(PARSE_CONT, ft_strdup("incomplete parenthesis")));
 	}
 	else if ((*fsm()).state == ST_END)
-		return (state_change(ST_STRT), set_retcode(PARSE_OK));
-	return (set_retcode(PARSE_ERROR));
+		return (state_change(ST_STRT), set_retcode(PARSE_OK, 0));
+	return (set_retcode(PARSE_ERROR, ft_strdup("generic error")));
 }
 
 

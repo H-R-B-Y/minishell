@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:19:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/14 18:37:50 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/14 19:09:05 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,13 @@ void	reset_fsm(void)
 {
 	if ((*fsm()).tokens)
 		free_token_list((*fsm()).tokens, free);
+	if (fsm()->str_condition)
+		free(fsm()->str_condition);
 	reset_tokeniser();
 	(*fsm()) = (t_fsmdata){
-		.state = ST_STRT,
-		.retcode = PARSE_OK,
-		.tokens = 0,
+		.state = ST_STRT, .retcode = PARSE_OK, .tokens = 0,
 		.tokeniser_internals = (*fsm()).tokeniser_internals,
-		.paren_count = 0
+		.paren_count = 0, .str_condition = 0,
 	};
 }
 
@@ -85,7 +85,8 @@ const t_fsmtransition	*_fsm_trns(void)
 	return (transitions);
 }
 
-t_fsmstate	fsm_check_transition(t_fsmstate current_state, t_tokentype next_token)
+t_fsmstate	fsm_check_transition(t_fsmstate current_state,
+	t_tokentype next_token)
 {
 	size_t					i;
 	const t_fsmtransition	*trns;

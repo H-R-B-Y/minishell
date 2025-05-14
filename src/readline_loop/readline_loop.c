@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:52:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/14 17:26:39 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/14 19:25:29 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,15 @@ char	*readline_subloop(t_minishell *shell, char *prompt)
 {
 	char	*str;
 	char	*extra_line;
+	char	*temp_promp;
 
 	if (shell->extra_lines && *shell->extra_lines)
 		return (_pop_line(shell));
 	else
 	{
-		printf("%s", prompt);
-		str = readline(" > ");
+		temp_promp = ft_strjoin(prompt, " > ");
+		str = readline(temp_promp);
+		free(temp_promp);
 		extra_line = str_join_with_sep(shell->current_line, str, "\n");
 		free(shell->current_line);
 		shell->current_line = extra_line;
@@ -68,18 +70,20 @@ char	*readline_subloop(t_minishell *shell, char *prompt)
 
 int	tokenise_and_validate(t_minishell *shell)
 {
-	char		*buff;
+	char	*buff;
+	t_tokretcode	code;
 
-	shell->tokens = tokenise(&shell->tok_internal, shell->current_pipeline);
-	while (shell->tok_internal.state == PARSE_CONT)
+	code = tokenise(shell->current_pipeline);
+	while (code == PARSE_CONT)
 	{
-		buff = readline_subloop(shell, "print_error_string_here ? ");
+		buff = readline_subloop(shell, fsm()->str_condition);
 		if (!buff)
 			return (1);
-		shell->tokens = tokenise(&shell->tok_internal, buff);
+		code = tokenise(buff);
 	}
-	if (shell->tok_internal.state == PARSE_ERROR)
+	if (fsm()->state == PARSE_ERROR)
 		return (0);
+	shell->tokens = fsm_pop_list();
 	return (0);
 }
 
