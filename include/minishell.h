@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/16 11:13:39 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/16 12:54:09 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,4 +116,9 @@ void	print_token_list(t_list *list);
 char	*str_join_with_sep(char *str1, char *str2, char *sep);
 
 char	*str_vec_join(char **arr);
+
+char	*_pop_line(t_minishell *shell);
+
+void readline_cleanup(t_minishell *shell);
+
 #endif
