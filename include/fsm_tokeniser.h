@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/16 14:02:38 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/16 15:29:29 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "libft.h"
 # include <stdio.h>
 
-# define TRNSCOUNT 32
+# define TRNSCOUNT 34
 
 /*
 This section covers the main token types, 
@@ -179,6 +179,7 @@ enum e_tokretcode
  * @param ST_RSSH Right subshell `)`
  * @param ST_HDOC Heredoc state
  * @param ST_REDR Redirect state
+ * @param ST_CONT Continue state
  * @param ST_END End state
  * @param STATE_COUNT Count of states 
  */
@@ -203,6 +204,8 @@ enum e_fsmstate
 	ST_HDOC,
 	/// Redirect state
 	ST_REDR,
+	/// Continue State
+	ST_CONT,
 	/// End state
 	ST_END,
 	/// Count of states 

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:37:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/16 11:37:13 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/16 15:26:02 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,6 @@ int	handle_token_type(t_fsmdata *fsm)
 	if (fsm->tokeniser_internals.current_type == TOK_RPAREN)
 		fsm->paren_count--;
 	if (fsm->paren_count < 0)
-		return (0);
-	if (fsm->tokeniser_internals.current_type == TOK_INCOMPLETE_STRING)
 		return (0);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:19:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/16 11:35:28 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/16 15:29:40 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	reset_fsm(t_fsmdata *fsm)
 
 const t_fsmtransition	*_fsm_trns(void)
 {
-	static const t_fsmtransition transitions[32] = {
+	static const t_fsmtransition transitions[TRNSCOUNT] = {
 		{ST_STRT, "\12\13", ST_LSSH}, {ST_STRT, "\3\4\5", ST_REDR},
 		{ST_STRT, "\6", ST_HDOC}, {ST_STRT, "\1", ST_WORD},
 		{ST_WORD, "\2\10\11", ST_OPRA}, {ST_WORD, "\7\14", ST_SEQ},
@@ -69,14 +69,15 @@ const t_fsmtransition	*_fsm_trns(void)
 		{ST_WORD, "\6", ST_HDOC}, {ST_WORD, "\1", ST_WORD},
 		{ST_REDR, "\1", ST_WORD}, {ST_HDOC, "\1", ST_WORD},
 		{ST_OPRA, "\3\4\5", ST_REDR}, {ST_OPRA, "\12", ST_LSSH},
-		{ST_OPRA, "\1", ST_WORD}, {ST_LSSH, "\1", ST_WORD},
-		{ST_LSSH, "\3\4\5", ST_REDR}, {ST_LSSH, "\6", ST_HDOC},
-		{ST_LSSH, "\12", ST_LSSH}, {ST_RSSH, "\15", ST_END},
-		{ST_RSSH, "\13", ST_RSSH}, {ST_RSSH, "\2\10\11", ST_OPRA},
-		{ST_RSSH, "\7\14", ST_SEQ}, {ST_RSSH, "\3\4\5", ST_REDR},
-		{ST_RSSH, "\6", ST_HDOC}, {ST_SEQ, "\15", ST_END},
-		{ST_SEQ, "\1", ST_WORD}, {ST_SEQ, "\3\4\5", ST_REDR},
-		{ST_SEQ, "\6", ST_HDOC}, {ST_SEQ, "\13", ST_RSSH},
+		{ST_OPRA, "\1", ST_WORD}, {ST_OPRA, "\15", ST_CONT},
+		{ST_LSSH, "\1", ST_WORD}, {ST_LSSH, "\3\4\5", ST_REDR},
+		{ST_LSSH, "\6", ST_HDOC}, {ST_LSSH, "\12", ST_LSSH},
+		{ST_RSSH, "\15", ST_END}, {ST_RSSH, "\13", ST_RSSH},
+		{ST_RSSH, "\2\10\11", ST_OPRA}, {ST_RSSH, "\7\14", ST_SEQ},
+		{ST_RSSH, "\3\4\5", ST_REDR}, {ST_RSSH, "\6", ST_HDOC},
+		{ST_SEQ, "\15", ST_END}, {ST_SEQ, "\1", ST_WORD},
+		{ST_SEQ, "\3\4\5", ST_REDR}, {ST_SEQ, "\6", ST_HDOC},
+		{ST_SEQ, "\13", ST_RSSH}, {ST_SEQ, "\12", ST_LSSH},
 	};
 
 	return (transitions);
@@ -89,6 +90,8 @@ t_fsmstate	fsm_check_transition(t_fsmstate current_state,
 	const t_fsmtransition	*trns;
 
 	i = 0;
+	if (next_token == TOK_INCOMPLETE_STRING)
+		return (ST_CONT);
 	trns = _fsm_trns();
 	while (i < TRNSCOUNT)
 	{

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 15:25:40 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/16 11:19:33 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/16 15:33:19 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ const char *fsmstate_str(t_fsmstate state)
 	const char *strs[STATE_COUNT + 1] = {
 		"Wrong state", "starting state", "word", "operator",
 		"sequence", "subshell open", "subshell close", "heredoc",
-		"redirection", "end state",
+		"continue state", "redirection", "end state",
 		"to string error"
 	};
 

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:22:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/16 11:38:00 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/16 15:36:34 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ void	state_change(t_fsmdata *fsm, t_fsmstate next_state)
 		fsm->tokeniser_internals.current_token->heredoc_delim = 1;
 	else if (fsm->state == ST_REDR && next_state == ST_WORD)
 		fsm->tokeniser_internals.current_token->redirect_file = 1;
+	if (next_state == ST_END && fsm->paren_count > 0)
+		next_state = ST_CONT;
 	fsm->last_state = fsm->state;
 	fsm->state = next_state;
 }
@@ -96,23 +98,29 @@ t_tokretcode	correct_retcode(t_fsmdata *fsm)
 	if (fsm->paren_count < 0)
 		return (set_retcode(fsm, PARSE_ERROR,
 			ft_strdup("parenthesis dont make sense")));
-	else if (fsm->state == ST_WRNG && fsm->last_state == ST_OPRA)
-		return (state_change(fsm, fsm->last_state), set_retcode(fsm, PARSE_CONT,
-			ft_strdup("operation not finished")));
-	else if (fsm->tokeniser_internals.current_type == TOK_INCOMPLETE_STRING)
-		return (set_retcode(fsm, PARSE_CONT, ft_strdup("incomplete string")));
-	else if (fsm->state == ST_END && fsm->paren_count > 0)
+	if (fsm->state == ST_CONT)
 	{
 		state_change(fsm, fsm->last_state);
-		handle_subshell_newline(fsm);
-		return (set_retcode(fsm, PARSE_CONT,
-			ft_strdup("incomplete parenthesis")));
+		set_retcode(fsm, PARSE_CONT, 0);
+		if (fsm->tokeniser_internals.current_type == TOK_INCOMPLETE_STRING)
+			fsm->str_condition = ft_strdup("incomplete string");
+		else if (fsm->state == ST_OPRA)
+			fsm->str_condition = ft_strdup("operation not finished");
+		else if (fsm->paren_count > 0)
+		{
+			fsm->str_condition = ft_strdup("unclosed parenthesis");
+			handle_subshell_newline(fsm);
+		}
+		return (PARSE_CONT);
 	}
-	else if (fsm->state == ST_END)
-		return (state_change(fsm, ST_STRT), set_retcode(fsm, PARSE_OK, 0));
+	if (fsm->state == ST_END)
+	{
+		state_change(fsm, ST_STRT);
+		
+		return (set_retcode(fsm, PARSE_OK, 0));
+	}
 	return (set_retcode(fsm, PARSE_ERROR, ft_strdup("generic error")));
 }
-
 
 
 t_tokretcode	tokenise(t_fsmdata *fsm, char *str)
@@ -121,18 +129,20 @@ t_tokretcode	tokenise(t_fsmdata *fsm, char *str)
 
 	if (!str || fsm->retcode == PARSE_ERROR)
 		return (reset_fsm(fsm), PARSE_ERROR);
-	while (fsm->state != ST_END)
+	while (fsm->state != ST_END
+		&& fsm->state != ST_CONT
+		&& fsm->state != ST_WRNG)
 	{
 		fsm->tokeniser_internals.current_type = next_token_type(&fsm->tokeniser_internals, str);
-		if (!handle_token_type(fsm))
-			return (correct_retcode(fsm));
 		next_state = fsm_check_transition(fsm->state,
 			fsm->tokeniser_internals.current_type);
+		if (!handle_token_type(fsm))
+			next_state = ST_WRNG;
 		state_change(fsm, next_state);
-		if (next_state != ST_END && next_state != ST_WRNG)
+		if (next_state != ST_END && next_state != ST_WRNG && next_state != ST_CONT)
 			ft_lstadd_back(&(fsm->tokens), ft_lstnew(tokeniser_pop_token(&fsm->tokeniser_internals)));
-		if (next_state == ST_WRNG)
-			return (correct_retcode(fsm));
+		
+			
 	}
 	return (correct_retcode(fsm));
 }
