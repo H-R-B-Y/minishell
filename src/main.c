@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/14 19:28:07 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/16 10:53:59 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,11 @@ void	ft_clear_screen(void)
 
 
 
-int main()
+int main(int argc, char **argv, char **envp)
 {
 	t_minishell	shell;
 
+	shell.environment = envp;
 	ft_bzero(&shell, sizeof(t_minishell));
 	add_history("(this\n) && should work");
 	add_history("\"this\n should\"\nwork");

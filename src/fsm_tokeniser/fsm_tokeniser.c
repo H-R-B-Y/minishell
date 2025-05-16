@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:19:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/14 19:33:27 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/16 10:53:26 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,4 +111,3 @@ t_token	*tokeniser_pop_token(void)
 	(*tokeniser()).current_token = 0;
 	return (p);
 }
-

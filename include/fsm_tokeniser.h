@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/14 19:25:25 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/16 10:53:09 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,9 @@ struct s_token
 {
 	t_tokentype	type;
 	char		*raw;
-	int			heredoc_deliminator;
+	int			heredoc_delim;
+	int			quotes_removed;
+	int			variables_expanded;
 };
 
 /**
