@@ -6,39 +6,36 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:19:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/16 10:53:26 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/16 11:35:28 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/fsm_tokeniser.h"
 
-void	destroy_token(t_token *token, void (*del_raw)(void *));
-void	free_token_list(t_list *list, void (*del_raw)(void *));
+// t_fsmdata	*fsm(void)
+// {
+// 	static t_fsmdata	fsm = {
+// 		.state = ST_STRT,
+// 		.last_state = ST_END,
+// 		.retcode = PARSE_OK,
+// 		.tokens = 0,
+// 		.paren_count = 0,
+// 		.tokeniser_internals = (t_tokint){0},
+// 	};
 
-t_fsmdata	*fsm(void)
+// 	return (&fsm);
+// }
+
+// t_tokint	*tokeniser(void)
+// {
+// 	return (&fsm()->tokeniser_internals);
+// }
+
+void	reset_tokeniser(t_tokint *tokeniser)
 {
-	static t_fsmdata	fsm = {
-		.state = ST_STRT,
-		.last_state = ST_END,
-		.retcode = PARSE_OK,
-		.tokens = 0,
-		.paren_count = 0,
-		.tokeniser_internals = (t_tokint){0},
-	};
-
-	return (&fsm);
-}
-
-t_tokint	*tokeniser(void)
-{
-	return (&fsm()->tokeniser_internals);
-}
-
-void	reset_tokeniser(void)
-{
-	if ((*fsm()).tokeniser_internals.current_token)
-		destroy_token((*fsm()).tokeniser_internals.current_token, free);
-	(*fsm()).tokeniser_internals = (t_tokint){
+	if (tokeniser->current_token)
+		destroy_token(tokeniser->current_token, free);
+	*tokeniser = (t_tokint){
 		.current_token = 0,
 		.current_type = TOK_NONE,
 		.index_end = 0,
@@ -47,16 +44,16 @@ void	reset_tokeniser(void)
 	};
 }
 
-void	reset_fsm(void)
+void	reset_fsm(t_fsmdata *fsm)
 {
-	if ((*fsm()).tokens)
-		free_token_list((*fsm()).tokens, free);
-	if (fsm()->str_condition)
-		free(fsm()->str_condition);
-	reset_tokeniser();
-	(*fsm()) = (t_fsmdata){
+	if (fsm->tokens)
+		free_token_list(fsm->tokens, free);
+	if (fsm->str_condition)
+		free(fsm->str_condition);
+	reset_tokeniser(&fsm->tokeniser_internals);
+	(*fsm) = (t_fsmdata){
 		.state = ST_STRT, .retcode = PARSE_OK, .tokens = 0,
-		.tokeniser_internals = (*fsm()).tokeniser_internals,
+		.tokeniser_internals = fsm->tokeniser_internals,
 		.paren_count = 0, .str_condition = 0,
 	};
 }
@@ -103,11 +100,11 @@ t_fsmstate	fsm_check_transition(t_fsmstate current_state,
 	return (ST_WRNG);
 }
 
-t_token	*tokeniser_pop_token(void)
+t_token	*tokeniser_pop_token(t_tokint *tokeniser)
 {
 	t_token *p;
 
-	p = (*tokeniser()).current_token;
-	(*tokeniser()).current_token = 0;
+	p = tokeniser->current_token;
+	tokeniser->current_token = 0;
 	return (p);
 }

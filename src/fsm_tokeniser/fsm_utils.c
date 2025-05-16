@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 15:25:40 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/14 19:25:27 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/16 11:19:33 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@ const char *fsmstate_str(t_fsmstate state)
 	return (strs[state]);
 }
 
-t_list	*fsm_pop_list(void)
+t_list	*fsm_pop_list(t_fsmdata *fsm)
 {
 	t_list *temp;
 
-	temp = fsm()->tokens;
-	fsm()->tokens = 0;
+	temp = fsm->tokens;
+	fsm->tokens = 0;
 	return (temp);
 }

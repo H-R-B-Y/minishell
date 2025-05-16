@@ -6,14 +6,11 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:52:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/14 19:25:29 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/16 11:43:41 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-char	*_pop_line(t_minishell *shell);
-void	readline_cleanup(t_minishell *shell);
 
 char	*readline_handle_multiline(t_minishell *shell, char *new_line)
 {
@@ -73,17 +70,17 @@ int	tokenise_and_validate(t_minishell *shell)
 	char	*buff;
 	t_tokretcode	code;
 
-	code = tokenise(shell->current_pipeline);
+	code = tokenise(&shell->fsm_data, shell->current_pipeline);
 	while (code == PARSE_CONT)
 	{
-		buff = readline_subloop(shell, fsm()->str_condition);
+		buff = readline_subloop(shell, shell->fsm_data.str_condition);
 		if (!buff)
 			return (1);
-		code = tokenise(buff);
+		code = tokenise(&shell->fsm_data, buff);
 	}
-	if (fsm()->state == PARSE_ERROR)
+	if (shell->fsm_data.state == PARSE_ERROR)
 		return (0);
-	shell->tokens = fsm_pop_list();
+	shell->tokens = fsm_pop_list(&shell->fsm_data);
 	return (0);
 }
 

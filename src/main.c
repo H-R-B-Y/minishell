@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/16 10:53:59 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/16 11:41:48 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,19 @@ int main(int argc, char **argv, char **envp)
 {
 	t_minishell	shell;
 
+	(void)argc;(void)argv;
 	shell.environment = envp;
 	ft_bzero(&shell, sizeof(t_minishell));
+	reset_fsm(&shell.fsm_data);
 	add_history("(this\n) && should work");
 	add_history("\"this\n should\"\nwork");
 	add_history("(this &&\nhas a seperator)");
 	shell.prompt = "minishell -> ";
 	while (!readline_loop(&shell))
 	{
-		if (fsm()->state == PARSE_ERROR)
+		if (shell.fsm_data.state == PARSE_ERROR)
 		{
-			reset_fsm();
+			reset_fsm(&shell.fsm_data);
 			continue ;
 		}
 		print_token_list(shell.tokens);
@@ -46,8 +48,8 @@ int main(int argc, char **argv, char **envp)
 			ft_arrlen((void *)shell.tokenv));
 		print_ast(shell.current_tree, "|	|");
 		add_history(shell.current_line);
-		reset_fsm();
+		reset_fsm(&shell.fsm_data);
 	}
+	reset_fsm(&shell.fsm_data);
 	return (0);
-	reset_fsm();
 }
