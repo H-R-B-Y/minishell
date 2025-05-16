@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/16 12:10:27 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/16 13:35:00 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,45 +246,304 @@ struct s_fsmdata
 	char			*str_condition;
 };
 
+/**
+ * @brief reset the tokeniser removing all data in it for another run.
+ * 
+ * @param tokeniser the tokeniser struct
+ */
 void			reset_tokeniser(t_tokint *tokeniser);
+
+/**
+ * @brief reset the finite state machine parser completely
+ * 
+ * @param fsm the finite state machine struct
+ */
 void			reset_fsm(t_fsmdata *fsm);
+
+/**
+ * @brief Check if a transition from the current state is possible with
+ * the next token
+ * 
+ * @param current_state the current state of the finite state machine
+ * @param next_token the next token type
+ * @return t_fsmstate the next state for the finite state machine
+ * 
+ * @note
+ * A state of ST_WRNG means there was no transition found but not
+ * that we are in a erroneous state as some wrong states can be
+ * recovered.
+ */
 t_fsmstate		fsm_check_transition(t_fsmstate current_state,
 					t_tokentype next_token);
+
+/**
+ * @brief pop the next token out of the tokeniser
+ * 
+ * @param tokeniser the tokeniser struct
+ * @return t_token* the token from the tokeniser
+ */
 t_token			*tokeniser_pop_token(t_tokint *tokeniser);
 
+/**
+ * @brief get a string representation of a return code
+ * 
+ * @param code the code to stringify
+ * @return const char* a string representation of the code
+ */
 const char		*tokretcode_str(t_tokretcode code);
+
+/**
+ * @brief stringify a state from the finite state machine parser
+ * 
+ * @param state the state to stringify
+ * @return const char* the string representation of the state
+ */
 const char		*fsmstate_str(t_fsmstate state);
+
+/**
+ * @brief pop the list of tokens out of the finite state machine
+ * 
+ * @param fsm the finite state machine struct
+ * @return t_list* the list of tokens parsed
+ */
 t_list			*fsm_pop_list(t_fsmdata *fsm);
 
+/**
+ * @brief find the token type of a given string
+ * 
+ * @param raw_token the raw token string to bin
+ * @return t_tokentype the binned type of the token
+ */
 t_tokentype		bin_token(const char *raw_token);
+
+/**
+ * @brief Creates the internal next token from the start and end index
+ * 
+ * @param tokeniser the tokeniser struct
+ * @param str the string being parsed
+ * @return t_tokentype the next tokens type.
+ */
 t_tokentype		tokenise_type(t_tokint *tokeniser, char *str);
 
+/**
+ * @brief Handles operators that may be 1 or 2 characters in length
+ * 
+ * @note
+ * If we want to handle arbitrary fd redirection we may need to move the
+ * handling of redirects to a new function.
+ * 
+ * This will move the end of the current token index in the tokeniser to 
+ * reflect the length of the operator.
+ * 
+ * @param tokeniser the tokeniser struct
+ * @param str the string being parsed
+ */
 void			handle_operator(t_tokint *tokeniser, char *str);
+
+/**
+ * @brief handle unclosed quote by duping the unfinished string
+ * 
+ * When a quote is left unclosed it needs to be closed by any of the
+ * following lines, so we need to make sure we keep track of all the
+ * data from the previous lines to append the following data. This function
+ * will ensure that the data is stored in an appropriate place.
+ * 
+ * @param tokeniser the tokeniser struct
+ * @param str the string being parsed
+ */
 void			handle_unclosed_quote(t_tokint *tokeniser, char *str);
+
+/**
+ * @brief Utility function for making sure that we keep track of stats
+ * 
+ * Certain tokens need to trigger certain effects within the parser, 
+ * like parenthesis need to be tracked so we dont end up with malformed
+ * precendence.
+ * 
+ * @param fsm the finite state machine struct
+ * @return int 1 if we are in a valid state 0 if not
+ */
 int				handle_token_type(t_fsmdata *fsm);
+
+/**
+ * @brief newlines inside subshells need to be handled differently.
+ * 
+ * newlines in subshells need to be handled differently depending on 
+ * the token that came before the newline, if it is not an operator or 
+ * a sequence then we need to insert a sequence.
+ * 
+ * @param fsm the finite state machine struct
+ */
 void			handle_subshell_newline(t_fsmdata *fsm);
 
-const char		*operators(void);
+/**
+ * @brief is a character an operator
+ * 
+ * @param c character to check
+ * @return int 1 if it is an operator 0 if not
+ */
 int				isoperator(char c);
 
+/**
+ * @brief stringify a token type
+ * 
+ * @param type the token type to stringify
+ * @return const char* the string of the token type
+ */
 const char		*token_type_to_string(t_tokentype type);
+
+/**
+ * @brief print a token type string
+ * 
+ * @param type the type to print
+ */
 void			print_token_type(t_tokentype type);
+
+/**
+ * @brief print a token in a table like row
+ * 
+ * @param token the token to print
+ * @param column_width the width of the table columns
+ */
 void			print_token(t_token *token, int column_width);
+
+/**
+ * @brief print a list of tokens in a table
+ * 
+ * @param list the list of tokens to print
+ */
 void			print_token_list(t_list *list);
 
+/**
+ * @brief move the internal start index of the tokeniser to the
+ * next non whitespace character.
+ * 
+ * @param tokeniser the tokeniser struct
+ * @param str the string being parsed
+ */
 void			tokeniser_skip_whitespace(t_tokint *tokeniser, char *str);
 
+/**
+ * @brief Create a token object
+ * 
+ * @param type the type of the token being created
+ * @param raw_token the raw token data
+ * @return t_token* an allocated token struct
+ */
 t_token			*create_token(t_tokentype type, char *raw_token);
+
+/**
+ * @brief destroy a token struct
+ * 
+ * @note
+ * I can probably remove the del raw function from the following
+ * as all tokens should have just an allocated string, so there is no
+ * need to confuse the functions needed to destroy tokens.
+ * 
+ * @param token the token to destroy
+ * @param del_raw a function to free the raw token string
+ */
 void			destroy_token(t_token *token, void (*del_raw)(void *));
+
+/**
+ * @brief free a list of tokens
+ * 
+ * @param list the list of tokens to free
+ * @param del_raw a function to free the raw token string
+ */
 void			free_token_list(t_list *list, void (*del_raw)(void *));
+
+/**
+ * @brief free an array of tokens
+ * 
+ * @param vec the array to free 
+ * @param del_raw function to free the raw token string
+ */
 void			free_token_vector(t_token **vec, void (*del_raw)(void *));
+
+/**
+ * @brief append an anonymous token to the token list
+ * 
+ * @note
+ * anonymous here just means that it has no identity formed from
+ * the parsed string, it is a token created artificially for one reason 
+ * or another.
+ * 
+ * well its just used once at the moment to insert a sequence character.
+ * 
+ * @param fsm 
+ * @param type 
+ * @param str 
+ */
 void			append_anon_token(t_fsmdata *fsm, t_tokentype type, char *str);
 
+/**
+ * @brief Find the next token in the string and return its type
+ * 
+ * This function skips the start and end indexes to the next token,
+ * then hands off the work to the function tokenise_type that uses
+ * the data to create the next token struct and bin its type.
+ * 
+ * @param tokeniser the tokeniser struct
+ * @param str the string being parsed
+ * @return t_tokentype the type of the next token
+ */
 t_tokentype		next_token_type(t_tokint *tokeniser, char *str);
+
+/**
+ * @brief Set the retcode object
+ * 
+ * @param fsm the finite state machine
+ * @param code the return code to set
+ * @param str_condition a condition string (optional)
+ * @return t_tokretcode the return code that was set
+ */
 t_tokretcode	set_retcode(t_fsmdata *fsm,
 					t_tokretcode code, char *str_condition);
+
+/**
+ * @brief changes the state of the fsm
+ * 
+ * this will also set the last state to the current state, before
+ * setting the current state to the next state.
+ * 
+ * @param fsm the fsm struct
+ * @param next_state the next state to change too
+ */
 void			state_change(t_fsmdata *fsm, t_fsmstate next_state);
+
+/**
+ * @brief check what the current return code should be
+ * 
+ * We check all the cases that define what the return code should be
+ * and determine what return code we need to send.
+ * 
+ * @param fsm the finite state machine struct
+ * @return t_tokretcode the return code that needs to be sent
+ */
 t_tokretcode	correct_retcode(t_fsmdata *fsm);
+
+/**
+ * @brief Tokenise a string
+ * 
+ * When passed a string this function will either:
+ * - Begin the tokenisation of the string
+ * - Continue tokenising from the last continue condition
+ * 
+ * Parsing will populate the internal linked list with tokens,
+ * this list can be popped when PARSE_OK.
+ * 
+ * If the string is in an incomplete state then a PARSE_CONT
+ * will be returned and another string will be required to continue parsing.
+ * 
+ * When the parser has reached an state that is erroneous and that it cannot
+ * recover from it will return PARSE_ERROR, the fsm can be cleaned manually
+ * with a call to reset_fsm() or will reset itself when called again.
+ * 
+ * @param fsm the finite state machine struct
+ * @param str the string to parse
+ * @return t_tokretcode the condition state of the parse
+ */
 t_tokretcode	tokenise(t_fsmdata *fsm, char *str);
 
 #endif
