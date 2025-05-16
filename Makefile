@@ -40,6 +40,8 @@ SRC_DIR			:= ./src
 # $(SRC_DIR)/new_lexar/tokenise.c \
 
 
+# $(SRC_DIR)/readline_loop/readline_cleanup.c \
+# $(SRC_DIR)/readline_loop/readline_loop.c \
 
 SRCS			:= \
 				$(SRC_DIR)/fsm_tokeniser/fsm_tokeniser.c \
@@ -52,8 +54,8 @@ SRCS			:= \
 				$(SRC_DIR)/fsm_tokeniser/token_utils.c \
 				$(SRC_DIR)/fsm_tokeniser/tokeniser.c \
 				\
-				$(SRC_DIR)/readline_loop/readline_cleanup.c \
-				$(SRC_DIR)/readline_loop/readline_loop.c \
+				$(SRC_DIR)/new_readline_loop/read_command_loop.c \
+				$(SRC_DIR)/new_readline_loop/splitting_next_lines.c \
 				\
 				$(SRC_DIR)/syntax_tree/ast_node_init.c \
 				$(SRC_DIR)/syntax_tree/print_ast.c \

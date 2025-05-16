@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/16 12:54:09 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/16 17:30:17 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 // # include "./input_tokens.h"
 // # include "./new_lexar.h"
 # include "./fsm_tokeniser.h"
+# include "./readline_loop.h"
 # include "./abstract_syntax_tree.h"
 
 /**
@@ -59,6 +60,8 @@ struct s_minishell
 	t_astnode	*current_tree;
 
 	t_fsmdata	fsm_data;
+
+	t_readline_data	rldata;
 	/*
 	i think the best way to handle this would be to keep concatinating
 	the readlines until we reach the point where we have a valid AST.
@@ -117,8 +120,9 @@ char	*str_join_with_sep(char *str1, char *str2, char *sep);
 
 char	*str_vec_join(char **arr);
 
-char	*_pop_line(t_minishell *shell);
 
 void readline_cleanup(t_minishell *shell);
+
+int	read_until_complete_command(t_minishell *shell);
 
 #endif

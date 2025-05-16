@@ -6,11 +6,13 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:52:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/16 13:39:16 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/16 17:01:37 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+char *_pop_line(char ***arr);
 
 char	*readline_handle_multiline(t_minishell *shell, char *new_line)
 {
@@ -31,7 +33,7 @@ char	*readline_handle_multiline(t_minishell *shell, char *new_line)
 	ft_arrclear((void *)shell->extra_lines, 0);
 	ft_arrclear((void *)newlines, 0);
 	shell->extra_lines = temp;
-	return (_pop_line(shell));
+	return (_pop_line(&shell->extra_lines));
 }
 
 
@@ -48,7 +50,7 @@ char	*readline_subloop(t_minishell *shell, char *prompt)
 	char	*temp_promp;
 
 	if (shell->extra_lines && *shell->extra_lines)
-		return (_pop_line(shell));
+		return (_pop_line(&shell->extra_lines));
 	else
 	{
 		temp_promp = ft_strjoin(prompt, " > ");
