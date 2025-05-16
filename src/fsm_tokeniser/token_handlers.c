@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:37:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/16 15:26:02 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/16 18:08:07 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ int	handle_token_type(t_fsmdata *fsm)
 
 void	handle_subshell_newline(t_fsmdata *fsm)
 {
-	if (!(fsm->state != ST_OPRA && fsm->state != ST_SEQ))
+	if (!(fsm->state != ST_OPRA && fsm->state != ST_SEQ
+		&& fsm->state != ST_LSSH))
 		return ;
 	append_anon_token(fsm, TOK_AFTER, ft_strdup(";"));
 	state_change(fsm, ST_SEQ);
