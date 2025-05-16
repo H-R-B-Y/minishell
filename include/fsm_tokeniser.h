@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/16 13:35:00 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/16 14:02:38 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ enum e_tokentype
  * @param raw the raw string for the token
  * @param heredoc_delim This token is a heredoc deliminator
  * @param redirect_file this token is a filename for a redirect
+ * @param quotes_removed if the quotes in the raw string have been removed
  * @param variables_expanded This token has had its variables expanded
  * 
  * @note
@@ -107,11 +108,17 @@ enum e_tokentype
 typedef struct s_token			t_token;
 struct s_token
 {
+	/// the type of this token
 	t_tokentype	type;
+	/// the raw token string
 	char		*raw;
+	/// flag this token as a heredoc deliminator
 	int			heredoc_delim;
+	/// flag this token as a filename for a redirect
 	int			redirect_file;
+	/// flag if the quotes have been removed
 	int			quotes_removed;
+	/// flag if the variables have been expanded
 	int			variables_expanded;
 };
 
@@ -129,11 +136,17 @@ struct s_token
 typedef struct s_tokint			t_tokint;
 struct s_tokint
 {
+	/// the index of the start of the current token
 	size_t			index_start;
+	/// the index of the end of the current token
 	size_t			index_end;
+	/// the type of the current token
 	t_tokentype		current_type;
+	/// the quote mode we are currently in
 	t_quote_mode	quote_mode;
+	/// any data required from the previous line
 	char			*previous_line;
+	/// malloc'd token, needs to be pop'd
 	t_token			*current_token;
 };
 
@@ -212,8 +225,11 @@ enum e_fsmstate
 typedef struct s_fsmtransition	t_fsmtransition;
 struct s_fsmtransition
 {
+	/// the state we are transitioning from
 	t_fsmstate	from_state;
+	/// the accepted token types
 	char		*token_types;
+	/// the resulting state
 	t_fsmstate	too_state;
 };
 
@@ -237,12 +253,19 @@ struct s_fsmtransition
 typedef struct s_fsmdata		t_fsmdata;
 struct s_fsmdata
 {
+	/// the current state of the fsm
 	t_fsmstate		state;
+	/// the previous state of the fsm
 	t_fsmstate		last_state;
+	/// the return code of the fsm
 	t_tokretcode	retcode;
+	/// the token list
 	t_list			*tokens;
+	/// the count of open parenthesis
 	long int		paren_count;
+	/// the internal tokeniser data
 	t_tokint		tokeniser_internals;
+	/// a string representation of the condition upon return
 	char			*str_condition;
 };
 
