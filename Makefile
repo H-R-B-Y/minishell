@@ -39,10 +39,6 @@ SRC_DIR			:= ./src
 # $(SRC_DIR)/new_lexar/tokenise_begin.c \
 # $(SRC_DIR)/new_lexar/tokenise.c \
 
-
-# $(SRC_DIR)/readline_loop/readline_cleanup.c \
-# $(SRC_DIR)/readline_loop/readline_loop.c \
-
 SRCS			:= \
 				$(SRC_DIR)/fsm_tokeniser/fsm_tokeniser.c \
 				$(SRC_DIR)/fsm_tokeniser/fsm_utils.c \
