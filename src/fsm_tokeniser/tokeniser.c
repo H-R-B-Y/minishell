@@ -6,22 +6,15 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:22:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/16 15:36:34 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/17 11:28:03 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/fsm_tokeniser.h"
 
-t_tokentype		next_token_type(t_tokint *tokeniser, char *str)
+
+t_tokentype		_parse_loop_internals(t_tokint *tokeniser, char *str)
 {
-	tokeniser->index_start = tokeniser->index_end;
-	if (!str[tokeniser->index_start])
-		return (TOK_EOF);
-	if (ft_iswhitespace(str[tokeniser->index_start]))
-		tokeniser_skip_whitespace(tokeniser, str);
-	if (tokeniser->quote_mode == QUOTE_NONE
-		&& isoperator(str[tokeniser->index_start]))
-		return (handle_operator(tokeniser, str), tokenise_type(tokeniser, str));
 	while (str[tokeniser->index_end])
 	{
 		if (tokeniser->quote_mode == QUOTE_NONE)
@@ -44,6 +37,21 @@ t_tokentype		next_token_type(t_tokint *tokeniser, char *str)
 			tokeniser->quote_mode = QUOTE_NONE;
 		tokeniser->index_end++;
 	}
+	return (0);
+}
+
+t_tokentype		next_token_type(t_tokint *tokeniser, char *str)
+{
+	tokeniser->index_start = tokeniser->index_end;
+	if (!str[tokeniser->index_start])
+		return (TOK_EOF);
+	if (ft_iswhitespace(str[tokeniser->index_start]))
+		tokeniser_skip_whitespace(tokeniser, str);
+	if (tokeniser->quote_mode == QUOTE_NONE
+		&& isoperator(str[tokeniser->index_start]))
+		return (handle_operator(tokeniser, str), tokenise_type(tokeniser, str));
+	if (_parse_loop_internals(tokeniser, str))
+		return (tokeniser->current_type);
 	if (tokeniser->quote_mode != QUOTE_NONE)
 		return (handle_unclosed_quote(tokeniser, str), TOK_INCOMPLETE_STRING);
 	else if (tokeniser->index_start < tokeniser->index_end)
@@ -141,8 +149,6 @@ t_tokretcode	tokenise(t_fsmdata *fsm, char *str)
 		state_change(fsm, next_state);
 		if (next_state != ST_END && next_state != ST_WRNG && next_state != ST_CONT)
 			ft_lstadd_back(&(fsm->tokens), ft_lstnew(tokeniser_pop_token(&fsm->tokeniser_internals)));
-		
-			
 	}
 	return (correct_retcode(fsm));
 }
