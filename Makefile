@@ -39,8 +39,6 @@ SRC_DIR			:= ./src
 # $(SRC_DIR)/new_lexar/tokenise_begin.c \
 # $(SRC_DIR)/new_lexar/tokenise.c \
 
-
-
 SRCS			:= \
 				$(SRC_DIR)/better_prompt/git_stuff.c \
 				$(SRC_DIR)/better_prompt/prompt_setup.c \
