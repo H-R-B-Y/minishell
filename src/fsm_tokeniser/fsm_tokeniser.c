@@ -6,30 +6,11 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:19:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/16 18:05:54 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/17 14:02:02 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/fsm_tokeniser.h"
-
-// t_fsmdata	*fsm(void)
-// {
-// 	static t_fsmdata	fsm = {
-// 		.state = ST_STRT,
-// 		.last_state = ST_END,
-// 		.retcode = PARSE_OK,
-// 		.tokens = 0,
-// 		.paren_count = 0,
-// 		.tokeniser_internals = (t_tokint){0},
-// 	};
-
-// 	return (&fsm);
-// }
-
-// t_tokint	*tokeniser(void)
-// {
-// 	return (&fsm()->tokeniser_internals);
-// }
 
 void	reset_tokeniser(t_tokint *tokeniser)
 {
@@ -93,6 +74,8 @@ t_fsmstate	fsm_check_transition(t_fsmstate current_state,
 	i = 0;
 	if (next_token == TOK_INCOMPLETE_STRING)
 		return (ST_CONT);
+	if (next_token == TOK_NONE)
+		return (ST_WRNG);
 	trns = _fsm_trns();
 	while (i < TRNSCOUNT)
 	{

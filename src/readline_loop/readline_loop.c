@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:52:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/16 13:39:16 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/17 14:03:25 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	tokenise_and_validate(t_minishell *shell)
 			return (1);
 		code = tokenise(&shell->fsm_data, buff);
 	}
-	if (shell->fsm_data.state == PARSE_ERROR)
+	if (code == PARSE_ERROR)
 		return (1);
 	shell->tokens = fsm_pop_list(&shell->fsm_data);
 	return (0);

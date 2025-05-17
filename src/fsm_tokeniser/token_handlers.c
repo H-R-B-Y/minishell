@@ -6,20 +6,44 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:37:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/16 18:08:07 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/17 13:47:36 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+void	handle_potential_redirect(t_tokint *tokeniser, char *str)
+{
+	while (str[tokeniser->index_end] && isdigit(str[tokeniser->index_end]))
+		tokeniser->index_end++;
+	if (str[tokeniser->index_end] == '>')
+	{
+		tokeniser->index_end++;
+		if (str[tokeniser->index_end] == '>')
+			tokeniser->index_end++;
+		else if (str[tokeniser->index_end] == '&')
+		{
+			tokeniser->index_end++;
+			if (ft_isdigit(str[tokeniser->index_end]))
+				while (str[tokeniser->index_end]
+					&& ft_isdigit(str[tokeniser->index_end]))
+					tokeniser->index_end++;
+			else if (str[tokeniser->index_end] == '-')
+				tokeniser->index_end++;
+		}
+	}
+}
 
 void	handle_operator(t_tokint *tokeniser, char *str)
 {
 	char	c;
 
 	c = str[tokeniser->index_start];
-	if (c != ';' && c != '(' && c != ')'
+	if (c != ';' && c != '(' && c != ')' && c != '>' // TODO: maybe we should put this in strchr or reverse it
 		&& c == str[tokeniser->index_start + 1])
 		tokeniser->index_end = tokeniser->index_start + 2;
+	else if (ft_isdigit(c) || c == '>')
+		handle_potential_redirect(tokeniser, str);
 	else
 		tokeniser->index_end = tokeniser->index_start + 1;
 }

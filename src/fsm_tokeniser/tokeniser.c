@@ -6,34 +6,60 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:22:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/17 11:28:03 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/17 14:03:58 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/fsm_tokeniser.h"
 
+/*
+I think this would be better if it just returned an integer
+and all the internal states returned ints representing some 
+form of success code, then this function does have to return 
+a token type and can just signal success, then the final function
+can just return the intenal type from the tokeniser.
 
+But do any of these sub functions actually have a fail case?
+- I'm not sure.
+I guess all functions can potentially fail because we are allocating memory
+
+
+So these should all have some kind of int status to say if they are ok.
+
+Then if they are ok the FSM can retrieve the type from the tokeniser
+If not we return a generic error i suppose?
+
+What benefit does this have?
+
+It would make it easier to handle i guess?
+
+Is it needed? not really, so i guess i will leave it alone.
+*/
 t_tokentype		_parse_loop_internals(t_tokint *tokeniser, char *str)
 {
+	char	c[2];
+
 	while (str[tokeniser->index_end])
 	{
+		c[0] = str[tokeniser->index_end];
+		c[1] = str[tokeniser->index_end + 1];
+		if (c[0] == '\\' && tokeniser->quote_mode != QUOTE_SINGLE && c[1]
+			&& ++tokeniser->index_end && ++tokeniser->index_end) // This is for handling escape codes
+			continue;
 		if (tokeniser->quote_mode == QUOTE_NONE)
 		{
-			if (str[tokeniser->index_end] == '\'')
+			if (c[0] == '\'')
 				tokeniser->quote_mode = QUOTE_SINGLE;
-			else if (str[tokeniser->index_end] == '"')
+			else if (c[0] == '"')
 				tokeniser->quote_mode = QUOTE_DOUBLE;
-			else if (isoperator(str[tokeniser->index_end]))
+			else if (isoperator(c[0]) || ft_isdigit(c[0])) // TODO:FDS this needs to be updated
 				return (tokenise_type(tokeniser, str));
-			else if (ft_iswhitespace(str[tokeniser->index_end])
-				|| str[tokeniser->index_end] == '\0')
+			else if (ft_iswhitespace(c[0]) || c[0] == '\0')
 				return (tokenise_type(tokeniser, str));
 		}
-		else if (tokeniser->quote_mode == QUOTE_DOUBLE
-			&& str[tokeniser->index_end] == '"')
+		else if (tokeniser->quote_mode == QUOTE_DOUBLE && c[0] == '"')
 			tokeniser->quote_mode = QUOTE_NONE;
-		else if (tokeniser->quote_mode == QUOTE_SINGLE
-			&& str[tokeniser->index_end] == '\'')
+		else if (tokeniser->quote_mode == QUOTE_SINGLE && c[0] == '\'')
 			tokeniser->quote_mode = QUOTE_NONE;
 		tokeniser->index_end++;
 	}
@@ -48,32 +74,32 @@ t_tokentype		next_token_type(t_tokint *tokeniser, char *str)
 	if (ft_iswhitespace(str[tokeniser->index_start]))
 		tokeniser_skip_whitespace(tokeniser, str);
 	if (tokeniser->quote_mode == QUOTE_NONE
-		&& isoperator(str[tokeniser->index_start]))
+		&& (isoperator(str[tokeniser->index_start])
+			|| ft_isdigit(str[tokeniser->index_start])))
 		return (handle_operator(tokeniser, str), tokenise_type(tokeniser, str));
 	if (_parse_loop_internals(tokeniser, str))
 		return (tokeniser->current_type);
-	if (tokeniser->quote_mode != QUOTE_NONE)
+	if (tokeniser->quote_mode != QUOTE_NONE || (tokeniser->index_end > 1
+			&& str[tokeniser->index_end - 1] == '\\'
+			&& str[tokeniser->index_end - 2] != '\\')) // escaping a newline is an incomplete string
 		return (handle_unclosed_quote(tokeniser, str), TOK_INCOMPLETE_STRING);
 	else if (tokeniser->index_start < tokeniser->index_end)
 		return (tokenise_type(tokeniser, str));
 	return (TOK_EOF);
 }
 
-t_tokretcode	set_retcode(t_fsmdata *fsm, t_tokretcode code, char *str_condition)
+t_tokretcode	set_retcode(t_fsmdata *fsm,
+	t_tokretcode code, char *str_condition)
 {
 	fsm->retcode = code;
 	if (code == PARSE_CONT)
 	{
 		fsm->tokeniser_internals.index_end = 0;
 		fsm->tokeniser_internals.index_start = 0;
-
 	}
-	if (str_condition)
-	{
-		if (fsm->str_condition)
+	if (str_condition && fsm->str_condition)
 			free(fsm->str_condition);
-		fsm->str_condition = str_condition;
-	}
+	fsm->str_condition = str_condition;
 	return (code);
 }
 
@@ -81,16 +107,6 @@ void	state_change(t_fsmdata *fsm, t_fsmstate next_state)
 {
 	printf("handle transition: %s to %s\n", fsmstate_str(fsm->state),
 		fsmstate_str(next_state));
-	// I kind of want to add some function lookup here,
-	// it would be good to have some kind of function map that 
-	// could be indexed by the states, then on certain transitions
-	
-	// what kind of state transitions do we need to do?
-	// HEREDOC to WORD = word token should be marked
-	// REDIRECT to WORD = word token should be marked
-	
-	// if that is it then we dont need to create a function matrix
-	// we can just handle these cases
 	if (fsm->state == ST_HDOC && next_state == ST_WORD)
 		fsm->tokeniser_internals.current_token->heredoc_delim = 1;
 	else if (fsm->state == ST_REDR && next_state == ST_WORD)
@@ -122,11 +138,7 @@ t_tokretcode	correct_retcode(t_fsmdata *fsm)
 		return (PARSE_CONT);
 	}
 	if (fsm->state == ST_END)
-	{
-		state_change(fsm, ST_STRT);
-		
-		return (set_retcode(fsm, PARSE_OK, 0));
-	}
+		return (state_change(fsm, ST_STRT), set_retcode(fsm, PARSE_OK, 0));
 	return (set_retcode(fsm, PARSE_ERROR, ft_strdup("generic error")));
 }
 
@@ -135,8 +147,10 @@ t_tokretcode	tokenise(t_fsmdata *fsm, char *str)
 {
 	t_fsmstate	next_state;
 
-	if (!str || fsm->retcode == PARSE_ERROR)
-		return (reset_fsm(fsm), PARSE_ERROR);
+	if (fsm->retcode == PARSE_ERROR)
+		reset_fsm(fsm);
+	if (!str)
+		return (set_retcode(fsm, PARSE_ERROR, "invalid string"));
 	while (fsm->state != ST_END
 		&& fsm->state != ST_CONT
 		&& fsm->state != ST_WRNG)
@@ -148,7 +162,8 @@ t_tokretcode	tokenise(t_fsmdata *fsm, char *str)
 			next_state = ST_WRNG;
 		state_change(fsm, next_state);
 		if (next_state != ST_END && next_state != ST_WRNG && next_state != ST_CONT)
-			ft_lstadd_back(&(fsm->tokens), ft_lstnew(tokeniser_pop_token(&fsm->tokeniser_internals)));
+			ft_lstadd_back(&(fsm->tokens),
+				ft_lstnew(tokeniser_pop_token(&fsm->tokeniser_internals)));
 	}
 	return (correct_retcode(fsm));
 }

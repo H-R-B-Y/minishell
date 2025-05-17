@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/16 11:41:48 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/17 11:33:10 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,16 @@ int main(int argc, char **argv, char **envp)
 	shell.prompt = "minishell -> ";
 	while (!readline_loop(&shell))
 	{
-		if (shell.fsm_data.state == PARSE_ERROR)
+		if (shell.fsm_data.state != PARSE_ERROR)
 		{
-			reset_fsm(&shell.fsm_data);
-			continue ;
+			print_token_list(shell.tokens);
+			shell.tokenv = (void *)ft_lstarr(shell.tokens);
+			ft_lstclear(&shell.tokens, 0);
+			shell.current_tree = produce_ast(shell.tokenv,
+				ft_arrlen((void *)shell.tokenv));
+			print_ast(shell.current_tree, "|	|");
+			add_history(shell.current_line);
 		}
-		print_token_list(shell.tokens);
-		shell.tokenv = (void *)ft_lstarr(shell.tokens);
-		ft_lstclear(&shell.tokens, 0);
-		// we free all the list items but not
-		// 	the list content as that is still in use.
-		shell.current_tree = produce_ast(shell.tokenv,
-			ft_arrlen((void *)shell.tokenv));
-		print_ast(shell.current_tree, "|	|");
-		add_history(shell.current_line);
 		reset_fsm(&shell.fsm_data);
 	}
 	reset_fsm(&shell.fsm_data);

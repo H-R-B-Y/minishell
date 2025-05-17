@@ -6,11 +6,36 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:36:40 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/16 11:20:40 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/17 13:56:29 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/fsm_tokeniser.h"
+
+t_tokentype	potential_redirect(const char *raw_token)
+{
+	size_t	i;
+
+	i = 0;
+	while (ft_isdigit(raw_token[i]))
+		i++;
+	if (raw_token[i] != '>')
+		return (TOK_WORD);
+	i++;
+	if (!raw_token[i])
+		return (TOK_REDIR_OUT);
+	if (raw_token[i] == '>' && !raw_token[i + 1])
+		return (TOK_REDIR_APPEND);
+	if (raw_token[i] == '&' && ft_isdigit(raw_token[i + 1]))
+	{
+		i++;
+		while (ft_isdigit(raw_token[i]))
+			i++;
+		if (!raw_token[i])
+			return (TOK_REDIR_OUT);
+	}
+	return (TOK_NONE);
+}
 
 t_tokentype	bin_token(const char *raw_token)
 {
@@ -23,9 +48,10 @@ t_tokentype	bin_token(const char *raw_token)
 	if (*raw_token == '|')
 		return (TOK_PIPE + (7 * (raw_token[1]
 			&& raw_token[1] == raw_token[0])));
-	if (*raw_token == '>' || *raw_token == '<')
-		return (TOK_REDIR_OUT + (2 * (raw_token[0] == '<'))
-			+ (raw_token[1] && raw_token[0] == raw_token[1]));
+	if (*raw_token == '<') // TODO:FDS this needs to be updated
+		return (TOK_REDIR_IN + (1 * (raw_token[1] == *raw_token)));
+	if (ft_isdigit(*raw_token) || *raw_token == '>')
+		return (potential_redirect(raw_token));
 	if (*raw_token == ';')
 		return (TOK_AFTER);
 	if (*raw_token == '&')
