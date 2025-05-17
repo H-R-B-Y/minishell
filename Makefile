@@ -4,7 +4,7 @@ CFLAGS			:= -Wextra -Wall -Werror -Ofast -g3
 
 MAKEFLAGS		+= --no-print-directory
 
-LIBFLAGS		:= -lreadline
+LIBFLAGS		:= -lreadline -lhistory
 
 HEADERS			:= -Iinclude
 
@@ -40,9 +40,6 @@ SRC_DIR			:= ./src
 # $(SRC_DIR)/new_lexar/tokenise.c \
 
 SRCS			:= \
-				$(SRC_DIR)/better_prompt/git_stuff.c \
-				$(SRC_DIR)/better_prompt/prompt_setup.c \
-				\
 				$(SRC_DIR)/fsm_tokeniser/fsm_tokeniser.c \
 				$(SRC_DIR)/fsm_tokeniser/fsm_utils.c \
 				$(SRC_DIR)/fsm_tokeniser/token_binning.c \
@@ -52,8 +49,8 @@ SRCS			:= \
 				$(SRC_DIR)/fsm_tokeniser/token_utils.c \
 				$(SRC_DIR)/fsm_tokeniser/tokeniser.c \
 				\
-				$(SRC_DIR)/readline_loop/readline_cleanup.c \
-				$(SRC_DIR)/readline_loop/readline_loop.c \
+				$(SRC_DIR)/new_readline_loop/read_command_loop.c \
+				$(SRC_DIR)/new_readline_loop/splitting_next_lines.c \
 				\
 				$(SRC_DIR)/syntax_tree/ast_node_init.c \
 				$(SRC_DIR)/syntax_tree/print_ast.c \
