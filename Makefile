@@ -49,7 +49,7 @@ SRCS			:= \
 				$(SRC_DIR)/fsm_tokeniser/fsm_utils.c \
 				$(SRC_DIR)/fsm_tokeniser/token_binning.c \
 				$(SRC_DIR)/fsm_tokeniser/token_handlers.c \
-				$(SRC_DIR)/fsm_tokeniser/token_prining.c \
+				$(SRC_DIR)/fsm_tokeniser/token_printing.c \
 				$(SRC_DIR)/fsm_tokeniser/token_skipping.c \
 				$(SRC_DIR)/fsm_tokeniser/token_utils.c \
 				$(SRC_DIR)/fsm_tokeniser/tokeniser.c \

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:19:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/17 14:58:23 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/17 18:19:58 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ const t_fsmtransition	*_fsm_trns(void)
 		{ST_WORD, "\2\10\11", ST_OPRA},
 		{ST_WORD, "\7\14", ST_SEQ},
 		{ST_WORD, "\15", ST_END},
+		{ST_WORD, "\17", ST_WORD},
 		{ST_WORD, "\3\4\5", ST_REDR},
-		{ST_WORD, "\12", ST_LSSH},
 		{ST_WORD, "\13", ST_RSSH},
 		{ST_WORD, "\6", ST_HDOC},
 		{ST_WORD, "\1", ST_WORD},
@@ -71,6 +71,7 @@ const t_fsmtransition	*_fsm_trns(void)
 		{ST_RSSH, "\7\14", ST_SEQ},
 		{ST_RSSH, "\3\4\5", ST_REDR},
 		{ST_RSSH, "\6", ST_HDOC},
+		{ST_RSSH, "\17", ST_WORD},
 		{ST_SEQ, "\15", ST_END},
 		{ST_SEQ, "\1", ST_WORD},
 		{ST_SEQ, "\3\4\5", ST_REDR},

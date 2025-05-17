@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_prining.c                                    :+:      :+:    :+:   */
+/*   token_printing.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 18:20:41 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/16 11:23:26 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/17 18:25:03 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ const char	*token_type_to_string(t_tokentype type)
 		"None", "Word", "Pipe", "Redirect out (>)",
 		"Redirect append (>>)", "Redirect in (<)", "Heredoc",
 		"After (;)", "And", "Or", "Open parenthesis",
-		"Close parenthesis", "Disown (&)", "End of input"
+		"Close parenthesis", "Disown (&)", "End of input",
+		"Incomplete string", "Redirect to fd"
 	};
 
 	return (types[type]);
