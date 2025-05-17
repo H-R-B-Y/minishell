@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:36:40 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/17 13:56:29 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/17 14:06:10 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_tokentype	bin_token(const char *raw_token)
 	if (*raw_token == '|')
 		return (TOK_PIPE + (7 * (raw_token[1]
 			&& raw_token[1] == raw_token[0])));
-	if (*raw_token == '<') // TODO:FDS this needs to be updated
+	if (*raw_token == '<')
 		return (TOK_REDIR_IN + (1 * (raw_token[1] == *raw_token)));
 	if (ft_isdigit(*raw_token) || *raw_token == '>')
 		return (potential_redirect(raw_token));

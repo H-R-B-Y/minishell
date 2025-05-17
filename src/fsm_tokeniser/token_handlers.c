@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:37:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/17 13:47:36 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/17 14:11:09 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	handle_operator(t_tokint *tokeniser, char *str)
 	char	c;
 
 	c = str[tokeniser->index_start];
-	if (c != ';' && c != '(' && c != ')' && c != '>' // TODO: maybe we should put this in strchr or reverse it
+	if (!ft_strchr(";()>", c)
 		&& c == str[tokeniser->index_start + 1])
 		tokeniser->index_end = tokeniser->index_start + 2;
 	else if (ft_isdigit(c) || c == '>')
@@ -66,7 +66,7 @@ void	handle_unclosed_quote(t_tokint *tokeniser, char *str)
 	}
 	temp = ft_substr(str, tokeniser->index_start,
 		tokeniser->index_end - tokeniser->index_start);
-		tokeniser->previous_line = str_vec_join((char *[3]){
+	tokeniser->previous_line = str_vec_join((char *[3]){
 		temp, "\n", 0
 	});
 }

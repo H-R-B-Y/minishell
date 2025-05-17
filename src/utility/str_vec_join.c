@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 17:18:06 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/13 18:01:11 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/17 14:11:39 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*str_vec_join(char **arr)
 		size += ft_strlen(arr[index++]);
 	index = 0;
 	write_head = 0;
-	out = ft_calloc(size, sizeof(char));
+	out = ft_calloc(size + 1, sizeof(char));
 	if (!out)
 		return ((void *)0);
 	while (arr[index])
