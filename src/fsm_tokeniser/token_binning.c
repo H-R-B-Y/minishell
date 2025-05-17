@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:36:40 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/17 15:06:57 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/17 18:16:03 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ t_tokentype	potential_redirect(const char *raw_token)
 		while (ft_isdigit(raw_token[i]))
 			i++;
 		if (!raw_token[i])
-			return (TOK_REDIR_OUT);
+		 	// This should be a redirect_map token, as it does not need to have a word after it
+			return (TOK_REDIR_FD);
 	}
 	return (TOK_NONE);
 }

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/16 18:06:18 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/17 18:20:21 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "libft.h"
 # include <stdio.h>
 
-# define TRNSCOUNT 35
+# define TRNSCOUNT 37
 
 /*
 This section covers the main token types, 
@@ -77,6 +77,8 @@ enum e_tokentype
 	TOK_EOF,
 	/// tokeniser error couldn't complete a string sequence
 	TOK_INCOMPLETE_STRING,
+	/// redirect to an fd isntead of a file n>&m
+	TOK_REDIR_FD,
 	/// count of total token types
 	TOK_COUNT
 };

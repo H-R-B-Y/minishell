@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:37:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/17 14:39:28 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/17 18:06:22 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,17 +44,17 @@ void	handle_operator(t_tokint *tokeniser, char *str)
 {
 	char	c;
 
-	c = str[tokeniser->index_start];
+	c = str[tokeniser->index_end];
 	if (ft_isdigit(c) || c == '>')
 		handle_potential_redirect(tokeniser, str);
-	else if (c == '&' && str[tokeniser->index_start + 1] == '>')
-		tokeniser->index_end += 2 + (1 * (str[tokeniser->index_start + 1]
-			== str[tokeniser->index_start + 2]));
-	else if (ft_strchr(";()", c)
-		&& c == str[tokeniser->index_start + 1])
-		tokeniser->index_end = tokeniser->index_start + 2;
+	else if (c == '&' && str[tokeniser->index_end + 1] == '>')
+		tokeniser->index_end += 2 + (1 * (str[tokeniser->index_end + 1]
+			== str[tokeniser->index_end + 2]));
+	else if (!ft_strchr(";()", c)
+		&& c == str[tokeniser->index_end + 1])
+		tokeniser->index_end = tokeniser->index_end + 2;
 	else
-		tokeniser->index_end = tokeniser->index_start + 1;
+		tokeniser->index_end = tokeniser->index_end + 1;
 }
 
 void	handle_unclosed_quote(t_tokint *tokeniser, char *str)
