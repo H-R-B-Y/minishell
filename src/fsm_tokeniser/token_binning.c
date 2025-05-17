@@ -6,11 +6,17 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:36:40 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/17 14:38:27 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/17 15:06:57 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/fsm_tokeniser.h"
+
+/*
+Would it be better to have some form of 
+lookup to allow us to expand this in more meaningful ways
+not sure -_-
+*/
 
 t_tokentype	potential_redirect(const char *raw_token)
 {

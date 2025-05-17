@@ -46,7 +46,6 @@ SRCS			:= \
 				$(SRC_DIR)/fsm_tokeniser/fsm_utils.c \
 				$(SRC_DIR)/fsm_tokeniser/token_binning.c \
 				$(SRC_DIR)/fsm_tokeniser/token_handlers.c \
-				$(SRC_DIR)/fsm_tokeniser/token_operators.c \
 				$(SRC_DIR)/fsm_tokeniser/token_prining.c \
 				$(SRC_DIR)/fsm_tokeniser/token_skipping.c \
 				$(SRC_DIR)/fsm_tokeniser/token_utils.c \
@@ -62,6 +61,7 @@ SRCS			:= \
 				$(SRC_DIR)/syntax_tree/syntax_heirarchy.c \
 				$(SRC_DIR)/syntax_tree/syntax_util.c \
 				\
+				$(SRC_DIR)/utility/operators.c \
 				$(SRC_DIR)/utility/pop_line.c \
 				$(SRC_DIR)/utility/str_join_with_sep.c \
 				$(SRC_DIR)/utility/str_vec_join.c \
