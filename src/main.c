@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/17 11:33:10 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/17 17:59:33 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_clear_screen(void)
 }
 
 
-
+char	*create_prompt(void);
 int main(int argc, char **argv, char **envp)
 {
 	t_minishell	shell;
@@ -31,7 +31,7 @@ int main(int argc, char **argv, char **envp)
 	add_history("(this\n) && should work");
 	add_history("\"this\n should\"\nwork");
 	add_history("(this &&\nhas a seperator)");
-	shell.prompt = "minishell -> ";
+	shell.prompt = create_prompt();
 	while (!readline_loop(&shell))
 	{
 		if (shell.fsm_data.state != PARSE_ERROR)

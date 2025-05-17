@@ -42,6 +42,9 @@ SRC_DIR			:= ./src
 
 
 SRCS			:= \
+				$(SRC_DIR)/better_prompt/git_stuff.c \
+				$(SRC_DIR)/better_prompt/prompt_setup.c \
+				\
 				$(SRC_DIR)/fsm_tokeniser/fsm_tokeniser.c \
 				$(SRC_DIR)/fsm_tokeniser/fsm_utils.c \
 				$(SRC_DIR)/fsm_tokeniser/token_binning.c \
