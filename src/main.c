@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/17 11:21:55 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/17 19:34:27 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void do_something(int n)
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
+	fflush(STDIN_FILENO);
 }
 
 int	better_add_history(char *string)
@@ -68,7 +69,7 @@ void	reset_for_command(t_minishell *shell)
 	}
 	reset_fsm(&shell->fsm_data);
 }
-
+char	*create_prompt(void);
 int main(int argc, char **argv, char **envp)
 {
 	static t_minishell	shell = {0};
@@ -79,7 +80,7 @@ int main(int argc, char **argv, char **envp)
 	reset_for_command(&shell);
 	signal(SIGINT, do_something);
 	add_history("(this\n) && should work"); add_history("\"this\n should\"\nwork"); add_history("(this &&\nhas a seperator)");
-	shell.prompt = "minishell -> ";
+	shell.prompt = create_prompt();
 	while (1)
 	{
 		rlcode = read_until_complete_command(&shell);

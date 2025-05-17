@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 17:46:41 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/17 18:00:41 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/17 19:43:37 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,28 @@
 int		is_git_dir(void);
 int		has_git(void);
 char	*run_git_command(char **argv);
+
+size_t	get_terminal_width(void)
+{
+	struct winsize	ws;
+	
+	if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1)
+		return (-1);
+	return (ws.ws_col);
+}
+
+void clear_previous_prompt(int lns)
+{
+	int i;
+
+	i=0;
+	while (i < lns)
+	{
+		printf("\033[F");       // move cursor up
+		printf("\033[2K\r");    // clear entire line
+		i++;
+	}
+}
 
 char	*create_prompt(void)
 {
@@ -36,4 +58,11 @@ char	*create_prompt(void)
 	free(prompt);
 	free(temp[0]);
 	return (temp[1]);
+}
+
+
+int	print_transient_prompt(void)
+{
+	printf("%s", create_prompt());
+	return (0);
 }
