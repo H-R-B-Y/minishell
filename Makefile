@@ -4,7 +4,7 @@ CFLAGS			:= -Wextra -Wall -Werror -Ofast -g3
 
 MAKEFLAGS		+= --no-print-directory
 
-LIBFLAGS		:= -lreadline
+LIBFLAGS		:= -lreadline -lhistory
 
 HEADERS			:= -Iinclude
 

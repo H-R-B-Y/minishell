@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:07:29 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/16 17:33:48 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/17 11:06:51 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ typedef enum e_readline_retcode	t_readline_retcode;
 enum e_readline_retcode
 {
 	READ_OK,
+	READ_NOTHING,
+	READ_EOF,
 	READ_ERROR, // split this out later into different issues
+	READ_BADPARSE,
 	READ_RETCODE_COUNT
 };
 

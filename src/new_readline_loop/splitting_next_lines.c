@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:16:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/16 17:58:54 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/17 11:07:10 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,9 @@ int	next_line(t_readline_data *data, char *prompt)
 	}
 	temp = readline(prompt);
 	if (!temp)
-		return (READ_ERROR);
+		return (READ_EOF);
+	if (!*temp)
+		return (READ_NOTHING);
 	split_extra_lines(data, temp);
 	free(temp);
 	return (next_line(data, prompt));

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/16 18:00:06 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/17 11:21:55 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,36 @@ void do_something(int n)
 	rl_redisplay();
 }
 
+int	better_add_history(char *string)
+{
+	size_t		i;
+	HIST_ENTRY	**the_history;
+	int			ret;
+
+	the_history = history_list();
+	i = 0;
+	ret = 1;
+	while (the_history[i])
+	{
+		if (!ft_strncmp(the_history[i]->line, string,
+			ft_strlen(the_history[i]->line) + 1))
+		{
+			ret = 0;
+			remove_history((int)i);
+			break ;
+		}
+		i++;
+	}
+	add_history(string);
+	return (1);
+}
+
+
 void	reset_for_command(t_minishell *shell)
 {
 	if (shell->rldata.current_hist_item)
 	{
-		add_history(shell->rldata.current_hist_item);
+		better_add_history(shell->rldata.current_hist_item);
 		free(shell->rldata.current_hist_item);
 		shell->rldata.current_hist_item = 0;
 	}
@@ -47,27 +72,33 @@ void	reset_for_command(t_minishell *shell)
 int main(int argc, char **argv, char **envp)
 {
 	static t_minishell	shell = {0};
+	t_readline_retcode	rlcode;
 
 	(void)argc;(void)argv;
 	shell.environment = envp;
 	reset_for_command(&shell);
-	// just some test items
-	// signal(SIGUSR1, (void *)do_something);
+	signal(SIGINT, do_something);
 	add_history("(this\n) && should work"); add_history("\"this\n should\"\nwork"); add_history("(this &&\nhas a seperator)");
 	shell.prompt = "minishell -> ";
 	while (1)
 	{
-		if (read_until_complete_command(&shell))
+		rlcode = read_until_complete_command(&shell);
+		if (rlcode == READ_OK)
 		{
 			shell.tokens = fsm_pop_list(&shell.fsm_data);
 			print_token_list(shell.tokens);
 			shell.tokenv = (void *)ft_lstarr(shell.tokens);
 			ft_lstclear(&shell.tokens, 0);
-			shell.current_tree = produce_ast(shell.tokenv, ft_arrlen((void *)shell.tokenv));
+			shell.current_tree = produce_ast(shell.tokenv,
+				ft_arrlen((void *)shell.tokenv));
 			print_ast(shell.current_tree, "|	|");
 		}
-		else
-			printf("issue occured!\n");
+		else if (rlcode == READ_BADPARSE)
+			printf("Parse error: %s!\n", shell.fsm_data.str_condition);
+		else if (rlcode == READ_ERROR)
+			printf("Issue encountered while reading!\n"); // should probably collect some data to provide the user when this happens
+		else if (rlcode == READ_EOF)
+			break ;
 		reset_for_command(&shell);
 	}
 	reset_fsm(&shell.fsm_data);
