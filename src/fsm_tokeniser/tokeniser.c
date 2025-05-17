@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:22:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/17 14:11:55 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/17 14:20:40 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,6 @@ t_tokretcode	correct_retcode(t_fsmdata *fsm)
 		return (state_change(fsm, ST_STRT), set_retcode(fsm, PARSE_OK, 0));
 	return (set_retcode(fsm, PARSE_ERROR, ft_strdup("generic error")));
 }
-
 
 t_tokretcode	tokenise(t_fsmdata *fsm, char *str)
 {

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:37:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/17 14:11:09 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/17 14:39:28 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,13 @@ void	handle_potential_redirect(t_tokint *tokeniser, char *str)
 {
 	while (str[tokeniser->index_end] && isdigit(str[tokeniser->index_end]))
 		tokeniser->index_end++;
-	if (str[tokeniser->index_end] == '>')
+	if (str[tokeniser->index_end] == '<')
+	{
+		tokeniser->index_end++;
+		if (str[tokeniser->index_end] == '<')
+			tokeniser->index_end++;
+	}
+	else if (str[tokeniser->index_end] == '>')
 	{
 		tokeniser->index_end++;
 		if (str[tokeniser->index_end] == '>')
@@ -39,11 +45,14 @@ void	handle_operator(t_tokint *tokeniser, char *str)
 	char	c;
 
 	c = str[tokeniser->index_start];
-	if (!ft_strchr(";()>", c)
+	if (ft_isdigit(c) || c == '>')
+		handle_potential_redirect(tokeniser, str);
+	else if (c == '&' && str[tokeniser->index_start + 1] == '>')
+		tokeniser->index_end += 2 + (1 * (str[tokeniser->index_start + 1]
+			== str[tokeniser->index_start + 2]));
+	else if (ft_strchr(";()", c)
 		&& c == str[tokeniser->index_start + 1])
 		tokeniser->index_end = tokeniser->index_start + 2;
-	else if (ft_isdigit(c) || c == '>')
-		handle_potential_redirect(tokeniser, str);
 	else
 		tokeniser->index_end = tokeniser->index_start + 1;
 }
