@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/19 15:18:23 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/19 15:36:39 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int main(int argc, char **argv, char **envp)
 	shell.prompt = "minishell -> ";
 	while (1)
 	{
-		if (readline_loop(&shell) != PARSE_ERROR)
+		if (!readline_loop(&shell))
 		{
 			print_token_list(shell.tokens);
 			shell.tokenv = (void *)ft_lstarr(shell.tokens);
