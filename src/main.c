@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/17 11:33:10 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/19 15:18:23 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ int main(int argc, char **argv, char **envp)
 	add_history("\"this\n should\"\nwork");
 	add_history("(this &&\nhas a seperator)");
 	shell.prompt = "minishell -> ";
-	while (!readline_loop(&shell))
+	while (1)
 	{
-		if (shell.fsm_data.state != PARSE_ERROR)
+		if (readline_loop(&shell) != PARSE_ERROR)
 		{
 			print_token_list(shell.tokens);
 			shell.tokenv = (void *)ft_lstarr(shell.tokens);

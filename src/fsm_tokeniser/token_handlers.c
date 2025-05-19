@@ -6,11 +6,13 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:37:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/17 18:06:22 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/19 15:21:35 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+t_tokentype		_parse_loop_internals(t_tokint *tokeniser, char *str);
 
 void	handle_potential_redirect(t_tokint *tokeniser, char *str)
 {
@@ -38,6 +40,8 @@ void	handle_potential_redirect(t_tokint *tokeniser, char *str)
 				tokeniser->index_end++;
 		}
 	}
+	else
+		_parse_loop_internals(tokeniser, str);
 }
 
 void	handle_operator(t_tokint *tokeniser, char *str)
