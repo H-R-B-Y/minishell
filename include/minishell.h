@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/08 16:41:46 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/16 12:54:09 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,10 @@
 # include <term.h>
 
 # include "./libft.h"
-# include "./input_tokens.h"
+// # include "./input_tokens.h"
+// # include "./new_lexar.h"
+# include "./fsm_tokeniser.h"
 # include "./abstract_syntax_tree.h"
-
 
 /**
  * @brief the main struct for storing minishell state
@@ -43,9 +44,11 @@
  * @param current_pipeline the current command string we are running
  * @param extra_lines a vector array of extra lines read from readline
  * 
- * @note extra lines should not be populated after readline loop (it should be free'd)
+ * @note extra lines should not be populated after readline loop
+ * (it should be free'd)
  * @param prompt I thought it would be nice if we allowed the prompt 
- * to be customised so i made it a variable, should probably indicate current directory too.
+ * to be customised so i made it a variable, should probably indicate current
+ * directory too.
  */
 typedef struct s_minishell	t_minishell;
 struct s_minishell
@@ -55,6 +58,7 @@ struct s_minishell
 	t_token		**tokenv;
 	t_astnode	*current_tree;
 
+	t_fsmdata	fsm_data;
 	/*
 	i think the best way to handle this would be to keep concatinating
 	the readlines until we reach the point where we have a valid AST.
@@ -63,9 +67,12 @@ struct s_minishell
 
 	then run the execution tree.
 	*/
-	char		*current_line; // this is everything we have read for the current pipeline.
-	char		*current_pipeline; // this is everything we are tokenising and running
-	char		**extra_lines; // this is every line that we are not currently tokenising
+	// this is everything we have read for the current pipeline.
+	char		*current_line;
+	// this is everything we are tokenising and running
+	char		*current_pipeline;
+	// this is every line that we are not currently tokenising
+	char		**extra_lines;
 
 	char		*prompt;
 };
@@ -80,7 +87,8 @@ struct s_minishell
  * - current_pipeline
  * - extra_lines
  * 
- * It should probably updated to return some kind of information about why it returned
+ * It should probably updated to return some kind of information about why
+ * it returned
  * TODO: make an enum for return codes so we can tell why it returned? 
  */
 int		readline_loop(t_minishell *shell);
@@ -91,7 +99,7 @@ int		readline_loop(t_minishell *shell);
  * 
  * TODO: this should probably be moved to the input tokens header.
  */
-void	print_token_list(t_list *list);// TODO: remove this when we dont need to bebug it anymore?
+void	print_token_list(t_list *list);
 
 // Utility functions:
 // Some of these may be useful in libft?
@@ -106,5 +114,11 @@ void	print_token_list(t_list *list);// TODO: remove this when we dont need to be
  * cat and dog
  */
 char	*str_join_with_sep(char *str1, char *str2, char *sep);
+
+char	*str_vec_join(char **arr);
+
+char	*_pop_line(t_minishell *shell);
+
+void readline_cleanup(t_minishell *shell);
 
 #endif

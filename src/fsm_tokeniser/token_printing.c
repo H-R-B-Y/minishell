@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_util.c                                       :+:      :+:    :+:   */
+/*   token_printing.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/01 11:24:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/08 16:33:21 by hbreeze          ###   ########.fr       */
+/*   Created: 2025/05/14 18:20:41 by hbreeze           #+#    #+#             */
+/*   Updated: 2025/05/17 18:25:03 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "../../include/fsm_tokeniser.h"
 
 const char	*token_type_to_string(t_tokentype type)
 {
@@ -18,26 +18,11 @@ const char	*token_type_to_string(t_tokentype type)
 		"None", "Word", "Pipe", "Redirect out (>)",
 		"Redirect append (>>)", "Redirect in (<)", "Heredoc",
 		"After (;)", "And", "Or", "Open parenthesis",
-		"Close parenthesis", "Disown (&)", "End of input"
+		"Close parenthesis", "Disown (&)", "End of input",
+		"Incomplete string", "Redirect to fd"
 	};
 
 	return (types[type]);
-}
-
-const char	*token_err_type_to_string(t_tokerr err)
-{
-	static const char	*errors[TOKEN_ERROR_COUNT] = {
-		"TOK_ERR_NONE",
-		"UNCLOSED_SINGLEQUOTE",
-		"UNCLOSED_DOUBLEQUOTE",
-		"UNCLOSED_PARENTHESIS",
-		"OPEN_CONDITION_AND",
-		"OPEN_CONDITION_OR",
-		"HEREDOC_WITHOUT_WORD",
-		"UNFINISHED_PIPE",
-	};
-
-	return (errors[err]);
 }
 
 void	print_token_type(t_tokentype type)
@@ -45,13 +30,21 @@ void	print_token_type(t_tokentype type)
 	printf("%s", token_type_to_string(type));
 }
 
-void	print_token_error(t_tokerr err)
-{
-	printf("%s", token_err_type_to_string(err));
-}
 
 void	print_token(t_token *token, int column_width)
 {
-	printf("%-*s;  %*s; %*s\n", column_width, token_type_to_string(token->type),
-		column_width, token->raw, column_width, token->text);
+	printf("%-*s;  %*s\n", column_width, token_type_to_string(token->type),
+		column_width, token->raw);
+}
+
+void	print_token_list(t_list *list)
+{
+	t_list *next;
+
+	next = list;
+	while (next)
+	{
+		print_token(next->content, 25);
+		next = next->next;
+	}
 }
