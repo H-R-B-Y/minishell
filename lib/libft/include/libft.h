@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:21:04 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/02 17:47:13 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/10 15:07:23 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -394,6 +394,9 @@ int				ft_lstsize(t_list *lst);
  * @return Pointer to the last list item
  */
 t_list			*ft_lstlast(t_list *lst);
+
+t_list			*ft_lstpop_back(t_list **lst);
+t_list			*ft_lstpop_front(t_list **lst);
 
 // Deletion
 
