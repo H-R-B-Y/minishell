@@ -2,7 +2,7 @@ NAME		= libft.a
 HEADER		= libft.h
 
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -g3 -O0
 AR			= ar rc
 
 # Mandatory functions
@@ -12,10 +12,12 @@ SRC			= ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c \
 			ft_putnbr_fd.c ft_putstr_fd.c ft_split.c ft_strchr.c ft_strdup.c \
 			ft_striteri.c ft_strjoin.c ft_strlcat.c ft_strlcpy.c ft_strlen.c \
 			ft_strmapi.c ft_strncmp.c ft_strnstr.c ft_strrchr.c ft_strtrim.c \
-			ft_substr.c ft_tolower.c ft_toupper.c ft_memmove.c
+			ft_substr.c ft_tolower.c ft_toupper.c ft_memmove.c ft_strcmp.c
 # Extra functions
 SRC			+= ft_iswhitespace.c ft_splitquoted.c ft_splitfn.c ft_atof.c ft_arrlen.c \
-			ft_arrclear.c ft_arrlist.c ft_arrmap.c ft_lstarr.c ft_arriter.c
+			ft_arrclear.c ft_arrlist.c ft_arrmap.c ft_lstarr.c ft_arriter.c \
+			ft_arradd_back.c ft_arradd_front.c ft_arradd_atindex.c ft_arrdel_atindex.c \
+			ft_dirtyswap.c
 
 # Bonus functions
 BSRC		= ft_lstnew_bonus.c ft_lstadd_front_bonus.c ft_lstsize_bonus.c ft_lstlast_bonus.c \

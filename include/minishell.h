@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/16 12:54:09 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/22 18:06:15 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,38 @@
 typedef struct s_minishell	t_minishell;
 struct s_minishell
 {
+	/*
+	this is the environment that will be passed down to any child process
+	at the start of the program we take a copy of the environment varaiables
+	so that we can edit them on the fly.
+	*/
 	char		**environment;
+	/*
+	this is another environment variable array, this one however 
+	is only in the context of the current shell, it can be used for variable expansion
+	but cannot be passed to child processes.
+	*/
+	char		**local_env;
+
+	/*
+	tokens list is just for the internal tokenisation process, it probably shouldnt
+	be included as part of the main struct! ~ i can remove this later
+	*/
 	t_list		*tokens;
+	/*
+	token vector is part of the main struct solely as a reference for cleaning up
+	all the tokens need to be kept for the entire execution process (well only until they are executed i guess)
+	but if this reference to them here this is all we need to cleanup
+	*/
 	t_token		**tokenv;
+	/*
+	current tree, nodes will need to be free'd but their internal tokens
+	do not have to be free'd
+	*/
 	t_astnode	*current_tree;
 
+	/*
+	internal finite state machine data*/
 	t_fsmdata	fsm_data;
 	/*
 	i think the best way to handle this would be to keep concatinating
@@ -119,6 +146,16 @@ char	*str_vec_join(char **arr);
 
 char	*_pop_line(t_minishell *shell);
 
-void readline_cleanup(t_minishell *shell);
+void	readline_cleanup(t_minishell *shell);
+
+
+/*
+More utility functions
+*/
+
+char	*sgetenv(t_minishell *shell, char *name);
+ssize_t	sgetenvid(t_minishell *shell, char *name);
+char	*sgetslenv(t_minishell *shell, char *name);
+ssize_t	sgetslenvid(t_minishell *shell, char *name);
 
 #endif

@@ -1,0 +1,52 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utility_funcs.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/22 11:57:17 by hbreeze           #+#    #+#             */
+/*   Updated: 2025/05/22 12:32:27 by hbreeze          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
+#include "../../include/builtin.h"
+
+static const struct s_buitinmapping	*mapped_builtins(void)
+{
+	static const struct s_buitinmapping	builtinmap[BLTINCOUNT] = {
+		{.match = "cd", .fnc = &builtin_cd},
+		{.match = "echo", .fnc = &builtin_echo},
+		{.match = "env", .fnc = &builtin_env},
+		{.match = "exit", .fnc = &builtin_exit},
+		{.match = "export", .fnc = &builtin_export},
+		{.match = "pwd", .fnc = &builtin_pwd},
+		{.match = "unset", .fnc = &builtin_unset},
+		0
+	};
+
+	return (builtinmap);
+}
+
+/**
+ * @brief Get the builtincmd object for a given string
+ * 
+ * @param str the string to check for a builtin command
+ * @return t_builtincmd function pointer to the command or NULL
+ */
+t_builtincmd	get_builtincmd(char *str)
+{
+	const struct s_buitinmapping	*fncmap;
+	size_t							i;
+
+	fncmap = mapped_builtins();
+	i = 0;
+	while (i < BLTINCOUNT)
+	{
+		if (!ft_strcmp(str, fncmap[i].match))
+			return (fncmap[i].fnc);
+		i++;
+	}
+	return ((void *)0);
+}

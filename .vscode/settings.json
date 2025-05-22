@@ -6,6 +6,9 @@
 		"abstract_syntax_tree.h": "c",
 		"compare": "c",
 		"type_traits": "c",
-		"fsm_tokeniser.h": "c"
+		"fsm_tokeniser.h": "c",
+		"history.h": "c",
+		"builtin.h": "c",
+		"stdlib.h": "c"
 	}
 }
