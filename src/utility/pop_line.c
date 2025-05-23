@@ -6,13 +6,13 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:45:56 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/08 16:22:48 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/23 20:37:43 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-char *_pop_line(t_minishell *shell)
+char	*_pop_line(t_minishell *shell)
 {
 	char	*str;
 

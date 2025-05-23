@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/22 18:47:50 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/23 20:43:13 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,12 @@ void	ft_clear_screen(void)
 	fflush(stdout);
 }
 
-int main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
 	t_minishell	shell;
 
-	(void)argc;(void)argv;
+	(void)argc;
+	(void)argv;
 	shell.environment = envp;
 	ft_bzero(&shell, sizeof(t_minishell));
 	reset_fsm(&shell.fsm_data);
@@ -38,7 +39,7 @@ int main(int argc, char **argv, char **envp)
 			shell.tokenv = (void *)ft_lstarr(shell.tokens);
 			ft_lstclear(&shell.tokens, 0);
 			shell.current_tree = produce_ast(shell.tokenv,
-				ft_arrlen((void *)shell.tokenv));
+					ft_arrlen((void *)shell.tokenv));
 			print_ast(shell.current_tree, "|	|");
 			add_history(shell.current_line);
 		}

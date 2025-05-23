@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:57:17 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/23 14:07:44 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/23 20:36:10 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,14 @@
 
 static const struct s_buitinmapping	*mapped_builtins(void)
 {
-	static const struct s_buitinmapping	builtinmap[BLTINCOUNT] = {
-		{.match = "cd", .fnc = &builtin_cd},
-		{.match = "echo", .fnc = &builtin_echo},
-		{.match = "env", .fnc = &builtin_env},
-		{.match = "exit", .fnc = &builtin_exit},
-		{.match = "export", .fnc = &builtin_export},
-		{.match = "pwd", .fnc = &builtin_pwd},
-		{.match = "unset", .fnc = &builtin_unset},
-		0
-	};
+	static const struct s_buitinmapping	builtinmap[BLTINCOUNT]
+		= {{.match = "cd", .fnc = &builtin_cd},
+	{.match = "echo", .fnc = &builtin_echo},
+	{.match = "env", .fnc = &builtin_env},
+	{.match = "exit", .fnc = &builtin_exit},
+	{.match = "export", .fnc = &builtin_export},
+	{.match = "pwd", .fnc = &builtin_pwd},
+	{.match = "unset", .fnc = &builtin_unset}, 0};
 
 	return (builtinmap);
 }

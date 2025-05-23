@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:22:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/23 15:01:15 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/23 20:41:12 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ Is it needed? not really, so i guess i will leave it alone.
 
 // I cannot reduce this function to below 25 lines lol, need to split it out
 // or rename something 
-t_tokentype		_parse_loop_internals(t_tokint *tokeniser, char *str)
+t_tokentype	_parse_loop_internals(t_tokint *tokeniser, char *str)
 {
 	char	c;
 
@@ -47,8 +47,8 @@ t_tokentype		_parse_loop_internals(t_tokint *tokeniser, char *str)
 		c = str[tokeniser->index_end];
 		if (c == '\\' && tokeniser->quote_mode != QUOTE_SINGLE
 			&& str[tokeniser->index_end + 1] && ++tokeniser->index_end
-			&& ++tokeniser->index_end) // This is for handling escape codes
-			continue;
+			&& ++tokeniser->index_end)
+			continue ;
 		if (tokeniser->quote_mode == QUOTE_NONE)
 		{
 			if (c == '\'')
@@ -68,7 +68,7 @@ t_tokentype		_parse_loop_internals(t_tokint *tokeniser, char *str)
 	return (0);
 }
 
-t_tokentype		next_token_type(t_tokint *tokeniser, char *str)
+t_tokentype	next_token_type(t_tokint *tokeniser, char *str)
 {
 	tokeniser->index_start = tokeniser->index_end;
 	if (!str[tokeniser->index_start])
@@ -83,7 +83,7 @@ t_tokentype		next_token_type(t_tokint *tokeniser, char *str)
 		return (tokeniser->current_type);
 	if (tokeniser->quote_mode != QUOTE_NONE || (tokeniser->index_end > 1
 			&& str[tokeniser->index_end - 1] == '\\'
-			&& str[tokeniser->index_end - 2] != '\\')) // escaping a newline is an incomplete string
+			&& str[tokeniser->index_end - 2] != '\\'))
 		return (handle_unclosed_quote(tokeniser, str), TOK_INCOMPLETE_STRING);
 	else if (tokeniser->index_start < tokeniser->index_end)
 		return (tokenise_type(tokeniser, str));
@@ -100,7 +100,7 @@ t_tokretcode	set_retcode(t_fsmdata *fsm,
 		fsm->tokeniser_internals.index_start = 0;
 	}
 	if (str_condition && fsm->str_condition)
-			free(fsm->str_condition);
+		free(fsm->str_condition);
 	fsm->str_condition = str_condition;
 	return (code);
 }
@@ -123,7 +123,7 @@ t_tokretcode	correct_retcode(t_fsmdata *fsm)
 {
 	if (fsm->paren_count < 0)
 		return (set_retcode(fsm, PARSE_ERROR,
-			ft_strdup("parenthesis dont make sense")));
+				ft_strdup("parenthesis dont make sense")));
 	if (fsm->state == ST_CONT)
 	{
 		state_change(fsm, fsm->last_state);
@@ -156,9 +156,10 @@ t_tokretcode	tokenise(t_fsmdata *fsm, char *str)
 		&& fsm->state != ST_CONT
 		&& fsm->state != ST_WRNG)
 	{
-		fsm->tokeniser_internals.current_type = next_token_type(&fsm->tokeniser_internals, str);
+		fsm->tokeniser_internals.current_type
+			= next_token_type(&fsm->tokeniser_internals, str);
 		next_state = fsm_check_transition(fsm->state,
-			fsm->tokeniser_internals.current_type);
+				fsm->tokeniser_internals.current_type);
 		if (!handle_token_type(fsm))
 			next_state = ST_WRNG;
 		state_change(fsm, next_state);

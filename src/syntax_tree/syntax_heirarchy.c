@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 12:20:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/23 14:30:48 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/23 20:37:56 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_astnode	*ast_parse_subcommand(struct s_ast_internal *meta)
 	meta->consumed++;
 	me->left_node = ast_parse_seperators(meta);
 	if ((meta->tokens[meta->consumed]
-		&& meta->tokens[meta->consumed]->type != TOK_RPAREN)
+			&& meta->tokens[meta->consumed]->type != TOK_RPAREN)
 		|| !meta->tokens[meta->consumed])
 	{
 		printf("Syntax error");

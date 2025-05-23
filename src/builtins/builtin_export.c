@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:44:33 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/23 14:49:07 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/23 20:33:30 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void	export_with_sep(t_minishell *shell, char *item, char *sep)
 			free_strvec);
 }
 
+// check if it exists in local vars and remove it
+// TODO: rename sgetslenvid function set for clarity
 int	builtin_export(t_minishell *shell, char **argv, char **envp)
 {
 	char	*sep;
@@ -66,8 +68,7 @@ int	builtin_export(t_minishell *shell, char **argv, char **envp)
 		export_no_sep(shell, argv[1]);
 	else
 		export_with_sep(shell, argv[1], sep);
-	// check if it exists in local vars and remove it
-	in = sgetslenvid(shell, name); // TODO: rename this set of functions for clarity
+	in = sgetslenvid(shell, name);
 	if (in >= 0)
 		ft_dirtyswap((void *)&shell->local_env,
 			ft_arrdel_atindex(shell->local_env, in), free_strvec);

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:36:40 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/23 14:49:07 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/23 20:40:12 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_tokentype	bin_token(const char *raw_token)
 		return (TOK_WORD);
 	if (*raw_token == '|')
 		return (TOK_PIPE + (7 * (raw_token[1]
-			&& raw_token[1] == raw_token[0])));
+					&& raw_token[1] == raw_token[0])));
 	if (*raw_token == '<')
 		return (TOK_REDIR_IN + (1 * (raw_token[1] == *raw_token)));
 	if (ft_isdigit(*raw_token) || *raw_token == '>')
@@ -64,7 +64,7 @@ t_tokentype	bin_token(const char *raw_token)
 		return (TOK_AFTER);
 	if (*raw_token == '&' && raw_token[1] != '>')
 		return (TOK_AMP - (4 * (raw_token[1]
-			&& raw_token[0] == raw_token[1])));
+					&& raw_token[0] == raw_token[1])));
 	if (*raw_token == '&' && raw_token[1] == '>')
 		return (TOK_REDIR_OUT + (1 * (raw_token[1] == raw_token[2])));
 	if (*raw_token == '(' || *raw_token == ')')
@@ -74,10 +74,10 @@ t_tokentype	bin_token(const char *raw_token)
 
 t_tokentype	tokenise_type(t_tokint *tokeniser, char *str)
 {
-	char *substring;
+	char	*substring;
 
 	substring = ft_substr(str, tokeniser->index_start,
-		tokeniser->index_end - tokeniser->index_start);
+			tokeniser->index_end - tokeniser->index_start);
 	tokeniser->current_type = bin_token(substring);
 	tokeniser->current_token = ft_calloc(1, sizeof(t_token));
 	(*tokeniser->current_token) = (t_token){.heredoc_delim = 0,
