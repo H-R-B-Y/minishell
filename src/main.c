@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/17 11:33:10 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/22 18:47:50 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ void	ft_clear_screen(void)
 	printf("\033[2J\033[H");
 	fflush(stdout);
 }
-
-
 
 int main(int argc, char **argv, char **envp)
 {
