@@ -1,30 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_arrdel_atindex.c                                :+:      :+:    :+:   */
+/*   ft_arrjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/22 17:20:38 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/23 13:07:34 by hbreeze          ###   ########.fr       */
+/*   Created: 2025/05/23 13:06:20 by hbreeze           #+#    #+#             */
+/*   Updated: 2025/05/23 13:18:15 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/libft.h"
 
-void	**ft_arrdel_atindex(void **arr, size_t index)
+void	**ft_arrjoin(void **arr1, void **arr2)
 {
-	size_t	len;
 	void	**output;
+	size_t	lengths[2];
 
-	if (!arr || !*arr)
+	if (!arr1 && !arr2)
 		return (0);
-	len = ft_arrlen(arr);
-	output = ft_calloc(len, sizeof(void *));
-	if (!output)
-		return (0);
-	ft_memmove(output, arr, (index) * sizeof(void *));
-	ft_memmove(output + index, arr + index + 1,
-		((len - 1) - index) * sizeof(void *));
+	lengths[0] = ft_arrlen(arr1);
+	lengths[1] = ft_arrlen(arr2);
+	output = calloc(lengths[0] + lengths[1] + 1, sizeof(void *));
+	ft_memmove(output, arr1,(lengths[0]) * sizeof(void *));
+	ft_memmove(output + lengths[0], arr2, (lengths[1]) * sizeof(void *));
 	return (output);
 }

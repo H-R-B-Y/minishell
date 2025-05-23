@@ -6,11 +6,11 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 18:10:32 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/22 18:12:47 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/23 13:20:23 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void	ft_dirtyswap(void **a, void **b, void (*del)(void *))
+void	ft_dirtyswap(void **a, void *b, void (*del)(void *))
 {
 	del(*a);
 	*a = b;

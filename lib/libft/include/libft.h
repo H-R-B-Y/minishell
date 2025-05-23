@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:21:04 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/22 18:12:43 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/23 13:20:15 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -521,6 +521,8 @@ void	**ft_arradd_front(void **arr, void *newitem);
 void	**ft_arradd_atindex(void **arr, void *newitem, size_t index);
 
 void	**ft_arrdel_atindex(void **arr, size_t index);
+
+void	**ft_arrjoin(void **arr1, void **arr2);
 
 void	ft_dirtyswap(void **a, void *b, void (*del)(void *));
 
