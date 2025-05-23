@@ -15,32 +15,6 @@ LIBFT			:= $(LIBFT_DIR)/libft.a
 
 SRC_DIR			:= ./src
 
-# $(SRC_DIR)/lexar/cleanse_validate_tokens.c \
-# $(SRC_DIR)/lexar/token_binning.c \
-# $(SRC_DIR)/lexar/token_init.c \
-# $(SRC_DIR)/lexar/token_operators.c \
-# $(SRC_DIR)/lexar/token_skipping.c \
-# $(SRC_DIR)/lexar/token_util.c \
-# $(SRC_DIR)/lexar/token_util2.c \
-# $(SRC_DIR)/lexar/tokeniser.c \
-#
-
-# $(SRC_DIR)/new_lexar/check_errors.c \
-# $(SRC_DIR)/new_lexar/quote_isnt_escaped.c \
-# $(SRC_DIR)/new_lexar/set_error.c \
-# $(SRC_DIR)/new_lexar/token_binning.c \
-# $(SRC_DIR)/new_lexar/token_continuation.c \
-# $(SRC_DIR)/new_lexar/token_init.c \
-# $(SRC_DIR)/new_lexar/token_operators.c \
-# $(SRC_DIR)/new_lexar/token_skip.c \
-# $(SRC_DIR)/new_lexar/token_skipping.c \
-# $(SRC_DIR)/new_lexar/token_util.c \
-# $(SRC_DIR)/new_lexar/token_util2.c \
-# $(SRC_DIR)/new_lexar/tokenise_begin.c \
-# $(SRC_DIR)/new_lexar/tokenise.c \
-
-
-
 SRCS			:= \
 				$(SRC_DIR)/fsm_tokeniser/fsm_tokeniser.c \
 				$(SRC_DIR)/fsm_tokeniser/fsm_utils.c \

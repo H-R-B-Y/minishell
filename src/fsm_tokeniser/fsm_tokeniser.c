@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:19:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/23 20:41:45 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/23 20:52:05 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,9 @@ t_fsmstate	fsm_check_transition(t_fsmstate current_state,
 	trns = _fsm_trns();
 	while (i < TRNSCOUNT)
 	{
-		if (_fsm_trns()[i].from_state == current_state
-			&& ft_strchr(_fsm_trns()[i].token_types, next_token))
-			return (_fsm_trns()[i].too_state);
+		if (trns[i].from_state == current_state
+			&& ft_strchr(trns[i].token_types, next_token))
+			return (trns[i].too_state);
 		i++;
 	}
 	return (ST_WRNG);
