@@ -1,5 +1,5 @@
 NAME			:= minishell
-CFLAGS			:= -Wextra -Wall -Werror -Ofast -g3
+CFLAGS			:= -Wextra -Wall -Werror -O0 -g3
 #CFLAGS			:= 
 
 MAKEFLAGS		+= --no-print-directory
@@ -14,18 +14,18 @@ LIBFT_DIR		:= $(abspath $(LIB_DIR)/libft)
 LIBFT			:= $(LIBFT_DIR)/libft.a
 
 SRC_DIR			:= ./src
-
 SRCS			:= \
-				$(SRC_DIR)/fsm_tokeniser/fsm_tokeniser.c \
-				$(SRC_DIR)/fsm_tokeniser/fsm_utils.c \
-				$(SRC_DIR)/fsm_tokeniser/token_binning.c \
-				$(SRC_DIR)/fsm_tokeniser/token_handlers.c \
-				$(SRC_DIR)/fsm_tokeniser/token_printing.c \
-				$(SRC_DIR)/fsm_tokeniser/token_skipping.c \
-				$(SRC_DIR)/fsm_tokeniser/token_utils.c \
-				$(SRC_DIR)/fsm_tokeniser/tokeniser.c \
+				$(SRC_DIR)/lexar/cleanse_validate_tokens.c \
+				$(SRC_DIR)/lexar/token_binning.c \
+				$(SRC_DIR)/lexar/token_init.c \
+				$(SRC_DIR)/lexar/token_operators.c \
+				$(SRC_DIR)/lexar/token_skipping.c \
+				$(SRC_DIR)/lexar/token_util.c \
+				$(SRC_DIR)/lexar/token_util2.c \
+				$(SRC_DIR)/lexar/tokeniser.c \
 				\
 				$(SRC_DIR)/readline_loop/readline_cleanup.c \
+				$(SRC_DIR)/readline_loop/readline_loop_execution.c \
 				$(SRC_DIR)/readline_loop/readline_loop.c \
 				\
 				$(SRC_DIR)/syntax_tree/ast_node_init.c \
@@ -35,10 +35,8 @@ SRCS			:= \
 				$(SRC_DIR)/syntax_tree/syntax_heirarchy.c \
 				$(SRC_DIR)/syntax_tree/syntax_util.c \
 				\
-				$(SRC_DIR)/utility/operators.c \
 				$(SRC_DIR)/utility/pop_line.c \
 				$(SRC_DIR)/utility/str_join_with_sep.c \
-				$(SRC_DIR)/utility/str_vec_join.c \
 				\
 
 TEST_SCRIPT		:=

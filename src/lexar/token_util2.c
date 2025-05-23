@@ -1,39 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   str_vec_join.c                                     :+:      :+:    :+:   */
+/*   token_util2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/13 17:18:06 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/17 14:11:39 by hbreeze          ###   ########.fr       */
+/*   Created: 2025/05/08 12:32:10 by hbreeze           #+#    #+#             */
+/*   Updated: 2025/05/08 12:32:29 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-char	*str_vec_join(char **arr)
+void	print_token_list(t_list *list)
 {
-	size_t	size;
-	size_t	index;
-	size_t	write_head;
-	char	*out;
+	t_list *next;
 
-	size = 0;
-	index = 0;
-	while (arr[index])
-		size += ft_strlen(arr[index++]);
-	index = 0;
-	write_head = 0;
-	out = ft_calloc(size + 1, sizeof(char));
-	if (!out)
-		return ((void *)0);
-	while (arr[index])
+	next = list;
+	while (next)
 	{
-		ft_memmove(out + write_head, arr[index],
-			sizeof(char) * ft_strlen(arr[index]));
-		write_head += ft_strlen(arr[index]);
-		index++;
+		print_token(next->content, 25);
+		next = next->next;
 	}
-	return (out);
 }

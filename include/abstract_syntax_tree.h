@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/14 17:31:20 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/08 17:27:18 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,13 @@
 # define ABSTRACT_SYNTAX_TREE_H
 
 # include "libft.h"
-# include "./fsm_tokeniser.h"
-// # include "input_tokens.h"
+# include "input_tokens.h"
 
 /**
  * @brief I created this because i think we might need it, not because we do
  * 
- * I think when we build the command nodes and check for redirects we
- * should store the type of redirect
+ * I think when we build the command nodes and check for redirects we should store the 
+ * type of redirect
  */
 typedef enum e_redir_type		t_redirect_type;
 enum e_redir_type
@@ -36,8 +35,8 @@ enum e_redir_type
 // if we need a pipe we should store it here
 // not sure if this will be usefull
 /**
- * @brief this might be helpful later, but i am not sure if this is the best
- * way to do it so this is a placeholder
+ * @brief this might be helpful later, but i am not sure if this is the best way to do it
+ * so this is a placeholder
  * 
  * @param type redirect type
  * @param pipe pipe ends if applicable
@@ -126,6 +125,7 @@ t_astnode	*create_ast_node(t_astype type,
  */
 void		destroy_ast_node(t_astnode *node,
 				void (*del_cmdv)(void *), void (*del_envp)(void *));
+
 
 /**
  * @brief internal struct for ast construction

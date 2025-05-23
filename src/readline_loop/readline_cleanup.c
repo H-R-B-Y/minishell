@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:45:18 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/13 12:09:35 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/08 16:13:42 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,7 @@ that isnt useful elsewhere?
 
 */
 
-void readline_cleanup(t_minishell *shell)
+void readline_cleanup(void)
 {
-	if (!shell)
-		return ;
-	if (shell->current_line)
-	{
-		free(shell->current_line);
-		shell->current_line = 0;
-	}
-	if (shell->current_pipeline)
-	{
-		free(shell->current_pipeline);
-		shell->current_pipeline = 0;
-	}
-	if (shell->extra_lines)
-	{
-		ft_arrclear((void *)shell->extra_lines, free);
-		shell->extra_lines = 0;
-	}
+	return ;
 }

@@ -20,7 +20,7 @@ SRC			+= ft_iswhitespace.c ft_splitquoted.c ft_splitfn.c ft_atof.c ft_arrlen.c \
 # Bonus functions
 BSRC		= ft_lstnew_bonus.c ft_lstadd_front_bonus.c ft_lstsize_bonus.c ft_lstlast_bonus.c \
 			ft_lstadd_back_bonus.c ft_lstdelone_bonus.c ft_lstclear_bonus.c ft_lstiter_bonus.c \
-			ft_lstmap_bonus.c ft_lstget_bonus.c ft_lstpop.c
+			ft_lstmap_bonus.c ft_lstget_bonus.c
 # Extra bonus functions
 BSRC		+= ft_lstiter_param_bonus.c
 

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/19 15:36:39 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/08 16:07:37 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,34 +18,22 @@ void	ft_clear_screen(void)
 	fflush(stdout);
 }
 
-
-
-int main(int argc, char **argv, char **envp)
+int main()
 {
 	t_minishell	shell;
 
-	(void)argc;(void)argv;
-	shell.environment = envp;
 	ft_bzero(&shell, sizeof(t_minishell));
-	reset_fsm(&shell.fsm_data);
 	add_history("(this\n) && should work");
 	add_history("\"this\n should\"\nwork");
-	add_history("(this &&\nhas a seperator)");
 	shell.prompt = "minishell -> ";
-	while (1)
+	while (!readline_loop(&shell))
 	{
-		if (!readline_loop(&shell))
-		{
-			print_token_list(shell.tokens);
-			shell.tokenv = (void *)ft_lstarr(shell.tokens);
-			ft_lstclear(&shell.tokens, 0);
-			shell.current_tree = produce_ast(shell.tokenv,
-				ft_arrlen((void *)shell.tokenv));
-			print_ast(shell.current_tree, "|	|");
-			add_history(shell.current_line);
-		}
-		reset_fsm(&shell.fsm_data);
+		print_token_list(shell.tokens);
+		shell.tokenv = (void *)ft_lstarr(shell.tokens);
+		ft_lstclear(&shell.tokens, 0); // we free all the list items but not the list content as that is still in use.
+		shell.current_tree = produce_ast(shell.tokenv, ft_arrlen((void *)shell.tokenv));
+		print_ast(shell.current_tree, "|	|");
+		add_history(shell.current_line);
 	}
-	reset_fsm(&shell.fsm_data);
 	return (0);
 }
