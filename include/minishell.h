@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/22 18:44:20 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/23 14:22:57 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,20 +140,119 @@ void	print_token_list(t_list *list);
  */
 char	*str_join_with_sep(char *str1, char *str2, char *sep);
 
+/**
+ * @brief join together a null terminated array of strings
+ * 
+ * @param arr a null terminated array of strings
+ * @return char* joined string
+ */
 char	*str_vec_join(char **arr);
 
+/**
+ * @brief pop a line out of the extra lines array
+ * 
+ * @note
+ * Internal function for use in the readline loop(?)
+ * should probably move this to a different header as it is internal
+ * 
+ * @param shell the shell struct
+ * @return char* the next line string
+ */
 char	*_pop_line(t_minishell *shell);
 
+/**
+ * @brief cleanup the readline loop ready for another read
+ * 
+ * @note this SHOULD be enough to exit cleanly (no leaks)
+ * though this will need to be tested. ALSO this is globally accessible
+ * becayse it is a cleanup function.
+ * 
+ * @param shell 
+ */
 void	readline_cleanup(t_minishell *shell);
 
 
 /*
-More utility functions
+Some utility functions that need to be accessed globally.
 */
 
+/**
+ * @brief get an environment variable from the internal tracked environment
+ * 
+ * @param shell the shell object
+ * @param name the name of the variable
+ * @return char* the entire variable entry
+ */
 char	*sgetenv(t_minishell *shell, char *name);
+
+/**
+ * @brief get the index of a variable in the internal tracked environment
+ * 
+ * @param shell the shell object
+ * @param name the name of the variable
+ * @return char* the entire variable entry
+ */
 ssize_t	sgetenvid(t_minishell *shell, char *name);
+
+/**
+ * @brief get an shell local variable from the internal tracked variables
+ * 
+ * @param shell the shell object
+ * @param name the name of the variable
+ * @return char* the entire variable entry
+ */
 char	*sgetslenv(t_minishell *shell, char *name);
+
+/**
+ * @brief get the index of a shell local variable from the internal tracked vars
+ * 
+ * @param shell the shell object
+ * @param name the name of the variable
+ * @return char* the entire variable entry
+ */
 ssize_t	sgetslenvid(t_minishell *shell, char *name);
+
+
+/*
+Things that can be accessed externally in the builtins are
+*/
+
+/**
+ * @brief typedef for the builtin command definitions
+ * 
+ * @note
+ * builtin functions should not be run under a fork because they need 
+ * access to the current state of the shell, this can be proven by running
+ * the following:
+ * 
+ * ```bash
+ * export TESTLOL=3 & sleep 2 && echo $TESTLOL
+ * ```
+ * or
+ * ```bash
+ * export TESTLOL=2 &
+ * env | grep TEST
+ * ```
+ * 
+ * @param shell the shell struct
+ * @param argv the arguments passed to the function
+ * @param envp the current environment variables
+ * @return int the statuscode
+ */
+typedef int (*t_builtincmd)(t_minishell *shell, char **argv, char **envp);
+
+/**
+ * @brief Get a builtin command object
+ * 
+ * pass in a string like "cd" and it will return the a function
+ * that takes shell, argv, envp that will run as a builtin command.
+ * 
+ * but if a string is passed in that does not exist as a builtin
+ * command it will return NULL!
+ * 
+ * @param str string to check for a builtin command
+ * @return t_builtincmd a function to run as a command
+ */
+t_builtincmd	get_builtincmd(char *str);
 
 #endif

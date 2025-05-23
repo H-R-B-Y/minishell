@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 15:10:47 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/22 15:12:58 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/23 14:02:23 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,9 @@ int	builtin_pwd(t_minishell *shell, char **argv, char **envp)
 {
 	char	*pwd;
 
-	pwd = getcwd(0, 0); // when passed both null params, GNU will allocate it
+	pwd = getcwd(0, 0);
 	if (!pwd)
-	{
-		perror("pwd");
-		return (1);
-	}
-	printf("%s\n", pwd);
-	return (0);
+		return (perror("pwd"), 1);
+	else
+		return (printf("%s\n", pwd), 0);
 }

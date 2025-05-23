@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:37:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/17 18:06:22 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/23 14:49:17 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,24 +60,18 @@ void	handle_operator(t_tokint *tokeniser, char *str)
 void	handle_unclosed_quote(t_tokint *tokeniser, char *str)
 {
 	char	*temp;
-	char	*temp2;
 
-	if (tokeniser->previous_line)
-	{
-		temp = ft_substr(str, tokeniser->index_start,
-			tokeniser->index_end - tokeniser->index_start);
-		temp2 = str_vec_join((char *[4])
-			{tokeniser->previous_line, temp, "\n", 0});
-		free(tokeniser->previous_line);
-		free(temp);
-		tokeniser->previous_line = temp2;
-		return ;
-	}
 	temp = ft_substr(str, tokeniser->index_start,
 		tokeniser->index_end - tokeniser->index_start);
-	tokeniser->previous_line = str_vec_join((char *[3]){
-		temp, "\n", 0
-	});
+	if (tokeniser->previous_line)
+		ft_dirtyswap((void *)&tokeniser->previous_line,
+			str_vec_join((char *[4]){tokeniser->previous_line, temp, "\n", 0}),
+			free);
+	else
+		ft_dirtyswap((void *)&tokeniser->previous_line,
+			str_vec_join((char *[3]){temp, "\n", 0}),
+			0);
+	free(temp);
 }
 
 int	handle_token_type(t_fsmdata *fsm)

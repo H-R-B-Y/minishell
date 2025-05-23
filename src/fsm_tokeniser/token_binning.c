@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:36:40 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/17 18:16:03 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/23 14:49:07 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ t_tokentype	potential_redirect(const char *raw_token)
 		while (ft_isdigit(raw_token[i]))
 			i++;
 		if (!raw_token[i])
-		 	// This should be a redirect_map token, as it does not need to have a word after it
 			return (TOK_REDIR_FD);
 	}
 	return (TOK_NONE);
@@ -85,9 +84,8 @@ t_tokentype	tokenise_type(t_tokint *tokeniser, char *str)
 		.raw = substring, .type = tokeniser->current_type,};
 	if (tokeniser->current_type == TOK_WORD && tokeniser->previous_line)
 	{
-		substring = ft_strjoin(tokeniser->previous_line, substring);
-		free(tokeniser->current_token->raw);
-		tokeniser->current_token->raw = substring;
+		ft_dirtyswap((void *)&tokeniser->current_token->raw,
+			ft_strjoin(tokeniser->previous_line, substring), free);
 		free(tokeniser->previous_line);
 		tokeniser->previous_line = 0;
 	}

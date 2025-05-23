@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:21:04 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/23 13:20:15 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/23 14:41:22 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -498,6 +498,12 @@ t_list			*ft_arrlist(void **chunks);
 void			**ft_arrmap(void **arr, void *(*f)(void *),
 					void (*del)(void *));
 
+/**
+ * @brief iterate through an array applying the function to each item
+ * 
+ * @param arr the array to iterate over
+ * @param f the function to apply to each item
+ */
 void			ft_arriter(void **arr, void *(*f)(void *));
 
 /**
@@ -505,7 +511,7 @@ void			ft_arriter(void **arr, void *(*f)(void *));
  * 
  * @param arr the array to add too
  * @param newitem the new item to add
- * @return int status code
+ * @return void** new allocated array containing the newitem
  */
 void	**ft_arradd_back(void **arr, void *newitem);
 
@@ -514,16 +520,47 @@ void	**ft_arradd_back(void **arr, void *newitem);
  * 
  * @param arr the array to add too
  * @param newitem the new item to add
- * @return int status code
+ * @return void** new allocated array containing the newitem
  */
 void	**ft_arradd_front(void **arr, void *newitem);
 
+/**
+ * @brief add a new item to the array at a given index
+ * 
+ * @param arr the array to add too
+ * @param newitem the new item to add 
+ * @param index the index to insert at
+ * @return void** new allocated array containing the newitem
+ */
 void	**ft_arradd_atindex(void **arr, void *newitem, size_t index);
 
+/**
+ * @brief delete an item in an array at a given index
+ * 
+ * @param arr the array to delete from
+ * @param index the index in the array we are deleting from
+ * @return void** a new allocated array with the item at index removed
+ */
 void	**ft_arrdel_atindex(void **arr, size_t index);
 
+/**
+ * @brief join the contents of two arrays
+ * 
+ * @param arr1 array one
+ * @param arr2 array two
+ * @return void** the new allocated array with the contents of both arrays
+ */
 void	**ft_arrjoin(void **arr1, void **arr2);
 
+/**
+ * @brief swap the value of a with b, free previous contents of a
+ * 
+ * @warning VERY DIRTY
+ * 
+ * @param a pointer to a value you want to swap
+ * @param b the new value
+ * @param del function to free the original contents of a (optional)
+ */
 void	ft_dirtyswap(void **a, void *b, void (*del)(void *));
 
 #endif

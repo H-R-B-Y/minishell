@@ -6,13 +6,14 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:44:33 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/22 18:39:48 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/23 14:49:07 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../include/builtin.h"
 
+void	free_strvec(void *a);
 /*
 
 Export should be easy it just means updating the environment
@@ -27,12 +28,12 @@ void	export_no_sep(t_minishell *shell, char *item)
 	name = ft_strdup(item);
 	in = sgetenv(shell, name);
 	if (in < 0)
-		ft_dirtyswap(&shell->environment,
-			ft_arradd_back(shell->environment,
-			ft_strjoin(item, "=")), &free);
+		ft_dirtyswap((void *)&shell->environment,
+			ft_arradd_back(shell->environment, ft_strjoin(item, "=")),
+			free_strvec);
 	else
-		ft_dirtyswap(&shell->environment[in],
-			ft_strjoin(item, "="), &free);
+		ft_dirtyswap((void *)&shell->environment[in], ft_strjoin(item, "="),
+			free_strvec);
 }
 
 void	export_with_sep(t_minishell *shell, char *item, char *sep)
@@ -43,13 +44,13 @@ void	export_with_sep(t_minishell *shell, char *item, char *sep)
 	name = ft_substr(item, 0, sep - item);
 	in = sgetenv(shell, name);
 	if (in < 0)
-		ft_dirtyswap(&shell->environment,
-			ft_arradd_back(shell->environment,
-			ft_strdup(item)), &free);
+		ft_dirtyswap((void *)&shell->environment,
+			ft_arradd_back(shell->environment, ft_strdup(item)),
+			free_strvec);
 	else
-		ft_dirtyswap(&shell->environment[in],
-			ft_arradd_back(shell->environment,
-			ft_strdup(item)), &free);
+		ft_dirtyswap((void *)&shell->environment[in],
+			ft_arradd_back(shell->environment, ft_strdup(item)),
+			free_strvec);
 }
 
 int	builtin_export(t_minishell *shell, char **argv, char **envp)
@@ -65,10 +66,11 @@ int	builtin_export(t_minishell *shell, char **argv, char **envp)
 		export_no_sep(shell, argv[1]);
 	else
 		export_with_sep(shell, argv[1], sep);
-	in = sgetslenvid(shell, name);
+	// check if it exists in local vars and remove it
+	in = sgetslenvid(shell, name); // TODO: rename this set of functions for clarity
 	if (in >= 0)
-		ft_dirtyswap(&shell->local_env,
-			ft_arrdel_atindex(shell->local_env, in), &free);
+		ft_dirtyswap((void *)&shell->local_env,
+			ft_arrdel_atindex(shell->local_env, in), free_strvec);
 	if (name)
 		free(name);
 	return (0);

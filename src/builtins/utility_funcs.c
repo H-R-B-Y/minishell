@@ -6,11 +6,10 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:57:17 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/22 12:32:27 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/23 14:07:44 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
 #include "../../include/builtin.h"
 
 static const struct s_buitinmapping	*mapped_builtins(void)
@@ -49,4 +48,15 @@ t_builtincmd	get_builtincmd(char *str)
 		i++;
 	}
 	return ((void *)0);
+}
+
+void	free_strvec(void *a)
+{
+	ft_arrclear(a, free);
+}
+
+void	*print_and_ret(void *p)
+{
+	printf("%s\n", (char *)p);
+	return (p);
 }

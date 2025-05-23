@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:38:10 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/22 13:44:27 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/23 14:09:18 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,6 @@ I will attempt to cleanup here though, just in case.
 int	builtin_exit(t_minishell *shell, char **argv, char **envp)
 {
 	warning_message();
+	printf("exit");
 	exit(0); // think it would be good to accept a status code from input here.
 }
