@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/23 12:49:54 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/26 17:55:09 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ struct	s_astnode
 	t_astnode	*right_node;
 
 	t_token		**tokens;
+	int			token_arr_freeable;
 	size_t		token_count;
 
 	char		**cmdv;
@@ -120,11 +121,8 @@ t_astnode	*create_ast_node(t_astype type,
 /**
  * @brief destroy a tree node (free it)
  * @param node the node the destroy
- * @param del_cmdv function to delete the command vector (placeholder)
- * @param del_envp function to delete the command vector (placeholder)
  */
-void		destroy_ast_node(t_astnode *node,
-				void (*del_cmdv)(void *), void (*del_envp)(void *));
+void		destroy_ast_node(t_astnode *node);
 
 /**
  * @brief internal struct for ast construction
@@ -154,10 +152,10 @@ t_astnode	*produce_ast(t_token **tokens, size_t count);
 
 /**
  * @brief destroy abstract syntax tree
- * @param head the head node of the tree
+ * @param node the head node of the tree
  * I dont think i have actually written this function? 
  */
-void		destroy_ast(t_astnode *head);
+void		destroy_ast(t_astnode **node);
 
 /**
  * @brief create a new ast node from seperators

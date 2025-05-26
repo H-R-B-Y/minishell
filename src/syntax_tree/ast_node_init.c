@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 12:20:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/06 11:27:50 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/26 17:57:01 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,16 @@ t_astnode	*create_ast_node(t_astype type,
 	return (me);
 }
 
-void	destroy_ast_node(t_astnode *node,
-	void (*del_cmdv)(void *),
-	void (*del_envp)(void *))
+void	destroy_ast_node(t_astnode *node)
 {
 	if (!node)
 		return ;
-	if (del_cmdv && node->cmdv)
-		del_cmdv(node->cmdv);
-	if (del_envp && node->envp)
-		del_envp(node->envp);
+	if (node->token_arr_freeable)
+		free(node->tokens);
+	if (node->cmdv)
+		ft_arrclear((void *)node->cmdv, free);
+	if (node->envp)
+		ft_arrclear((void *)node->envp, free);
 	if (node->redirect)
 		ft_lstclear(&node->redirect, temp);
 	free(node);
