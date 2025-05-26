@@ -16,6 +16,15 @@ LIBFT			:= $(LIBFT_DIR)/libft.a
 SRC_DIR			:= ./src
 
 SRCS			:= \
+				$(SRC_DIR)/builtins/builtin_cd.c \
+				$(SRC_DIR)/builtins/builtin_echo.c \
+				$(SRC_DIR)/builtins/builtin_env.c \
+				$(SRC_DIR)/builtins/builtin_exit.c \
+				$(SRC_DIR)/builtins/builtin_export.c \
+				$(SRC_DIR)/builtins/builtin_pwd.c \
+				$(SRC_DIR)/builtins/builtin_unset.c \
+				$(SRC_DIR)/builtins/utility_funcs.c \
+				\
 				$(SRC_DIR)/fsm_tokeniser/fsm_tokeniser.c \
 				$(SRC_DIR)/fsm_tokeniser/fsm_utils.c \
 				$(SRC_DIR)/fsm_tokeniser/token_binning.c \
@@ -37,6 +46,8 @@ SRCS			:= \
 				\
 				$(SRC_DIR)/utility/operators.c \
 				$(SRC_DIR)/utility/pop_line.c \
+				$(SRC_DIR)/utility/sgetenv.c \
+				$(SRC_DIR)/utility/ssetenv.c \
 				$(SRC_DIR)/utility/str_join_with_sep.c \
 				$(SRC_DIR)/utility/str_vec_join.c \
 				\
@@ -57,6 +68,9 @@ $(NAME): $(MAIN) $(OBJS) $(LIBFT) ./include/minishell.h
 		@$(CC) $(CFLAGS) $(MAIN) $(OBJS) $(LIBFT) $(LIBFLAGS) -o $(NAME)
 		@echo "\b\b\b\b\b\b\b\b\b\b\b\b\bDone  ꒱ ‧₊˚⭒"
 		@echo 
+
+# testing: $(OBJS) $(LIBFT) ./include/minishell.h
+# 	@$(CC) $(CFLAGS) src/testing.c $(OBJS) $(LIBFT) $(LIBFLAGS) -o $(NAME)
 
 $(LIBFT):
 		@$(MAKE) --directory $(LIBFT_DIR) all CFLAGS="$(CFLAGS)"

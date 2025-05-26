@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:31:46 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/23 14:08:52 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/26 16:50:16 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,32 +16,12 @@
 # define BLTINCOUNT 8
 
 # include <stdlib.h>
+# include <stdio.h>
+# include <libft.h>
 
 typedef struct s_minishell	t_minishell;
 
-/**
- * @brief typedef for the builtin command definitions
- * 
- * @note
- * builtin functions should not be run under a fork because they need 
- * access to the current state of the shell, this can be proven by running
- * the following:
- * 
- * ```bash
- * export TESTLOL=3 & sleep 2 && echo $TESTLOL
- * ```
- * or
- * ```bash
- * export TESTLOL=2 &
- * env | grep TEST
- * ```
- * 
- * @param shell the shell struct
- * @param argv the arguments passed to the function
- * @param envp the current environment variables
- * @return int the statuscode
- */
-typedef int (*t_builtincmd)(t_minishell *shell, char **argv, char **envp);
+typedef int (*t_builtincmd)(t_minishell *, char **, char **);
 
 /*
 I will add some utility functions here for checking if 
@@ -52,14 +32,6 @@ struct s_buitinmapping {
 	char			*match;
 	t_builtincmd	fnc;
 };
-
-/**
- * @brief Get the builtincmd object for a given string
- * 
- * @param str the string to check for a builtin command
- * @return t_builtincmd function pointer to the command or NULL
- */
-t_builtincmd	get_builtincmd(char *str);
 
 /*
 Follows are prototypes for the builtin commandss

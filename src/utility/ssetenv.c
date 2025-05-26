@@ -6,13 +6,13 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:23:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/22 14:37:37 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/26 15:50:50 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-ssize_t	sgetenvid(t_minishell *shell, char *name);
+ssize_t	s_get_envid(t_minishell *shell, char *name);
 
 /*
 Note that here we are duping the string
@@ -31,16 +31,17 @@ int	ssetenv(t_minishell *shell, char *str)
 	ssize_t	index;
 
 	if (!str)
-		return (-1);
+		return (0);
 	split = ft_strchr(str, '\n');
 	kv[0] = ft_substr(str, 0, split - str);
 	kv[1] = ft_strdup(split + 1);
-	index = sgetenvid(shell, kv[0]);
+	index = s_get_envid(shell, kv[0]);
 	if (!index)
-		ft_arradd_back(&shell->environment, ft_strdup(str));
+		ft_arradd_back((void *)&shell->environment, ft_strdup(str));
 	else
 	{
 		free(shell->environment[index]);
 		shell->environment[index] = ft_strdup(str);
 	}
+	return (1);
 }

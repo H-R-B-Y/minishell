@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/26 13:30:44 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/26 16:49:23 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,25 +57,28 @@ struct s_minishell
 	so that we can edit them on the fly.
 	*/
 	char		**environment;
+
 	/*
 	this is another environment variable array, this one however 
-	is only in the context of the current shell, it can be used for variable expansion
-	but cannot be passed to child processes.
+	is only in the context of the current shell, it can be used for variable
+	expansion but cannot be passed to child processes.
 	*/
 	char		**local_env;
 
 	/*
-	tokens list is just for the internal tokenisation process, it probably shouldnt
-	be included as part of the main struct! ~ i can remove this later
+	tokens list is just for the internal tokenisation process, it probably
+	shouldnt be included as part of the main struct! ~ i can remove this later
 	*/
 	t_list		*tokens;
+
 	/*
 	token vector is part of the main struct solely as a reference for cleaning up
-	all the tokens need to be kept for the entire execution process (well only until they are executed i guess)
+	all the tokens need to be kept for the entire execution process
+	(well only until they are executed i guess)
 	but if this reference to them here this is all we need to cleanup
 	*/
 	t_token		**tokenv;
-	
+
 	/*
 	current tree, nodes will need to be free'd but their internal tokens
 	do not have to be free'd
@@ -117,7 +120,7 @@ struct s_minishell
  * it returned
  * TODO: make an enum for return codes so we can tell why it returned? 
  */
-int		readline_loop(t_minishell *shell);
+int				readline_loop(t_minishell *shell);
 
 /**
  * @brief print out a token list in columns
@@ -125,7 +128,7 @@ int		readline_loop(t_minishell *shell);
  * 
  * TODO: this should probably be moved to the input tokens header.
  */
-void	print_token_list(t_list *list);
+void			print_token_list(t_list *list);
 
 // Utility functions:
 // Some of these may be useful in libft?
@@ -139,7 +142,7 @@ void	print_token_list(t_list *list);
  * for example "cat", "dog", " and " would produce:
  * cat and dog
  */
-char	*str_join_with_sep(char *str1, char *str2, char *sep);
+char			*str_join_with_sep(char *str1, char *str2, char *sep);
 
 /**
  * @brief join together a null terminated array of strings
@@ -147,7 +150,7 @@ char	*str_join_with_sep(char *str1, char *str2, char *sep);
  * @param arr a null terminated array of strings
  * @return char* joined string
  */
-char	*str_vec_join(char **arr);
+char			*str_vec_join(char **arr);
 
 /**
  * @brief pop a line out of the extra lines array
@@ -159,7 +162,7 @@ char	*str_vec_join(char **arr);
  * @param shell the shell struct
  * @return char* the next line string
  */
-char	*_pop_line(t_minishell *shell);
+char			*_pop_line(t_minishell *shell);
 
 /**
  * @brief cleanup the readline loop ready for another read
@@ -170,11 +173,17 @@ char	*_pop_line(t_minishell *shell);
  * 
  * @param shell 
  */
-void	readline_cleanup(t_minishell *shell);
-
+void			readline_cleanup(t_minishell *shell);
 
 /*
-Some utility functions that need to be accessed globally.
+Env Var helper functions:
+
+There are two variables being tracked, the first is the ACTUAL environment
+variables this env is passed to children as well as accessible through
+variable expansion.
+
+The second is the internal variables, these are tracked by the shell but only
+accessible to the shell and not handed to the child processes.
 */
 
 /**
@@ -184,7 +193,7 @@ Some utility functions that need to be accessed globally.
  * @param name the name of the variable
  * @return char* the entire variable entry
  */
-char	*sgetenv(t_minishell *shell, char *name);
+char			*s_get_env(t_minishell *shell, char *name);
 
 /**
  * @brief get the index of a variable in the internal tracked environment
@@ -193,7 +202,7 @@ char	*sgetenv(t_minishell *shell, char *name);
  * @param name the name of the variable
  * @return char* the entire variable entry
  */
-ssize_t	sgetenvid(t_minishell *shell, char *name);
+ssize_t			s_get_envid(t_minishell *shell, char *name);
 
 /**
  * @brief get an shell local variable from the internal tracked variables
@@ -202,7 +211,7 @@ ssize_t	sgetenvid(t_minishell *shell, char *name);
  * @param name the name of the variable
  * @return char* the entire variable entry
  */
-char	*sgetslenv(t_minishell *shell, char *name);
+char			*s_get_interalenv(t_minishell *shell, char *name);
 
 /**
  * @brief get the index of a shell local variable from the internal tracked vars
@@ -211,8 +220,7 @@ char	*sgetslenv(t_minishell *shell, char *name);
  * @param name the name of the variable
  * @return char* the entire variable entry
  */
-ssize_t	sgetslenvid(t_minishell *shell, char *name);
-
+ssize_t			s_get_internalenvid(t_minishell *shell, char *name);
 
 /*
 Things that can be accessed externally in the builtins are
@@ -240,16 +248,20 @@ Things that can be accessed externally in the builtins are
  * @param envp the current environment variables
  * @return int the statuscode
  */
-typedef int (*t_builtincmd)(t_minishell *shell, char **argv, char **envp);
+typedef int					(*t_builtincmd)(t_minishell *, char **, char **);
 
 /**
  * @brief Get a builtin command object
  * 
- * pass in a string like "cd" and it will return the a function
- * that takes shell, argv, envp that will run as a builtin command.
- * 
- * but if a string is passed in that does not exist as a builtin
- * command it will return NULL!
+ * these are the only valid strs (others return NULL):
+ * ```
+ * - echo
+ * - env
+ * - exit
+ * - export
+ * - pwd
+ * - unset
+ * ```
  * 
  * @param str string to check for a builtin command
  * @return t_builtincmd a function to run as a command

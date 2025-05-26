@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 15:13:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/23 20:33:58 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/26 16:41:53 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	builtin_unset(t_minishell *shell, char **argv, char **envp)
 	char	*name;
 	char	*sep;
 
+	(void)envp;
 	if (!argv[1])
 		return (1);
 	sep = ft_strchr(argv[1], '=');
@@ -43,13 +44,16 @@ int	builtin_unset(t_minishell *shell, char **argv, char **envp)
 		name = ft_substr(argv[1], 0, sep - argv[1]);
 	if (!name)
 		return (1);
-	in = sgetenvid(shell, name);
+	in = s_get_envid(shell, name);
 	if (in >= 0)
-		ft_dirtyswap(shell->environment,
-			ft_arrdel_atindex(shell->environment, in), free_strvec);
-	in = sgetslenv(shell, name);
+		ft_dirtyswap((void *)&shell->environment,
+			ft_arrdel_atindex((void *)shell->environment, in, free),
+			free);
+	in = s_get_internalenvid(shell, name);
 	if (in >= 0)
-		ft_dirtyswap(shell->local_env,
-			ft_arrdel_atindex(shell->local_env, in), free_strvec);
+		ft_dirtyswap((void *)&shell->local_env,
+			ft_arrdel_atindex((void *)shell->local_env, in, free), free);
+	if (name)
+		free(name);
 	return (0);
 }
