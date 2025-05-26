@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:21:04 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/23 14:41:22 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/26 16:37:17 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -539,9 +539,10 @@ void	**ft_arradd_atindex(void **arr, void *newitem, size_t index);
  * 
  * @param arr the array to delete from
  * @param index the index in the array we are deleting from
+ * @param del function to delete item in arr (optional)
  * @return void** a new allocated array with the item at index removed
  */
-void	**ft_arrdel_atindex(void **arr, size_t index);
+void	**ft_arrdel_atindex(void **arr, size_t index, void (*del)(void *));
 
 /**
  * @brief join the contents of two arrays

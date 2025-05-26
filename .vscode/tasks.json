@@ -15,6 +15,21 @@
             "group": "build",
             "detail": "Task generated Manually."
         },
+		{
+            "type": "shell",
+            "label": "(don't use)testing make",
+            "command": "make",
+            "args": [
+                "testing",
+                "clean",
+                "CFLAGS=\"-g3 -O0\""
+            ],
+            "options": {
+                "cwd": "${workspaceRoot}"
+            },
+            "group": "build",
+            "detail": "Task generated Manually."
+        },
         {
             "type": "cppbuild",
             "label": "C/C++: gcc build active file",

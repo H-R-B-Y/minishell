@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:37:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/23 20:52:16 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/26 16:40:10 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	handle_unclosed_quote(t_tokint *tokeniser, char *str)
 	else
 		ft_dirtyswap((void *)&tokeniser->previous_line,
 			str_vec_join((char *[3]){temp, "\n", 0}),
-			0);
+			free);
 	free(temp);
 }
 

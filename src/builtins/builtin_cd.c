@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:31:30 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/23 20:31:50 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/26 15:42:01 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	builtin_cd(t_minishell *shell, char **argv, char **envp)
 	char	*tmp;
 	int		ret;
 
+	(void)shell;
+	(void)envp;
 	ret = 0;
 	tmp = 0;
 	if (!argv[1])

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:57:17 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/23 20:36:10 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/26 16:46:35 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,11 @@ static const struct s_buitinmapping	*mapped_builtins(void)
 	{.match = "exit", .fnc = &builtin_exit},
 	{.match = "export", .fnc = &builtin_export},
 	{.match = "pwd", .fnc = &builtin_pwd},
-	{.match = "unset", .fnc = &builtin_unset}, 0};
+	{.match = "unset", .fnc = &builtin_unset}};
 
 	return (builtinmap);
 }
 
-/**
- * @brief Get the builtincmd object for a given string
- * 
- * @param str the string to check for a builtin command
- * @return t_builtincmd function pointer to the command or NULL
- */
 t_builtincmd	get_builtincmd(char *str)
 {
 	const struct s_buitinmapping	*fncmap;
