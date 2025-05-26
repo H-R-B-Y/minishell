@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/23 14:22:57 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/26 13:30:44 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ struct s_minishell
 	but if this reference to them here this is all we need to cleanup
 	*/
 	t_token		**tokenv;
+	
 	/*
 	current tree, nodes will need to be free'd but their internal tokens
 	do not have to be free'd
