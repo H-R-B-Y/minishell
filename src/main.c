@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/27 18:00:35 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/27 18:28:47 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	better_add_history(char *string)
 		i++;
 	}
 	add_history(string);
-	return (1);
+	return (ret);
 }
 
 void	reset_for_command(t_minishell *shell)

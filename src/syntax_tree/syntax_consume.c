@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 12:20:37 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/27 18:11:40 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/27 18:36:05 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ size_t	ast_consume_words(t_minishell *shell,
 	(void)shell;
 	eaten = 0;
 	while (meta->tokens[meta->consumed] && meta->tokens[meta->consumed + eaten]
-		&& ft_strchr("\1\3\4\5\6\17", meta->tokens[meta->consumed]->type))
+		&& ft_strchr("\1\3\4\5\6\17", meta->tokens[meta->consumed + eaten]->type))
 		eaten++;
 	node->tokens = ft_calloc(eaten + 1, sizeof(t_token *));
 	node->token_arr_freeable = 1;
