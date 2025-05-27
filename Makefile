@@ -1,5 +1,6 @@
 NAME			:= minishell
-CFLAGS			:= -Wextra -Wall -Werror -Ofast -g3
+CC 				:= gcc
+CFLAGS			:= -Wextra -Wall -Werror -g3
 #CFLAGS			:= 
 
 MAKEFLAGS		+= --no-print-directory
@@ -77,7 +78,7 @@ $(NAME): $(MAIN) $(OBJS) $(LIBFT) ./include/minishell.h
 # 	@$(CC) $(CFLAGS) src/testing.c $(OBJS) $(LIBFT) $(LIBFLAGS) -o $(NAME)
 
 $(LIBFT):
-		@$(MAKE) --directory $(LIBFT_DIR) all CFLAGS="$(CFLAGS)"
+		@$(MAKE) --directory $(LIBFT_DIR) all CFLAGS="$(CFLAGS)" CC=$(CC)
 
 .c.o:
 		@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
