@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 13:15:30 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/08/28 15:08:12 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/23 14:50:12 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,7 @@
 
 void	ft_putchar_fd(char c, int fd)
 {
-	write(fd, &c, 1);
+	ssize_t	w;
+	w = write(fd, &c, 1);
+	(void)w;
 }

@@ -1,29 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   produce_syntax_tree.c                              :+:      :+:    :+:   */
+/*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/02 12:20:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/27 17:10:18 by hbreeze          ###   ########.fr       */
+/*   Created: 2025/05/22 13:34:33 by hbreeze           #+#    #+#             */
+/*   Updated: 2025/05/27 18:26:08 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include "../../include/builtin.h"
 
-t_astnode	*produce_ast(t_minishell *shell, t_token **tokens, size_t count)
+void	*print_and_ret(void *p);
+
+int	builtin_env(t_minishell *shell, char **argv, char **envp)
 {
-	struct s_ast_internal	meta;
-	t_astnode				*head;
-
-	if (!tokens || !*tokens || !count)
-		return ((void *)0);
-	meta.tokens = tokens;
-	meta.count = count;
-	meta.consumed = 0;
-	meta.left_node = 0;
-	meta.right_node = 0;
-	head = ast_parse_seperators(shell, &meta);
-	return (head);
+	(void)argv;
+	(void)envp;
+	ft_arriter((void *)envp, print_and_ret);
+	ft_arriter((void *)shell->local_env, print_and_ret);
+	return (0);
 }

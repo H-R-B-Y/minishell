@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   produce_syntax_tree.c                              :+:      :+:    :+:   */
+/*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/02 12:20:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/27 17:10:18 by hbreeze          ###   ########.fr       */
+/*   Created: 2025/05/22 13:21:44 by hbreeze           #+#    #+#             */
+/*   Updated: 2025/05/26 15:42:10 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include "../../include/builtin.h"
 
-t_astnode	*produce_ast(t_minishell *shell, t_token **tokens, size_t count)
+void	*print_and_ret(void *p);
+
+int	builtin_echo(t_minishell *shell, char **argv, char **envp)
 {
-	struct s_ast_internal	meta;
-	t_astnode				*head;
+	int		nlflag;
 
-	if (!tokens || !*tokens || !count)
-		return ((void *)0);
-	meta.tokens = tokens;
-	meta.count = count;
-	meta.consumed = 0;
-	meta.left_node = 0;
-	meta.right_node = 0;
-	head = ast_parse_seperators(shell, &meta);
-	return (head);
+	(void)shell;
+	(void)envp;
+	if (!argv[1])
+		return (0);
+	nlflag = !ft_strcmp(argv[1], "-n");
+	ft_arriter((void *)argv + nlflag, print_and_ret);
+	printf("%s", (char *[2]){"", "\n"}[nlflag]);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:36:40 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/17 18:16:03 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/23 20:40:12 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ t_tokentype	potential_redirect(const char *raw_token)
 		while (ft_isdigit(raw_token[i]))
 			i++;
 		if (!raw_token[i])
-		 	// This should be a redirect_map token, as it does not need to have a word after it
 			return (TOK_REDIR_FD);
 	}
 	return (TOK_NONE);
@@ -56,7 +55,7 @@ t_tokentype	bin_token(const char *raw_token)
 		return (TOK_WORD);
 	if (*raw_token == '|')
 		return (TOK_PIPE + (7 * (raw_token[1]
-			&& raw_token[1] == raw_token[0])));
+					&& raw_token[1] == raw_token[0])));
 	if (*raw_token == '<')
 		return (TOK_REDIR_IN + (1 * (raw_token[1] == *raw_token)));
 	if (ft_isdigit(*raw_token) || *raw_token == '>')
@@ -65,7 +64,7 @@ t_tokentype	bin_token(const char *raw_token)
 		return (TOK_AFTER);
 	if (*raw_token == '&' && raw_token[1] != '>')
 		return (TOK_AMP - (4 * (raw_token[1]
-			&& raw_token[0] == raw_token[1])));
+					&& raw_token[0] == raw_token[1])));
 	if (*raw_token == '&' && raw_token[1] == '>')
 		return (TOK_REDIR_OUT + (1 * (raw_token[1] == raw_token[2])));
 	if (*raw_token == '(' || *raw_token == ')')
@@ -75,19 +74,18 @@ t_tokentype	bin_token(const char *raw_token)
 
 t_tokentype	tokenise_type(t_tokint *tokeniser, char *str)
 {
-	char *substring;
+	char	*substring;
 
 	substring = ft_substr(str, tokeniser->index_start,
-		tokeniser->index_end - tokeniser->index_start);
+			tokeniser->index_end - tokeniser->index_start);
 	tokeniser->current_type = bin_token(substring);
 	tokeniser->current_token = ft_calloc(1, sizeof(t_token));
 	(*tokeniser->current_token) = (t_token){.heredoc_delim = 0,
 		.raw = substring, .type = tokeniser->current_type,};
 	if (tokeniser->current_type == TOK_WORD && tokeniser->previous_line)
 	{
-		substring = ft_strjoin(tokeniser->previous_line, substring);
-		free(tokeniser->current_token->raw);
-		tokeniser->current_token->raw = substring;
+		ft_dirtyswap((void *)&tokeniser->current_token->raw,
+			ft_strjoin(tokeniser->previous_line, substring), free);
 		free(tokeniser->previous_line);
 		tokeniser->previous_line = 0;
 	}

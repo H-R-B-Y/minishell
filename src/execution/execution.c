@@ -6,34 +6,13 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:13:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/02 18:29:31 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/23 20:42:08 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-/*
-Not sure if i should be writing the executor now, or if
-it would be better to put some structure
-
-Also see here:
-https://stackoverflow.com/questions/1158091/defining-a-variable-with-or-without-export
-
-if you do:
-$ MYVAR="1234" echo "$MYVAR"
-this will print nothing because the var is defined in the command scope
-but the variable being expanded is expanded in the shell scope.
-
-if you do:
-$ MYVAR="1234"; echo "$MYVAR"
-This WILL print 1234 because the assignment is sequentially before the 
-command so the variable is defined in the shells scope so the shell 
-can expand the variable.
-
-
-*/
-
-int	execute_ast()
+int	execute_ast(void)
 {
 	/* 
 	we can do something like this:

@@ -1,29 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   produce_syntax_tree.c                              :+:      :+:    :+:   */
+/*   sgetenvany.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/02 12:20:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/27 17:10:18 by hbreeze          ###   ########.fr       */
+/*   Created: 2025/05/27 17:06:15 by hbreeze           #+#    #+#             */
+/*   Updated: 2025/05/27 17:27:16 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-t_astnode	*produce_ast(t_minishell *shell, t_token **tokens, size_t count)
+char *s_get_envany(t_minishell *shell, char *name)
 {
-	struct s_ast_internal	meta;
-	t_astnode				*head;
+	ssize_t	i;
 
-	if (!tokens || !*tokens || !count)
-		return ((void *)0);
-	meta.tokens = tokens;
-	meta.count = count;
-	meta.consumed = 0;
-	meta.left_node = 0;
-	meta.right_node = 0;
-	head = ast_parse_seperators(shell, &meta);
-	return (head);
+	i = s_get_envid(shell, name);
+	if (i >= 0)
+		return (shell->environment[i]);
+	i = s_get_internalenvid(shell, name);
+	if (i >= 0)
+		return (shell->local_env[i]);
+	return ("");
 }

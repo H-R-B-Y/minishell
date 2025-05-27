@@ -1,41 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   readline_cleanup.c                                 :+:      :+:    :+:   */
+/*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/08 15:45:18 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/13 12:09:35 by hbreeze          ###   ########.fr       */
+/*   Created: 2025/05/22 11:31:30 by hbreeze           #+#    #+#             */
+/*   Updated: 2025/05/26 15:42:01 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include "../../include/builtin.h"
 
-
-/*
-What needs to be cleaned up within the readline loop 
-that isnt useful elsewhere? 
-
-*/
-
-void readline_cleanup(t_minishell *shell)
+int	builtin_cd(t_minishell *shell, char **argv, char **envp)
 {
-	if (!shell)
-		return ;
-	if (shell->current_line)
+	char	*tmp;
+	int		ret;
+
+	(void)shell;
+	(void)envp;
+	ret = 0;
+	tmp = 0;
+	if (!argv[1])
 	{
-		free(shell->current_line);
-		shell->current_line = 0;
+		tmp = getenv("HOME");
+		tmp = ft_strdup(ft_strchr(tmp, '=') + 1);
+		ret = chdir(tmp);
 	}
-	if (shell->current_pipeline)
-	{
-		free(shell->current_pipeline);
-		shell->current_pipeline = 0;
-	}
-	if (shell->extra_lines)
-	{
-		ft_arrclear((void *)shell->extra_lines, free);
-		shell->extra_lines = 0;
-	}
+	else
+		ret = chdir(argv[1]);
+	perror("minishell: cd");
+	return (!!ret);
 }

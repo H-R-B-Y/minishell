@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:21:04 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/10 15:07:23 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/26 16:37:17 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,15 @@ char			*ft_strchr(const char *str, int c);
  * @warning String must be null terminated
  */
 char			*ft_strrchr(const char *str, int c);
+
+/**
+ * @brief compare two strings
+ * 
+ * @param s1 first string
+ * @param s2 second string
+ * @return int the integer difference between the strings (0 if same)
+ */
+int				ft_strcmp(const char *s1, const char *s2);
 
 /**
  * @brief Compare two strings up to n characters
@@ -489,6 +498,70 @@ t_list			*ft_arrlist(void **chunks);
 void			**ft_arrmap(void **arr, void *(*f)(void *),
 					void (*del)(void *));
 
+/**
+ * @brief iterate through an array applying the function to each item
+ * 
+ * @param arr the array to iterate over
+ * @param f the function to apply to each item
+ */
 void			ft_arriter(void **arr, void *(*f)(void *));
+
+/**
+ * @brief add a new item to the end of an array
+ * 
+ * @param arr the array to add too
+ * @param newitem the new item to add
+ * @return void** new allocated array containing the newitem
+ */
+void	**ft_arradd_back(void **arr, void *newitem);
+
+/**
+ * @brief add a new item to the front of an array
+ * 
+ * @param arr the array to add too
+ * @param newitem the new item to add
+ * @return void** new allocated array containing the newitem
+ */
+void	**ft_arradd_front(void **arr, void *newitem);
+
+/**
+ * @brief add a new item to the array at a given index
+ * 
+ * @param arr the array to add too
+ * @param newitem the new item to add 
+ * @param index the index to insert at
+ * @return void** new allocated array containing the newitem
+ */
+void	**ft_arradd_atindex(void **arr, void *newitem, size_t index);
+
+/**
+ * @brief delete an item in an array at a given index
+ * 
+ * @param arr the array to delete from
+ * @param index the index in the array we are deleting from
+ * @param del function to delete item in arr (optional)
+ * @return void** a new allocated array with the item at index removed
+ */
+void	**ft_arrdel_atindex(void **arr, size_t index, void (*del)(void *));
+
+/**
+ * @brief join the contents of two arrays
+ * 
+ * @param arr1 array one
+ * @param arr2 array two
+ * @return void** the new allocated array with the contents of both arrays
+ */
+void	**ft_arrjoin(void **arr1, void **arr2);
+
+/**
+ * @brief swap the value of a with b, free previous contents of a
+ * 
+ * @warning VERY DIRTY
+ * 
+ * @param a pointer to a value you want to swap
+ * @param b the new value
+ * @param del function to free the original contents of a (optional)
+ */
+void	ft_dirtyswap(void **a, void *b, void (*del)(void *));
 
 #endif

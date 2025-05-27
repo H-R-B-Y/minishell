@@ -1,25 +1,10 @@
 
 
-## minishell-$ (()()
 
-provides syntax error (good)
-
-## minishell-$ ()()(()(())
-
-output is tokens are not valid
-SUBSHELL is printed (meaning tree does no see and issue with this)
-
-## minishell-$ (()
-
-tokens are not valid
-(seg fault) meaning either tree failed to construct OR print failed to print
-
-
-## how do we handle this then?
+## 
 
 question is, if tokens arent valid do we just not make the execution tree?
-
-in bash when there is a quote that has not got a matching quote, or bracket without a matching bracket it goes into a new readline mode prompting the user to close the quote / match the bracket.
+> YES AST is not constructed anymore if tokens are invalid.
 
 Note: when bash prompts to close the bracket, it has different signal handlers
 try running 
@@ -27,13 +12,12 @@ try running
 $ echo "
 dquote> 
 ```
-and press ctrl+d, this is a different signal handler?
+> ctrl+d is not a signal handler it just send EOF through the terminal.
 
 
 ## we should do all other syntax checks during the tree construction
 
-so other syntax errors are: 
-// TODO: note down bash syntax errors
+> NO
 
 
 
@@ -60,6 +44,8 @@ what actually happens:
 this means that the heredoc is opened before the execution of anything,
 perhaps this needs to be done somewhere before the AST execution pipeline?
 
-truthfully i am not really interested in replicating bash 100%, I know that I personaly wont mind if
-we wait until the stage in the AST where we need the heredoc to finish it, but some evaluators might not be kind 
-to this way of doing things?
+> HEREDOC prep WILL need to happen BEFORE the execution pipeline, it needs to happen at either the TOKENISER or AST construction because it needs to be redirected before execution.
+
+> >  I can set this up to happen during the ast and append it to the end of the redirect list, then when redirects are setup during the execution step the redirects need to happen in order of FIFO meaning the last takes precedence if there are overlaps.
+
+
