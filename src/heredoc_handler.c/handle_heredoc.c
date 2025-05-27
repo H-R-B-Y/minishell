@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:22:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/27 18:12:57 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/27 18:57:03 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,13 @@ int	_read_heredoc(t_minishell *shell, char *delim, int temp_file, short handleva
 	while(status == READ_OK)
 	{
 		temp = shell->rldata.last_line;
-		if (ft_strcmp(delim, temp))
+		if (!ft_strcmp(delim, temp))
 			break ;
 		if (handlevar && ft_strchr(temp, '$'))
 			_replace_var(shell, temp_file, temp);
 		else
 			write(temp_file, temp, ft_strlen(temp));
+		write(temp_file, "\n", 1);
 		status = next_line(&shell->rldata, "heredoc");
 	}
 	if (status != READ_OK)
