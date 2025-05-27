@@ -6,11 +6,30 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 12:20:37 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/26 17:55:37 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/27 15:22:23 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+void	post_consume_words(t_minishell *shell,
+	struct s_ast_internal *meta, t_astnode *node)
+{
+	size_t	i;
+	char	*sanitised_heredoc_delim;
+
+	i = 0;
+	while (node->tokens[i])
+	{
+		if (node->tokens[i]->type == TOK_HEREDOC)
+		{
+			
+			i += 1;
+		}
+		i++;
+	}
+}
+
 
 // && (meta->tokens[meta->consumed + eaten]->type == TOK_WORD // 1
 // || meta->tokens[meta->consumed + eaten]->type == TOK_REDIR_OUT // 3
@@ -18,7 +37,8 @@
 // || meta->tokens[meta->consumed + eaten]->type == TOK_REDIR_IN // 5
 // || meta->tokens[meta->consumed + eaten]->type == TOK_HEREDOC // 6
 // || meta->tokens[meta->consumed + eaten]->type == TOK_REDIR_FD // 17
-size_t	ast_consume_words(struct s_ast_internal *meta, t_astnode *node)
+size_t	ast_consume_words(t_minishell *shell,
+	struct s_ast_internal *meta, t_astnode *node)
 {
 	size_t	eaten;
 	size_t	i;
@@ -36,5 +56,6 @@ size_t	ast_consume_words(struct s_ast_internal *meta, t_astnode *node)
 		i++;
 	}
 	node->token_count = eaten;
+	post_consume_words(shell, meta, node);
 	return (eaten);
 }
