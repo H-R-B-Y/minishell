@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/27 17:06:01 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/27 17:28:16 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,12 +154,6 @@ char			*str_join_with_sep(char *str1, char *str2, char *sep);
  * @return char* joined string
  */
 char			*str_vec_join(char **arr);
-
-
-void readline_cleanup(t_minishell *shell);
-
-int	read_until_complete_command(t_minishell *shell);
-
 /**
  * @brief pop a line out of the extra lines array
  * 
@@ -167,21 +161,17 @@ int	read_until_complete_command(t_minishell *shell);
  * Internal function for use in the readline loop(?)
  * should probably move this to a different header as it is internal
  * 
- * @param shell the shell struct
+ * @param str string vec to pop from
  * @return char* the next line string
  */
-char			*_pop_line(t_minishell *shell);
+char			*_pop_line(char ***str);
 
-/**
- * @brief cleanup the readline loop ready for another read
- * 
- * @note this SHOULD be enough to exit cleanly (no leaks)
- * though this will need to be tested. ALSO this is globally accessible
- * becayse it is a cleanup function.
- * 
- * @param shell 
- */
-void			readline_cleanup(t_minishell *shell);
+
+char	*remove_quotes(char *str);
+
+
+int	read_until_complete_command(t_minishell *shell);
+
 
 /*
 Env Var helper functions:
@@ -230,6 +220,15 @@ char			*s_get_interalenv(t_minishell *shell, char *name);
  */
 ssize_t			s_get_internalenvid(t_minishell *shell, char *name);
 
+/**
+ * @brief get a env var from either internal or environment
+ * 
+ * @param shell shell lol
+ * @param name name of var
+ * @return char* a string lol
+ */
+char	*s_get_envany(t_minishell *shell, char *name);
+
 /*
 Things that can be accessed externally in the builtins are
 */
@@ -257,6 +256,7 @@ Things that can be accessed externally in the builtins are
  * @return int the statuscode
  */
 typedef int					(*t_builtincmd)(t_minishell *, char **, char **);
+
 
 /**
  * @brief Get a builtin command object

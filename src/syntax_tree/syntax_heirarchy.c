@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 12:20:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/27 15:14:59 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/27 17:11:17 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_astnode	*ast_parse_command(t_minishell *shell, struct s_ast_internal *meta)
 		&& ft_strchr("\1\3\4\5\6\17", meta->tokens[meta->consumed]->type))
 	{
 		lr[0] = create_ast_node(AST_COMMAND, 0, 0, 0);
-		meta->consumed += ast_consume_words(meta, lr[0]);
+		meta->consumed += ast_consume_words(shell, meta, lr[0]);
 	}
 	return (lr[0]);
 }
