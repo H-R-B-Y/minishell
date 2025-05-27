@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 12:20:37 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/27 18:36:05 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/27 19:00:03 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	post_consume_words(t_minishell *shell,
 		if (node->tokens[i[0]]->type == TOK_HEREDOC)
 		{
 			ft_lstadd_back(&node->redirect,
-				ft_lstnew(handle_heredoc(shell, node->tokens[i[0]]->raw)));
+				ft_lstnew(handle_heredoc(shell, node->tokens[i[0] + 1]->raw)));
 			i[0] += 2;
 			continue ;
 		}
