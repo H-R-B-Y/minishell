@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/27 17:28:16 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/27 18:06:45 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,7 @@ char	*remove_quotes(char *str);
 
 int	read_until_complete_command(t_minishell *shell);
 
+t_redirect_desc	*handle_heredoc(t_minishell *shell, char *delim);
 
 /*
 Env Var helper functions:

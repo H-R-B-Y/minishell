@@ -6,29 +6,37 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 12:20:37 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/27 17:11:09 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/27 18:11:40 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-// void	post_consume_words(t_minishell *shell,
-// 	struct s_ast_internal *meta, t_astnode *node)
-// {
-// 	size_t	i;
-// 	char	*sanitised_heredoc_delim;
+void	post_consume_words(t_minishell *shell,
+	struct s_ast_internal *meta, t_astnode *node)
+{
+	size_t	i[2];
+	t_token	**new_tokenv;
 
-// 	i = 0;
-// 	while (node->tokens[i])
-// 	{
-// 		if (node->tokens[i]->type == TOK_HEREDOC)
-// 		{
-			
-// 			i += 1;
-// 		}
-// 		i++;
-// 	}
-// }
+	i[0] = 0;
+	i[1] = 0;
+	(void)meta;
+	new_tokenv = ft_calloc(ft_arrlen((void *)node->tokens), sizeof(void *));
+	while (node->tokens[i[0]])
+	{
+		if (node->tokens[i[0]]->type == TOK_HEREDOC)
+		{
+			ft_lstadd_back(&node->redirect,
+				ft_lstnew(handle_heredoc(shell, node->tokens[i[0]]->raw)));
+			i[0] += 2;
+			continue ;
+		}
+		new_tokenv[i[1]++] = node->tokens[i[0]];
+		i[0]++;
+	}
+	free(node->tokens);
+	node->tokens = new_tokenv;
+}
 
 
 // && (meta->tokens[meta->consumed + eaten]->type == TOK_WORD // 1
@@ -57,6 +65,6 @@ size_t	ast_consume_words(t_minishell *shell,
 		i++;
 	}
 	node->token_count = eaten;
-	// post_consume_words(shell, meta, node);
+	post_consume_words(shell, meta, node);
 	return (eaten);
 }

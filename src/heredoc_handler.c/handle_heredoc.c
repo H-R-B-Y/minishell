@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:22:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/27 17:04:19 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/27 18:12:57 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*s_get_envany(t_minishell *shell, char *name);
 
-void	replace_var(t_minishell *shell, int temp_file, char *line)
+void	_replace_var(t_minishell *shell, int temp_file, char *line)
 {
 	size_t	i[2];
 	char	*var[2];
@@ -38,7 +38,7 @@ void	replace_var(t_minishell *shell, int temp_file, char *line)
 	}
 }
 
-int	read_heredoc(t_minishell *shell, char *delim, int temp_file, short handlevar)
+int	_read_heredoc(t_minishell *shell, char *delim, int temp_file, short handlevar)
 {
 	char	*temp;
 	int		status;
@@ -50,7 +50,7 @@ int	read_heredoc(t_minishell *shell, char *delim, int temp_file, short handlevar
 		if (ft_strcmp(delim, temp))
 			break ;
 		if (handlevar && ft_strchr(temp, '$'))
-			replace_var(shell, temp_file, temp);
+			_replace_var(shell, temp_file, temp);
 		else
 			write(temp_file, temp, ft_strlen(temp));
 		status = next_line(&shell->rldata, "heredoc");
@@ -75,15 +75,15 @@ t_redirect_desc	*handle_heredoc(t_minishell *shell, char *delim)
 	handle_vars = 0;
 	if (!ft_strchr(delim, '"') && !ft_strchr(delim, '\''))
 		handle_vars = 1;
-	clean_heredoc = sanitize_heredoc(delim);
-	temp_file = open("/", O_RDONLY | __O_TMPFILE | O_RDWR, S_IRUSR | S_IWUSR);
+	clean_heredoc = remove_quotes(delim);
+	temp_file = open(getcwd(0, 0), O_RDONLY | __O_TMPFILE | O_RDWR, S_IRUSR | S_IWUSR);
 	if (temp_file == -1)
 	{
 		perror("minishell: heredoc");
 		free(output);
 		return (0);
 	}
-	read_heredoc(shell, clean_heredoc, temp_file, handle_vars);
+	_read_heredoc(shell, clean_heredoc, temp_file, handle_vars);
 	(*output) = (t_redirect_desc){.from_fd = temp_file, .to_fd = 0, .type = REDIRECT_HEREDOC};
 	return (output);
 }
