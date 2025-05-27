@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:52:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/17 14:03:25 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/27 15:37:38 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ char	*readline_handle_multiline(t_minishell *shell, char *new_line)
 	shell->extra_lines = temp;
 	return (_pop_line(shell));
 }
-
 
 /*
 Function to be called when we need to expect more input from the user
@@ -67,7 +66,7 @@ char	*readline_subloop(t_minishell *shell, char *prompt)
 
 int	tokenise_and_validate(t_minishell *shell)
 {
-	char	*buff;
+	char			*buff;
 	t_tokretcode	code;
 
 	code = tokenise(&shell->fsm_data, shell->current_pipeline);
@@ -84,7 +83,6 @@ int	tokenise_and_validate(t_minishell *shell)
 	return (0);
 }
 
-
 int	readline_loop(t_minishell *shell)
 {
 	readline_cleanup(shell);
@@ -100,5 +98,4 @@ int	readline_loop(t_minishell *shell)
 		return (errno != EINTR);
 	return (0);
 }
-
 

@@ -1,29 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   produce_syntax_tree.c                              :+:      :+:    :+:   */
+/*   ft_arradd_front.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/02 12:20:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/27 17:10:18 by hbreeze          ###   ########.fr       */
+/*   Created: 2025/05/22 13:46:03 by hbreeze           #+#    #+#             */
+/*   Updated: 2025/05/22 16:38:04 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "include/libft.h"
 
-t_astnode	*produce_ast(t_minishell *shell, t_token **tokens, size_t count)
+void	**ft_arradd_front(void **arr, void *newitem)
 {
-	struct s_ast_internal	meta;
-	t_astnode				*head;
+	void	**output;
+	size_t	len;
 
-	if (!tokens || !*tokens || !count)
-		return ((void *)0);
-	meta.tokens = tokens;
-	meta.count = count;
-	meta.consumed = 0;
-	meta.left_node = 0;
-	meta.right_node = 0;
-	head = ast_parse_seperators(shell, &meta);
-	return (head);
+	if (!arr || !*arr)
+		return (0);
+	len = ft_arrlen(arr);
+	output = ft_calloc(len + 2, sizeof(void *));
+	if (!output)
+		return (0);
+	output[0] = newitem;
+	ft_memmove(&output[1], arr, len * sizeof(void *));
+	return (output);
 }

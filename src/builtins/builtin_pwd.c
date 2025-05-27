@@ -1,29 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   produce_syntax_tree.c                              :+:      :+:    :+:   */
+/*   builtin_pwd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/02 12:20:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/27 17:10:18 by hbreeze          ###   ########.fr       */
+/*   Created: 2025/05/22 15:10:47 by hbreeze           #+#    #+#             */
+/*   Updated: 2025/05/26 16:54:40 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include "../../include/builtin.h"
 
-t_astnode	*produce_ast(t_minishell *shell, t_token **tokens, size_t count)
+int	builtin_pwd(t_minishell *shell, char **argv, char **envp)
 {
-	struct s_ast_internal	meta;
-	t_astnode				*head;
+	char	*pwd;
 
-	if (!tokens || !*tokens || !count)
-		return ((void *)0);
-	meta.tokens = tokens;
-	meta.count = count;
-	meta.consumed = 0;
-	meta.left_node = 0;
-	meta.right_node = 0;
-	head = ast_parse_seperators(shell, &meta);
-	return (head);
+	(void)shell;
+	(void)argv;
+	(void)envp;
+	pwd = getcwd(0, 0);
+	if (!pwd)
+		return (perror("pwd"), free(pwd), 1);
+	else
+		return (printf("%s\n", pwd), free(pwd), 0);
 }

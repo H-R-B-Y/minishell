@@ -56,6 +56,9 @@ if the tokens are not valid after reading the extra lines:
 - go back to readline loop to append more tokens until the token array is complete
 - all lines read in addition to the first in order to complete the command need to be added to the history record.
 
+
+> tokeniser is pretty much done, though there are some edge cases that might need to be tested, but the states are all there, so future state transitition only need to be applied to the mapping.
+
 ## AST
 
 The ast will be constructed to provide a path of execution that makes sure that all commands are run in the correct order with the correct inputs and outputs.
@@ -72,6 +75,7 @@ if a syntax error is found during the construction of the AST:
 - the tokens are free'd
 - we go back to the readline loop for the next command.
 
+> AST will be updated to include the HEREDOC setup, heredoc will be added to the redirect list.
 
 ## Execution path
 

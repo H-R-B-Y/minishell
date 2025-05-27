@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:22:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/19 15:29:12 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/23 20:52:38 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,38 +35,40 @@ It would make it easier to handle i guess?
 
 Is it needed? not really, so i guess i will leave it alone.
 */
-t_tokentype		_parse_loop_internals(t_tokint *tokeniser, char *str)
+
+// I cannot reduce this function to below 25 lines lol, need to split it out
+// or rename something 
+t_tokentype	_parse_loop_internals(t_tokint *tokeniser, char *str)
 {
-	char	c[2];
+	char	c;
 
 	while (str[tokeniser->index_end])
 	{
-		c[0] = str[tokeniser->index_end];
-		c[1] = str[tokeniser->index_end + 1];
-		if (c[0] == '\\' && tokeniser->quote_mode != QUOTE_SINGLE && c[1]
-			&& ++tokeniser->index_end && ++tokeniser->index_end) // This is for handling escape codes
-			continue;
+		c = str[tokeniser->index_end];
+		if (c == '\\' && tokeniser->quote_mode != QUOTE_SINGLE
+			&& str[tokeniser->index_end + 1] && ++tokeniser->index_end
+			&& ++tokeniser->index_end)
+			continue ;
 		if (tokeniser->quote_mode == QUOTE_NONE)
 		{
-			if (c[0] == '\'')
+			if (c == '\'')
 				tokeniser->quote_mode = QUOTE_SINGLE;
-			else if (c[0] == '"')
+			else if (c == '"')
 				tokeniser->quote_mode = QUOTE_DOUBLE;
-			else if (isoperator(c[0]))
-				return (tokenise_type(tokeniser, str));
-			else if (ft_iswhitespace(c[0]) || c[0] == '\0')
+			else if (isoperator(c) || ft_isdigit(c)
+				|| ft_iswhitespace(c) || c == '\0')
 				return (tokenise_type(tokeniser, str));
 		}
-		else if (tokeniser->quote_mode == QUOTE_DOUBLE && c[0] == '"')
+		else if (tokeniser->quote_mode == QUOTE_DOUBLE && c == '"')
 			tokeniser->quote_mode = QUOTE_NONE;
-		else if (tokeniser->quote_mode == QUOTE_SINGLE && c[0] == '\'')
+		else if (tokeniser->quote_mode == QUOTE_SINGLE && c == '\'')
 			tokeniser->quote_mode = QUOTE_NONE;
 		tokeniser->index_end++;
 	}
 	return (0);
 }
 
-t_tokentype		next_token_type(t_tokint *tokeniser, char *str)
+t_tokentype	next_token_type(t_tokint *tokeniser, char *str)
 {
 	tokeniser->index_start = tokeniser->index_end;
 	if (!str[tokeniser->index_start])
@@ -81,7 +83,7 @@ t_tokentype		next_token_type(t_tokint *tokeniser, char *str)
 		return (tokeniser->current_type);
 	if (tokeniser->quote_mode != QUOTE_NONE || (tokeniser->index_end > 1
 			&& str[tokeniser->index_end - 1] == '\\'
-			&& str[tokeniser->index_end - 2] != '\\')) // escaping a newline is an incomplete string
+			&& str[tokeniser->index_end - 2] != '\\'))
 		return (handle_unclosed_quote(tokeniser, str), TOK_INCOMPLETE_STRING);
 	else if (tokeniser->index_start < tokeniser->index_end)
 		return (tokenise_type(tokeniser, str));
@@ -98,7 +100,7 @@ t_tokretcode	set_retcode(t_fsmdata *fsm,
 		fsm->tokeniser_internals.index_start = 0;
 	}
 	if (str_condition && fsm->str_condition)
-			free(fsm->str_condition);
+		free(fsm->str_condition);
 	fsm->str_condition = str_condition;
 	return (code);
 }
@@ -121,7 +123,7 @@ t_tokretcode	correct_retcode(t_fsmdata *fsm)
 {
 	if (fsm->paren_count < 0)
 		return (set_retcode(fsm, PARSE_ERROR,
-			ft_strdup("parenthesis dont make sense")));
+				ft_strdup("parenthesis dont make sense")));
 	if (fsm->state == ST_CONT)
 	{
 		state_change(fsm, fsm->last_state);
@@ -154,13 +156,15 @@ t_tokretcode	tokenise(t_fsmdata *fsm, char *str)
 		&& fsm->state != ST_CONT
 		&& fsm->state != ST_WRNG)
 	{
-		fsm->tokeniser_internals.current_type = next_token_type(&fsm->tokeniser_internals, str);
+		fsm->tokeniser_internals.current_type
+			= next_token_type(&fsm->tokeniser_internals, str);
 		next_state = fsm_check_transition(fsm->state,
-			fsm->tokeniser_internals.current_type);
+				fsm->tokeniser_internals.current_type);
 		if (!handle_token_type(fsm))
 			next_state = ST_WRNG;
 		state_change(fsm, next_state);
-		if (next_state != ST_END && next_state != ST_WRNG && next_state != ST_CONT)
+		if (next_state != ST_END && next_state != ST_WRNG
+			&& next_state != ST_CONT)
 			ft_lstadd_back(&(fsm->tokens),
 				ft_lstnew(tokeniser_pop_token(&fsm->tokeniser_internals)));
 	}

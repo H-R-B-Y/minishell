@@ -6,6 +6,8 @@
 		"abstract_syntax_tree.h": "c",
 		"compare": "c",
 		"type_traits": "c",
-		"fsm_tokeniser.h": "c"
+		"fsm_tokeniser.h": "c",
+		"unistd.h": "c",
+		"readline_loop.h": "c"
 	}
 }

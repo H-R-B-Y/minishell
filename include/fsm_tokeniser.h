@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/17 18:20:21 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/23 12:48:24 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "libft.h"
 # include <stdio.h>
 
-# define TRNSCOUNT 37
+# define TRNSCOUNT 38
 
 /*
 This section covers the main token types, 

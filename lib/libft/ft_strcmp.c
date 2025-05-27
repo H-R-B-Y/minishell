@@ -1,29 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   produce_syntax_tree.c                              :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/02 12:20:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/27 17:10:18 by hbreeze          ###   ########.fr       */
+/*   Created: 2025/05/22 12:27:51 by hbreeze           #+#    #+#             */
+/*   Updated: 2025/05/22 14:41:58 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "./include/libft.h"
 
-t_astnode	*produce_ast(t_minishell *shell, t_token **tokens, size_t count)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	struct s_ast_internal	meta;
-	t_astnode				*head;
+	const char	*s1_i;
+	const char	*s2_i;
 
-	if (!tokens || !*tokens || !count)
-		return ((void *)0);
-	meta.tokens = tokens;
-	meta.count = count;
-	meta.consumed = 0;
-	meta.left_node = 0;
-	meta.right_node = 0;
-	head = ast_parse_seperators(shell, &meta);
-	return (head);
+	if (s1 == s2)
+		return (0);
+	s1_i = s1;
+	s2_i = s2;
+	while (*s1_i
+		&& *s2_i
+		&& (*s1_i == *s2_i)
+	)
+	{
+		s1_i++;
+		s2_i++;
+	}
+	return ((unsigned char)*s1_i - (unsigned char)*s2_i);
 }
