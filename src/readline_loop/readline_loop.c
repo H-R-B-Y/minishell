@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:52:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/23 20:42:31 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/27 15:37:38 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,3 +98,4 @@ int	readline_loop(t_minishell *shell)
 		return (errno != EINTR);
 	return (0);
 }
+
