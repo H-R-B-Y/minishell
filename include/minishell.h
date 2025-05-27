@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/26 16:49:23 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/27 15:38:12 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 
 # include "./libft.h"
 # include "./fsm_tokeniser.h"
+# include "./readline_loop.h"
 # include "./abstract_syntax_tree.h"
 
 /**
@@ -88,6 +89,8 @@ struct s_minishell
 	/*
 	internal finite state machine data*/
 	t_fsmdata	fsm_data;
+
+	t_readline_data	rldata;
 	/*
 	i think the best way to handle this would be to keep concatinating
 	the readlines until we reach the point where we have a valid AST.
@@ -152,120 +155,9 @@ char			*str_join_with_sep(char *str1, char *str2, char *sep);
  */
 char			*str_vec_join(char **arr);
 
-/**
- * @brief pop a line out of the extra lines array
- * 
- * @note
- * Internal function for use in the readline loop(?)
- * should probably move this to a different header as it is internal
- * 
- * @param shell the shell struct
- * @return char* the next line string
- */
-char			*_pop_line(t_minishell *shell);
 
-/**
- * @brief cleanup the readline loop ready for another read
- * 
- * @note this SHOULD be enough to exit cleanly (no leaks)
- * though this will need to be tested. ALSO this is globally accessible
- * becayse it is a cleanup function.
- * 
- * @param shell 
- */
-void			readline_cleanup(t_minishell *shell);
+void readline_cleanup(t_minishell *shell);
 
-/*
-Env Var helper functions:
-
-There are two variables being tracked, the first is the ACTUAL environment
-variables this env is passed to children as well as accessible through
-variable expansion.
-
-The second is the internal variables, these are tracked by the shell but only
-accessible to the shell and not handed to the child processes.
-*/
-
-/**
- * @brief get an environment variable from the internal tracked environment
- * 
- * @param shell the shell object
- * @param name the name of the variable
- * @return char* the entire variable entry
- */
-char			*s_get_env(t_minishell *shell, char *name);
-
-/**
- * @brief get the index of a variable in the internal tracked environment
- * 
- * @param shell the shell object
- * @param name the name of the variable
- * @return char* the entire variable entry
- */
-ssize_t			s_get_envid(t_minishell *shell, char *name);
-
-/**
- * @brief get an shell local variable from the internal tracked variables
- * 
- * @param shell the shell object
- * @param name the name of the variable
- * @return char* the entire variable entry
- */
-char			*s_get_interalenv(t_minishell *shell, char *name);
-
-/**
- * @brief get the index of a shell local variable from the internal tracked vars
- * 
- * @param shell the shell object
- * @param name the name of the variable
- * @return char* the entire variable entry
- */
-ssize_t			s_get_internalenvid(t_minishell *shell, char *name);
-
-/*
-Things that can be accessed externally in the builtins are
-*/
-
-/**
- * @brief typedef for the builtin command definitions
- * 
- * @note
- * builtin functions should not be run under a fork because they need 
- * access to the current state of the shell, this can be proven by running
- * the following:
- * 
- * ```bash
- * export TESTLOL=3 & sleep 2 && echo $TESTLOL
- * ```
- * or
- * ```bash
- * export TESTLOL=2 &
- * env | grep TEST
- * ```
- * 
- * @param shell the shell struct
- * @param argv the arguments passed to the function
- * @param envp the current environment variables
- * @return int the statuscode
- */
-typedef int					(*t_builtincmd)(t_minishell *, char **, char **);
-
-/**
- * @brief Get a builtin command object
- * 
- * these are the only valid strs (others return NULL):
- * ```
- * - echo
- * - env
- * - exit
- * - export
- * - pwd
- * - unset
- * ```
- * 
- * @param str string to check for a builtin command
- * @return t_builtincmd a function to run as a command
- */
-t_builtincmd	get_builtincmd(char *str);
+int	read_until_complete_command(t_minishell *shell);
 
 #endif
