@@ -34,6 +34,8 @@ SRCS			:= \
 				$(SRC_DIR)/fsm_tokeniser/token_utils.c \
 				$(SRC_DIR)/fsm_tokeniser/tokeniser.c \
 				\
+				$(SRC_DIR)/heredoc_handler.c/handle_heredoc.c \
+				\
 				$(SRC_DIR)/new_readline_loop/read_command_loop.c \
 				$(SRC_DIR)/new_readline_loop/splitting_next_lines.c \
 				\
