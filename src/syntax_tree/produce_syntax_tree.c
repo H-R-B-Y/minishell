@@ -6,13 +6,13 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 12:20:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/06 19:59:06 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/27 15:13:22 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-t_astnode	*produce_ast(t_token **tokens, size_t count)
+t_astnode	*produce_ast(t_minishell *shell, t_token **tokens, size_t count)
 {
 	struct s_ast_internal	meta;
 	t_astnode				*head;
