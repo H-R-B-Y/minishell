@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 12:20:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/27 15:13:22 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/27 17:10:18 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,6 @@ t_astnode	*produce_ast(t_minishell *shell, t_token **tokens, size_t count)
 	meta.consumed = 0;
 	meta.left_node = 0;
 	meta.right_node = 0;
-	head = ast_parse_seperators(&meta);
+	head = ast_parse_seperators(shell, &meta);
 	return (head);
 }

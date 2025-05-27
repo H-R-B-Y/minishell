@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/27 15:38:19 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/27 17:53:09 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int	better_add_history(char *string)
 	return (1);
 }
 
-
 void	reset_for_command(t_minishell *shell)
 {
 	if (shell->rldata.current_hist_item)
@@ -81,6 +80,7 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGINT, do_something);
 	add_history("(this\n) && should work"); add_history("\"this\n should\"\nwork"); add_history("(this &&\nhas a seperator)");
 	shell.prompt = "minishell -> ";
+	printf("%s\n\n", remove_quotes("\"this\"\"text\""));
 	while (1)
 	{
 		rlcode = read_until_complete_command(&shell);
@@ -90,7 +90,7 @@ int	main(int argc, char **argv, char **envp)
 			print_token_list(shell.tokens);
 			shell.tokenv = (void *)ft_lstarr(shell.tokens);
 			ft_lstclear(&shell.tokens, 0);
-			shell.current_tree = produce_ast(shell.tokenv,
+			shell.current_tree = produce_ast(&shell, shell.tokenv,
 				ft_arrlen((void *)shell.tokenv));
 			print_ast(shell.current_tree, "|	|");
 		}
@@ -102,7 +102,7 @@ int	main(int argc, char **argv, char **envp)
 			break ;
 		reset_for_command(&shell);
 	}
-	readline_cleanup(&shell);
+	// readline_cleanup(&shell);
 	destroy_ast(&shell.current_tree);
 	reset_fsm(&shell.fsm_data);
 	return (0);

@@ -15,30 +15,6 @@ LIBFT			:= $(LIBFT_DIR)/libft.a
 
 SRC_DIR			:= ./src
 
-# $(SRC_DIR)/lexar/cleanse_validate_tokens.c \
-# $(SRC_DIR)/lexar/token_binning.c \
-# $(SRC_DIR)/lexar/token_init.c \
-# $(SRC_DIR)/lexar/token_operators.c \
-# $(SRC_DIR)/lexar/token_skipping.c \
-# $(SRC_DIR)/lexar/token_util.c \
-# $(SRC_DIR)/lexar/token_util2.c \
-# $(SRC_DIR)/lexar/tokeniser.c \
-#
-
-# $(SRC_DIR)/new_lexar/check_errors.c \
-# $(SRC_DIR)/new_lexar/quote_isnt_escaped.c \
-# $(SRC_DIR)/new_lexar/set_error.c \
-# $(SRC_DIR)/new_lexar/token_binning.c \
-# $(SRC_DIR)/new_lexar/token_continuation.c \
-# $(SRC_DIR)/new_lexar/token_init.c \
-# $(SRC_DIR)/new_lexar/token_operators.c \
-# $(SRC_DIR)/new_lexar/token_skip.c \
-# $(SRC_DIR)/new_lexar/token_skipping.c \
-# $(SRC_DIR)/new_lexar/token_util.c \
-# $(SRC_DIR)/new_lexar/token_util2.c \
-# $(SRC_DIR)/new_lexar/tokenise_begin.c \
-# $(SRC_DIR)/new_lexar/tokenise.c \
-
 SRCS			:= \
 				$(SRC_DIR)/builtins/builtin_cd.c \
 				$(SRC_DIR)/builtins/builtin_echo.c \
@@ -70,7 +46,9 @@ SRCS			:= \
 				\
 				$(SRC_DIR)/utility/operators.c \
 				$(SRC_DIR)/utility/pop_line.c \
+				$(SRC_DIR)/utility/remove_quotes.c \
 				$(SRC_DIR)/utility/sgetenv.c \
+				$(SRC_DIR)/utility/sgetenvany.c \
 				$(SRC_DIR)/utility/ssetenv.c \
 				$(SRC_DIR)/utility/str_join_with_sep.c \
 				$(SRC_DIR)/utility/str_vec_join.c \
