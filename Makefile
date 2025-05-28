@@ -1,10 +1,11 @@
 NAME			:= minishell
-CFLAGS			:= -Wextra -Wall -Werror -Ofast -g3
+CC 				:= gcc
+CFLAGS			:= -Wextra -Wall -Werror -g3
 #CFLAGS			:= 
 
 MAKEFLAGS		+= --no-print-directory
 
-LIBFLAGS		:= -lreadline
+LIBFLAGS		:= -lreadline -lhistory
 
 HEADERS			:= -Iinclude
 
@@ -34,8 +35,10 @@ SRCS			:= \
 				$(SRC_DIR)/fsm_tokeniser/token_utils.c \
 				$(SRC_DIR)/fsm_tokeniser/tokeniser.c \
 				\
-				$(SRC_DIR)/readline_loop/readline_cleanup.c \
-				$(SRC_DIR)/readline_loop/readline_loop.c \
+				$(SRC_DIR)/heredoc_handler.c/handle_heredoc.c \
+				\
+				$(SRC_DIR)/new_readline_loop/read_command_loop.c \
+				$(SRC_DIR)/new_readline_loop/splitting_next_lines.c \
 				\
 				$(SRC_DIR)/syntax_tree/ast_node_init.c \
 				$(SRC_DIR)/syntax_tree/print_ast.c \
@@ -46,7 +49,9 @@ SRCS			:= \
 				\
 				$(SRC_DIR)/utility/operators.c \
 				$(SRC_DIR)/utility/pop_line.c \
+				$(SRC_DIR)/utility/remove_quotes.c \
 				$(SRC_DIR)/utility/sgetenv.c \
+				$(SRC_DIR)/utility/sgetenvany.c \
 				$(SRC_DIR)/utility/ssetenv.c \
 				$(SRC_DIR)/utility/str_join_with_sep.c \
 				$(SRC_DIR)/utility/str_vec_join.c \
@@ -73,7 +78,7 @@ $(NAME): $(MAIN) $(OBJS) $(LIBFT) ./include/minishell.h
 # 	@$(CC) $(CFLAGS) src/testing.c $(OBJS) $(LIBFT) $(LIBFLAGS) -o $(NAME)
 
 $(LIBFT):
-		@$(MAKE) --directory $(LIBFT_DIR) all CFLAGS="$(CFLAGS)"
+		@$(MAKE) --directory $(LIBFT_DIR) all CFLAGS="$(CFLAGS)" CC=$(CC)
 
 .c.o:
 		@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)

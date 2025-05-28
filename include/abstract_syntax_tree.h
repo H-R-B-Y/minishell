@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/26 17:55:09 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/27 15:16:16 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include "libft.h"
 # include "./fsm_tokeniser.h"
+
+typedef struct s_minishell	t_minishell;
 
 /**
  * @brief I created this because i think we might need it, not because we do
@@ -148,7 +150,7 @@ struct s_ast_internal
  * @param count count of tokens in the array (TODO:i dont think we need this)
  * @returns head node of the tree
  */
-t_astnode	*produce_ast(t_token **tokens, size_t count);
+t_astnode	*produce_ast(t_minishell *shell, t_token **tokens, size_t count);
 
 /**
  * @brief destroy abstract syntax tree
@@ -162,42 +164,42 @@ void		destroy_ast(t_astnode **node);
  * @param meta the metadata struct containing info about the tree.
  * @returns new ast node (head allocated)
  */
-t_astnode	*ast_parse_seperators(struct s_ast_internal *meta);
+t_astnode	*ast_parse_seperators(t_minishell *shell, struct s_ast_internal *meta);
 
 /**
  * @brief create a new ast node from and or tokens
  * @param meta the metadata struct containing info about the tree.
  * @returns new ast node (head allocated)
  */
-t_astnode	*ast_parse_and_or(struct s_ast_internal *meta);
+t_astnode	*ast_parse_and_or(t_minishell *shell, struct s_ast_internal *meta);
 
 /**
  * @brief create a new ast node from pipe token
  * @param meta the metadata struct containing info about the tree.
  * @returns new ast node (head allocated)
  */
-t_astnode	*ast_parse_pipe(struct s_ast_internal *meta);
+t_astnode	*ast_parse_pipe(t_minishell *shell, struct s_ast_internal *meta);
 
 /**
  * @brief create a new ast node from command tokens
  * @param meta the metadata struct containing info about the tree.
  * @returns new ast node (head allocated)
  */
-t_astnode	*ast_parse_command(struct s_ast_internal *meta);
+t_astnode	*ast_parse_command(t_minishell *shell, struct s_ast_internal *meta);
 
 /**
  * @brief create a new ast node from subcommand tokens
  * @param meta the metadata struct containing info about the tree.
  * @returns new ast node (head allocated)
  */
-t_astnode	*ast_parse_subcommand(struct s_ast_internal *meta);
+t_astnode	*ast_parse_subcommand(t_minishell *shell, struct s_ast_internal *meta);
 
 /**
  * @brief consume contiguous word tokens into a single command token
  * @param meta the metadata struct containing info about the tree
  * @param node the ??? too tired cannot remember
  */
-size_t		ast_consume_words(struct s_ast_internal *meta, t_astnode *node);
+size_t		ast_consume_words(t_minishell *shell, struct s_ast_internal *meta, t_astnode *node);
 
 /**
  * @brief print the ast
