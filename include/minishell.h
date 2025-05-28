@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/26 16:49:23 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/27 17:06:50 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,6 +249,7 @@ Things that can be accessed externally in the builtins are
  * @return int the statuscode
  */
 typedef int					(*t_builtincmd)(t_minishell *, char **, char **);
+
 
 /**
  * @brief Get a builtin command object
