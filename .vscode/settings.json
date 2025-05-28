@@ -8,6 +8,7 @@
 		"type_traits": "c",
 		"fsm_tokeniser.h": "c",
 		"unistd.h": "c",
-		"readline_loop.h": "c"
+		"readline_loop.h": "c",
+		"v_dbg.h": "c"
 	}
 }

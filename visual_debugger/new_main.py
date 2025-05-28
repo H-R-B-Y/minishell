@@ -398,15 +398,22 @@ class visual_debugger(tk.Tk):
 
 		# top bar
 		self.top_frame = tk.Frame(master = self)
-		self.top_frame.pack(fill=tk.X, expand=True)
+		self.top_frame.pack(fill=tk.X)
 
 		self.frame_frame = ttk.Notebook(master = self)
 		self.frame_frame.pack(fill=tk.BOTH, expand=True)
 
 		self.open_when_file = []
 		# first frame
-		self.inputfile_frame = ttk.Frame(master = self.frame_frame)
-		self.frame_frame.add(self.inputfile_frame, text = "Select file")
+		self.input_file_frame = tk.Frame(self.frame_frame)
+		self.frame_frame.add(self.input_file_frame, text="Select file")
+		
+		self.file_top_bar = tk.Frame(self.input_file_frame)
+		self.file_details_pane = tk.Frame(self.input_file_frame)
+		self.file_top_bar.pack(side=tk.TOP, fill=tk.X)
+		self.file_details_pane.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
+		self.file_top_bar.configure(height=40)
+
 
 		# Second frame
 		self.fsm_frame = ttk.Frame(master = self.frame_frame)
