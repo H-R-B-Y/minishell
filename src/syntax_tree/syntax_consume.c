@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 12:20:37 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/27 19:00:03 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/28 13:51:22 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	post_consume_words(t_minishell *shell,
 	i[0] = 0;
 	i[1] = 0;
 	(void)meta;
-	new_tokenv = ft_calloc(ft_arrlen((void *)node->tokens), sizeof(void *));
+	new_tokenv = ft_calloc(ft_arrlen((void *)node->tokens) + 1, sizeof(void *));
 	while (node->tokens[i[0]])
 	{
 		if (node->tokens[i[0]]->type == TOK_HEREDOC)
