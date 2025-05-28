@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/26 18:01:14 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/28 14:14:12 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,7 @@ void	freetokenv(t_token **tokens)
 
 	i = 0;
 	while (tokens[i])
-	{
-		destroy_token(tokens[i], free);
-		i++;
-	}
+		destroy_token(tokens[i++], free);
 	free(tokens);
 }
 
@@ -37,7 +34,9 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	shell.environment = envp;
+	shell.environment = ft_arrmap((void *)envp, ft_strdup, free);
+	if (!shell.environment)
+		return (perror("minishell: malloc:"), 1);
 	ft_bzero(&shell, sizeof(t_minishell));
 	add_history("(this\n) && should work");
 	add_history("\"this\n should\"\nwork");
