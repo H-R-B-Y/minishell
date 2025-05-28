@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:22:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/23 20:52:38 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/28 13:51:47 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,7 @@ t_tokentype	_parse_loop_internals(t_tokint *tokeniser, char *str)
 				tokeniser->quote_mode = QUOTE_SINGLE;
 			else if (c == '"')
 				tokeniser->quote_mode = QUOTE_DOUBLE;
-			else if (isoperator(c) || ft_isdigit(c)
-				|| ft_iswhitespace(c) || c == '\0')
+			else if (isoperator(c) || ft_iswhitespace(c) || c == '\0')
 				return (tokenise_type(tokeniser, str));
 		}
 		else if (tokeniser->quote_mode == QUOTE_DOUBLE && c == '"')
