@@ -5,62 +5,80 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
+def hierarchy_pos(G, root, width=1.0, vert_gap=0.2, vert_loc=0, xcenter=0.5, pos=None, parent=None):
+	"""
+	A layout for a directed tree using recursion.
+	Based on Joel's answer here: https://stackoverflow.com/a/29597209/1462707
+	"""
+	if pos is None:
+		pos = {root: (xcenter, vert_loc)}
+	else:
+		pos[root] = (xcenter, vert_loc)
+	children = list(G.successors(root))
+	if not children:
+		return pos
+	dx = width / len(children)
+	nextx = xcenter - width / 2 - dx / 2
+	for child in children:
+		nextx += dx
+		pos = hierarchy_pos(G, child, width=dx, vert_gap=vert_gap,
+							vert_loc=vert_loc - vert_gap, xcenter=nextx, pos=pos, parent=root)
+	return pos
 
 class fsm_diagram ():
 	nodes = [
-	"ST_WRNG",
-	"ST_STRT",
-	"ST_WORD",
-	"ST_OPRA",
-	"ST_SEQ",
-	"ST_LSSH",
-	"ST_RSSH",
-	"ST_HDOC",
-	"ST_REDR",
-	"ST_CONT",
-	"ST_END",
-	"STATE_COUN",
+	"wrong state",
+	"start state",
+	"word state",
+	"operator state",
+	"sequence state",
+	"left subshell state",
+	"right subshell state",
+	"heredoc state",
+	"redirect state",
+	"continue state",
+	"end state",
 	]
 	edges = [
-	{"src":		"ST_STRT", "dest":"ST_LSSH"},
-	{"src":"ST_STRT", "dest":"ST_REDR"},
-	{"src":"ST_STRT", "dest":"ST_HDOC"},
-	{"src":"ST_STRT", "dest":"ST_WORD"},
-	{"src":"ST_WORD", "dest":"ST_OPRA"},
-	{"src":"ST_WORD", "dest":"ST_SEQ"},
-	{"src":"ST_WORD", "dest":"ST_END"},
-	{"src":"ST_WORD", "dest":"ST_WORD"},
-	{"src":"ST_WORD", "dest":"ST_REDR"},
-	{"src":"ST_WORD", "dest":"ST_RSSH"},
-	{"src":"ST_WORD", "dest":"ST_HDOC"},
-	{"src":"ST_WORD", "dest":"ST_WORD"},
-	{"src":"ST_REDR", "dest":"ST_WORD"},
-	{"src":"ST_HDOC", "dest":"ST_WORD"},
-	{"src":"ST_OPRA", "dest":"ST_REDR"},
-	{"src":"ST_OPRA", "dest":"ST_LSSH"},
-	{"src":"ST_OPRA", "dest":"ST_WORD"},
-	{"src":"ST_OPRA", "dest":"ST_CONT"},
-	{"src":"ST_OPRA", "dest":"ST_HDOC"},
-	{"src":"ST_CONT", "dest":"ST_STRT"},
-	{"src":"ST_LSSH", "dest":"ST_WORD"},
-	{"src":"ST_LSSH", "dest":"ST_REDR"},
-	{"src":"ST_LSSH", "dest":"ST_HDOC"},
-	{"src":"ST_LSSH", "dest":"ST_LSSH"},
-	{"src":"ST_LSSH", "dest":"ST_END"},
-	{"src":"ST_RSSH", "dest":"ST_END"},
-	{"src":"ST_RSSH", "dest":"ST_RSSH"},
-	{"src":"ST_RSSH", "dest":"ST_OPRA"},
-	{"src":"ST_RSSH", "dest":"ST_SEQ"},
-	{"src":"ST_RSSH", "dest":"ST_REDR"},
-	{"src":"ST_RSSH", "dest":"ST_HDOC"},
-	{"src":"ST_RSSH", "dest":"ST_WORD"},
-	{"src":"ST_SEQ", "dest":"ST_END"},
-	{"src":"ST_SEQ", "dest":"ST_WORD"},
-	{"src":"ST_SEQ", "dest":"ST_REDR"},
-	{"src":"ST_SEQ", "dest":"ST_HDOC"},
-	{"src":"ST_SEQ", "dest":"ST_RSSH"},
-	{"src":"ST_SEQ", "dest":"ST_LSSH"},
-	{"src":"ST_END", "dest":"ST_STRT"},
+	{"src":"start state", "dest":"left subshell state"},
+	{"src":"start state", "dest":"redirect state"},
+	{"src":"start state", "dest":"heredoc state"},
+	{"src":"start state", "dest":"word state"},
+	{"src":"word state", "dest":"operator state"},
+	{"src":"word state", "dest":"sequence state"},
+	{"src":"word state", "dest":"end state"},
+	{"src":"word state", "dest":"word state"},
+	{"src":"word state", "dest":"redirect state"},
+	{"src":"word state", "dest":"right subshell state"},
+	{"src":"word state", "dest":"heredoc state"},
+	{"src":"word state", "dest":"word state"},
+	{"src":"redirect state", "dest":"word state"},
+	{"src":"heredoc state", "dest":"word state"},
+	{"src":"operator state", "dest":"redirect state"},
+	{"src":"operator state", "dest":"left subshell state"},
+	{"src":"operator state", "dest":"word state"},
+	{"src":"operator state", "dest":"continue state"},
+	{"src":"operator state", "dest":"heredoc state"},
+	{"src":"continue state", "dest":"start state"},
+	{"src":"left subshell state", "dest":"word state"},
+	{"src":"left subshell state", "dest":"redirect state"},
+	{"src":"left subshell state", "dest":"heredoc state"},
+	{"src":"left subshell state", "dest":"left subshell state"},
+	{"src":"left subshell state", "dest":"end state"},
+	{"src":"right subshell state", "dest":"end state"},
+	{"src":"right subshell state", "dest":"right subshell state"},
+	{"src":"right subshell state", "dest":"operator state"},
+	{"src":"right subshell state", "dest":"sequence state"},
+	{"src":"right subshell state", "dest":"redirect state"},
+	{"src":"right subshell state", "dest":"heredoc state"},
+	{"src":"right subshell state", "dest":"word state"},
+	{"src":"sequence state", "dest":"end state"},
+	{"src":"sequence state", "dest":"word state"},
+	{"src":"sequence state", "dest":"redirect state"},
+	{"src":"sequence state", "dest":"heredoc state"},
+	{"src":"sequence state", "dest":"right subshell state"},
+	{"src":"sequence state", "dest":"left subshell state"},
+	{"src":"end state", "dest":"start state"},
 	]
 	def __init__(self, master):
 		self.diag = nx.DiGraph()
@@ -237,13 +255,144 @@ class fsm_diagram ():
 		if self.__state_path_index > 0:
 			self.state_path_index = self.state_path_index - 1
 		return 
-			
+
+
+class token_viewer(tk.PanedWindow):
+
+	class token():
+		def __init__(self, type, raw, *args, **kwargs):
+			self.type = type
+			self.raw = raw
+			self.data = kwargs
+
+	def __init__(self, master):
+		super().__init__(master=master, orient=tk.HORIZONTAL, sashrelief=tk.RAISED)
+		self._current_token_list = []
+		
+		self.left_pane = ttk.Frame(master=self)
+		self.scrollbar = tk.Scrollbar(self.left_pane, orient=tk.VERTICAL)
+		self.listbox = tk.Listbox(self.left_pane,
+				yscrollcommand=self.scrollbar.set,
+				width = 25, exportselection=False)
+		self.scrollbar.config(command=self.listbox.yview)
+		self.listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+		self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+		self.listbox.bind("<<ListboxSelect>>", self.on_token_selected)
+		self.add(self.left_pane)
+
+		self.right_pane = tk.Frame(master=self, background="grey", padx=10, pady=10)
+		self.detail_tab = None
+		self.add(self.right_pane)
+
+	def clear_detail_pane(self):
+		if self.detail_tab == None:
+			return
+		self.detail_tab.destroy()
+
+	def set_detail_pane(self, item):
+		if item not in self._current_token_list:
+			self.clear_detail_pane()
+			return
+		self.detail_tab = tk.Frame(master = self.right_pane, background="white", padx=10, pady=10)
+		self.detail_tab.pack(fill=tk.BOTH, expand=True)
+		type_string = tk.Label(master = self.detail_tab, text=f"Type : {item.type}")
+		type_string.pack(anchor=tk.W)
+		data_string = tk.Label(master = self.detail_tab, text=f"Raw : {item.raw}")
+		data_string.pack(anchor=tk.W)
+
+	def on_token_selected(self, event):
+		selection = self.listbox.curselection()
+		self.clear_detail_pane()
+		if not selection:
+			return
+		index = selection[0]
+		item = self._current_token_list[index]
+		self.set_detail_pane(item)
+		return 
+
+	@property
+	def token_list(self):
+		return self._current_token_list
+
+	@token_list.setter
+	def token_list(self, value):
+		assert type(value) == list
+		assert all([type(c) == token_viewer.token for c in value]) and type(value[0]) == token_viewer.token
+		self._current_token_list = value
+		self.listbox.delete(0, tk.END)
+		for tok in value:
+			self.listbox.insert(tk.END, tok.raw)
+
+class ast_viewer(tk.Frame):
+
+	class ast_node():
+		def __init__(self, id, token_type, raw_string, children = []):
+			self.id = id
+			self.token_type = token_type
+			self.raw_string = raw_string
+			self.children = children
+
+		@classmethod
+		def create_node_from_struct(cls, ptr, data):
+			return cls(ptr, data.token_type, data.raw_string)
+
+	def __init__(self, master):
+		super().__init__(master=master)
+		self.graph = None
+		self.canvas = None
+		self.figure = None
+		self.ax = None
+
+		self.init_canvas()
+
+	def init_canvas(self):
+		self.figure, self.ax = plt.subplots()
+		self.canvas = FigureCanvasTkAgg(self.figure, master=self)
+		self.canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
+		self.ax.axis("off")
+
+	def clear(self):
+		self.ax.clear()
+		self.ax.set_axis_off()
+		self.figure.tight_layout()
+		self.canvas.draw()
+
+	def set_ast(self, node_map, root_ptr):
+		"""
+		node_map: dict of ast_node {id(ptr string) : ast_node}
+		root_ptr: id of root node (e.g. "0x1") (pointer string)
+		"""
+		self.clear()
+		self.graph = nx.DiGraph()
+		visited = set()
+
+		def visit(ptr):
+			if ptr in visited or ptr not in node_map:
+				return
+			visited.add(ptr)
+			node = node_map[ptr]
+			self.graph.add_node(ptr, label=node.raw_string)
+			for child_ptr in node.children:
+				self.graph.add_edge(ptr, child_ptr)
+				visit(child_ptr)
+
+		visit(root_ptr)
+
+		# Draw
+		pos = hierarchy_pos(self.graph, root_ptr)
+		labels = nx.get_node_attributes(self.graph, 'label')
+		nx.draw(self.graph, pos, ax=self.ax, labels=labels,
+				with_labels=True, arrows=True, node_size=1000, node_color='lightgray')
+		self.ax.set_axis_off()
+		self.figure.tight_layout()
+		self.canvas.draw()
+
 
 class visual_debugger(tk.Tk):
 	def __init__(self):
 		super().__init__()
 		super().title("Minishell visual debugger")
-		self.bind("<Destroy>", lambda *a, **b: exit(0))
+		self.bind("<Destroy>", lambda event, *a, **b: exit(0) if event.widget == self else 0)
 
 		self.current_file = "None"
 
@@ -262,7 +411,7 @@ class visual_debugger(tk.Tk):
 		# Second frame
 		self.fsm_frame = ttk.Frame(master = self.frame_frame)
 		self.open_when_file.append((self.fsm_frame, "Finite state machine"))
-		#self.frame_frame.add(self.fsm_frame, text="View fsm")
+		self.frame_frame.add(self.fsm_frame, text="View fsm")
 		self.fsm_skipthrough = tk.Frame(master=self.fsm_frame, height=40)
 		self.fsm_skipthrough.pack(side=tk.BOTTOM)
 		self.fsm = fsm_diagram(master = self.fsm_frame)
@@ -280,9 +429,32 @@ class visual_debugger(tk.Tk):
 		self.walk_forward_button.pack(side=tk.LEFT)
 
 		# third frame
-		self.token_viewer = ttk.Frame(master = self.frame_frame)
+		self.token_viewer = token_viewer(self.frame_frame)
 		self.open_when_file.append((self.token_viewer, "Token viewer"))
-		#self.frame_frame.add(self.token_viewer, text = "mysterious third option")
+		self.frame_frame.add(self.token_viewer, text = "mysterious third option")
+
+		self.token_viewer.token_list = [
+			token_viewer.token("WORD", "hello"),
+			token_viewer.token("WORD", "world")
+		]
+
+		# fourth frame
+		self.ast_viewer = ast_viewer(self.frame_frame)
+		self.open_when_file.append((self.ast_viewer, "AST viewer"))
+		self.frame_frame.add(self.ast_viewer, text = "AST viewer")
+
+		self.ast_viewer.set_ast(
+			{
+				"0x1": ast_viewer.ast_node("0x1", "COMMAND", "echo hello", []),
+				"0x2": ast_viewer.ast_node("0x1", "PIPE", "|", ["0x1", "0x3"]),
+				"0x3": ast_viewer.ast_node("0x1", "COMMAND", "wc -l"),
+				"0x4": ast_viewer.ast_node("0x1", "PIPE", "|", ["0x2", "0x6"]),
+				"0x5": ast_viewer.ast_node("0x1", "COMMAND", "wc -c"),
+				"0x6": ast_viewer.ast_node("0x1", "PIPE", "|", ["0x5", "0x7"]),
+				"0x7": ast_viewer.ast_node("0x1", "COMMAND", "cat", []),
+			},
+			"0x4"
+		)
 
 	def walk_forward(self, *a, **b):
 		if self.current_file == None or self.fsm.state_path == None:
@@ -305,6 +477,8 @@ class visual_debugger(tk.Tk):
 			self.walk_label.configure(text=self.fsm.current_state)
 		self.fsm.redraw()
 		return
+
+
 
 root = visual_debugger()
 
