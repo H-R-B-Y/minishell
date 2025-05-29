@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/28 14:19:47 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/29 18:17:22 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,27 @@ void	reset_for_command(t_minishell *shell)
 	reset_fsm(&shell->fsm_data);
 }
 
+void	dbg_add_token_list(t_list *tk)
+{
+	t_list *node;
+
+	node = tk;
+	while (node)
+	{
+		dbg_add_token(static_debug_info(), node->content);
+		node = node->next;
+	}
+}
+
+void	dbg_add_ast(t_astnode *head)
+{
+	if (!head)
+		return ;
+	dbg_add_nodes(static_debug_info(), head);
+	dbg_add_ast(head->left_node);
+	dbg_add_ast(head->right_node);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	static t_minishell	shell = {0};
@@ -77,6 +98,10 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	shell.environment = envp;
 	reset_for_command(&shell);
+	init_debugger(static_debug_info());
+	static_debug_info()->fd = open("./test", O_RDWR);
+	static_debug_info()->fd_available = 1;
+	static_debug_info()->fd_writable = 1;
 	signal(SIGINT, do_something);
 	add_history("(this\n) && should work"); add_history("\"this\n should\"\nwork"); add_history("(this &&\nhas a seperator)");
 	shell.prompt = "minishell -> ";
@@ -88,11 +113,13 @@ int	main(int argc, char **argv, char **envp)
 		{
 			shell.tokens = fsm_pop_list(&shell.fsm_data);
 			print_token_list(shell.tokens);
+			dbg_add_token_list(shell.tokens);
 			shell.tokenv = (void *)ft_lstarr(shell.tokens);
 			ft_lstclear(&shell.tokens, 0);
 			shell.current_tree = produce_ast(&shell, shell.tokenv,
 				ft_arrlen((void *)shell.tokenv));
 			print_ast(shell.current_tree, "|	|");
+			dbg_add_ast(shell.current_tree);
 		}
 		else if (rlcode == READ_BADPARSE)
 			printf("Parse error: %s!\n", shell.fsm_data.str_condition);
@@ -101,9 +128,13 @@ int	main(int argc, char **argv, char **envp)
 		else if (rlcode == READ_EOF)
 			break ;
 		reset_for_command(&shell);
+		dbg_write_states(static_debug_info());
+		dbg_write_tokens(static_debug_info());
+		dbg_write_nodes(static_debug_info());
 	}
 	// readline_cleanup(&shell);
 	destroy_ast(&shell.current_tree);
 	reset_fsm(&shell.fsm_data);
+	close(static_debug_info()->fd);
 	return (0);
 }
