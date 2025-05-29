@@ -6,14 +6,14 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:04:31 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/28 16:56:29 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/29 18:06:42 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/v_dbg.h"
 #include "../../include/minishell.h"
 
-int	write_states(struct s_dbg_info *info)
+size_t	dbg_write_states(struct s_dbg_info *info)
 {
 	t_list	*node;
 	size_t	state_count;

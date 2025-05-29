@@ -115,6 +115,7 @@ class shell_dump():
 				print("unable to open file")
 				self.filedes = None
 				del self
+				return 
 		self.commands = []
 		self._read()
 

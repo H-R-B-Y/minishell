@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 14:40:33 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/29 13:46:50 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/29 18:06:32 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,16 @@ struct	s_dbg_info
 
 int	init_debugger(struct s_dbg_info *info);
 
-int		dbg_add_state(struct s_dbg_info *info, int state);
-size_t	dbg_write_states(struct s_dbg_info *info);
+size_t		dbg_add_state(struct s_dbg_info *info, int state);
+size_t		dbg_write_states(struct s_dbg_info *info);
 
 typedef struct s_token		t_token;
-int		dbg_add_token(struct s_dbg_info *info, t_token *token);
-size_t	dbg_write_tokens(struct s_dbg_info *info);
+size_t		dbg_add_token(struct s_dbg_info *info, t_token *token);
+size_t		dbg_write_tokens(struct s_dbg_info *info);
 
 typedef struct s_astnode	t_astnode;
-int		dbg_add_nodes(struct s_dbg_info *info, t_astnode *node);
-size_t	dbg_write_nodes(struct s_dbg_info *info);
+size_t		dbg_add_nodes(struct s_dbg_info *info, t_astnode *node);
+size_t		dbg_write_nodes(struct s_dbg_info *info);
 
 struct s_dbg_info *static_debug_info(void);
 

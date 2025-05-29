@@ -6,11 +6,12 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:22:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/28 13:51:47 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/29 18:16:22 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/fsm_tokeniser.h"
+#include "../../include/v_dbg.h"
 
 /*
 I think this would be better if it just returned an integer
@@ -116,6 +117,7 @@ void	state_change(t_fsmdata *fsm, t_fsmstate next_state)
 		next_state = ST_CONT;
 	fsm->last_state = fsm->state;
 	fsm->state = next_state;
+	dbg_add_state(static_debug_info(), fsm->state);
 }
 
 t_tokretcode	correct_retcode(t_fsmdata *fsm)
