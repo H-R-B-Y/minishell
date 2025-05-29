@@ -6,22 +6,24 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 14:40:33 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/28 15:05:06 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/29 13:46:50 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef V_DBG_H
 # define V_DBG_H
 
-# ifndef DBG_FD
-#  define DBG_FD 0
+# ifndef FD_DBG
+#  define FD_DBG 0
 # endif
 
 #include "libft.h"
 
 enum	e_datatype
 {
+	DBG_DT_NONE,
 	DBG_DT_STATE,
+	DBG_DT_TOKEN_INFO,
 	DBG_DT_TOKEN,
 	DBG_DT_NODES,
 	DBG_DT_COUNT,
@@ -37,15 +39,19 @@ struct	s_dbg_info
 	t_list	*nodes;
 };
 
-int	add_state(struct s_dbg_info *info, int state);
-int	write_states(struct s_dbg_info *info);
+int	init_debugger(struct s_dbg_info *info);
 
-typedef struct s_token	t_token;
-int	add_token(struct s_dbg_info *info, t_token *token);
-int	write_tokens(struct s_dbg_info *info);
+int		dbg_add_state(struct s_dbg_info *info, int state);
+size_t	dbg_write_states(struct s_dbg_info *info);
 
-typedef struct s_astnode		t_astnode;
-int	add_nodes(struct s_dbg_info *info, t_astnode *node);
-int	write_nodes(struct s_dbg_info *info);
+typedef struct s_token		t_token;
+int		dbg_add_token(struct s_dbg_info *info, t_token *token);
+size_t	dbg_write_tokens(struct s_dbg_info *info);
+
+typedef struct s_astnode	t_astnode;
+int		dbg_add_nodes(struct s_dbg_info *info, t_astnode *node);
+size_t	dbg_write_nodes(struct s_dbg_info *info);
+
+struct s_dbg_info *static_debug_info(void);
 
 #endif

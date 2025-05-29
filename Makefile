@@ -3,6 +3,10 @@ CC 				:= gcc
 CFLAGS			:= -Wextra -Wall -Werror -g3
 #CFLAGS			:= 
 
+ifdef debug
+endif
+CFLAGS += -DFD_DBG=3
+
 MAKEFLAGS		+= --no-print-directory
 
 LIBFLAGS		:= -lreadline -lhistory
@@ -25,6 +29,12 @@ SRCS			:= \
 				$(SRC_DIR)/builtins/builtin_pwd.c \
 				$(SRC_DIR)/builtins/builtin_unset.c \
 				$(SRC_DIR)/builtins/utility_funcs.c \
+				\
+				$(SRC_DIR)/debugger/adding_items.c \
+				$(SRC_DIR)/debugger/init_debugger.c \
+				$(SRC_DIR)/debugger/write_ast.c \
+				$(SRC_DIR)/debugger/write_states.c \
+				$(SRC_DIR)/debugger/write_tokens.c \
 				\
 				$(SRC_DIR)/fsm_tokeniser/fsm_tokeniser.c \
 				$(SRC_DIR)/fsm_tokeniser/fsm_utils.c \
@@ -70,7 +80,7 @@ $(NAME): $(MAIN) $(OBJS) $(LIBFT) ./include/minishell.h
 		@echo "   /)  /)",
 		@echo " ପ(˶•-•˶)ଓ ♡",
 		@echo -n "  /づ  づ ˚₊‧꒰$(NAME) :: Wait  ꒱ ‧₊˚⭒"
-		@$(CC) $(CFLAGS) $(MAIN) $(OBJS) $(LIBFT) $(LIBFLAGS) -o $(NAME)
+		$(CC) $(CFLAGS) $(MAIN) $(OBJS) $(LIBFT) $(LIBFLAGS) -o $(NAME)
 		@echo "\b\b\b\b\b\b\b\b\b\b\b\b\bDone  ꒱ ‧₊˚⭒"
 		@echo 
 
