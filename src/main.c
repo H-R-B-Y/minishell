@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/29 18:17:22 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/30 16:51:20 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,6 @@ int	main(int argc, char **argv, char **envp)
 	shell.environment = envp;
 	reset_for_command(&shell);
 	init_debugger(static_debug_info());
-	static_debug_info()->fd = open("./test", O_RDWR);
-	static_debug_info()->fd_available = 1;
-	static_debug_info()->fd_writable = 1;
 	signal(SIGINT, do_something);
 	add_history("(this\n) && should work"); add_history("\"this\n should\"\nwork"); add_history("(this &&\nhas a seperator)");
 	shell.prompt = "minishell -> ";

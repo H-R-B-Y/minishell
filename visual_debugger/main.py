@@ -1,6 +1,7 @@
-import random
+import copy
 import tkinter as tk
 import data_file
+from threading import Thread
 from  tkinter import ttk
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -348,7 +349,7 @@ class ast_viewer(tk.Frame):
 				return
 			visited.add(ptr)
 			node = node_map[ptr]
-			self.graph.add_node(ptr, label=node._type_name)
+			self.graph.add_node(ptr, label=node.raw_string)
 			if node.left_child:
 				self.graph.add_edge(ptr, node.left_child)  # ← Add edge
 				visit(node.left_child)
@@ -368,42 +369,42 @@ class ast_viewer(tk.Frame):
 		self.canvas.draw()
 
 
-class visual_debugger(tk.Tk):
-	def __init__(self):
-		super().__init__()
-		super().title("Minishell visual debugger")
-		self.bind("<Destroy>", lambda event, *a, **b: exit(0) if event.widget == self else 0)
+class	dbg_command_list(ttk.PanedWindow):
+	def __init__(self, master):
+		super().__init__(master,orient=tk.HORIZONTAL)
+		self.command_selector_frame = tk.Frame(self)
+		self.add(self.command_selector_frame)
 
-		self.current_file = "None"
-		self.data = data_file.shell_dump("test")
+		# self.command_selector_frame.configure(width=150)
 
-		# top bar
-		self.top_frame = tk.Frame(master = self)
-		self.top_frame.pack(fill=tk.X)
+		self.scrollbar = tk.Scrollbar(self.command_selector_frame, orient=tk.VERTICAL)
+		self.listbox = tk.Listbox(self.command_selector_frame,
+				yscrollcommand=self.scrollbar.set,
+				width = 25, exportselection=False)
+		self.scrollbar.config(command=self.listbox.yview)
+		self.listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+		self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+		self.listbox.bind("<<ListboxSelect>>", self.on_command_selected)
 
-		self.frame_frame = ttk.Notebook(master = self)
-		self.frame_frame.pack(fill=tk.BOTH, expand=True)
-
+		self.command_details_frame = tk.Frame(self)
+		self.add(self.command_details_frame)
 		self.open_when_file = []
-		# first frame
-		self.input_file_frame = tk.Frame(self.frame_frame)
-		self.frame_frame.add(self.input_file_frame, text="Select file")
-		
-		self.file_top_bar = tk.Frame(self.input_file_frame)
-		self.file_details_pane = tk.Frame(self.input_file_frame)
-		self.file_top_bar.pack(side=tk.TOP, fill=tk.X)
-		self.file_details_pane.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
-		self.file_top_bar.configure(height=40)
+		self.panes_shown = 0
+		self._current_commands = []
+		self._init_right_side()
 
+	def _init_right_side(self):
+		self.frame_frame = ttk.Notebook(master = self.command_details_frame, width=1200, height=800)
+		self.frame_frame.pack(fill=tk.BOTH, expand=True)
 
 		# Second frame
 		self.fsm_frame = ttk.Frame(master = self.frame_frame)
 		self.open_when_file.append((self.fsm_frame, "Finite state machine"))
-		self.frame_frame.add(self.fsm_frame, text="View fsm")
+		# self.frame_frame.add(self.fsm_frame, text="View fsm")
+		self.open_when_file.append((self.fsm_frame, "View fsm"))
 		self.fsm_skipthrough = tk.Frame(master=self.fsm_frame, height=40)
 		self.fsm_skipthrough.pack(side=tk.BOTTOM)
 		self.fsm = fsm_diagram(master = self.fsm_frame)
-		self.fsm.state_path = self.data.commands[0].states
 
 		self.fsm.tkcanvas.pack(side=tk.TOP)
 		self.fsm.tkcanvas.bind("<Configure>", self.fsm.on_resize)
@@ -420,22 +421,45 @@ class visual_debugger(tk.Tk):
 		# third frame
 		self.token_viewer = token_viewer(self.frame_frame)
 		self.open_when_file.append((self.token_viewer, "Token viewer"))
-		self.frame_frame.add(self.token_viewer, text = "mysterious third option")
+		# self.frame_frame.add(self.token_viewer, text = "mysterious third option")
+		self.open_when_file.append((self.token_viewer,"mysterious third option"))
 
-		self.token_viewer.token_list = list(self.data.commands[0].tokens.values())
+		# self.token_viewer.token_list = list(self.data.commands[0].tokens.values())
 
 		# fourth frame
 		self.ast_viewer = ast_viewer(self.frame_frame)
 		self.open_when_file.append((self.ast_viewer, "AST viewer"))
-		self.frame_frame.add(self.ast_viewer, text = "AST viewer")
+		# self.frame_frame.add(self.ast_viewer, text = "AST viewer")
 
-		self.ast_viewer.set_ast(
-			self.data.commands[0].nodes,
-			list(self.data.commands[0].nodes.keys())[0]
-		)
+	
+	@property
+	def current_commands(self):
+		return self._current_commands
+	
+	@current_commands.setter
+	def current_commands(self, value):
+		if type(value) != list and not all([type(v) == data_file.command_dump for v in value]):
+			raise ValueError("Invalid command values")
+		self._current_commands = value
+		self.listbox.delete(0, tk.END)
+		for command in value:
+			self.listbox.insert(tk.END, command.raw_command)
+		
+	def on_command_selected(self, event):
+		if not self.panes_shown:
+			for frame, name in self.open_when_file:
+				self.frame_frame.add(frame, text = name)
+		index = self.listbox.curselection()
+		if not index:
+			return
+		command = self._current_commands[index[0]]
+		if command:
+			self.fsm.state_path = command.states
+			self.token_viewer.token_list = list(command.tokens.values())
+			self.ast_viewer.set_ast(command.nodes, list(command.nodes.keys())[0])
 
 	def walk_forward(self, *a, **b):
-		if self.current_file == None or self.fsm.state_path == None:
+		if self.fsm.state_path == None:
 			return
 		self.fsm.walk_state_path()
 		if self.fsm.state_path_index > 0:
@@ -446,7 +470,7 @@ class visual_debugger(tk.Tk):
 		return
 
 	def walk_backwards(self, *a, **b):
-		if self.current_file == None or self.fsm.state_path == None:
+		if self.fsm.state_path == None:
 			return
 		self.fsm.reverse_walk_state_path()
 		if self.fsm.state_path_index > 0:
@@ -455,6 +479,40 @@ class visual_debugger(tk.Tk):
 			self.walk_label.configure(text=self.fsm.current_state)
 		self.fsm.redraw()
 		return
+
+
+class visual_debugger(tk.Tk):
+	def __init__(self, filedes=None):
+		super().__init__()
+		super().title("Minishell visual debugger")
+		self.bind("<Destroy>", lambda event, *a, **b: (self._data_thread.join() and exit(0)) if event.widget == self else 0)
+
+		self.current_file = "None"
+		self.data = data_file.shell_dump(filedes=filedes)
+
+		self.main_frame = tk.Frame()
+		self.main_frame.pack(fill=tk.BOTH, expand=True)
+		self.command_frame = dbg_command_list(self.main_frame)
+		self.command_frame.pack(fill=tk.BOTH, expand=True)
+		self._comcount = 0
+		self._commands = []
+		self._data_thread = Thread(None, self.read_thread)
+		self._data_thread.start()
+		self.after(100, self.update_loop)
+
+	def update_loop(self, *a, **b):
+		if self.data.command_count != self._comcount:
+			self._commands = copy.copy(self.data.commands[0:self.data.command_count])
+			self._comcount = len(self._commands)
+		if self._commands != self.command_frame.current_commands:
+			self.command_frame.current_commands = self._commands
+		self.after(1000, self.update_loop)
+
+	def read_thread(self):
+		# must be run in a thread
+		self.data._read()
+
+
 
 
 
