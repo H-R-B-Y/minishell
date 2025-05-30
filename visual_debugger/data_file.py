@@ -1,4 +1,7 @@
 
+import sys
+from threading import Lock
+
 class shell_state():
 	real_states = {
 	"ST_WRNG":"wrong state",
@@ -85,13 +88,29 @@ class shell_node():
 		self.left_child = left_child_id
 		self.right_child = right_child_id
 		self.token_children = token_children
+		self.real_children = []
 		self.return_code = return_code
+		self.raw_string = ''
+
+	def populate_token_lookup(self, values):
+		self.real_children = []
+		for key in self.token_children:
+			self.real_children.append(values[key])
+		self.raw_string = ' '.join([x.raw for x in self.real_children])
 
 class command_dump():
 	def __init__(self):
 		self.states = []
 		self.tokens = {}
 		self.nodes = {}
+		self.raw_command = ''
+
+	def populate(self):
+		for node in list(self.nodes.values()):
+			print(self.tokens)
+			print(node.token_children)
+			node.populate_token_lookup(self.tokens)
+		self.raw_command = ' '.join([x.raw_string for x in list(self.nodes.values())])
 	
 
 class shell_dump():
@@ -104,63 +123,68 @@ class shell_dump():
 	"DT_COUNT",
 	]
 	def __init__(self, path=None, filedes=None):
-		if path == None and filedes == None:
-			assert 1
-		if path != None and filedes != None:
-			assert 1
+		if path is None and filedes is None:
+			filedes = sys.stdin.buffer
+		if path is not None and filedes is not None:
+			raise ValueError("Pass either path or filedes, not both")
 		if path:
 			try:
 				self.filedes = open(path, "rb")
 			except Exception as e:
-				print("unable to open file")
+				print("unable to open file:", e)
 				self.filedes = None
-				del self
-				return 
+				return
+		else:
+			self.filedes = filedes
+
+		self.com_lock = Lock()
 		self.commands = []
-		self._read()
+		self.com_count = 0
+
+	@property
+	def command_count(self):
+		val = 0 
+		self.com_lock.acquire_lock()
+		val = len(self.commands)
+		self.com_lock.release_lock()
+		return (val)
+
+
+	def _add_command(self, command):
+		if type(command) != command_dump:
+			return
+		command.populate()
+		self.com_lock.acquire_lock()
+		self.commands.append(command)
+		self.com_count = len(self.commands)
+		self.com_lock.release_lock()
 
 	def _read(self):
+		current_command = None
 		while True:
 			header = self.filedes.read(4)
 			if not header:
 				break 
 			dt = int.from_bytes(header, 'little')
-			if shell_dump.data_type[dt] == "DT_STATE":
-				self.commands.append(self._read_cmd())
+			if shell_dump.data_type[dt] == "DT_STATE": # when we find a state we create a new command dump
+				if current_command:
+					self._add_command(current_command)
+				print("new command")
+				current_command = command_dump()
+				state_count = int.from_bytes(self.filedes.read(4), 'little')
+				for _ in range(state_count // 4):
+					current_command.states.append(shell_state(int.from_bytes(self.filedes.read(4), 'little')))
+			elif shell_dump.data_type[dt] == "DT_TOKEN":
+				token = self._read_token()
+				current_command.tokens[token.id] = token
+			elif shell_dump.data_type[dt] == "DT_NODES":
+				node = self._read_node()
+				current_command.nodes[node.id] = node
 			else:
 				print("Wrong initial data type")
-				assert 1
-
-	def _read_cmd(self):
-		# we have read a dt type
-		current_cmd = command_dump()
-		state_count_raw = self.filedes.read(4)
-		state_count = int.from_bytes(state_count_raw, 'little') // 4
-		i = 0
-		while (i < state_count):
-			next_state_raw = self.filedes.read(4)
-			next_state_id = int.from_bytes(next_state_raw, 'little')
-			next_state = shell_state(next_state_id)
-			current_cmd.states.append(next_state)
-			i += 1
-		while True:
-			pos = self.filedes.tell()
-			header = self.filedes.read(4)
-			if not header:
-				break
-			dt = int.from_bytes(header, 'little')
-			if dt < len(shell_dump.data_type) and shell_dump.data_type[dt] == "DT_TOKEN":
-				token = self._read_token()
-				current_cmd.tokens[token.id] = token
-			elif dt < len(shell_dump.data_type) and shell_dump.data_type[dt] == "DT_NODES":
-				node = self._read_node()
-				current_cmd.nodes[node.id] = node
-			else:
-				print("Unknown data type inside command")
-				self.filedes.seek(-4, 1)
-				break
-
-		return current_cmd
+				raise ValueError("shell_dump requires either a path or file descriptor, not both or neither")
+		if current_command:
+			self._add_command(current_command)
 
 	def _read_token(self):
 		#we have read the header
@@ -208,6 +232,7 @@ class shell_dump():
 		for _ in range(tok_count):
 			tok_ptr = int.from_bytes(self.filedes.read(8), 'little')
 			tokens.append(tok_ptr)
+		print("created tokens: ", tokens)
 
 		self.filedes.read(8)  # Skip NULL terminator
 

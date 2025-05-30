@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 12:34:45 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/29 18:01:04 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/30 19:29:26 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ int	write_node(struct s_dbg_info *info, t_astnode *node)
 	int_data = (int)ft_arrlen((void *)node->tokens);
 	write(info->fd, &int_data, sizeof(int));
 	write(info->fd, node->tokens, sizeof(void *) * int_data);
+	while(int_data)
+		printf("wrote ptr %p\n", &node->tokens[int_data--]);
 	null_data = 0;
 	write(info->fd, &null_data, sizeof(void *));
 	write(info->fd, &node->return_code, sizeof(int));
