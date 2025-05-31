@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/27 15:16:16 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/31 17:02:11 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,15 @@
 # include "libft.h"
 # include "./fsm_tokeniser.h"
 
-typedef struct s_minishell	t_minishell;
+typedef struct s_minishell		t_minishell;
+
+typedef enum e_asterror			t_asterror;
+enum e_asterror
+{
+	AST_ERR_NONE,
+	AST_ERR_SYNTAX,
+	AST_ERR_COUNT,
+};
 
 /**
  * @brief I created this because i think we might need it, not because we do
@@ -31,6 +39,13 @@ enum e_redir_type
 	REDIRECT_OUTPUT,
 	REDIRECT_OUTPUT_APPEND,
 	REDIRECT_HEREDOC,
+	REDIRECT_FD,
+};
+
+enum	e_redirect_subtype
+{
+	REDIR_FILE,
+	REDIR_FD,
 };
 
 // Need some information about what we are redirecting
@@ -48,11 +63,21 @@ enum e_redir_type
 typedef struct s_redirect_desc	t_redirect_desc;
 struct s_redirect_desc
 {
-	t_redirect_type	type;
-	int				is_pipe;
-	int				pipe[2];
-	int				from_fd;
-	int				to_fd;
+	t_redirect_type			type;
+	enum e_redirect_subtype	subtype;
+	union
+	{
+		struct s_none
+		{
+			int			from_fd;
+			int			to_fd;
+		}				fd_map;
+		struct s_none2
+		{
+			char		*filename;
+			int			to_fd;
+		}				file_map;
+	};
 };
 
 /**
@@ -136,12 +161,15 @@ void		destroy_ast_node(t_astnode *node);
  */
 struct s_ast_internal
 {
-	t_token		**tokens;
-	size_t		count;
+	t_token			**tokens;
 
-	size_t		consumed;
-	t_astnode	*left_node; // Might not be needed
-	t_astnode	*right_node; // Might not be needed
+	t_minishell		*shell;
+	t_readline_data	*rldata;
+	enum e_asterror	error;
+
+	size_t			consumed;
+	t_astnode		*left_node;
+	t_astnode		*right_node;
 };
 
 /**
@@ -150,7 +178,7 @@ struct s_ast_internal
  * @param count count of tokens in the array (TODO:i dont think we need this)
  * @returns head node of the tree
  */
-t_astnode	*produce_ast(t_minishell *shell, t_token **tokens, size_t count);
+int	produce_ast(t_minishell *shell, t_token **tokens, t_astnode **output);
 
 /**
  * @brief destroy abstract syntax tree
@@ -164,42 +192,42 @@ void		destroy_ast(t_astnode **node);
  * @param meta the metadata struct containing info about the tree.
  * @returns new ast node (head allocated)
  */
-t_astnode	*ast_parse_seperators(t_minishell *shell, struct s_ast_internal *meta);
+t_astnode	*ast_parse_seperators(struct s_ast_internal *meta);
 
 /**
  * @brief create a new ast node from and or tokens
  * @param meta the metadata struct containing info about the tree.
  * @returns new ast node (head allocated)
  */
-t_astnode	*ast_parse_and_or(t_minishell *shell, struct s_ast_internal *meta);
+t_astnode	*ast_parse_and_or(struct s_ast_internal *meta);
 
 /**
  * @brief create a new ast node from pipe token
  * @param meta the metadata struct containing info about the tree.
  * @returns new ast node (head allocated)
  */
-t_astnode	*ast_parse_pipe(t_minishell *shell, struct s_ast_internal *meta);
+t_astnode	*ast_parse_pipe(struct s_ast_internal *meta);
 
 /**
  * @brief create a new ast node from command tokens
  * @param meta the metadata struct containing info about the tree.
  * @returns new ast node (head allocated)
  */
-t_astnode	*ast_parse_command(t_minishell *shell, struct s_ast_internal *meta);
+t_astnode	*ast_parse_command(struct s_ast_internal *meta);
 
 /**
  * @brief create a new ast node from subcommand tokens
  * @param meta the metadata struct containing info about the tree.
  * @returns new ast node (head allocated)
  */
-t_astnode	*ast_parse_subcommand(t_minishell *shell, struct s_ast_internal *meta);
+t_astnode	*ast_parse_subcommand(struct s_ast_internal *meta);
 
 /**
  * @brief consume contiguous word tokens into a single command token
  * @param meta the metadata struct containing info about the tree
  * @param node the ??? too tired cannot remember
  */
-size_t		ast_consume_words(t_minishell *shell, struct s_ast_internal *meta, t_astnode *node);
+size_t		ast_consume_words(struct s_ast_internal *meta, t_astnode *node);
 
 /**
  * @brief print the ast
@@ -207,5 +235,11 @@ size_t		ast_consume_words(t_minishell *shell, struct s_ast_internal *meta, t_ast
  * @param indent the indent to use for child nodes
  */
 void		print_ast(t_astnode *head, char *indent);
+
+t_redirect_desc	*handle_redirectfd(t_token *redirect);
+
+t_redirect_desc	*handle_redirect(t_token *redirect, t_token *filename);
+
+t_redirect_desc	*handle_heredoc(struct s_ast_internal *meta, char *delim);
 
 #endif

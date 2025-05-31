@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/30 20:49:02 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/31 17:18:04 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,10 +113,10 @@ int	main(int argc, char **argv, char **envp)
 			dbg_add_token_list(shell.tokens);
 			shell.tokenv = (void *)ft_lstarr(shell.tokens);
 			ft_lstclear(&shell.tokens, 0);
-			shell.current_tree = produce_ast(&shell, shell.tokenv,
-				ft_arrlen((void *)shell.tokenv));
-			print_ast(shell.current_tree, "|	|");
-			dbg_add_ast(shell.current_tree);
+			if (!produce_ast(&shell, shell.tokenv, &shell.current_tree))
+				print_ast(shell.current_tree, "|	|");
+			else
+				printf("Parse error: Syntax Error\n");
 		}
 		else if (rlcode == READ_BADPARSE)
 			printf("Parse error: %s!\n", shell.fsm_data.str_condition);
