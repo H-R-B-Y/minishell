@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:21:04 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/26 16:37:17 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/31 17:44:15 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,17 @@ size_t			ft_strlcpy(char *dest, const char *src, size_t size);
 size_t			ft_strlcat(char *dest, const char *src, size_t size);
 
 /**
+ * @brief Concatenate a array to another array
+ * @param dest Destination array
+ * @param src Source array
+ * @param size Size of the destination array
+ * @return Length of the source array or size if the dest is truncated
+ * @warning Array must be null terminated
+ */
+size_t			ft_arrlcat(void **dest, void **src, size_t size);
+
+
+/**
  * @brief Get first occurance of a character in a string
  * @param str String to check
  * @param c Character to check
@@ -163,6 +174,15 @@ char			*ft_strnstr(const char *big,
  * @warning String must be null terminated
  */
 char			*ft_strdup(const char *src);
+
+/**
+ * @brief Copy a string  - copies at most n bytes
+ * @param src String to copy
+ * @param n bites to copy
+ * @return A malloc'd copy of src or 0 if malloc fails
+ * @warning String must be null terminated
+ */
+char			*ft_strndup(const char *src, size_t n);
 
 /**
  * @brief Copy a string up to len characters
@@ -348,6 +368,7 @@ void			ft_putendl_fd(char *s, int fd);
  * @param fd File descriptor to write to
  */
 void			ft_putnbr_fd(int n, int fd);
+
 
 // ██████   ██████  ███    ██ ██    ██ ███████ 
 // ██   ██ ██    ██ ████   ██ ██    ██ ██      

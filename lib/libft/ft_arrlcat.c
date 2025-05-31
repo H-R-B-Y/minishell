@@ -1,37 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_arrlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/27 21:08:45 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/31 17:37:34 by cquinter         ###   ########.fr       */
+/*   Created: 2025/05/31 16:37:45 by cquinter          #+#    #+#             */
+/*   Updated: 2025/05/31 16:47:50 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "./include/libft.h"
 
-char	*ft_strdup(const char *src)
+size_t ft_arrlcat(void **dest, void **src, size_t size)
 {
-	size_t		len;
-	size_t		i;
-	char		*output;
-
-	if (!src)
+	size_t	idx;
+	size_t	dl;
+	size_t	sl;
+	
+	if (!dest)
 		return (0);
-	len = ft_strlen(src);
-	output = malloc((unsigned long)len + 1);
-	if (output == 0)
-		return (0);
-	i = 0;
-	output[len] = '\0';
-	while (src[i])
+	dl = 0;
+	sl = 0;
+	while (dest[dl] && dl < size)
+		dl++;
+	while (src[sl])
+		sl++;
+	if (dl == size)
+		return (size + sl);
+	idx = 0;
+	while (src[idx] && (dl + idx) < size - 1)
 	{
-		output[i] = src[i];
-		i++;
+		dest[idx + dl] = ft_strdup(src[idx]);
+		if (!dest[idx])
+		{
+			ft_arrclear(dest, free);
+			return (0);
+		}
+		idx++;
 	}
-	return (output);
+	dest[idx + dl] = NULL;
+	return (dl + sl);
 }
-

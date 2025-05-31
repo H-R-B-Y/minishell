@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   utility_funcs.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:57:17 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/26 16:46:35 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/29 15:06:33 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/builtin.h"
+#include "../../include/minishell.h"
 
 static const struct s_buitinmapping	*mapped_builtins(void)
 {
@@ -26,20 +27,30 @@ static const struct s_buitinmapping	*mapped_builtins(void)
 	return (builtinmap);
 }
 
-t_builtincmd	get_builtincmd(char *str)
+int	get_run_builtincmd(t_minishell *shell)
 {
 	const struct s_buitinmapping	*fncmap;
 	size_t							i;
+	char							**argv;
+	char							**env;
 
+	shell->local_env = (char **)ft_arrmap((void **)shell->environment,
+		(void *)ft_strdup, free);
+	if (!shell->local_env)
+		return (ft_arrclear((void **)shell->current_tree->cmdv, free), 
+			perror("minishell: ft_arrmap:"), 0);
+	argv = shell->current_tree->cmdv;
+	env = shell->current_tree->envp;
 	fncmap = mapped_builtins();
 	i = 0;
+	// printf("env? : %s", env[0]);
 	while (i < BLTINCOUNT)
 	{
-		if (!ft_strcmp(str, fncmap[i].match))
-			return (fncmap[i].fnc);
+		if (!ft_strcmp(shell->current_tree->cmdv[0], fncmap[i].match))
+			return (fncmap[i].fnc(shell, argv, env));
 		i++;
 	}
-	return ((void *)0);
+	return (0);
 }
 
 void	free_strvec(void *a)
