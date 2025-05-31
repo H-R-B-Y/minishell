@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   remove_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:16:03 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/27 17:43:18 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/27 18:59:13 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*remove_quotes(char *str)
 	t_quote_mode	mode;
 	char			*output;
 
-	output = ft_calloc(ft_strlen(str), sizeof(char));
+	output = ft_calloc(ft_strlen(str) + 1, sizeof(char));
 	ft_bzero(i, sizeof(size_t) * 2);
 	mode = QUOTE_NONE;
 	while (str[i[0]])

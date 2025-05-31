@@ -1,37 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/27 21:08:45 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/31 17:37:34 by cquinter         ###   ########.fr       */
+/*   Created: 2025/05/26 17:02:44 by cquinter          #+#    #+#             */
+/*   Updated: 2025/05/28 17:35:12 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "./include/libft.h"
+#ifndef EXECUTION_H
+# define EXECUTION_H
 
-char	*ft_strdup(const char *src)
-{
-	size_t		len;
-	size_t		i;
-	char		*output;
+# include "./abstract_syntax_tree.h"
+# include "./builtin.h"
+# include <unistd.h>
 
-	if (!src)
-		return (0);
-	len = ft_strlen(src);
-	output = malloc((unsigned long)len + 1);
-	if (output == 0)
-		return (0);
-	i = 0;
-	output[len] = '\0';
-	while (src[i])
-	{
-		output[i] = src[i];
-		i++;
-	}
-	return (output);
-}
 
+void	execute_command(t_minishell *shell);
+int		execute_ast(t_minishell *shell);
+
+#endif

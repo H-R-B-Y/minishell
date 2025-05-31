@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/27 18:28:47 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/28 17:06:53 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,9 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	shell.environment = envp;
+	shell.environment = (char **)ft_arrmap((void **)envp, (void *)ft_strdup, free);
+	if (!shell.environment)
+		return (perror("minishell: ft_arrmap:"), 1);
 	reset_for_command(&shell);
 	signal(SIGINT, do_something);
 	add_history("(this\n) && should work"); add_history("\"this\n should\"\nwork"); add_history("(this &&\nhas a seperator)");
@@ -92,7 +94,8 @@ int	main(int argc, char **argv, char **envp)
 			ft_lstclear(&shell.tokens, 0);
 			shell.current_tree = produce_ast(&shell, shell.tokenv,
 				ft_arrlen((void *)shell.tokenv));
-			print_ast(shell.current_tree, "|	|");
+			execute_ast(&shell);
+			// print_ast(shell.current_tree, "|	|");
 		}
 		else if (rlcode == READ_BADPARSE)
 			printf("Parse error: %s!\n", shell.fsm_data.str_condition);
