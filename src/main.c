@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/30 16:51:20 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/30 20:49:02 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ int	main(int argc, char **argv, char **envp)
 		dbg_write_states(static_debug_info());
 		dbg_write_tokens(static_debug_info());
 		dbg_write_nodes(static_debug_info());
+		dbg_write_end(static_debug_info());
 	}
 	// readline_cleanup(&shell);
 	destroy_ast(&shell.current_tree);

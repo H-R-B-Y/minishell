@@ -1,4 +1,5 @@
 #! /usr/bin/bash
+
 pipe=`mktemp -u`
 mkfifo $pipe
 p=`pwd`
