@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 14:40:33 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/29 18:06:32 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/30 20:48:42 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ enum	e_datatype
 	DBG_DT_TOKEN_INFO,
 	DBG_DT_TOKEN,
 	DBG_DT_NODES,
+	DBG_DT_DONE,
 	DBG_DT_COUNT,
 };
 
@@ -53,5 +54,7 @@ size_t		dbg_add_nodes(struct s_dbg_info *info, t_astnode *node);
 size_t		dbg_write_nodes(struct s_dbg_info *info);
 
 struct s_dbg_info *static_debug_info(void);
+
+size_t	dbg_write_end(struct s_dbg_info *info);
 
 #endif

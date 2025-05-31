@@ -4,8 +4,8 @@ CFLAGS			:= -Wextra -Wall -Werror -g3
 #CFLAGS			:= 
 
 ifdef debug
-endif
 CFLAGS += -DFD_DBG=3
+endif
 
 MAKEFLAGS		+= --no-print-directory
 
@@ -33,6 +33,7 @@ SRCS			:= \
 				$(SRC_DIR)/debugger/adding_items.c \
 				$(SRC_DIR)/debugger/init_debugger.c \
 				$(SRC_DIR)/debugger/write_ast.c \
+				$(SRC_DIR)/debugger/write_end.c \
 				$(SRC_DIR)/debugger/write_states.c \
 				$(SRC_DIR)/debugger/write_tokens.c \
 				\
