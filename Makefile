@@ -36,14 +36,16 @@ SRCS			:= \
 				$(SRC_DIR)/fsm_tokeniser/tokeniser.c \
 				\
 				$(SRC_DIR)/heredoc_handler.c/handle_heredoc.c \
+				$(SRC_DIR)/heredoc_handler.c/handle_redirects.c \
 				\
 				$(SRC_DIR)/new_readline_loop/read_command_loop.c \
 				$(SRC_DIR)/new_readline_loop/splitting_next_lines.c \
 				\
 				$(SRC_DIR)/syntax_tree/ast_node_init.c \
+				$(SRC_DIR)/syntax_tree/consume_command.c \
+				$(SRC_DIR)/syntax_tree/consume_subshell.c \
 				$(SRC_DIR)/syntax_tree/print_ast.c \
 				$(SRC_DIR)/syntax_tree/produce_syntax_tree.c \
-				$(SRC_DIR)/syntax_tree/syntax_consume.c \
 				$(SRC_DIR)/syntax_tree/syntax_heirarchy.c \
 				$(SRC_DIR)/syntax_tree/syntax_util.c \
 				\
