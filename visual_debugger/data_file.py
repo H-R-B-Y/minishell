@@ -86,17 +86,21 @@ class shell_node():
 		self._type = list(shell_node.real_types.keys())[type_id]
 		self._type_name = shell_node.real_types[self._type]
 		self.left_child = left_child_id
-		self.right_child = right_child_id
-		self.token_children = token_children
+		self.right_child = right_child_id or None
+		self.token_children = token_children or None
 		self.real_children = []
 		self.return_code = return_code
 		self.raw_string = ''
+		
 
 	def populate_token_lookup(self, values):
 		self.real_children = []
-		for key in self.token_children:
-			self.real_children.append(values[key])
-		self.raw_string = ' '.join([x.raw for x in self.real_children])
+		if self.token_children:
+			for key in self.token_children:
+				self.real_children.append(values[key])
+			self.raw_string = ' '.join([x.raw for x in self.real_children])
+		else:
+			self.raw_string = self._type_name
 
 class command_dump():
 	def __init__(self):
@@ -105,13 +109,22 @@ class command_dump():
 		self.nodes = {}
 		self.raw_command = ''
 
+	def generate_raw_command(self):
+		visited = set()
+		def visit(ptr):
+			if ptr in visited or ptr is None or ptr not in self.nodes.keys():
+				return ""
+			visited.add(ptr)
+			return visit(self.nodes[ptr].left_child) +" "+ self.nodes[ptr].raw_string +" "+ visit(self.nodes[ptr].right_child)
+		self.raw_command = visit(list(self.nodes.keys())[0])
+
 	def populate(self):
 		for node in list(self.nodes.values()):
 			print(self.tokens)
 			print(node.token_children)
 			node.populate_token_lookup(self.tokens)
-		self.raw_command = ' '.join([x.raw_string for x in list(self.nodes.values())])
-	
+		self.generate_raw_command()
+
 
 class shell_dump():
 	data_type = [
@@ -120,6 +133,7 @@ class shell_dump():
 	"DT_TOKEN_INFO",
 	"DT_TOKEN",
 	"DT_NODES",
+	"DT_DONE",
 	"DT_COUNT",
 	]
 	def __init__(self, path=None, filedes=None):
@@ -180,6 +194,10 @@ class shell_dump():
 			elif shell_dump.data_type[dt] == "DT_NODES":
 				node = self._read_node()
 				current_command.nodes[node.id] = node
+			elif shell_dump.data_type[dt] == "DT_DONE":
+				if current_command:
+					self._add_command(current_command)
+				current_command = None
 			else:
 				print("Wrong initial data type")
 				raise ValueError("shell_dump requires either a path or file descriptor, not both or neither")
