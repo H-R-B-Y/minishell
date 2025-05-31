@@ -3,6 +3,7 @@
 *.a
 *.tmp
 .env
+venv
 __pycache__
 minishell
 
