@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 14:40:33 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/30 20:48:42 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/31 17:40:42 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ enum	e_datatype
 	DBG_DT_TOKEN_INFO,
 	DBG_DT_TOKEN,
 	DBG_DT_NODES,
+	DBG_DT_REDR,
 	DBG_DT_DONE,
 	DBG_DT_COUNT,
 };
