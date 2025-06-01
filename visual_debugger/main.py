@@ -369,6 +369,125 @@ class ast_viewer(tk.Frame):
 		self.canvas.draw()
 
 
+class	node_details(tk.PanedWindow):
+	def __init__(self, master):
+		super().__init__(master, orient=tk.HORIZONTAL, sashrelief=tk.RAISED)
+		
+		# Left Pane with Listbox
+		self.left_pane = ttk.Frame(self)
+		self.scrollbar = tk.Scrollbar(self.left_pane, orient=tk.VERTICAL)
+		self.listbox = tk.Listbox(self.left_pane,
+								yscrollcommand=self.scrollbar.set,
+								width=25, exportselection=False)
+		self.scrollbar.config(command=self.listbox.yview)
+
+		self.listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+		self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+		self.listbox.bind("<<ListboxSelect>>", self.on_node_select)
+		self.add(self.left_pane)
+
+		# Right Pane with Detail Display
+		self.right_pane = tk.Frame(self)
+		self.add(self.right_pane)
+
+		self.detail_window = tk.Frame(self.right_pane, background="grey", padx=10, pady=10)
+		self.detail_window.pack(fill=tk.BOTH, expand=True)
+
+		# Use grid for better alignment in detail_window
+		self.node_type_detail = tk.Label(self.detail_window, text="Node Type:")
+		self.node_type_detail.grid(row=0, column=0, sticky='w', pady=2)
+
+		self.left_node_detail = tk.Label(self.detail_window, text="Left Node:")
+		self.left_node_detail.grid(row=1, column=0, sticky='w', pady=2)
+
+		self.right_node_detail = tk.Label(self.detail_window, text="Right Node:")
+		self.right_node_detail.grid(row=2, column=0, sticky='w', pady=2)
+
+		self.return_code_detail = tk.Label(self.detail_window, text="Return Code:")
+		self.return_code_detail.grid(row=3, column=0, sticky='w', pady=2)
+
+		# cmdv Listbox in a sub-frame
+		self.node_cmdv_detail = tk.Frame(self.detail_window, background="grey")
+		self.node_cmdv_detail.grid(row=4, column=0, sticky='w', pady=(10, 2))
+
+		label1 = tk.Label(self.node_cmdv_detail, text="cmdv:")
+		label1.pack(anchor='w')
+
+		self.cmdv_view = tk.Listbox(self.node_cmdv_detail, height=4)
+		self.cmdv_view.pack(fill=tk.X, expand=True)
+
+		# Redirects Treeview in a sub-frame
+		self.redirect_area = tk.Frame(self.detail_window, background="grey")
+		self.redirect_area.grid(row=5, column=0, sticky='nsew', pady=(10, 2))
+
+		label2 = tk.Label(self.redirect_area, text="Redirects:")
+		label2.pack(anchor='w')
+
+		self.node_redirect_detail = ttk.Treeview(self.redirect_area, columns=("name", "value"), show="headings", height=4)
+		self.node_redirect_detail.pack(fill=tk.X, expand=True)
+
+		self.node_redirect_detail.heading("name", text="Name")
+		self.node_redirect_detail.heading("value", text="Value")
+		self.node_redirect_detail.column("name", width=100)
+		self.node_redirect_detail.column("value", width=100)
+
+		# Allow grid cell to expand
+		self.detail_window.grid_rowconfigure(5, weight=1)
+		self.detail_window.grid_columnconfigure(0, weight=1)
+
+
+
+
+	@property
+	def current_node(self):
+		return self._current_node
+
+	@current_node.setter
+	def current_node(self, value):
+		assert value == None or type(value) == data_file.shell_node
+		if value == None and self._current_node != None:
+			self.node_type_detail.configure(text="Node Type: ")
+			self.left_node_detail.configure(text="Left Node: ")
+			self.right_node_detail.configure(text="Right Node: ")
+			self.return_code_detail.configure(text="Return Code: ")
+			self.cmdv_view.delete(0, tk.END)
+			self.node_redirect_detail.delete(*self.node_redirect_detail.get_children())
+		if value != None:
+			self.node_type_detail.configure(text=f"Node Type: {value._type_name}")
+			self.left_node_detail.configure(text=f"Left Node: {value.left_child}")
+			self.right_node_detail.configure(text=f"Right Node: {value.right_child}")
+			self.return_code_detail.configure(text=f"Return Code: {value.return_code}")
+			self.cmdv_view.delete(0, tk.END)
+			for item in value.cmdv:
+				self.cmdv_view.insert(tk.END, item)
+			self.node_redirect_detail.delete(*self.node_redirect_detail.get_children())
+			for redr in value.redirects:
+				self.node_redirect_detail.insert("", tk.END, values=redr[2:])
+		self._current_node = value
+
+	@property
+	def node_list(self):
+		return self._node_list
+	
+	@node_list.setter
+	def node_list(self, value):
+		self.listbox.delete(0, tk.END)
+		self._node_list = value
+		if len(value) > 0 and all([type(x) == data_file.shell_node for x in value])\
+			and type(value[0]) == data_file.shell_node:
+			self._node_list = value
+			for n in value:
+				self.listbox.insert(tk.END, n.raw_string)
+
+	def on_node_select(self, event):
+		selection = self.listbox.curselection()
+		if not selection:
+			return
+		index = selection[0]
+		item = self._node_list[index]
+		self.current_node = item
+
+
 class	dbg_command_list(ttk.PanedWindow):
 	def __init__(self, master):
 		super().__init__(master,orient=tk.HORIZONTAL)
@@ -431,7 +550,10 @@ class	dbg_command_list(ttk.PanedWindow):
 		self.open_when_file.append((self.ast_viewer, "AST viewer"))
 		# self.frame_frame.add(self.ast_viewer, text = "AST viewer")
 
-	
+		# fifth frame
+		self.node_details = node_details(self.frame_frame)
+		self.open_when_file.append((self.node_details, "Node viewer"))
+		
 	@property
 	def current_commands(self):
 		return self._current_commands
@@ -446,17 +568,18 @@ class	dbg_command_list(ttk.PanedWindow):
 			self.listbox.insert(tk.END, command.raw_command)
 		
 	def on_command_selected(self, event):
-		if not self.panes_shown:
-			for frame, name in self.open_when_file:
-				self.frame_frame.add(frame, text = name)
 		index = self.listbox.curselection()
 		if not index:
 			return
 		command = self._current_commands[index[0]]
 		if command:
+			if not self.panes_shown:
+				for frame, name in self.open_when_file:
+					self.frame_frame.add(frame, text = name)
 			self.fsm.state_path = command.states
 			self.token_viewer.token_list = list(command.tokens.values())
 			self.ast_viewer.set_ast(command.nodes, list(command.nodes.keys())[0])
+			self.node_details.node_list = list(command.nodes.values())
 
 	def walk_forward(self, *a, **b):
 		if self.fsm.state_path == None:
@@ -516,7 +639,7 @@ class visual_debugger(tk.Tk):
 
 
 
-root = visual_debugger()
+root = visual_debugger(open('test','rb'))
 
 
 

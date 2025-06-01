@@ -81,17 +81,20 @@ class shell_node():
 			left_child_id=None,
 			right_child_id=None,
 			token_children=[],
-			return_code = 0):
+			return_code = 0,
+			cmdv = [],
+			redirects = []):
 		self.id = node_id
 		self._type = list(shell_node.real_types.keys())[type_id]
 		self._type_name = shell_node.real_types[self._type]
-		self.left_child = left_child_id
+		self.left_child = left_child_id or None
 		self.right_child = right_child_id or None
 		self.token_children = token_children or None
 		self.real_children = []
 		self.return_code = return_code
 		self.raw_string = ''
-		
+		self.cmdv = cmdv
+		self.redirects = redirects
 
 	def populate_token_lookup(self, values):
 		self.real_children = []
@@ -133,6 +136,7 @@ class shell_dump():
 	"DT_TOKEN_INFO",
 	"DT_TOKEN",
 	"DT_NODES",
+	"DT_REDR",
 	"DT_DONE",
 	"DT_COUNT",
 	]
@@ -199,8 +203,7 @@ class shell_dump():
 					self._add_command(current_command)
 				current_command = None
 			else:
-				print("Wrong initial data type")
-				raise ValueError("shell_dump requires either a path or file descriptor, not both or neither")
+				raise ValueError("Wrong initial data type")
 		if current_command:
 			self._add_command(current_command)
 
@@ -230,11 +233,19 @@ class shell_dump():
 			quot=int.from_bytes(token_quotes_removed_raw, 'little'),
 			vars=int.from_bytes(token_variables_raw, 'little')
 		)
-		
-	def _read_node(self):
-		length_raw = self.filedes.read(4)
-		length = int.from_bytes(length_raw, 'little')
 
+	def _read_str(self):
+		string_data = b""
+		while True:
+			raw_byte = self.filedes.read(1)
+			if raw_byte == b'\x00':
+				break
+			string_data += raw_byte
+		string_data = string_data.decode()
+		return (string_data)
+
+	def _read_node(self):
+		self.filedes.read(4)
 		ptr_raw = self.filedes.read(8)
 		ptr_id = int.from_bytes(ptr_raw, 'little')
 
@@ -250,18 +261,40 @@ class shell_dump():
 		for _ in range(tok_count):
 			tok_ptr = int.from_bytes(self.filedes.read(8), 'little')
 			tokens.append(tok_ptr)
-		print("created tokens: ", tokens)
-
 		self.filedes.read(8)  # Skip NULL terminator
 
 		ret_code = int.from_bytes(self.filedes.read(4), 'little')
+		cmdv = []
+		cmdv_count = int.from_bytes(self.filedes.read(4), 'little')
+		for _ in range(cmdv_count):
+			cmdv.append(self._read_str())
+		
+		redirects = []
+		redirect_count = int.from_bytes(self.filedes.read(4), 'little')
+		for _ in range(redirect_count):
+			int.from_bytes(self.filedes.read(4), 'little')
+			redr = []
+			redr_type = int.from_bytes(self.filedes.read(4), 'little')
+			redr_subtype = int.from_bytes(self.filedes.read(4), 'little')
+			redr.append(redr_type)
+			redr.append(redr_subtype)
+			if (redr_subtype == 0):
+				redr.append(self._read_str())
+				redr.append(int.from_bytes(self.filedes.read(4), 'little'))
+			else:
+				redr.append(int.from_bytes(self.filedes.read(4), 'little'))
+				redr.append(int.from_bytes(self.filedes.read(4), 'little'))
+			redirects.append(redr)
+
 		return shell_node(
 			node_id=ptr_id,
 			type_id=type_,
 			left_child_id=left,
 			right_child_id=right,
 			token_children=tokens,
-			return_code=ret_code
+			return_code=ret_code,
+			cmdv=cmdv,
+			redirects=redirects
 		)
 
 
