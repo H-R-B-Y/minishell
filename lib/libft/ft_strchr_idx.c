@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execution.h                                        :+:      :+:    :+:   */
+/*   ft_strchr_idx.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/26 17:02:44 by cquinter          #+#    #+#             */
-/*   Updated: 2025/06/01 23:45:03 by cquinter         ###   ########.fr       */
+/*   Created: 2025/06/01 16:18:42 by cquinter          #+#    #+#             */
+/*   Updated: 2025/06/01 16:38:14 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXECUTION_H
-# define EXECUTION_H
+#include "include/libft.h"
 
-# include "./abstract_syntax_tree.h"
-# include "./builtin.h"
-# include <unistd.h>
+size_t	ft_strchr_idx(const char *s, int c)
+{
+	size_t	i;
 
-
-void	execute_command(char *path, char **argv, char**envp);
-int		execute_ast(t_minishell *shell);
-int	set_n_envp(char ***envp, char **argv, size_t n);
-
-#endif
+	i = 0;
+	if (!s)
+		return (-1);
+	while (s[i] && (unsigned char)s[i] != (unsigned char)c)
+		i++;
+	if ((unsigned char)s[i] == (unsigned char)c)
+		return (i);
+	return (-1);
+}

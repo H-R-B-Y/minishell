@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:44:33 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/26 16:39:12 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/01 23:46:32 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,5 +72,5 @@ int	builtin_export(t_minishell *shell, char **argv, char **envp)
 			ft_arrdel_atindex((void *)shell->local_env, in, free), free);
 	if (name)
 		free(name);
-	return (0);
+	return (1);
 }

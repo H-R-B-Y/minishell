@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:57:17 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/29 15:06:33 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/01 21:33:27 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,22 @@ int	get_run_builtincmd(t_minishell *shell)
 	const struct s_buitinmapping	*fncmap;
 	size_t							i;
 	char							**argv;
-	char							**env;
+	t_astnode						*node;
 
-	shell->local_env = (char **)ft_arrmap((void **)shell->environment,
+	node = shell->current_tree;
+	argv = node->cmdv;
+	node->envp = (char **)ft_arrmap((void **)shell->environment,
 		(void *)ft_strdup, free);
-	if (!shell->local_env)
-		return (ft_arrclear((void **)shell->current_tree->cmdv, free), 
-			perror("minishell: ft_arrmap:"), 0);
-	argv = shell->current_tree->cmdv;
-	env = shell->current_tree->envp;
+	if (!node->envp)
+		return (ft_arrclear((void **)argv, free), 
+			perror("minishell: ft_arrmap"), 0);
+	set_n_envp(&node->envp, argv, node->cmd_i);
 	fncmap = mapped_builtins();
 	i = 0;
-	// printf("env? : %s", env[0]);
 	while (i < BLTINCOUNT)
 	{
-		if (!ft_strcmp(shell->current_tree->cmdv[0], fncmap[i].match))
-			return (fncmap[i].fnc(shell, argv, env));
+		if (!ft_strcmp(argv[0], fncmap[i].match))
+			return (fncmap[i].fnc(shell, argv + node->cmd_i, node->envp));
 		i++;
 	}
 	return (0);
