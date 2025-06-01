@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:21:04 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/31 17:44:15 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/02 00:19:57 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define LIBFT_H
 
 # include <stdlib.h>
+# include <errno.h>
 
 // ███    ███  █████  ███    ██ ██████   █████  ████████ ███████ 
 // ████  ████ ██   ██ ████   ██ ██   ██ ██   ██    ██    ██      
@@ -126,6 +127,15 @@ size_t			ft_arrlcat(void **dest, void **src, size_t size);
  * @warning String must be null terminated
  */
 char			*ft_strchr(const char *str, int c);
+
+/**
+ * @brief Get the index of the first occurance of a character in a string
+ * @param str String to check
+ * @param c Character to check
+ * @return Index the first occurance of c in str or 0 if c is not in str
+ * @warning String must be null terminated
+ */
+size_t			ft_strchr_idx(const char *s, int c);
 
 /**
  * @brief Get last occurace of a character in a string
@@ -528,7 +538,7 @@ void			**ft_arrmap(void **arr, void *(*f)(void *),
 void			ft_arriter(void **arr, void *(*f)(void *));
 
 /**
- * @brief add a new item to the end of an array
+ * @brief add a new item to the end of an array or create a new one
  * 
  * @param arr the array to add too
  * @param newitem the new item to add

@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:13:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/31 18:36:58 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/02 00:56:01 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,13 @@ void	perror_exit(char *message)
 	exit(EXIT_FAILURE);
 }
 
-void	set_path_and_cmd(char ***path, char **dash_cmd, t_minishell *shell)
+void	set_path_and_cmd(char ***path, char **dash_cmd, char *cmd, char **envp)
 {
-	t_astnode *node;
 
-	node = shell->current_tree;
-	*path = ft_split(s_get_fromthis_env(node->envp, "PATH"), ':');
-	printf("at set path %s", *path[0]);
+	*path = ft_split(s_get_fromthis_env(envp, "PATH"), ':');
 	if (!*path)
 		perror_exit("ft_split");
-	*dash_cmd = ft_strjoin("/", node->cmdv[0]);
+	*dash_cmd = ft_strjoin("/", cmd);
 	if (!*dash_cmd)
 	{
 		free_arr((void **)*path);
@@ -71,14 +68,14 @@ void	set_path_and_cmd(char ***path, char **dash_cmd, t_minishell *shell)
 	}
 }
 
-char	*get_exec_path(t_minishell *shell)
+char	*get_exec_path(char *cmd, char **envp)
 {
 	char	**path = NULL;
 	char	*exec_path;
 	char	*dash_cmd = NULL;
 	int		i;
 
-	set_path_and_cmd(&path, &dash_cmd, shell);
+	set_path_and_cmd(&path, &dash_cmd, cmd, envp);
 	i = 0;
 	while (path[i])
 	{
@@ -100,6 +97,30 @@ char	*get_exec_path(t_minishell *shell)
 	return(free_arr((void **)path), exec_path);
 }
 
+size_t get_cmd_idx(t_astnode *node)
+{
+	size_t	i;
+
+	if (!node)
+		return (-1);
+	i = 0;
+	while (i < node->token_count &&
+		ft_strchr_idx(node->tokens[i][0].raw, '=') != (size_t)-1 &&
+		ft_strchr_idx(node->tokens[i][0].raw, '=') != 0)
+	{
+		if (ft_strchr_idx(node->tokens[i][0].raw, '=') < ft_strchr_idx(node->tokens[i][0].raw, '"') &&
+			ft_strchr_idx(node->tokens[i][0].raw, '=') < ft_strchr_idx(node->tokens[i][0].raw, '\'') &&
+			ft_strchr_idx(node->tokens[i][0].raw, '=') < ft_strchr_idx(node->tokens[i][0].raw, '\\') &&
+			ft_strchr_idx(node->tokens[i][0].raw, '=') < ft_strchr_idx(node->tokens[i][0].raw, ' ') &&
+			!ft_isalpha(node->tokens[i][0].raw[0]))
+			break;
+		i++;
+	}
+	if (i == node->token_count)
+		return (-1);
+	return (i);
+}
+
 char	**cmdv_prep(t_astnode *node)
 {
 	char	**argv;
@@ -109,6 +130,7 @@ char	**cmdv_prep(t_astnode *node)
 	if (!argv)
 		return (NULL);
 	i = 0;
+	node->cmd_i = get_cmd_idx(node);
 	while(i < node->token_count)
 	{
 		argv[i] = remove_quotes(node->tokens[i][0].raw);
@@ -123,8 +145,11 @@ char	**cmdv_prep(t_astnode *node)
 }
 
 /* TODO **************************************
-2. 
-getenv to sgetenv
+
+ * status control with return for set_n_env and exec_cmd
+ * free ft_dup if not
+ * 
+ 
 
 
 node having both genv and lenv? it is the node that needs them... to avoid passing the entire shell everytime
@@ -136,10 +161,10 @@ built ins
 	TO REVIEW:
 		* s_get_interalenv(shell, "HOME"); at built_in cd
 2. built in progress
-	* cd		done	env and local
-	* echo		done	env and loval
-	* env				env
-	* pwd
+	* cd		done	linked (return 1 on success)env and local 
+	* echo		done	linked (return 1 on success)env and loval - updated builtin_echo to print each argv on the same line, fixed bug with nlflag
+	* env		bits	linked	online env working - PENDING : to add env var=xxxx and a program		
+	* pwd		done	linked (return 1 on success)
 	* exit		done - no clean up
 	* export			exports n argvs ; does not export if not '='
 	* unset				unsets n argvs
@@ -151,67 +176,86 @@ built ins
 	PIPE
 	AND OR
 
-	4. to ask/ do you need the \n at void	*print_and_ret(void *p)
 
 **********************************************/
 
 #include "../../include/libft.h"
 
-void	execute_command(t_minishell *shell)
-{
-	int			pid;
-	char		**argv;
-	t_astnode	*node;
-	size_t		genv_l;
-	size_t		cmd_i;
-	size_t		var_i;
-	ssize_t		anon;
-	char		*var_name;
+/*
+sets n cmd envp starting at argv
+quotes must be handled already
 
-	genv_l = ft_arrlen((void **)shell->environment);
-	node = shell->current_tree;
-	argv = node->cmdv;
-	cmd_i = 0;
-	while (ft_strchr(argv[cmd_i], '='))
-		cmd_i++;
-	node->envp = (char **)ft_calloc(genv_l + cmd_i + 1, sizeof(void *));
-	if (!node->envp)
-		return (free_arr((void **)shell->current_tree->cmdv), 
-			perror("minishell: ft_calloc:"));
-	ft_arrlcat((void **)node->envp, (void **)shell->environment, genv_l + 1);
+TO confirm: free(temp) or free_arr((void **)temp)
+*/
+int	set_n_envp(char ***envp, char **argv, size_t n)
+{
+	ssize_t		anon;
+	size_t		var_i;
+	char		*var_name;
+	char		**temp;
 	
 	var_i = 0;
-	while (var_i < cmd_i)
+	printf("argv va1 = %s\n", argv[var_i]);
+	while (var_i < n)
 	{
 		var_name = ft_strndup(argv[var_i], ft_strchr(argv[var_i], '=') - argv[var_i]);
-		anon = _sgetanon(node->envp, var_name);
-		if (anon == -1)
-			ft_arrlcat((void **)node->envp, (void **)argv + var_i, genv_l + 2);
+		printf("varname = %s\n\n", var_name);
+		if (!var_name)
+			return (perror("minishell: unable to update environment HERE"), -1);
+		anon = _sgetanon(*envp, var_name); //////// HERE THE BUGG  chech if env is null or not allocated. 
+		if (anon == -1) //// handle it here
+		{
+			char *to_add = ft_strdup(argv[var_i]);
+			if (!to_add)
+				return (free(var_name), perror("minishell: strdup"), -1);
+			temp = *envp;
+			ft_arriter((void **)*envp, print_and_ret);
+			*envp = (char **)ft_arradd_back((void **)temp, (void *)to_add);
+			// ft_arriter((void **)*envp, print_and_ret);
+			if (!*envp)
+			{
+				*envp = temp;
+				free(to_add);
+				return (free(var_name), perror("minishell: unable to update environment HERE 2"), -1);
+			}
+			free(temp);
+		}
 		else
 		{
-			free(node->envp[anon]);
-			node->envp[anon] = ft_strdup(argv[var_i]);
+			*temp = *envp[anon];
+			*envp[anon] = ft_strdup(argv[var_i]);
+			if (!*envp[anon])
+			{
+				*envp[anon] = *temp;
+				free(var_name);
+				return (perror("minishell: unable to update environment HERE 3"), -1);
+			}
 		}
 		free(var_name);
 		var_i++;
 	}
+	return (0);
+}
+
+void	execute_command(char *path, char **argv, char**envp)
+{
+	int			pid;
 	
-	ft_arriter((void**)node->envp, print_and_ret);
 	pid = fork();
 	if (pid == 0)
 	{
 		char	*exec_path = NULL;
-		if (ft_strchr(argv[cmd_i], '/'))
-			execve(argv[cmd_i], argv + cmd_i, node->envp);
-		else
-			exec_path = get_exec_path(shell); // make it static[1024]  and size 1024 - 1 for NULL
-		if (!exec_path)
-			perror_exit(argv[cmd_i]);
+		if (ft_strchr(path, '/'))
+			execve(path, argv, envp);
 		else
 		{
+			exec_path = get_exec_path(path, envp); // make it static[1024]  and size 1024 - 1 for NULL
 			printf("at exec_command: child PID is %d executing %s\n", pid, exec_path);
-			execve(exec_path, argv, node->envp);
 		}
+		if (!exec_path)
+			perror_exit(path);
+		else
+			execve(exec_path, argv, envp);
 	}
 	else if (pid > 0)
 	{
@@ -232,11 +276,8 @@ int	execute_ast(t_minishell *shell)
 {
 	// char	**g_env;
 	// char	**l_env;
-	shell->current_tree->cmdv = cmdv_prep(shell->current_tree); // handle variables
-	
-	// ft_arriter((void **)shell->environment, print_and_ret);
-	
-
+	if (!shell->current_tree)
+			return (-1);
 	// if (node->type == subshell)
 	// 	execute_subshell(node);
 	// else if (node->type == AND || OR)
@@ -245,15 +286,21 @@ int	execute_ast(t_minishell *shell)
 	// 	execute_pipe(node)
 	// else if (node->type == SEQ)
 	// 	execute_sequence(node);
-	if (!shell->current_tree)
-		return (-1);
 	if (shell->current_tree->type == AST_COMMAND)
 	{
-		if (get_run_builtincmd(shell))
-			return (printf("SUCCESS at exec_command: executed builtin %s\n", shell->current_tree->cmdv[0]), 
-				free_arr((void **)shell->current_tree->cmdv), 0);
-		else
-			return (execute_command(shell), 0);
+		shell->current_tree->cmdv = cmdv_prep(shell->current_tree); // handle variables
+		shell->current_tree->genv_l = ft_arrlen((void **)shell->environment);
+		if (shell->current_tree->cmd_i != (size_t)-1)
+		{
+			if (get_run_builtincmd(shell))
+				return (printf("SUCCESS at exec_command: executed builtin %s\n", shell->current_tree->cmdv[0]), 
+					free_arr((void **)shell->current_tree->cmdv), 0);
+			else
+				return (execute_command(shell->current_tree->cmdv[shell->current_tree->cmd_i], 
+					shell->current_tree->cmdv + shell->current_tree->cmd_i, 
+					shell->current_tree->envp), 0);
+		}
+		return (set_n_envp(&shell->local_env, shell->current_tree->cmdv, shell->current_tree->token_count));
 	}
 	return (-1);
 }

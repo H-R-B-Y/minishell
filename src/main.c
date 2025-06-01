@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/28 17:06:53 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/02 00:24:44 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	shell.environment = (char **)ft_arrmap((void **)envp, (void *)ft_strdup, free);
 	if (!shell.environment)
-		return (perror("minishell: ft_arrmap:"), 1);
+		return (perror("minishell: ft_arrmap"), 1);
 	reset_for_command(&shell);
 	signal(SIGINT, do_something);
 	add_history("(this\n) && should work"); add_history("\"this\n should\"\nwork"); add_history("(this &&\nhas a seperator)");
@@ -95,6 +95,7 @@ int	main(int argc, char **argv, char **envp)
 			shell.current_tree = produce_ast(&shell, shell.tokenv,
 				ft_arrlen((void *)shell.tokenv));
 			execute_ast(&shell);
+			ft_arriter((void **)shell.local_env, print_and_ret);
 			// print_ast(shell.current_tree, "|	|");
 		}
 		else if (rlcode == READ_BADPARSE)
