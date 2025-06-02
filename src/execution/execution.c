@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:13:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/02 00:56:01 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/02 01:12:35 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,20 +205,32 @@ int	set_n_envp(char ***envp, char **argv, size_t n)
 		anon = _sgetanon(*envp, var_name); //////// HERE THE BUGG  chech if env is null or not allocated. 
 		if (anon == -1) //// handle it here
 		{
-			char *to_add = ft_strdup(argv[var_i]);
-			if (!to_add)
-				return (free(var_name), perror("minishell: strdup"), -1);
-			temp = *envp;
-			ft_arriter((void **)*envp, print_and_ret);
-			*envp = (char **)ft_arradd_back((void **)temp, (void *)to_add);
-			// ft_arriter((void **)*envp, print_and_ret);
 			if (!*envp)
 			{
-				*envp = temp;
-				free(to_add);
-				return (free(var_name), perror("minishell: unable to update environment HERE 2"), -1);
+				*envp = (char **)ft_calloc(2, sizeof(void *));
+				if (!*envp)
+					return (free(var_name), perror("minishell: strdup: unable to update env"), -1);
+				*envp[0] = ft_strdup(argv[var_i]);
+				if (!*envp[0])
+					return (free(var_name), free(*envp), perror("minishell: strdup: unable to update env"), -1);
 			}
-			free(temp);
+			else
+			{
+				char *to_add = ft_strdup(argv[var_i]);
+				if (!to_add)
+					return (free(var_name), perror("minishell: strdup"), -1);
+				temp = *envp;
+				// ft_arriter((void **)*envp, print_and_ret);
+				*envp = (char **)ft_arradd_back((void **)temp, (void *)to_add);
+				ft_arriter((void **)*envp, print_and_ret);
+				if (!*envp)
+				{
+					*envp = temp;
+					free(to_add);
+					return (free(var_name), perror("minishell: unable to update environment HERE 2"), -1);
+				}
+				free(temp);
+			}
 		}
 		else
 		{
@@ -258,10 +270,7 @@ void	execute_command(char *path, char **argv, char**envp)
 			execve(exec_path, argv, envp);
 	}
 	else if (pid > 0)
-	{
 		waitpid(pid, NULL, 0);
-		ft_arrclear((void **)argv, free);
-	}
 	else
 		perror("fork failed");
 }
@@ -296,9 +305,14 @@ int	execute_ast(t_minishell *shell)
 				return (printf("SUCCESS at exec_command: executed builtin %s\n", shell->current_tree->cmdv[0]), 
 					free_arr((void **)shell->current_tree->cmdv), 0);
 			else
-				return (execute_command(shell->current_tree->cmdv[shell->current_tree->cmd_i], 
+			{
+				execute_command(shell->current_tree->cmdv[shell->current_tree->cmd_i], 
 					shell->current_tree->cmdv + shell->current_tree->cmd_i, 
-					shell->current_tree->envp), 0);
+					shell->current_tree->envp);
+				ft_arrclear((void **)shell->current_tree->cmdv, free);
+				return (0);
+			}
+				
 		}
 		return (set_n_envp(&shell->local_env, shell->current_tree->cmdv, shell->current_tree->token_count));
 	}
