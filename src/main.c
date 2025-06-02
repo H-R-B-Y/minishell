@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/02 00:24:44 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/02 01:12:53 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,8 @@ int	main(int argc, char **argv, char **envp)
 			shell.current_tree = produce_ast(&shell, shell.tokenv,
 				ft_arrlen((void *)shell.tokenv));
 			execute_ast(&shell);
-			ft_arriter((void **)shell.local_env, print_and_ret);
+			if (shell.local_env)
+				ft_arriter((void **)shell.local_env, print_and_ret);
 			// print_ast(shell.current_tree, "|	|");
 		}
 		else if (rlcode == READ_BADPARSE)
