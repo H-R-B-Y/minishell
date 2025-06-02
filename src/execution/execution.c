@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:13:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/02 01:12:35 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/02 23:12:53 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ this will print nothing because the var is defined in the command scope
 but the variable being expanded is expanded in the shell scope.
 
 if you do:
-$ MYVAR="1234"; echo "$MYVAR"
+$ MYVAR="1234"; echo "$MYVAR"$
 This WILL print 1234 because the assignment is sequentially before the 
 command so the variable is defined in the shells scope so the shell 
 can expand the variable.
@@ -108,10 +108,10 @@ size_t get_cmd_idx(t_astnode *node)
 		ft_strchr_idx(node->tokens[i][0].raw, '=') != (size_t)-1 &&
 		ft_strchr_idx(node->tokens[i][0].raw, '=') != 0)
 	{
-		if (ft_strchr_idx(node->tokens[i][0].raw, '=') < ft_strchr_idx(node->tokens[i][0].raw, '"') &&
-			ft_strchr_idx(node->tokens[i][0].raw, '=') < ft_strchr_idx(node->tokens[i][0].raw, '\'') &&
-			ft_strchr_idx(node->tokens[i][0].raw, '=') < ft_strchr_idx(node->tokens[i][0].raw, '\\') &&
-			ft_strchr_idx(node->tokens[i][0].raw, '=') < ft_strchr_idx(node->tokens[i][0].raw, ' ') &&
+		if (ft_strchr_idx(node->tokens[i][0].raw, '=') > ft_strchr_idx(node->tokens[i][0].raw, '"') ||
+			ft_strchr_idx(node->tokens[i][0].raw, '=') > ft_strchr_idx(node->tokens[i][0].raw, '\'') ||
+			ft_strchr_idx(node->tokens[i][0].raw, '=') > ft_strchr_idx(node->tokens[i][0].raw, '\\') ||
+			ft_strchr_idx(node->tokens[i][0].raw, '=') > ft_strchr_idx(node->tokens[i][0].raw, ' ') ||
 			!ft_isalpha(node->tokens[i][0].raw[0]))
 			break;
 		i++;
@@ -146,20 +146,18 @@ char	**cmdv_prep(t_astnode *node)
 
 /* TODO **************************************
 
- * status control with return for set_n_env and exec_cmd
- * free ft_dup if not
+ * set_n_env to set var=value to either genvp or lenvp not just the envp given as arg.
+ *	* idea: wrap set_env to check and if/else set_n_env with the apropiate **envp
+ * hangle $    if $ folled by quotes, jump it. if on its own, cmd
+ * create a paralel linked list to index var, to be used by export when "expor var"
  * 
  
-
-
-node having both genv and lenv? it is the node that needs them... to avoid passing the entire shell everytime
-built ins
 	DONE:*  updated builtin_echo to print each argv on the same line, fixed bug with nlflag
 		 * "+ ft_strlen(name) + 1" added to sgetenv fts returns to run as getenv
 		 * updated env (global and local) variabes at exec_cmd
 	
 	TO REVIEW:
-		* s_get_interalenv(shell, "HOME"); at built_in cd
+		* 
 2. built in progress
 	* cd		done	linked (return 1 on success)env and local 
 	* echo		done	linked (return 1 on success)env and loval - updated builtin_echo to print each argv on the same line, fixed bug with nlflag
@@ -181,70 +179,59 @@ built ins
 
 #include "../../include/libft.h"
 
-/*
-sets n cmd envp starting at argv
-quotes must be handled already
 
-TO confirm: free(temp) or free_arr((void **)temp)
+static int	update_env(char ***envp, char *dup, char *name)
+{
+	ssize_t	idx;
+	char	**old;
+
+	if (*envp == NULL)
+	{
+		*envp = ft_calloc(2, sizeof(char *));
+		if (*envp == NULL)
+			return (-1);
+		return ((*envp)[0] = dup, 0);
+	}
+	idx = _sgetanon(*envp, name);
+	if (idx == -1)
+	{
+		old = *envp;
+		*envp = (char **)ft_arradd_back((void **)old, dup);
+		if (*envp == NULL)
+			return (*envp = old, -1);
+		free(old);
+	}
+	else
+	{
+		free((*envp)[idx]);
+		(*envp)[idx] = dup;
+	}
+	return (0);
+}
+
+/*
+ * sets n cmd envp starting at argv
+ * quotes must be handled already
 */
 int	set_n_envp(char ***envp, char **argv, size_t n)
 {
-	ssize_t		anon;
-	size_t		var_i;
-	char		*var_name;
-	char		**temp;
-	
-	var_i = 0;
-	printf("argv va1 = %s\n", argv[var_i]);
-	while (var_i < n)
+	size_t	i;
+	char	*name;
+	char	*dup;
+
+	i = 0;
+	while (i < n)
 	{
-		var_name = ft_strndup(argv[var_i], ft_strchr(argv[var_i], '=') - argv[var_i]);
-		printf("varname = %s\n\n", var_name);
-		if (!var_name)
-			return (perror("minishell: unable to update environment HERE"), -1);
-		anon = _sgetanon(*envp, var_name); //////// HERE THE BUGG  chech if env is null or not allocated. 
-		if (anon == -1) //// handle it here
-		{
-			if (!*envp)
-			{
-				*envp = (char **)ft_calloc(2, sizeof(void *));
-				if (!*envp)
-					return (free(var_name), perror("minishell: strdup: unable to update env"), -1);
-				*envp[0] = ft_strdup(argv[var_i]);
-				if (!*envp[0])
-					return (free(var_name), free(*envp), perror("minishell: strdup: unable to update env"), -1);
-			}
-			else
-			{
-				char *to_add = ft_strdup(argv[var_i]);
-				if (!to_add)
-					return (free(var_name), perror("minishell: strdup"), -1);
-				temp = *envp;
-				// ft_arriter((void **)*envp, print_and_ret);
-				*envp = (char **)ft_arradd_back((void **)temp, (void *)to_add);
-				ft_arriter((void **)*envp, print_and_ret);
-				if (!*envp)
-				{
-					*envp = temp;
-					free(to_add);
-					return (free(var_name), perror("minishell: unable to update environment HERE 2"), -1);
-				}
-				free(temp);
-			}
-		}
-		else
-		{
-			*temp = *envp[anon];
-			*envp[anon] = ft_strdup(argv[var_i]);
-			if (!*envp[anon])
-			{
-				*envp[anon] = *temp;
-				free(var_name);
-				return (perror("minishell: unable to update environment HERE 3"), -1);
-			}
-		}
-		free(var_name);
-		var_i++;
+		name = ft_strndup(argv[i], ft_strchr(argv[i], '=') - argv[i]);
+		if (name == NULL)
+			return (-1);
+		dup = ft_strdup(argv[i]);
+		if (dup == NULL)
+			return (free(name), -1);
+		if (update_env(envp, dup, name) == -1)
+			return (free(dup), free(name), -1);
+		free(name);
+		i++;
 	}
 	return (0);
 }
@@ -260,10 +247,7 @@ void	execute_command(char *path, char **argv, char**envp)
 		if (ft_strchr(path, '/'))
 			execve(path, argv, envp);
 		else
-		{
-			exec_path = get_exec_path(path, envp); // make it static[1024]  and size 1024 - 1 for NULL
-			printf("at exec_command: child PID is %d executing %s\n", pid, exec_path);
-		}
+			exec_path = get_exec_path(path, envp);
 		if (!exec_path)
 			perror_exit(path);
 		else
@@ -274,12 +258,6 @@ void	execute_command(char *path, char **argv, char**envp)
 	else
 		perror("fork failed");
 }
-
-// void print_env_entry(char *entry)
-// {
-//     printf("%s\n", entry);
-// }
-
 
 int	execute_ast(t_minishell *shell)
 {

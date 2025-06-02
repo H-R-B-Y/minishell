@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:21:04 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/02 00:19:57 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/02 21:03:34 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ char			*ft_strchr(const char *str, int c);
  * @brief Get the index of the first occurance of a character in a string
  * @param str String to check
  * @param c Character to check
- * @return Index the first occurance of c in str or 0 if c is not in str
+ * @return Index the first occurance of c in str or -1 if c is not in str
  * @warning String must be null terminated
  */
 size_t			ft_strchr_idx(const char *s, int c);
