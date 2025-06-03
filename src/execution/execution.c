@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:13:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/02 23:12:53 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/03 18:47:44 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ char	**cmdv_prep(t_astnode *node)
 /* TODO **************************************
 
  * set_n_env to set var=value to either genvp or lenvp not just the envp given as arg.
- *	* idea: wrap set_env to check and if/else set_n_env with the apropiate **envp
+ *	* idea:  maybe consider flags?
  * hangle $    if $ folled by quotes, jump it. if on its own, cmd
  * create a paralel linked list to index var, to be used by export when "expor var"
  * 
@@ -155,6 +155,7 @@ char	**cmdv_prep(t_astnode *node)
 	DONE:*  updated builtin_echo to print each argv on the same line, fixed bug with nlflag
 		 * "+ ft_strlen(name) + 1" added to sgetenv fts returns to run as getenv
 		 * updated env (global and local) variabes at exec_cmd
+		 * wrapped set_n_env to check and if genvp/else local to set_n_env the apropiate **envp.
 	
 	TO REVIEW:
 		* 
@@ -236,6 +237,30 @@ int	set_n_envp(char ***envp, char **argv, size_t n)
 	return (0);
 }
 
+int	set_any_env(t_minishell *shell)
+{
+	char	**argv;
+	char	*name;
+	size_t	n;
+	size_t	i;
+
+	argv = shell->current_tree->cmdv;
+	n = shell->current_tree->token_count;
+	i = 0;
+	while (i < n)
+	{
+		name = ft_strndup(argv[i], ft_strchr(argv[i], '=') - argv[i]);
+		if (name == NULL)
+			return (-1);
+		if (s_get_envid(shell, name) != -1) /// add here var manipulated by unset adn export to keep track of var in genvp
+			set_n_envp(&shell->environment, argv + i, 1);
+		else
+			set_n_envp(&shell->local_env, argv + i, 1);
+		i++;
+	}
+	return (0);
+}
+
 void	execute_command(char *path, char **argv, char**envp)
 {
 	int			pid;
@@ -292,7 +317,7 @@ int	execute_ast(t_minishell *shell)
 			}
 				
 		}
-		return (set_n_envp(&shell->local_env, shell->current_tree->cmdv, shell->current_tree->token_count));
+		return (set_any_env(shell));
 	}
 	return (-1);
 }
