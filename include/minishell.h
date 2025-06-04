@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/31 17:19:24 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/03 23:55:40 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,9 +168,7 @@ char			*str_vec_join(char **arr);
  */
 char			*_pop_line(char ***str);
 
-
-char	*remove_quotes(char *str);
-
+char	*remove_quotes(char *str, t_minishell *shell);
 
 int	read_until_complete_command(t_minishell *shell);
 
