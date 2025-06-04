@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:31:46 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/26 16:50:16 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/01 20:45:52 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BUILTIN_H
 # define BUILTIN_H
 
-# define BLTINCOUNT 8
+# define BLTINCOUNT 7
 
 # include <stdlib.h>
 # include <stdio.h>
-# include <libft.h>
+# include "libft.h"
 
 typedef struct s_minishell	t_minishell;
 

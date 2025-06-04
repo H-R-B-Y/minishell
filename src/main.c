@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/01 15:35:25 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/04 18:21:08 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,9 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	shell.environment = envp;
+	shell.environment = (char **)ft_arrmap((void **)envp, (void *)ft_strdup, free);
+	if (!shell.environment)
+		return (perror("minishell: ft_arrmap"), 1);
 	reset_for_command(&shell);
 	init_debugger(static_debug_info());
 	// static_debug_info()->fd = open("test", O_RDWR);
@@ -105,7 +107,7 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGINT, do_something);
 	add_history("(this\n) && should work"); add_history("\"this\n should\"\nwork"); add_history("(this &&\nhas a seperator)");
 	shell.prompt = "minishell -> ";
-	printf("%s\n\n", remove_quotes("\"this\"\"text\""));
+	printf("%s\n\n", remove_quotes("\"this\"\"text\"", &shell));
 	while (1)
 	{
 		rlcode = read_until_complete_command(&shell);
