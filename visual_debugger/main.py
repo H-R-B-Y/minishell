@@ -639,7 +639,7 @@ class visual_debugger(tk.Tk):
 
 
 
-root = visual_debugger(open('test','rb'))
+root = visual_debugger()
 
 
 
