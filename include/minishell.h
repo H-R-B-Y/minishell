@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/27 18:06:45 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/03 23:55:40 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@
 # include "./fsm_tokeniser.h"
 # include "./readline_loop.h"
 # include "./abstract_syntax_tree.h"
+# include "./execution.h"
+# include "./builtin.h"
 
 /**
  * @brief the main struct for storing minishell state
@@ -166,9 +168,7 @@ char			*str_vec_join(char **arr);
  */
 char			*_pop_line(char ***str);
 
-
-char	*remove_quotes(char *str);
-
+char	*remove_quotes(char *str, t_minishell *shell);
 
 int	read_until_complete_command(t_minishell *shell);
 
@@ -184,6 +184,8 @@ variable expansion.
 The second is the internal variables, these are tracked by the shell but only
 accessible to the shell and not handed to the child processes.
 */
+
+ssize_t			_sgetanon(char **anon, char *name);
 
 /**
  * @brief get an environment variable from the internal tracked environment
@@ -230,6 +232,15 @@ ssize_t			s_get_internalenvid(t_minishell *shell, char *name);
  */
 char	*s_get_envany(t_minishell *shell, char *name);
 
+/**
+ * @brief get an ENV string from the shell's environment
+ * 
+ * @param shell the shell struct
+ * @param name the name of the environment variable
+ * @return char* the env string from the environment
+ */
+char 	*s_get_fromthis_env(char **env, char *name);
+
 /*
 Things that can be accessed externally in the builtins are
 */
@@ -275,7 +286,9 @@ typedef int					(*t_builtincmd)(t_minishell *, char **, char **);
  * @param str string to check for a builtin command
  * @return t_builtincmd a function to run as a command
  */
-t_builtincmd	get_builtincmd(char *str);
+int	get_run_builtincmd(t_minishell *shell);
+
+void	*print_and_ret(void *p);
 
 
 

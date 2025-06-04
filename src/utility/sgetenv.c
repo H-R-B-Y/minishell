@@ -53,7 +53,7 @@ char	*s_get_env(t_minishell *shell, char *name)
 
 	index = _sgetanon(shell->environment, name);
 	if (index >= 0)
-		return (shell->environment[index]);
+		return (shell->environment[index] + ft_strlen(name) + 1);
 	return ((void *)0);
 }
 
@@ -78,13 +78,30 @@ ssize_t	s_get_envid(t_minishell *shell, char *name)
  * @param name the name of the environment variable
  * @return char* the env string from the environment
  */
-char	*s_get_interalenv(t_minishell *shell, char *name)
+char 	*s_get_interalenv(t_minishell *shell, char *name)
 {
 	ssize_t	index;
 
 	index = _sgetanon(shell->local_env, name);
 	if (index >= 0)
-		return (shell->local_env[index]);
+		return (shell->local_env[index] + ft_strlen(name) + 1);
+	return ((void *)0);
+}
+
+/**
+ * @brief get an ENV string from the shell's environment
+ * 
+ * @param shell the shell struct
+ * @param name the name of the environment variable
+ * @return char* the env string from the environment
+ */
+char 	*s_get_fromthis_env(char **env, char *name)
+{
+	ssize_t	index;
+
+	index = _sgetanon(env, name);
+	if (index >= 0)
+		return (env[index] + ft_strlen(name) + 1);
 	return ((void *)0);
 }
 

@@ -1,23 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/27 19:21:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/01 16:24:36 by cquinter         ###   ########.fr       */
+/*   Created: 2025/05/31 17:37:48 by cquinter          #+#    #+#             */
+/*   Updated: 2025/05/31 17:44:49 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// WHO KEEPS SIGNING THESE CHARS T-T
-char	*ft_strchr(const char *s, int c)
+#include "./include/libft.h"
+
+char	*ft_strndup(const char *src, size_t n)
 {
-	if (!s)
+	size_t		i;
+	char		*output;
+
+	if (!src)
 		return (0);
-	while (*s && (unsigned char)*s != (unsigned char)c)
-		s++;
-	if ((unsigned char)*s == (unsigned char)c)
-		return ((char *)s);
-	return (0);
+	output = malloc(sizeof(char) * n + 1);
+	if (!output)
+		return (NULL);
+	i = 0;
+	output[n] = '\0';
+	while (src[i] && i < n)
+	{
+		output[i] = src[i];
+		i++;
+	}
+	return (output);
 }

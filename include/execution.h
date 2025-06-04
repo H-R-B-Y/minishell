@@ -1,23 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/27 19:21:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/01 16:24:36 by cquinter         ###   ########.fr       */
+/*   Created: 2025/05/26 17:02:44 by cquinter          #+#    #+#             */
+/*   Updated: 2025/06/01 23:45:03 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// WHO KEEPS SIGNING THESE CHARS T-T
-char	*ft_strchr(const char *s, int c)
-{
-	if (!s)
-		return (0);
-	while (*s && (unsigned char)*s != (unsigned char)c)
-		s++;
-	if ((unsigned char)*s == (unsigned char)c)
-		return ((char *)s);
-	return (0);
-}
+#ifndef EXECUTION_H
+# define EXECUTION_H
+
+# include "./abstract_syntax_tree.h"
+# include "./builtin.h"
+# include <unistd.h>
+
+
+void	execute_command(char *path, char **argv, char**envp);
+int		execute_ast(t_minishell *shell);
+int	set_n_envp(char ***envp, char **argv, size_t n);
+
+#endif
