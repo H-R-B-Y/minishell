@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:31:30 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/26 15:42:01 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/29 16:45:25 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,22 @@
 int	builtin_cd(t_minishell *shell, char **argv, char **envp)
 {
 	char	*tmp;
-	int		ret;
 
-	(void)shell;
 	(void)envp;
-	ret = 0;
 	tmp = 0;
+	if (!argv)
+		return (errno = EINVAL, perror("builtin_cd"), -1);
+	if (argv[2])
+		return (ft_putstr_fd("minishel: builtin_cd: too many arguments", 2), -1);
 	if (!argv[1])
 	{
-		tmp = getenv("HOME");
-		tmp = ft_strdup(ft_strchr(tmp, '=') + 1);
-		ret = chdir(tmp);
+		tmp = s_get_envany(shell, "HOME");
+		tmp = ft_strdup(tmp);
+		chdir(tmp);
+		free(tmp);
 	}
 	else
-		ret = chdir(argv[1]);
-	perror("minishell: cd");
-	return (!!ret);
+		chdir(argv[1]);
+	perror("builtin_cd");
+	return (1);
 }
