@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_pwd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 15:10:47 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/26 16:54:40 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/01 22:30:39 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	builtin_pwd(t_minishell *shell, char **argv, char **envp)
 	(void)envp;
 	pwd = getcwd(0, 0);
 	if (!pwd)
-		return (perror("pwd"), free(pwd), 1);
+		return (perror("pwd"), free(pwd), 0);
 	else
-		return (printf("%s\n", pwd), free(pwd), 0);
+		return (printf("%s\n", pwd), free(pwd), 1);
 }

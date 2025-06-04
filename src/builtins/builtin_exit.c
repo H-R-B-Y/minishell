@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:38:10 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/26 15:41:06 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/05/28 12:11:56 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,6 @@ int	builtin_exit(t_minishell *shell, char **argv, char **envp)
 	(void)argv;
 	(void)envp;
 	warning_message();
-	printf("exit");
-	exit(0);
+	printf("exit\n");
+	exit(42);
 }
