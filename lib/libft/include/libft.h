@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:21:04 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/26 16:37:17 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/02 21:03:34 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define LIBFT_H
 
 # include <stdlib.h>
+# include <errno.h>
 
 // ███    ███  █████  ███    ██ ██████   █████  ████████ ███████ 
 // ████  ████ ██   ██ ████   ██ ██   ██ ██   ██    ██    ██      
@@ -108,6 +109,17 @@ size_t			ft_strlcpy(char *dest, const char *src, size_t size);
 size_t			ft_strlcat(char *dest, const char *src, size_t size);
 
 /**
+ * @brief Concatenate a array to another array
+ * @param dest Destination array
+ * @param src Source array
+ * @param size Size of the destination array
+ * @return Length of the source array or size if the dest is truncated
+ * @warning Array must be null terminated
+ */
+size_t			ft_arrlcat(void **dest, void **src, size_t size);
+
+
+/**
  * @brief Get first occurance of a character in a string
  * @param str String to check
  * @param c Character to check
@@ -115,6 +127,15 @@ size_t			ft_strlcat(char *dest, const char *src, size_t size);
  * @warning String must be null terminated
  */
 char			*ft_strchr(const char *str, int c);
+
+/**
+ * @brief Get the index of the first occurance of a character in a string
+ * @param str String to check
+ * @param c Character to check
+ * @return Index the first occurance of c in str or -1 if c is not in str
+ * @warning String must be null terminated
+ */
+size_t			ft_strchr_idx(const char *s, int c);
 
 /**
  * @brief Get last occurace of a character in a string
@@ -163,6 +184,15 @@ char			*ft_strnstr(const char *big,
  * @warning String must be null terminated
  */
 char			*ft_strdup(const char *src);
+
+/**
+ * @brief Copy a string  - copies at most n bytes
+ * @param src String to copy
+ * @param n bites to copy
+ * @return A malloc'd copy of src or 0 if malloc fails
+ * @warning String must be null terminated
+ */
+char			*ft_strndup(const char *src, size_t n);
 
 /**
  * @brief Copy a string up to len characters
@@ -349,6 +379,7 @@ void			ft_putendl_fd(char *s, int fd);
  */
 void			ft_putnbr_fd(int n, int fd);
 
+
 // ██████   ██████  ███    ██ ██    ██ ███████ 
 // ██   ██ ██    ██ ████   ██ ██    ██ ██      
 // ██████  ██    ██ ██ ██  ██ ██    ██ ███████ 
@@ -507,7 +538,7 @@ void			**ft_arrmap(void **arr, void *(*f)(void *),
 void			ft_arriter(void **arr, void *(*f)(void *));
 
 /**
- * @brief add a new item to the end of an array
+ * @brief add a new item to the end of an array or create a new one
  * 
  * @param arr the array to add too
  * @param newitem the new item to add

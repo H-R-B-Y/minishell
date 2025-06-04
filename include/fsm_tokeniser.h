@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fsm_tokeniser.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/23 12:48:24 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/03 19:35:21 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ enum e_quote_mode
 	QUOTE_SINGLE,
 	/// We are in a double quote
 	QUOTE_DOUBLE,
+	/// Just pased a dash 
+	
 	/// Count of quote modes
 	QUOTE_MODE_COUNT,
 };

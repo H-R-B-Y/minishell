@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_heredoc.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:22:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/27 18:12:57 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/04 17:07:45 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ t_redirect_desc	*handle_heredoc(t_minishell *shell, char *delim)
 	handle_vars = 0;
 	if (!ft_strchr(delim, '"') && !ft_strchr(delim, '\''))
 		handle_vars = 1;
-	clean_heredoc = remove_quotes(delim);
+	clean_heredoc = remove_quotes(delim, shell);
 	temp_file = open(getcwd(0, 0), O_RDONLY | __O_TMPFILE | O_RDWR, S_IRUSR | S_IWUSR);
 	if (temp_file == -1)
 	{
