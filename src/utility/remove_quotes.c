@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:16:03 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/04 16:41:23 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/04 17:24:13 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ int _expand_write_var(t_minishell *shell, char **output, char *str, size_t *i)
 	char	*v_name;
 
 	old = *output;
-	if (!(str)[i[0] + 1])
-		return (1);
+	if (!ft_isalnum((str)[i[0] + 1]))
+		return (_write_char(&(*output)[i[1]], TC, i), 1);
 	i[0]++;
 	if (ft_isdigit((str)[i[0]]))
 		return (i[0]++, 1);
@@ -88,11 +88,16 @@ char	*remove_quotes(char *str, t_minishell *shell)
 			{
 				i[0]++;
 				if (TC == '$')
+				{
 					_write_char(&output[i[1]], TC, i);
+					continue;
+				}
 			}
 			if (TC == '$' && (mode == QUOTE_DOUBLE || mode == QUOTE_NONE))
-				while (TC == '$')
-					_expand_write_var(shell, &output, str, i);
+			{
+				_expand_write_var(shell, &output, str, i);
+				continue ;
+			}
 			_write_char(&output[i[1]], TC, i);
 			continue ;
 		}
@@ -109,12 +114,18 @@ char	*remove_quotes(char *str, t_minishell *shell)
 			continue;
 		}
 		if (TC == '$' && (mode == QUOTE_DOUBLE || mode == QUOTE_NONE))
+		{
 			_expand_write_var(shell, &output, str, i);
+			continue;
+		}
 		if (TC == '\\' && mode == QUOTE_DOUBLE)
 		{
 			i[0]++;
 			if (TC == '$')
+			{
 				_write_char(&output[i[1]], TC, i);
+				continue ;
+			}
 		}
 		_write_char(&output[i[1]], TC, i);
 		continue;
