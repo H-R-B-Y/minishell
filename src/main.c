@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/03 18:40:54 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/04 00:01:22 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGINT, do_something);
 	add_history("(this\n) && should work"); add_history("\"this\n should\"\nwork"); add_history("(this &&\nhas a seperator)");
 	shell.prompt = "minishell -> ";
-	printf("%s\n\n", remove_quotes("\"this\"\"text\""));
+	printf("%s\n\n", remove_quotes("\"this\"\"text\"", &shell));
 	while (1)
 	{
 		rlcode = read_until_complete_command(&shell);

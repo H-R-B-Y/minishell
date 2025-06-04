@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:13:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/03 18:47:44 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/04 16:35:51 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ size_t get_cmd_idx(t_astnode *node)
 			ft_strchr_idx(node->tokens[i][0].raw, '=') > ft_strchr_idx(node->tokens[i][0].raw, '\'') ||
 			ft_strchr_idx(node->tokens[i][0].raw, '=') > ft_strchr_idx(node->tokens[i][0].raw, '\\') ||
 			ft_strchr_idx(node->tokens[i][0].raw, '=') > ft_strchr_idx(node->tokens[i][0].raw, ' ') ||
+			ft_strchr_idx(node->tokens[i][0].raw, '=') > ft_strchr_idx(node->tokens[i][0].raw, ' ') ||
+			ft_strchr_idx(node->tokens[i][0].raw, '=') > ft_strchr_idx(node->tokens[i][0].raw, '$') ||
 			!ft_isalpha(node->tokens[i][0].raw[0]))
 			break;
 		i++;
@@ -121,11 +123,14 @@ size_t get_cmd_idx(t_astnode *node)
 	return (i);
 }
 
-char	**cmdv_prep(t_astnode *node)
+char	**cmdv_prep(t_minishell *shell)
 {
 	char	**argv;
 	size_t		i;
+	t_astnode *node;
 
+	
+	node = shell->current_tree;
 	argv = ft_calloc(node->token_count + 1, sizeof(char **));
 	if (!argv)
 		return (NULL);
@@ -133,7 +138,7 @@ char	**cmdv_prep(t_astnode *node)
 	node->cmd_i = get_cmd_idx(node);
 	while(i < node->token_count)
 	{
-		argv[i] = remove_quotes(node->tokens[i][0].raw);
+		argv[i] = remove_quotes(node->tokens[i][0].raw, shell);
 		if (!argv)
 		{
 			free_arr((void **)argv);
@@ -145,10 +150,13 @@ char	**cmdv_prep(t_astnode *node)
 }
 
 /* TODO **************************************
+ * handle $    if $ folled by quotes, jump it. if on its own, cmd
+	* if var not exitant : move to the next char
+	* if \' open dont expand
+	* if \" expand
 
- * set_n_env to set var=value to either genvp or lenvp not just the envp given as arg.
- *	* idea:  maybe consider flags?
- * hangle $    if $ folled by quotes, jump it. if on its own, cmd
+	* 
+	* 
  * create a paralel linked list to index var, to be used by export when "expor var"
  * 
  
@@ -157,8 +165,9 @@ char	**cmdv_prep(t_astnode *node)
 		 * updated env (global and local) variabes at exec_cmd
 		 * wrapped set_n_env to check and if genvp/else local to set_n_env the apropiate **envp.
 	
-	TO REVIEW:
-		* 
+	TO REVIEW / work later
+		* $ followed by digit not handled yet. Only moved passed it ignoring it.
+		* $ followed by $
 2. built in progress
 	* cd		done	linked (return 1 on success)env and local 
 	* echo		done	linked (return 1 on success)env and loval - updated builtin_echo to print each argv on the same line, fixed bug with nlflag
@@ -300,7 +309,7 @@ int	execute_ast(t_minishell *shell)
 	// 	execute_sequence(node);
 	if (shell->current_tree->type == AST_COMMAND)
 	{
-		shell->current_tree->cmdv = cmdv_prep(shell->current_tree); // handle variables
+		shell->current_tree->cmdv = cmdv_prep(shell); // handle variables
 		shell->current_tree->genv_l = ft_arrlen((void **)shell->environment);
 		if (shell->current_tree->cmd_i != (size_t)-1)
 		{
