@@ -1,23 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr.c                                        :+:      :+:    :+:   */
+/*   ft_strchr_idx.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/27 19:21:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/01 16:24:36 by cquinter         ###   ########.fr       */
+/*   Created: 2025/06/01 16:18:42 by cquinter          #+#    #+#             */
+/*   Updated: 2025/06/01 16:38:14 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// WHO KEEPS SIGNING THESE CHARS T-T
-char	*ft_strchr(const char *s, int c)
+#include "include/libft.h"
+
+size_t	ft_strchr_idx(const char *s, int c)
 {
+	size_t	i;
+
+	i = 0;
 	if (!s)
-		return (0);
-	while (*s && (unsigned char)*s != (unsigned char)c)
-		s++;
-	if ((unsigned char)*s == (unsigned char)c)
-		return ((char *)s);
-	return (0);
+		return (-1);
+	while (s[i] && (unsigned char)s[i] != (unsigned char)c)
+		i++;
+	if ((unsigned char)s[i] == (unsigned char)c)
+		return (i);
+	return (-1);
 }

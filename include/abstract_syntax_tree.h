@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/31 17:02:11 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/04 18:15:58 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,8 +128,10 @@ struct	s_astnode
 	size_t		token_count;
 
 	char		**cmdv;
+	size_t		cmd_i;
 	t_list		*redirect; // store the redirect descriptors in the list.
 	char		**envp;
+	size_t		genv_l;
 
 	int			return_code;
 };

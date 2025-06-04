@@ -58,6 +58,8 @@ SRCS			:= \
 				$(SRC_DIR)/utility/str_join_with_sep.c \
 				$(SRC_DIR)/utility/str_vec_join.c \
 				\
+				$(SRC_DIR)/execution/execution.c \
+				\
 
 TEST_SCRIPT		:=
 
