@@ -3,7 +3,7 @@
 pipe=`mktemp -u`
 mkfifo $pipe
 p=`pwd`
-cd ..
+cd ../..
 make re debug=1
 cd $p
 source venv/bin/activate
