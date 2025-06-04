@@ -109,7 +109,7 @@ rm:
 
 fclean: clean rm pre post
 
-re: fclean all
+re: fclean all 
 
 norm:
 		@python3 tools/norm_toline/norm_to_line.py ./include ./src

@@ -119,7 +119,8 @@ class command_dump():
 				return ""
 			visited.add(ptr)
 			return visit(self.nodes[ptr].left_child) +" "+ self.nodes[ptr].raw_string +" "+ visit(self.nodes[ptr].right_child)
-		self.raw_command = visit(list(self.nodes.keys())[0])
+		if (len(self.nodes.keys())):
+			self.raw_command = visit(list(self.nodes.keys())[0])
 
 	def populate(self):
 		for node in list(self.nodes.values()):
