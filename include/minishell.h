@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/04 18:20:57 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/06 14:42:40 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <sys/wait.h>
+# ifndef __USE_POSIX
+#  define __USE_POSIX
+# endif
+# ifndef __USE_POSIX199309
+#  define __USE_POSIX199309
+# endif
 # include <signal.h>
 # include <sys/stat.h>
 # include <dirent.h>
@@ -55,6 +61,10 @@
 typedef struct s_minishell	t_minishell;
 struct s_minishell
 {
+
+	short		interactive_mode;
+	struct sigaction	old_sigint;
+	struct sigaction	old_sigquit;
 	/*
 	this is the environment that will be passed down to any child process
 	at the start of the program we take a copy of the environment varaiables
@@ -89,6 +99,8 @@ struct s_minishell
 	*/
 	t_astnode	*current_tree;
 
+	int			return_code;
+
 	/*
 	internal finite state machine data*/
 	t_fsmdata	fsm_data;
@@ -110,7 +122,14 @@ struct s_minishell
 	char		**extra_lines;
 
 	char		*prompt;
+
+	struct s_dbg_info	info;
 };
+
+void	reset_for_command(t_minishell *shell);
+int		init_process(t_minishell *shell, char **envp);
+int		better_add_history(char *string);
+void	reset_for_command(t_minishell *shell);
 
 /**
  * @brief readline and create token list

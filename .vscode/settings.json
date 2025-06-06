@@ -9,6 +9,7 @@
 		"fsm_tokeniser.h": "c",
 		"unistd.h": "c",
 		"readline_loop.h": "c",
-		"v_dbg.h": "c"
+		"v_dbg.h": "c",
+		"signal.h": "c"
 	}
 }

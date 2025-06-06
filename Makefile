@@ -31,6 +31,7 @@ SRCS			:= \
 				$(SRC_DIR)/builtins/utility_funcs.c \
 				\
 				$(SRC_DIR)/debugger/adding_items.c \
+				$(SRC_DIR)/debugger/debugger_util.c \
 				$(SRC_DIR)/debugger/init_debugger.c \
 				$(SRC_DIR)/debugger/write_ast.c \
 				$(SRC_DIR)/debugger/write_end.c \
@@ -49,6 +50,10 @@ SRCS			:= \
 				$(SRC_DIR)/heredoc_handler.c/handle_heredoc.c \
 				$(SRC_DIR)/heredoc_handler.c/handle_redirects.c \
 				\
+				$(SRC_DIR)/init_process/init_process.c \
+				$(SRC_DIR)/init_process/shell_utils.c \
+				$(SRC_DIR)/init_process/signal_handlers.c \
+				\
 				$(SRC_DIR)/new_readline_loop/read_command_loop.c \
 				$(SRC_DIR)/new_readline_loop/splitting_next_lines.c \
 				\
@@ -60,6 +65,7 @@ SRCS			:= \
 				$(SRC_DIR)/syntax_tree/syntax_heirarchy.c \
 				$(SRC_DIR)/syntax_tree/syntax_util.c \
 				\
+				$(SRC_DIR)/utility/get_my_pid.c \
 				$(SRC_DIR)/utility/operators.c \
 				$(SRC_DIR)/utility/pop_line.c \
 				$(SRC_DIR)/utility/remove_quotes.c \
