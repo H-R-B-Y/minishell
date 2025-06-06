@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:22:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/04 18:18:43 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/06 15:43:33 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	_read_heredoc(struct s_ast_internal *meta, char *delim, int temp_file, short
 	char	*temp;
 	int		status;
 
-	status = next_line(meta->rldata, "heredoc");
+	status = next_line(meta->rldata, "heredoc > ");
 	while(status == READ_OK)
 	{
 		temp = meta->rldata->last_line;
@@ -60,6 +60,8 @@ int	_read_heredoc(struct s_ast_internal *meta, char *delim, int temp_file, short
 		return (-1);
 	return (0);
 }
+
+extern int	g_global_signal;
 
 t_redirect_desc	*handle_heredoc(struct s_ast_internal *meta, char *delim)
 {
@@ -80,7 +82,8 @@ t_redirect_desc	*handle_heredoc(struct s_ast_internal *meta, char *delim)
 	temp_file = open(getcwd(0, 0), O_RDONLY | __O_TMPFILE | O_RDWR, S_IRUSR | S_IWUSR);
 	if (temp_file == -1)
 		return (perror("minishell: heredoc"), free(output), (void *)0);
-	_read_heredoc(meta, clean_heredoc, temp_file, handle_vars);
+	if (_read_heredoc(meta, clean_heredoc, temp_file, handle_vars) != 0 && g_global_signal == SIGINT)
+		meta->error = AST_ERR_HEREDOC_EXIT;
 	(*output) = (t_redirect_desc){.type = REDIRECT_HEREDOC, .subtype = REDIR_FD,
 		.fd_map.from_fd = temp_file, .fd_map.to_fd = STDIN_FILENO};
 	return (output);

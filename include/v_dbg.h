@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 14:40:33 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/31 17:40:42 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/06 14:34:25 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,9 @@ size_t		dbg_add_nodes(struct s_dbg_info *info, t_astnode *node);
 size_t		dbg_write_nodes(struct s_dbg_info *info);
 
 struct s_dbg_info *static_debug_info(void);
+
+void	dbg_add_token_list(t_list *tk);
+void	dbg_add_ast(t_astnode *head);
 
 size_t	dbg_write_end(struct s_dbg_info *info);
 
