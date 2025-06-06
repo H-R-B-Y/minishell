@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/04 18:21:08 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/04 18:31:06 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,7 @@ int	main(int argc, char **argv, char **envp)
 			{
 				print_ast(shell.current_tree, "|	|");
 				dbg_add_ast(shell.current_tree);
+				execute_ast(&shell);
 			}
 			else
 				printf("Parse error: Syntax Error\n");
