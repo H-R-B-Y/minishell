@@ -8,5 +8,5 @@ make re debug=1
 cd $p
 source venv/bin/activate
 python main.py < "$pipe" 2>&1 >/dev/null &
-exec ../minishell 3> "$pipe"
+exec ../../minishell 3> "$pipe"
 
