@@ -21,6 +21,9 @@ LIBFT			:= $(LIBFT_DIR)/libft.a
 SRC_DIR			:= ./src
 
 SRCS			:= \
+				$(SRC_DIR)/better_prompt/git_stuff.c \
+				$(SRC_DIR)/better_prompt/prompt_setup.c \
+				\
 				$(SRC_DIR)/builtins/builtin_cd.c \
 				$(SRC_DIR)/builtins/builtin_echo.c \
 				$(SRC_DIR)/builtins/builtin_env.c \
@@ -29,6 +32,8 @@ SRCS			:= \
 				$(SRC_DIR)/builtins/builtin_pwd.c \
 				$(SRC_DIR)/builtins/builtin_unset.c \
 				$(SRC_DIR)/builtins/utility_funcs.c \
+				\
+				$(SRC_DIR)/execution/execution.c \
 				\
 				$(SRC_DIR)/debugger/adding_items.c \
 				$(SRC_DIR)/debugger/debugger_util.c \
@@ -75,8 +80,6 @@ SRCS			:= \
 				$(SRC_DIR)/utility/str_join_with_sep.c \
 				$(SRC_DIR)/utility/str_vec_join.c \
 				\
-				$(SRC_DIR)/execution/execution.c \
-				\
 
 TEST_SCRIPT		:=
 
@@ -89,7 +92,7 @@ all: $(NAME)
 $(NAME): $(MAIN) $(OBJS) $(LIBFT) ./include/minishell.h
 		@echo
 		@echo "   /)  /)",
-		@echo " ପ(˶•-•˶)ଓ ♡",
+		@echo " ପ(˶•-•˶)ଓ ♡"
 		@echo -n "  /づ  づ ˚₊‧꒰$(NAME) :: Wait  ꒱ ‧₊˚⭒"
 		$(CC) $(CFLAGS) $(MAIN) $(OBJS) $(LIBFT) $(LIBFLAGS) -o $(NAME)
 		@echo "\b\b\b\b\b\b\b\b\b\b\b\b\bDone  ꒱ ‧₊˚⭒"

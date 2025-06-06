@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 11:48:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/06 16:10:25 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/06 16:17:06 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,5 @@ int	init_process(t_minishell *shell, char **envp)
 		printf("debugger not enabled: %s\n", strerror(errno));
 	// reset for command
 	reset_for_command(shell);
-	shell->prompt = "minishell -> ";
 	return (0);
 }

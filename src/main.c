@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/06 16:08:18 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/06 16:32:28 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	loop_internals(t_minishell *shell)
 	t_asterror			astcode;
 
 	rlcode = read_until_complete_command(shell);
-	printf("rlcode is %d\n", rlcode); 
+	// printf("rlcode is %d\n", rlcode); 
 	if (rlcode == READ_OK)
 	{
 		shell->tokens = fsm_pop_list(&shell->fsm_data);
@@ -66,6 +66,7 @@ int	main(int argc, char **argv, char **envp)
 		reset_for_command(&shell);
 		destroy_ast(&shell.current_tree);
 	}
+	free(shell.prompt);
 	destroy_ast(&shell.current_tree);
 	reset_fsm(&shell.fsm_data);
 	close(static_debug_info()->fd);
