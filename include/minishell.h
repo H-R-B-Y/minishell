@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/06 14:42:40 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/06 16:15:53 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ void	reset_for_command(t_minishell *shell);
 int		init_process(t_minishell *shell, char **envp);
 int		better_add_history(char *string);
 void	reset_for_command(t_minishell *shell);
+char	*create_prompt(t_minishell *shell);
 
 /**
  * @brief readline and create token list
