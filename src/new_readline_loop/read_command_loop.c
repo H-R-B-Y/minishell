@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 17:24:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/06 16:19:50 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/07 14:53:53 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	read_until_complete_command(t_minishell *shell)
 	while (fsm_code == PARSE_CONT)
 	{
 		rl_code = read_with_temp_prompt(shell, shell->fsm_data.str_condition);
+		free(shell->fsm_data.str_condition);
 		if (rl_code != READ_OK)
 			return (rl_code);
 		fsm_code = tokenise(&shell->fsm_data, shell->rldata.last_line);
