@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 12:01:50 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/07 14:57:07 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/07 18:27:30 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	reset_for_command(t_minishell *shell)
 		shell->rldata.extra_line_count = 0;
 	}
 	ft_arrclear((void **)shell->tokenv, _destroy_token);
+	shell->tokenv = 0;
 	destroy_ast(&shell->current_tree);
 	reset_fsm(&shell->fsm_data);
 	g_global_signal = 0;

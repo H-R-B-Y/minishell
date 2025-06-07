@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 17:46:41 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/07 16:34:25 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/07 18:33:15 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int		is_git_dir(void);
 int		has_git(void);
 char	*run_git_command(char **argv);
+int		is_git_dirty(void);
 
 /*
 prompt should follow the form:
@@ -41,56 +42,112 @@ something
 
 // I want to make a colour struct so that i can construct colours on the fly for text 
 
-char	*status_code_part(t_minishell *shell)
+char	*make_colour_string(short r, short g, short b)
 {
-	
+	char	*parts[9];
+
+	parts[0] = "\033[38;2;";
+	if (r > 0 && r < 256)
+		parts[1] = ft_itoa(r);
+	else
+		parts[1] = ft_strdup("0");
+	parts[2] = ";";
+	if (g > 0 && g < 256)
+		parts[3] = ft_itoa(g);
+	else
+		parts[3] = ft_strdup("0");
+	parts[4] = ";";
+	if (b > 0 && b < 256)
+		parts[5] = ft_itoa(b);
+	else
+		parts[6] = ft_strdup("0");
+	parts[6] = "m";
+	parts[7] = 0;
+	parts[8] = str_vec_join(parts);
+	free(parts[1]);
+	free(parts[3]);
+	free(parts[5]);
+	return (parts[8]);
 }
 
-char	*prepend_statuscode(t_minishell *shell, char *current)
+char	*status_code_part(t_minishell *shell)
 {
-	char *temp[2];
-	char *output;
+	char	*parts[10];
 
-	if (shell->return_code != 0)
-		temp[0] = ft_strdup("\033[38;2;255;0;0m");
+	if (shell->return_code == 0)
+		parts[0] = "\033[38;2;100;255;100m";
 	else
-		temp[0] = ft_strdup("\033[38;2;0;255;0m");
-	temp[1] = ft_itoa(shell->return_code);
-	output = str_vec_join(
-		(char *[6]){
-			temp[0],
-			" ",temp[1]," ",
-			current, 0
-		}
-	);
-	free(temp[1]);
-	free(temp[0]);
+		parts[0] = "\033[38;2;255;100;100m";
+	parts[1] = " - ";
+	parts[2] = ft_itoa(shell->return_code);
+	parts[3] = " - ";
+	parts[4] = "\033[0m";
+	parts[5] = 0;
+	parts[6] = str_vec_join(parts);
+	free(parts[2]);
+	return (parts[6]);
+}
+
+// WARN: this will always return an allocated string, NOT NULL
+char	*git_branch_part(void)
+{
+	char	*parts[10];
+
+	if (!has_git() || (has_git() && !is_git_dir()))
+		return (ft_strdup(""));
+	parts[0] = "(";
+	if (is_git_dirty())
+		parts[1] = "\033[38;2;255;100;100m";
+	else
+		parts[1] = "\033[38;2;100;255;100m";
+	parts[2] = run_git_command((char *[7]){"git", "-C", ".", "rev-parse", "--abbrev-ref", "HEAD", 0});
+	if (ft_strchr(parts[2], '\n'))
+		*(ft_strchr(parts[2], '\n')) = '\0';
+	parts[3] = "\033[0m";
+	parts[4] = ")";
+	parts[5] = 0;
+	parts[6] = str_vec_join(parts);
+	free(parts[2]);
+	return (parts[6]);
+}
+
+char	*directory_part(void)
+{
+	size_t	count;
+	char	*dir[2];
+	char	*output;
+
+	dir[0] = getcwd(0, 0);
+	count = ft_strcountchar(dir[0], '/');
+	dir[1] = dir[0];
+	while (count > 1)
+	{
+		dir[1] = ft_strchr(dir[1], '/') + 1;
+		count--;
+	}
+	if (dir[1] != dir[0])
+		dir[1] -= 1;
+	output = str_vec_join((char *[]){" ", dir[1], " ", 0});
+	free(dir[0]);
 	return (output);
 }
 
 char	*create_prompt(t_minishell *shell)
 {
 	char	*prompt;
-	char	*temp[2];
+	char	*parts[10];
 
 	if (!shell->interactive_mode)
 		return (ft_strdup(""));
-	prompt = ft_strdup("\033[38;2;216;185;255mminishell\033[0m");
-	if (!has_git() || (has_git() && is_git_dir()))
-	{
-		temp[0] = str_vec_join((char *[3]){prompt, " > ", 0});
-		free(prompt);
-		return (temp[0]);
-	}
-	temp[0] = run_git_command((char *[7]){"git", "-C", ".", "rev-parse", 
-		"--abbrev-ref", "HEAD", 0});
-	temp[0][ft_strlen(temp[0]) - 1] = '\0';
-	temp[1] = str_vec_join((char *[5]){
-		prompt, " (\033[38;2;0;255;0m", temp[0],"\033[0m) > ", 0});
-	free(prompt);
-	free(temp[0]);
-	prompt = prepend_statuscode(shell, temp[1]);
-	free(temp[1]);
+	parts[0] = status_code_part(shell);
+	parts[1] = directory_part();
+	parts[2] = git_branch_part();
+	prompt = str_vec_join((char *[]){
+		parts[0], " ", parts[1], " ", parts[2], " > ", 0
+	});
+	free(parts[0]);
+	free(parts[1]);
+	free(parts[2]);
 	return (prompt);
 }
 
