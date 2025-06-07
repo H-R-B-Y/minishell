@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 17:46:41 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/07 18:33:15 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/07 18:37:28 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,31 +16,6 @@ int		is_git_dir(void);
 int		has_git(void);
 char	*run_git_command(char **argv);
 int		is_git_dirty(void);
-
-/*
-prompt should follow the form:
-
-some form of return code too see the return code of the previous command.
-- colour coded as either red or green for good and bad status's
-
-obviously we need to show that it is minishell, 
-we can either do this at launch or we can do this inside the prompt
-- colour can be any
-
-the current directory (i would love to do this as a relative path from ~ or a realpath from /)
-
-the current branch name
-- colour should be aligned to active changes? like the one in zsh?
-
-then the actual prompt
-- colour code any
-
-
-something
-
-*/
-
-// I want to make a colour struct so that i can construct colours on the fly for text 
 
 char	*make_colour_string(short r, short g, short b)
 {
@@ -143,7 +118,7 @@ char	*create_prompt(t_minishell *shell)
 	parts[1] = directory_part();
 	parts[2] = git_branch_part();
 	prompt = str_vec_join((char *[]){
-		parts[0], " ", parts[1], " ", parts[2], " > ", 0
+		parts[0],parts[1],parts[2], " > ", 0
 	});
 	free(parts[0]);
 	free(parts[1]);
