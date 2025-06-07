@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 17:46:41 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/07 18:37:28 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/07 18:57:42 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,20 @@ int		has_git(void);
 char	*run_git_command(char **argv);
 int		is_git_dirty(void);
 
+/*
+HOLY THANKS
+stackoverflow.com/
+questions/8806643/colorized-output-breaks-linewrapping-with-readline
+
+colour codes were completely ruining the prompt, but they just need to be wrapped
+in codes that tell readline not to count their width
+*/
+
 char	*make_colour_string(short r, short g, short b)
 {
 	char	*parts[9];
 
-	parts[0] = "\033[38;2;";
+	parts[0] = "\001\033[38;2;";
 	if (r > 0 && r < 256)
 		parts[1] = ft_itoa(r);
 	else
@@ -36,7 +45,7 @@ char	*make_colour_string(short r, short g, short b)
 		parts[5] = ft_itoa(b);
 	else
 		parts[6] = ft_strdup("0");
-	parts[6] = "m";
+	parts[6] = "m\002";
 	parts[7] = 0;
 	parts[8] = str_vec_join(parts);
 	free(parts[1]);
@@ -50,13 +59,13 @@ char	*status_code_part(t_minishell *shell)
 	char	*parts[10];
 
 	if (shell->return_code == 0)
-		parts[0] = "\033[38;2;100;255;100m";
+		parts[0] = "\001\033[38;2;100;255;100m\002";
 	else
-		parts[0] = "\033[38;2;255;100;100m";
+		parts[0] = "\001\033[38;2;255;100;100m\002";
 	parts[1] = " - ";
 	parts[2] = ft_itoa(shell->return_code);
 	parts[3] = " - ";
-	parts[4] = "\033[0m";
+	parts[4] = "\001\033[0m\002";
 	parts[5] = 0;
 	parts[6] = str_vec_join(parts);
 	free(parts[2]);
@@ -72,13 +81,13 @@ char	*git_branch_part(void)
 		return (ft_strdup(""));
 	parts[0] = "(";
 	if (is_git_dirty())
-		parts[1] = "\033[38;2;255;100;100m";
+		parts[1] = "\001\033[38;2;255;100;100m\002";
 	else
-		parts[1] = "\033[38;2;100;255;100m";
+		parts[1] = "\001\033[38;2;100;255;100m\002";
 	parts[2] = run_git_command((char *[7]){"git", "-C", ".", "rev-parse", "--abbrev-ref", "HEAD", 0});
 	if (ft_strchr(parts[2], '\n'))
 		*(ft_strchr(parts[2], '\n')) = '\0';
-	parts[3] = "\033[0m";
+	parts[3] = "\001\033[0m\002";
 	parts[4] = ")";
 	parts[5] = 0;
 	parts[6] = str_vec_join(parts);
