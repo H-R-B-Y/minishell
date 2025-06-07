@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 17:19:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/07 16:29:31 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/07 18:31:17 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ char *get_return(int data[2], int ret)
 		buff[1] = get_next_line(data[0]);
 		if (!buff[1])
 			break ;
-		buff[0] = str_vec_join((char *[2]){buff[0], buff[1]});
+		buff[0] = str_vec_join((char *[3]){buff[0], buff[1], 0});
 		free(buff[1]);
 	}
 	return (close(data[0]), buff[0]);
 }
 
-char *run_git_command(char **argv)
+char *run_git_command(const char **argv)
 {
 	int		p[2];
 	pid_t	chld;
@@ -66,7 +66,7 @@ char *run_git_command(char **argv)
 		dup2(p[1], STDOUT_FILENO);
 		close(p[1]);
 		close(STDERR_FILENO);
-		execve("/usr/bin/git", argv, environ);
+		execve("/usr/bin/git", (void *)argv, environ);
 		exit(1);
 	}
 	close(p[1]);
@@ -83,9 +83,13 @@ int	is_git_dir(void)
 	char	*out;
 	int		code;
 
-	out = run_git_command((void *)argv);
 	code = 0;
-	if (!ft_strncmp(out, "true", ft_strlen(out)))
+	out = run_git_command((void *)argv);
+	if (!out)
+		return (code);
+	if (ft_strrchr(out, '\n'))
+		*(ft_strrchr(out, '\n')) = '\0';
+	if (!ft_strcmp(out, "true"))
 		code = 1;
 	free(out);
 	return (code);
@@ -101,6 +105,10 @@ int	is_git_dirty(void)
 
 	code = 0;
 	out = run_git_command(argv);
+	if (!out)
+		return (code);
+	if (ft_strrchr(out, '\n'))
+		*(ft_strrchr(out, '\n')) = '\0';
 	if (ft_strlen(out) > 0)
 		code = 1;
 	free(out);
