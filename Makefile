@@ -90,13 +90,13 @@ MAIN			:= $(SRC_DIR)/main.c
 all: $(NAME)
 
 $(NAME): $(MAIN) $(OBJS) $(LIBFT) ./include/minishell.h
-		@echo
-		@echo "   /)  /)",
-		@echo " ପ(˶•-•˶)ଓ ♡"
-		@echo -n "  /づ  づ ˚₊‧꒰$(NAME) :: Wait  ꒱ ‧₊˚⭒"
-		$(CC) $(CFLAGS) $(MAIN) $(OBJS) $(LIBFT) $(LIBFLAGS) -o $(NAME)
-		@echo "\b\b\b\b\b\b\b\b\b\b\b\b\bDone  ꒱ ‧₊˚⭒"
-		@echo 
+		@printf "\n"
+		@printf "   /)  /)\n"
+		@printf " ପ(˶•-•˶)ଓ \033[38;2;250;0;150m♡\033[0m\n"
+		@echo -n "  /づ  づ ˚₊‧꒰$(NAME) ::\033[38;2;150;0;150m Wait\033[0m  ꒱ ‧₊˚⭒"
+		@$(CC) $(CFLAGS) $(MAIN) $(OBJS) $(LIBFT) $(LIBFLAGS) -o $(NAME)
+		@printf "\b\b\b\b\b\b\b\b\b\b\b\b\b\033[38;2;50;200;0mDone\033[0m  ꒱ ‧₊˚⭒"
+		@printf "\n"
 
 # testing: $(OBJS) $(LIBFT) ./include/minishell.h
 # 	@$(CC) $(CFLAGS) src/testing.c $(OBJS) $(LIBFT) $(LIBFLAGS) -o $(NAME)
@@ -126,14 +126,14 @@ norm:
 		@python3 tools/norm_toline/norm_to_line.py ./include ./src
 
 pre:
-		@echo
-		@echo "   /)  /)",
-		@echo " ପ(˶•-•˶)ଓ ♡",
-		@echo -n "  /づ  づ ˚₊‧꒰$(NAME) :: $(MAKECMDGOALS) :: Wait  ꒱ ‧₊˚⭒"
+		@printf "\n"
+		@printf "   /)  /)\n"
+		@printf " ପ(˶•-•˶)ଓ \033[38;2;250;0;150m♡\033[0m\n"
+		@printf "  /づ  づ ˚₊‧꒰$(NAME) :: $(MAKECMDGOALS) ::\033[38;2;150;0;150m Wait\033[0m  ꒱ ‧₊˚⭒"
 
 post:
-		@echo "\b\b\b\b\b\b\b\b\b\b\b\b\bDone  ꒱ ‧₊˚⭒"
-		@echo 
+		@printf "\b\b\b\b\b\b\b\b\b\b\b\b\b\033[38;2;0;200;0mDone\033[0m  ꒱ ‧₊˚⭒\n"
+		@printf "\n"
 
 .PHONY: all clean fclean re test pre post rm coverage norm
 

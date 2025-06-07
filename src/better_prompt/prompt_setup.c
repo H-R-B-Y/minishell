@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 17:46:41 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/06 16:29:00 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/07 16:34:25 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,34 @@ int		is_git_dir(void);
 int		has_git(void);
 char	*run_git_command(char **argv);
 
-size_t	get_terminal_width(void)
+/*
+prompt should follow the form:
+
+some form of return code too see the return code of the previous command.
+- colour coded as either red or green for good and bad status's
+
+obviously we need to show that it is minishell, 
+we can either do this at launch or we can do this inside the prompt
+- colour can be any
+
+the current directory (i would love to do this as a relative path from ~ or a realpath from /)
+
+the current branch name
+- colour should be aligned to active changes? like the one in zsh?
+
+then the actual prompt
+- colour code any
+
+
+something
+
+*/
+
+// I want to make a colour struct so that i can construct colours on the fly for text 
+
+char	*status_code_part(t_minishell *shell)
 {
-	struct winsize	ws;
 	
-	if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws) == -1)
-		return (-1);
-	return (ws.ws_col);
-}
-
-void clear_previous_prompt(int lns)
-{
-	int i;
-
-	i=0;
-	while (i < lns)
-	{
-		printf("\033[F");       // move cursor up
-		printf("\033[2K\r");    // clear entire line
-		i++;
-	}
 }
 
 char	*prepend_statuscode(t_minishell *shell, char *current)
@@ -55,6 +63,8 @@ char	*prepend_statuscode(t_minishell *shell, char *current)
 			current, 0
 		}
 	);
+	free(temp[1]);
+	free(temp[0]);
 	return (output);
 }
 
