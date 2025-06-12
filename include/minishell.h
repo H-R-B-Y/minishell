@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/06 16:15:53 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/12 16:53:45 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -309,6 +309,34 @@ int	get_run_builtincmd(t_minishell *shell);
 
 void	*print_and_ret(void *p);
 
+/**
+ * @brief is current directory a git directory
+ * 
+ * @return int 1 if is git directory
+ */
+int		is_git_dir(void);
+
+/**
+ * @brief user has git installed at /usr/bin/git
+ * 
+ * @return int 1 if user has git
+ */
+int		has_git(void);
+
+/**
+ * @brief generic run a git command
+ * 
+ * @param argv args to pass to git command
+ * @return char* output of git command
+ */
+char	*run_git_command(const char **argv);
+
+/**
+ * @brief git work tree is dirty
+ * 
+ * @return int 1 if the git tree is dirty
+ */
+int		is_git_dirty(void);
 
 
 #endif
