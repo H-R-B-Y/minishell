@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 13:46:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/04 18:21:49 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/12 18:56:03 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ size_t	ast_consume_words(struct s_ast_internal *meta, t_astnode *node)
 		node->tokens[i] = meta->tokens[meta->consumed + i];
 		i++;
 	}
-	node->token_count = eaten;
 	post_consume_words(meta, node);
+	node->token_count = ft_arrlen((void *)node->tokens);
 	return (eaten);
 }
