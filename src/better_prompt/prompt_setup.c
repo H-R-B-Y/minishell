@@ -6,16 +6,13 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 17:46:41 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/07 18:57:42 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/12 17:40:09 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int		is_git_dir(void);
-int		has_git(void);
-char	*run_git_command(char **argv);
-int		is_git_dirty(void);
+
 
 /*
 HOLY THANKS
@@ -84,7 +81,7 @@ char	*git_branch_part(void)
 		parts[1] = "\001\033[38;2;255;100;100m\002";
 	else
 		parts[1] = "\001\033[38;2;100;255;100m\002";
-	parts[2] = run_git_command((char *[7]){"git", "-C", ".", "rev-parse", "--abbrev-ref", "HEAD", 0});
+	parts[2] = run_git_command((const char *[7]){"git", "-C", ".", "rev-parse", "--abbrev-ref", "HEAD", 0});
 	if (ft_strchr(parts[2], '\n'))
 		*(ft_strchr(parts[2], '\n')) = '\0';
 	parts[3] = "\001\033[0m\002";

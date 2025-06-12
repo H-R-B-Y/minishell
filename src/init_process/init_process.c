@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 11:48:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/07 14:32:24 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/12 16:59:34 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,12 @@ int	event(void)
 int	signals_interactive(t_minishell *shell, struct sigaction *act)
 {
 	// SIGINT = clear prompt, newline, clean start, do not add too history
-	act->sa_sigaction = sig_int_handle_interactive;
-	sigaction(SIGINT, act, &shell->old_sigint);
-	// SIGQUIT = do nothing (ignore)
-	act->sa_sigaction = warning_handler;
+	act->sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, act, &shell->old_sigquit);
+	act->sa_flags |= SA_SIGINFO;
+	act->sa_sigaction = sig_int_handle_interactive;
+	// SIGQUIT = do nothing (ignore)	;
+	sigaction(SIGINT, act, &shell->old_sigint);
 	// any others?
 	rl_event_hook = event;
 	return (0);
@@ -57,7 +58,6 @@ int	setup_signals(t_minishell *shell)
 
 	action = (struct sigaction){0};
 	sigemptyset(&action.sa_mask);
-	action.sa_flags |= SA_SIGINFO;
 	if (shell->interactive_mode)
 		signals_interactive(shell, &action);
 	else

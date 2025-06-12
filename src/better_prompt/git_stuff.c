@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 17:19:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/07 18:31:17 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/12 17:50:59 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char *get_return(int data[2], int ret)
 		buff[1] = get_next_line(data[0]);
 		if (!buff[1])
 			break ;
-		buff[0] = str_vec_join((char *[3]){buff[0], buff[1], 0});
+		ft_dirtyswap((void *)&buff[0], str_vec_join((char *[3]){buff[0], buff[1], 0}), free);
 		free(buff[1]);
 	}
 	return (close(data[0]), buff[0]);
@@ -106,7 +106,7 @@ int	is_git_dirty(void)
 	code = 0;
 	out = run_git_command(argv);
 	if (!out)
-		return (code);
+		return (free(out), code);
 	if (ft_strrchr(out, '\n'))
 		*(ft_strrchr(out, '\n')) = '\0';
 	if (ft_strlen(out) > 0)

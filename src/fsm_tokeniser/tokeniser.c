@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:22:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/04 18:21:31 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/12 17:53:54 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,8 @@ t_tokretcode	set_retcode(t_fsmdata *fsm,
 		fsm->tokeniser_internals.index_end = 0;
 		fsm->tokeniser_internals.index_start = 0;
 	}
-	if (str_condition && fsm->str_condition)
-		free(fsm->str_condition);
+	if (fsm->str_condition)
+		ft_dirtyswap((void *)&fsm->str_condition, 0, free);
 	fsm->str_condition = str_condition;
 	return (code);
 }

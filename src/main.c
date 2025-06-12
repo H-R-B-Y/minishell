@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/07 14:50:45 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/12 18:01:41 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,10 @@ int	main(int argc, char **argv, char **envp)
 		dbg_write_end(static_debug_info());
 		reset_for_command(&shell);
 	}
+	reset_for_command(&shell);
+	printf("freeing prompt: \n");
+	fflush(stdout);
 	free(shell.prompt);
-	reset_fsm(&shell.fsm_data);
+	ft_arrclear((void *)shell.environment, free);
 	return (0);
 }

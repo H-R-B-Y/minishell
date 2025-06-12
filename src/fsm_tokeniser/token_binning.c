@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:36:40 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/23 20:40:12 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/12 17:56:02 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,7 @@ t_tokentype	tokenise_type(t_tokint *tokeniser, char *str)
 	{
 		ft_dirtyswap((void *)&tokeniser->current_token->raw,
 			ft_strjoin(tokeniser->previous_line, substring), free);
-		free(tokeniser->previous_line);
-		tokeniser->previous_line = 0;
+		ft_dirtyswap((void *)&tokeniser->previous_line, 0, free);
 	}
 	return (tokeniser->current_type);
 }

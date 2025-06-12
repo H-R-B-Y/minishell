@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:13:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/04 16:35:51 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/12 18:34:35 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,6 +277,7 @@ void	execute_command(char *path, char **argv, char**envp)
 	pid = fork();
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
 		char	*exec_path = NULL;
 		if (ft_strchr(path, '/'))
 			execve(path, argv, envp);
@@ -288,7 +289,9 @@ void	execute_command(char *path, char **argv, char**envp)
 			execve(exec_path, argv, envp);
 	}
 	else if (pid > 0)
-		waitpid(pid, NULL, 0);
+		while(waitpid(pid, NULL, 0) ==-1)
+			{if (errno == EINTR)
+				continue ;}
 	else
 		perror("fork failed");
 }
