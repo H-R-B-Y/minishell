@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   tokeniser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:22:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/28 13:49:50 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:53:54 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/fsm_tokeniser.h"
+#include "../../include/v_dbg.h"
 
 /*
 I think this would be better if it just returned an integer
@@ -98,8 +99,8 @@ t_tokretcode	set_retcode(t_fsmdata *fsm,
 		fsm->tokeniser_internals.index_end = 0;
 		fsm->tokeniser_internals.index_start = 0;
 	}
-	if (str_condition && fsm->str_condition)
-		free(fsm->str_condition);
+	if (fsm->str_condition)
+		ft_dirtyswap((void *)&fsm->str_condition, 0, free);
 	fsm->str_condition = str_condition;
 	return (code);
 }
@@ -116,6 +117,7 @@ void	state_change(t_fsmdata *fsm, t_fsmstate next_state)
 		next_state = ST_CONT;
 	fsm->last_state = fsm->state;
 	fsm->state = next_state;
+	dbg_add_state(static_debug_info(), fsm->state);
 }
 
 t_tokretcode	correct_retcode(t_fsmdata *fsm)

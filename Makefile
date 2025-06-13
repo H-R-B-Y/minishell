@@ -3,6 +3,10 @@ CC 				:= gcc
 CFLAGS			:= -Wextra -Wall -Werror -g3
 #CFLAGS			:= 
 
+ifdef debug
+CFLAGS += -DFD_DBG=3
+endif
+
 MAKEFLAGS		+= --no-print-directory
 
 LIBFLAGS		:= -lreadline -lhistory
@@ -17,6 +21,9 @@ LIBFT			:= $(LIBFT_DIR)/libft.a
 SRC_DIR			:= ./src
 
 SRCS			:= \
+				$(SRC_DIR)/better_prompt/git_stuff.c \
+				$(SRC_DIR)/better_prompt/prompt_setup.c \
+				\
 				$(SRC_DIR)/builtins/builtin_cd.c \
 				$(SRC_DIR)/builtins/builtin_echo.c \
 				$(SRC_DIR)/builtins/builtin_env.c \
@@ -25,6 +32,16 @@ SRCS			:= \
 				$(SRC_DIR)/builtins/builtin_pwd.c \
 				$(SRC_DIR)/builtins/builtin_unset.c \
 				$(SRC_DIR)/builtins/utility_funcs.c \
+				\
+				$(SRC_DIR)/execution/execution.c \
+				\
+				$(SRC_DIR)/debugger/adding_items.c \
+				$(SRC_DIR)/debugger/debugger_util.c \
+				$(SRC_DIR)/debugger/init_debugger.c \
+				$(SRC_DIR)/debugger/write_ast.c \
+				$(SRC_DIR)/debugger/write_end.c \
+				$(SRC_DIR)/debugger/write_states.c \
+				$(SRC_DIR)/debugger/write_tokens.c \
 				\
 				$(SRC_DIR)/fsm_tokeniser/fsm_tokeniser.c \
 				$(SRC_DIR)/fsm_tokeniser/fsm_utils.c \
@@ -36,17 +53,24 @@ SRCS			:= \
 				$(SRC_DIR)/fsm_tokeniser/tokeniser.c \
 				\
 				$(SRC_DIR)/heredoc_handler.c/handle_heredoc.c \
+				$(SRC_DIR)/heredoc_handler.c/handle_redirects.c \
+				\
+				$(SRC_DIR)/init_process/init_process.c \
+				$(SRC_DIR)/init_process/shell_utils.c \
+				$(SRC_DIR)/init_process/signal_handlers.c \
 				\
 				$(SRC_DIR)/new_readline_loop/read_command_loop.c \
 				$(SRC_DIR)/new_readline_loop/splitting_next_lines.c \
 				\
 				$(SRC_DIR)/syntax_tree/ast_node_init.c \
+				$(SRC_DIR)/syntax_tree/consume_command.c \
+				$(SRC_DIR)/syntax_tree/consume_subshell.c \
 				$(SRC_DIR)/syntax_tree/print_ast.c \
 				$(SRC_DIR)/syntax_tree/produce_syntax_tree.c \
-				$(SRC_DIR)/syntax_tree/syntax_consume.c \
 				$(SRC_DIR)/syntax_tree/syntax_heirarchy.c \
 				$(SRC_DIR)/syntax_tree/syntax_util.c \
 				\
+				$(SRC_DIR)/utility/get_my_pid.c \
 				$(SRC_DIR)/utility/operators.c \
 				$(SRC_DIR)/utility/pop_line.c \
 				$(SRC_DIR)/utility/remove_quotes.c \
@@ -55,8 +79,6 @@ SRCS			:= \
 				$(SRC_DIR)/utility/ssetenv.c \
 				$(SRC_DIR)/utility/str_join_with_sep.c \
 				$(SRC_DIR)/utility/str_vec_join.c \
-				\
-				$(SRC_DIR)/execution/execution.c \
 				\
 
 TEST_SCRIPT		:=
@@ -68,13 +90,13 @@ MAIN			:= $(SRC_DIR)/main.c
 all: $(NAME)
 
 $(NAME): $(MAIN) $(OBJS) $(LIBFT) ./include/minishell.h
-		@echo
-		@echo "   /)  /)",
-		@echo " ପ(˶•-•˶)ଓ ♡",
-		@echo -n "  /づ  づ ˚₊‧꒰$(NAME) :: Wait  ꒱ ‧₊˚⭒"
+		@printf "\n"
+		@printf "   /)  /)\n"
+		@printf " ପ(˶•-•˶)ଓ \033[38;2;250;0;150m♡\033[0m\n"
+		@echo -n "  /づ  づ ˚₊‧꒰$(NAME) ::\033[38;2;150;0;150m Wait\033[0m  ꒱ ‧₊˚⭒"
 		@$(CC) $(CFLAGS) $(MAIN) $(OBJS) $(LIBFT) $(LIBFLAGS) -o $(NAME)
-		@echo "\b\b\b\b\b\b\b\b\b\b\b\b\bDone  ꒱ ‧₊˚⭒"
-		@echo 
+		@printf "\b\b\b\b\b\b\b\b\b\b\b\b\b\033[38;2;50;200;0mDone\033[0m  ꒱ ‧₊˚⭒"
+		@printf "\n"
 
 # testing: $(OBJS) $(LIBFT) ./include/minishell.h
 # 	@$(CC) $(CFLAGS) src/testing.c $(OBJS) $(LIBFT) $(LIBFLAGS) -o $(NAME)
@@ -98,20 +120,20 @@ rm:
 
 fclean: clean rm pre post
 
-re: fclean all
+re: fclean all 
 
 norm:
 		@python3 tools/norm_toline/norm_to_line.py ./include ./src
 
 pre:
-		@echo
-		@echo "   /)  /)",
-		@echo " ପ(˶•-•˶)ଓ ♡",
-		@echo -n "  /づ  づ ˚₊‧꒰$(NAME) :: $(MAKECMDGOALS) :: Wait  ꒱ ‧₊˚⭒"
+		@printf "\n"
+		@printf "   /)  /)\n"
+		@printf " ପ(˶•-•˶)ଓ \033[38;2;250;0;150m♡\033[0m\n"
+		@printf "  /づ  づ ˚₊‧꒰$(NAME) :: $(MAKECMDGOALS) ::\033[38;2;150;0;150m Wait\033[0m  ꒱ ‧₊˚⭒"
 
 post:
-		@echo "\b\b\b\b\b\b\b\b\b\b\b\b\bDone  ꒱ ‧₊˚⭒"
-		@echo 
+		@printf "\b\b\b\b\b\b\b\b\b\b\b\b\b\033[38;2;0;200;0mDone\033[0m  ꒱ ‧₊˚⭒\n"
+		@printf "\n"
 
 .PHONY: all clean fclean re test pre post rm coverage norm
 

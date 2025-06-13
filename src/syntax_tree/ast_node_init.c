@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_node_init.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 12:20:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/28 15:09:58 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/06 14:44:02 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ void	destroy_ast_node(t_astnode *node)
 		return ;
 	if (node->token_arr_freeable)
 		free(node->tokens);
-	if (node->cmdv)
-		ft_arrclear((void *)node->cmdv, free);
+	// if (node->cmdv)
+	// 	ft_arrclear((void *)node->cmdv, free);
 	if (node->envp)
 		ft_arrclear((void *)node->envp, free);
 	if (node->redirect)

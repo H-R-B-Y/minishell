@@ -1,30 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_arrclear.c                                      :+:      :+:    :+:   */
+/*   write_end.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/22 14:40:45 by hurb              #+#    #+#             */
-/*   Updated: 2025/06/12 17:37:32 by hbreeze          ###   ########.fr       */
+/*   Created: 2025/05/30 20:47:07 by hbreeze           #+#    #+#             */
+/*   Updated: 2025/05/30 20:48:13 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/libft.h"
+#include "../../include/v_dbg.h"
+#include "../../include/minishell.h"
 
-void	ft_arrclear(void **chunks, void (*f)(void *))
+size_t	dbg_write_end(struct s_dbg_info *info)
 {
-	void	**ch;
+	int	dt;
 
-	if (!chunks || !*chunks)
-		return ;
-	ch = chunks;
-	while (*chunks)
-	{
-		if (f)
-			f(*chunks);
-		*chunks = 0;
-		chunks++;
-	}
-	free(ch);
+	if (!(info->fd_writable && info->fd_available))
+		return (0);
+	dt = DBG_DT_DONE;
+	write(info->fd, &dt, sizeof(int));
+	return (sizeof(int));
 }

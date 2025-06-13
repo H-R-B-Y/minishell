@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:19:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/27 18:28:28 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/12 18:09:10 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	reset_tokeniser(t_tokint *tokeniser)
 {
 	if (tokeniser->current_token)
 		destroy_token(tokeniser->current_token, free);
+	if (tokeniser->previous_line)
+		{printf("freed prev line! %s\n", tokeniser->previous_line);ft_dirtyswap((void *)&tokeniser->previous_line, 0, free);}
 	*tokeniser = (t_tokint){
 		.current_token = 0,
 		.current_type = TOK_NONE,
@@ -27,10 +29,13 @@ void	reset_tokeniser(t_tokint *tokeniser)
 
 void	reset_fsm(t_fsmdata *fsm)
 {
+	printf("freeing tokens\n");
 	if (fsm->tokens)
 		free_token_list(fsm->tokens, free);
+	printf("freeing conditions\n");
 	if (fsm->str_condition)
-		free(fsm->str_condition);
+		ft_dirtyswap((void *)&fsm->str_condition, 0, free);
+	printf("resetting tokeniser\n");
 	reset_tokeniser(&fsm->tokeniser_internals);
 	(*fsm) = (t_fsmdata){
 		.state = ST_STRT, .retcode = PARSE_OK, .tokens = 0,
@@ -45,7 +50,7 @@ const t_fsmtransition	*_fsm_trns(void)
 		{ST_STRT, "\12\13", ST_LSSH},
 		{ST_STRT, "\3\4\5", ST_REDR},
 		{ST_STRT, "\6", ST_HDOC},
-		{ST_STRT, "\1", ST_WORD},
+		{ST_STRT, "\1\17", ST_WORD},
 		{ST_WORD, "\2\10\11", ST_OPRA},
 		{ST_WORD, "\7\14", ST_SEQ},
 		{ST_WORD, "\15", ST_END},

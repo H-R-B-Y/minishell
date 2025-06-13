@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:21:04 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/02 21:03:34 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:07:45 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -594,5 +594,14 @@ void	**ft_arrjoin(void **arr1, void **arr2);
  * @param del function to free the original contents of a (optional)
  */
 void	ft_dirtyswap(void **a, void *b, void (*del)(void *));
+
+/**
+ * @brief count the occurences of c in str
+ * 
+ * @param str string to check
+ * @param c character to count
+ * @return size_t occurences
+ */
+size_t	ft_strcountchar(char *str, char c);
 
 #endif
