@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 17:24:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/17 10:57:44 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/12 17:35:17 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	read_until_complete_command(t_minishell *shell)
 	int	rl_code;
 	int	fsm_code;
 
+	ft_dirtyswap((void *)&shell->prompt, (void *)create_prompt(shell), free);
 	rl_code = next_line(&shell->rldata, shell->prompt);
 	if (rl_code != READ_OK)
 		return (rl_code);
@@ -35,6 +36,7 @@ int	read_until_complete_command(t_minishell *shell)
 	while (fsm_code == PARSE_CONT)
 	{
 		rl_code = read_with_temp_prompt(shell, shell->fsm_data.str_condition);
+		// ft_dirtyswap((void *)&shell->fsm_data.str_condition, 0, free);
 		if (rl_code != READ_OK)
 			return (rl_code);
 		fsm_code = tokenise(&shell->fsm_data, shell->rldata.last_line);

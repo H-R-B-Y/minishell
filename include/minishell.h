@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/03 23:55:40 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:53:45 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <sys/wait.h>
+# ifndef __USE_POSIX
+#  define __USE_POSIX
+# endif
+# ifndef __USE_POSIX199309
+#  define __USE_POSIX199309
+# endif
 # include <signal.h>
 # include <sys/stat.h>
 # include <dirent.h>
@@ -29,6 +35,7 @@
 # include <term.h>
 
 # include "./libft.h"
+# include "./v_dbg.h"
 # include "./fsm_tokeniser.h"
 # include "./readline_loop.h"
 # include "./abstract_syntax_tree.h"
@@ -54,6 +61,10 @@
 typedef struct s_minishell	t_minishell;
 struct s_minishell
 {
+
+	short		interactive_mode;
+	struct sigaction	old_sigint;
+	struct sigaction	old_sigquit;
 	/*
 	this is the environment that will be passed down to any child process
 	at the start of the program we take a copy of the environment varaiables
@@ -88,6 +99,8 @@ struct s_minishell
 	*/
 	t_astnode	*current_tree;
 
+	int			return_code;
+
 	/*
 	internal finite state machine data*/
 	t_fsmdata	fsm_data;
@@ -109,7 +122,15 @@ struct s_minishell
 	char		**extra_lines;
 
 	char		*prompt;
+
+	struct s_dbg_info	info;
 };
+
+void	reset_for_command(t_minishell *shell);
+int		init_process(t_minishell *shell, char **envp);
+int		better_add_history(char *string);
+void	reset_for_command(t_minishell *shell);
+char	*create_prompt(t_minishell *shell);
 
 /**
  * @brief readline and create token list
@@ -171,8 +192,6 @@ char			*_pop_line(char ***str);
 char	*remove_quotes(char *str, t_minishell *shell);
 
 int	read_until_complete_command(t_minishell *shell);
-
-t_redirect_desc	*handle_heredoc(t_minishell *shell, char *delim);
 
 /*
 Env Var helper functions:
@@ -290,6 +309,34 @@ int	get_run_builtincmd(t_minishell *shell);
 
 void	*print_and_ret(void *p);
 
+/**
+ * @brief is current directory a git directory
+ * 
+ * @return int 1 if is git directory
+ */
+int		is_git_dir(void);
+
+/**
+ * @brief user has git installed at /usr/bin/git
+ * 
+ * @return int 1 if user has git
+ */
+int		has_git(void);
+
+/**
+ * @brief generic run a git command
+ * 
+ * @param argv args to pass to git command
+ * @return char* output of git command
+ */
+char	*run_git_command(const char **argv);
+
+/**
+ * @brief git work tree is dirty
+ * 
+ * @return int 1 if the git tree is dirty
+ */
+int		is_git_dirty(void);
 
 
 #endif

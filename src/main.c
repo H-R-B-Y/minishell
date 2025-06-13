@@ -3,112 +3,78 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/04 00:01:22 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/12 18:01:41 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	ft_clear_screen(void)
-{
-	printf("\033[2J\033[H");
-	fflush(stdout);
-}
+extern int	g_global_signal;
 
-void do_something(int n)
+int	prep_tree(t_minishell *shell)
 {
-	(void)n;
-	printf("\n");
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
-}
+	t_asterror	astcode;
 
-int	better_add_history(char *string)
-{
-	size_t		i;
-	HIST_ENTRY	**the_history;
-	int			ret;
-
-	the_history = history_list();
-	i = 0;
-	ret = 1;
-	while (the_history[i])
+	shell->tokens = fsm_pop_list(&shell->fsm_data);
+	print_token_list(shell->tokens);
+	dbg_add_token_list(shell->tokens);
+	shell->tokenv = (void *)ft_lstarr(shell->tokens);
+	ft_lstclear(&shell->tokens, 0);
+	astcode = produce_ast(shell, shell->tokenv, &shell->current_tree);
+	if (astcode == AST_ERR_NONE)
 	{
-		if (!ft_strncmp(the_history[i]->line, string,
-			ft_strlen(the_history[i]->line) + 1))
-		{
-			ret = 0;
-			remove_history((int)i);
-			break ;
-		}
-		i++;
+		print_ast(shell->current_tree, "|	|");
+		dbg_add_ast(shell->current_tree);
+		execute_ast(shell);
 	}
-	add_history(string);
-	return (ret);
+	else if (astcode == AST_ERR_SYNTAX)
+		printf("Parse error: Syntax Error\n");
+	return (astcode);
 }
 
-void	reset_for_command(t_minishell *shell)
+int	next_command(t_minishell *shell)
 {
-	if (shell->rldata.current_hist_item)
-	{
-		better_add_history(shell->rldata.current_hist_item);
-		free(shell->rldata.current_hist_item);
-		shell->rldata.current_hist_item = 0;
-	}
-	if (shell->rldata.extra_lines)
-	{
-		ft_arrclear((void *)shell->rldata.extra_lines, free);
-		shell->rldata.extra_lines = 0;
-		shell->rldata.extra_line_count = 0;
-	}
-	reset_fsm(&shell->fsm_data);
+	t_readline_retcode	rlcode;
+	
+
+	rlcode = read_until_complete_command(shell);
+	if (rlcode == READ_OK)
+		prep_tree(shell);
+	else if (rlcode == READ_BADPARSE)
+		printf("Parse error: %s!\n", shell->fsm_data.str_condition);
+	else if (rlcode == READ_ERROR)
+		printf("Issue encountered while reading!\n"); // should probably collect some data to provide the user when this happens
+	else if (rlcode == READ_EOF)
+		return (rlcode);
+	return (rlcode);
 }
 
+pid_t	get_my_pid();
 int	main(int argc, char **argv, char **envp)
 {
 	static t_minishell	shell = {0};
-	t_readline_retcode	rlcode;
 
 	(void)argc;
 	(void)argv;
-	shell.environment = (char **)ft_arrmap((void **)envp, (void *)ft_strdup, free);
-	if (!shell.environment)
-		return (perror("minishell: ft_arrmap"), 1);
-	reset_for_command(&shell);
-	signal(SIGINT, do_something);
-	add_history("(this\n) && should work"); add_history("\"this\n should\"\nwork"); add_history("(this &&\nhas a seperator)");
-	shell.prompt = "minishell -> ";
-	printf("%s\n\n", remove_quotes("\"this\"\"text\"", &shell));
+	init_process(&shell, envp);
+	printf("Started with pid: %d\n", get_my_pid());
 	while (1)
 	{
-		rlcode = read_until_complete_command(&shell);
-		if (rlcode == READ_OK)
-		{
-			shell.tokens = fsm_pop_list(&shell.fsm_data);
-			print_token_list(shell.tokens);
-			shell.tokenv = (void *)ft_lstarr(shell.tokens);
-			ft_lstclear(&shell.tokens, 0);
-			shell.current_tree = produce_ast(&shell, shell.tokenv,
-				ft_arrlen((void *)shell.tokenv));
-			execute_ast(&shell);
-			if (shell.local_env)
-				ft_arriter((void **)shell.local_env, print_and_ret);
-			// print_ast(shell.current_tree, "|	|");
-		}
-		else if (rlcode == READ_BADPARSE)
-			printf("Parse error: %s!\n", shell.fsm_data.str_condition);
-		else if (rlcode == READ_ERROR)
-			printf("Issue encountered while reading!\n"); // should probably collect some data to provide the user when this happens
-		else if (rlcode == READ_EOF)
+		if (next_command(&shell) == READ_EOF)
 			break ;
+		dbg_write_states(static_debug_info());
+		dbg_write_tokens(static_debug_info());
+		dbg_write_nodes(static_debug_info());
+		dbg_write_end(static_debug_info());
 		reset_for_command(&shell);
 	}
-	// readline_cleanup(&shell);
-	destroy_ast(&shell.current_tree);
-	reset_fsm(&shell.fsm_data);
+	reset_for_command(&shell);
+	printf("freeing prompt: \n");
+	fflush(stdout);
+	free(shell.prompt);
+	ft_arrclear((void *)shell.environment, free);
 	return (0);
 }

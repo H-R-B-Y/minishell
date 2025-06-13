@@ -1,30 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_arrclear.c                                      :+:      :+:    :+:   */
+/*   ft_strcountchar.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/22 14:40:45 by hurb              #+#    #+#             */
-/*   Updated: 2025/06/12 17:37:32 by hbreeze          ###   ########.fr       */
+/*   Created: 2025/06/07 18:05:19 by hbreeze           #+#    #+#             */
+/*   Updated: 2025/06/07 18:07:18 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/libft.h"
 
-void	ft_arrclear(void **chunks, void (*f)(void *))
+size_t	ft_strcountchar(char *str, char c)
 {
-	void	**ch;
+	size_t	count;
+	size_t	idx;
 
-	if (!chunks || !*chunks)
-		return ;
-	ch = chunks;
-	while (*chunks)
-	{
-		if (f)
-			f(*chunks);
-		*chunks = 0;
-		chunks++;
-	}
-	free(ch);
+	idx = 0;
+	count = 0;
+	while (str[idx])
+		count += 1 * (str[idx++] == c);
+	return (count);
 }

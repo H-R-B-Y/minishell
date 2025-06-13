@@ -1,41 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   readline_cleanup.c                                 :+:      :+:    :+:   */
+/*   debugger_util.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/08 15:45:18 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/13 12:09:35 by hbreeze          ###   ########.fr       */
+/*   Created: 2025/06/06 12:43:25 by hbreeze           #+#    #+#             */
+/*   Updated: 2025/06/06 12:43:55 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include "../../include/v_dbg.h"
 
-
-/*
-What needs to be cleaned up within the readline loop 
-that isnt useful elsewhere? 
-
-*/
-
-void readline_cleanup(t_minishell *shell)
+void	dbg_add_token_list(t_list *tk)
 {
-	if (!shell)
+	t_list *node;
+
+	node = tk;
+	while (node)
+	{
+		dbg_add_token(static_debug_info(), node->content);
+		node = node->next;
+	}
+}
+
+void	dbg_add_ast(t_astnode *head)
+{
+	if (!head)
 		return ;
-	if (shell->current_line)
-	{
-		free(shell->current_line);
-		shell->current_line = 0;
-	}
-	if (shell->current_pipeline)
-	{
-		free(shell->current_pipeline);
-		shell->current_pipeline = 0;
-	}
-	if (shell->extra_lines)
-	{
-		ft_arrclear((void *)shell->extra_lines, free);
-		shell->extra_lines = 0;
-	}
+	dbg_add_nodes(static_debug_info(), head);
+	dbg_add_ast(head->left_node);
+	dbg_add_ast(head->right_node);
 }
