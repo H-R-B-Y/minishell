@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 14:55:51 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/06 16:35:05 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/13 13:30:35 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,18 @@ void sig_int_handle_interactive(int sig, siginfo_t *info, void *context)
 	rl_replace_line("", 0);
 	rl_redisplay();
 	rl_done = 1;
+}
+
+/**
+ * @brief Will set the global signal to notify that a child process died
+ * 
+ * @param sig the signal recieved
+ * @param info info about the signal
+ * @param context context of the signal
+ */
+void	notify_reap_child(int sig, siginfo_t *info, void *context)
+{
+	(void) info;
+	(void) context;
+	g_global_signal = sig;
 }

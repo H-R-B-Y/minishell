@@ -6,15 +6,15 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:37:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/12 18:07:29 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/14 16:56:00 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-t_tokentype		_parse_loop_internals(t_tokint *tokeniser, char *str);
+t_tokentype		_parse_loop_internals(t_tokint *tokeniser, const char *str);
 
-void	handle_potential_redirect(t_tokint *tokeniser, char *str)
+void	handle_potential_redirect(t_tokint *tokeniser, const char *str)
 {
 	while (str[tokeniser->index_end] && isdigit(str[tokeniser->index_end]))
 		tokeniser->index_end++;
@@ -44,7 +44,7 @@ void	handle_potential_redirect(t_tokint *tokeniser, char *str)
 		_parse_loop_internals(tokeniser, str);
 }
 
-void	handle_operator(t_tokint *tokeniser, char *str)
+void	handle_operator(t_tokint *tokeniser, const char *str)
 {
 	char	c;
 
@@ -61,7 +61,7 @@ void	handle_operator(t_tokint *tokeniser, char *str)
 		tokeniser->index_end = tokeniser->index_end + 1;
 }
 
-void	handle_unclosed_quote(t_tokint *tokeniser, char *str)
+void	handle_unclosed_quote(t_tokint *tokeniser, const char *str)
 {
 	char	*temp;
 

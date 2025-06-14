@@ -6,13 +6,13 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 17:24:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/12 17:35:17 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/14 17:02:45 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	read_with_temp_prompt(t_minishell *shell, char *temp)
+static int	read_with_temp_prompt(t_minishell *shell, char *temp)
 {
 	char	*temp_prmpt;
 	int		code;

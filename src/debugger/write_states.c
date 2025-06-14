@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 15:04:31 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/29 18:06:42 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/14 17:01:07 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,7 @@ size_t	dbg_write_states(struct s_dbg_info *info)
 		write(info->fd, &dt, sizeof(int));
 		node = node->next;
 	}
+	ft_lstclear(&info->states, 0);
+	info->states = 0;
 	return ((state_count + 2) * sizeof(int));
 }
