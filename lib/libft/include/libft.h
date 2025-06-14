@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:21:04 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/07 18:07:45 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/14 16:09:09 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ size_t			ft_strchr_idx(const char *s, int c);
  * @return Pointer to the last occurance of c in str or 0 if c is not in str
  * @warning String must be null terminated
  */
-char			*ft_strrchr(const char *str, int c);
+char			*ft_strrchr(const char *str, const int c);
 
 /**
  * @brief compare two strings

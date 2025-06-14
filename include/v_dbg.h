@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 14:40:33 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/06 14:34:25 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/14 17:05:48 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ struct	s_dbg_info
 	t_list	*nodes;
 };
 
-int	init_debugger(struct s_dbg_info *info);
+int		init_debugger(struct s_dbg_info *info);
 
 size_t		dbg_add_state(struct s_dbg_info *info, int state);
 size_t		dbg_write_states(struct s_dbg_info *info);
@@ -54,11 +54,9 @@ typedef struct s_astnode	t_astnode;
 size_t		dbg_add_nodes(struct s_dbg_info *info, t_astnode *node);
 size_t		dbg_write_nodes(struct s_dbg_info *info);
 
-struct s_dbg_info *static_debug_info(void);
+void		dbg_add_token_list(struct s_dbg_info *info, t_list *tk);
+void		dbg_add_ast(struct s_dbg_info *info, t_astnode *head);
 
-void	dbg_add_token_list(t_list *tk);
-void	dbg_add_ast(t_astnode *head);
-
-size_t	dbg_write_end(struct s_dbg_info *info);
+size_t		dbg_write_end(const struct s_dbg_info *info);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fsm_tokeniser.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/03 19:35:21 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/14 17:07:22 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -272,6 +272,7 @@ struct s_fsmdata
 	long int		paren_count;
 	/// the internal tokeniser data
 	t_tokint		tokeniser_internals;
+	void			*debuginfo;
 	/// a string representation of the condition upon return
 	char			*str_condition;
 };
@@ -303,8 +304,8 @@ void			reset_fsm(t_fsmdata *fsm);
  * that we are in a erroneous state as some wrong states can be
  * recovered.
  */
-t_fsmstate		fsm_check_transition(t_fsmstate current_state,
-					t_tokentype next_token);
+t_fsmstate		fsm_check_transition(const t_fsmstate current_state,
+					const t_tokentype next_token);
 
 /**
  * @brief pop the next token out of the tokeniser
@@ -320,7 +321,7 @@ t_token			*tokeniser_pop_token(t_tokint *tokeniser);
  * @param code the code to stringify
  * @return const char* a string representation of the code
  */
-const char		*tokretcode_str(t_tokretcode code);
+const char		*tokretcode_str(const t_tokretcode code);
 
 /**
  * @brief stringify a state from the finite state machine parser
@@ -328,7 +329,7 @@ const char		*tokretcode_str(t_tokretcode code);
  * @param state the state to stringify
  * @return const char* the string representation of the state
  */
-const char		*fsmstate_str(t_fsmstate state);
+const char		*fsmstate_str(const t_fsmstate state);
 
 /**
  * @brief pop the list of tokens out of the finite state machine
@@ -353,7 +354,7 @@ t_tokentype		bin_token(const char *raw_token);
  * @param str the string being parsed
  * @return t_tokentype the next tokens type.
  */
-t_tokentype		tokenise_type(t_tokint *tokeniser, char *str);
+t_tokentype		tokenise_type(t_tokint *tokeniser, const char *str);
 
 /**
  * @brief Handles operators that may be 1 or 2 characters in length
@@ -368,7 +369,7 @@ t_tokentype		tokenise_type(t_tokint *tokeniser, char *str);
  * @param tokeniser the tokeniser struct
  * @param str the string being parsed
  */
-void			handle_operator(t_tokint *tokeniser, char *str);
+void			handle_operator(t_tokint *tokeniser, const char *str);
 
 /**
  * @brief handle unclosed quote by duping the unfinished string
@@ -381,7 +382,7 @@ void			handle_operator(t_tokint *tokeniser, char *str);
  * @param tokeniser the tokeniser struct
  * @param str the string being parsed
  */
-void			handle_unclosed_quote(t_tokint *tokeniser, char *str);
+void			handle_unclosed_quote(t_tokint *tokeniser, const char *str);
 
 /**
  * @brief Utility function for making sure that we keep track of stats
@@ -412,7 +413,7 @@ void			handle_subshell_newline(t_fsmdata *fsm);
  * @param c character to check
  * @return int 1 if it is an operator 0 if not
  */
-int				isoperator(char c);
+int				isoperator(const char c);
 
 /**
  * @brief stringify a token type
@@ -420,14 +421,14 @@ int				isoperator(char c);
  * @param type the token type to stringify
  * @return const char* the string of the token type
  */
-const char		*token_type_to_string(t_tokentype type);
+const char		*token_type_to_string(const t_tokentype type);
 
 /**
  * @brief print a token type string
  * 
  * @param type the type to print
  */
-void			print_token_type(t_tokentype type);
+void			print_token_type(const t_tokentype type);
 
 /**
  * @brief print a token in a table like row
@@ -435,14 +436,14 @@ void			print_token_type(t_tokentype type);
  * @param token the token to print
  * @param column_width the width of the table columns
  */
-void			print_token(t_token *token, int column_width);
+void			print_token(const t_token *token, int column_width);
 
 /**
  * @brief print a list of tokens in a table
  * 
  * @param list the list of tokens to print
  */
-void			print_token_list(t_list *list);
+void			print_token_list(const t_list *list);
 
 /**
  * @brief move the internal start index of the tokeniser to the
@@ -451,7 +452,7 @@ void			print_token_list(t_list *list);
  * @param tokeniser the tokeniser struct
  * @param str the string being parsed
  */
-void			tokeniser_skip_whitespace(t_tokint *tokeniser, char *str);
+void			tokeniser_skip_whitespace(t_tokint *tokeniser, const char *str);
 
 /**
  * @brief Create a token object
@@ -460,7 +461,7 @@ void			tokeniser_skip_whitespace(t_tokint *tokeniser, char *str);
  * @param raw_token the raw token data
  * @return t_token* an allocated token struct
  */
-t_token			*create_token(t_tokentype type, char *raw_token);
+t_token			*create_token(const t_tokentype type, const char *raw_token);
 
 /**
  * @brief destroy a token struct
@@ -505,7 +506,7 @@ void			free_token_vector(t_token **vec, void (*del_raw)(void *));
  * @param type 
  * @param str 
  */
-void			append_anon_token(t_fsmdata *fsm, t_tokentype type, char *str);
+void			append_anon_token(t_fsmdata *fsm, const t_tokentype type, const char *str);
 
 /**
  * @brief Find the next token in the string and return its type
@@ -518,7 +519,7 @@ void			append_anon_token(t_fsmdata *fsm, t_tokentype type, char *str);
  * @param str the string being parsed
  * @return t_tokentype the type of the next token
  */
-t_tokentype		next_token_type(t_tokint *tokeniser, char *str);
+t_tokentype		next_token_type(t_tokint *tokeniser, const char *str);
 
 /**
  * @brief Set the retcode object
@@ -529,7 +530,7 @@ t_tokentype		next_token_type(t_tokint *tokeniser, char *str);
  * @return t_tokretcode the return code that was set
  */
 t_tokretcode	set_retcode(t_fsmdata *fsm,
-					t_tokretcode code, char *str_condition);
+					const t_tokretcode code, char *str_condition);
 
 /**
  * @brief changes the state of the fsm
@@ -574,6 +575,6 @@ t_tokretcode	correct_retcode(t_fsmdata *fsm);
  * @param str the string to parse
  * @return t_tokretcode the condition state of the parse
  */
-t_tokretcode	tokenise(t_fsmdata *fsm, char *str);
+t_tokretcode	tokenise(t_fsmdata *fsm, const char *str);
 
 #endif

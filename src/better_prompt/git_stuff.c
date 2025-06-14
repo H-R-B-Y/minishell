@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 17:19:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/12 17:50:59 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/14 16:04:02 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	has_git(void)
 	return (1);
 }
 
-char *get_return(int data[2], int ret)
+char *get_return(int data[2], const int ret)
 {
 	char	*buff[2];
 	int		stat;

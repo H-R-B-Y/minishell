@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/12 16:53:45 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/14 17:09:36 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@
 # endif
 # ifndef __USE_POSIX199309
 #  define __USE_POSIX199309
+# endif
+# ifndef SA_RESTART
+#  include <asm-generic/signal-defs.h>
 # endif
 # include <signal.h>
 # include <sys/stat.h>
@@ -63,8 +66,7 @@ struct s_minishell
 {
 
 	short		interactive_mode;
-	struct sigaction	old_sigint;
-	struct sigaction	old_sigquit;
+	struct sigaction	old_handlers[32];
 	/*
 	this is the environment that will be passed down to any child process
 	at the start of the program we take a copy of the environment varaiables
@@ -130,23 +132,7 @@ void	reset_for_command(t_minishell *shell);
 int		init_process(t_minishell *shell, char **envp);
 int		better_add_history(char *string);
 void	reset_for_command(t_minishell *shell);
-char	*create_prompt(t_minishell *shell);
-
-/**
- * @brief readline and create token list
- * @param shell the shell struct
- * @return 1 if eof 0 if successful?
- * 
- * Function will populate:
- * - current_line
- * - current_pipeline
- * - extra_lines
- * 
- * It should probably updated to return some kind of information about why
- * it returned
- * TODO: make an enum for return codes so we can tell why it returned? 
- */
-int				readline_loop(t_minishell *shell);
+char	*create_prompt(const t_minishell *shell);
 
 /**
  * @brief print out a token list in columns
@@ -154,7 +140,7 @@ int				readline_loop(t_minishell *shell);
  * 
  * TODO: this should probably be moved to the input tokens header.
  */
-void			print_token_list(t_list *list);
+void			print_token_list(const t_list *list);
 
 // Utility functions:
 // Some of these may be useful in libft?
@@ -168,7 +154,7 @@ void			print_token_list(t_list *list);
  * for example "cat", "dog", " and " would produce:
  * cat and dog
  */
-char			*str_join_with_sep(char *str1, char *str2, char *sep);
+char			*str_join_with_sep(const char *str1, const char *str2, const char *sep);
 
 /**
  * @brief join together a null terminated array of strings
@@ -190,8 +176,6 @@ char			*str_vec_join(char **arr);
 char			*_pop_line(char ***str);
 
 char	*remove_quotes(char *str, t_minishell *shell);
-
-int	read_until_complete_command(t_minishell *shell);
 
 /*
 Env Var helper functions:
@@ -338,5 +322,18 @@ char	*run_git_command(const char **argv);
  */
 int		is_git_dirty(void);
 
+/**
+ * @brief Restore signals to what they were before the shell init process
+ * 
+ * @param shell Pointer to the shell
+ */
+void	restore_signals(const t_minishell *shell);
+
+/**
+ * @brief Get the my pid
+ * 
+ * @return pid_t pid or -1 for error
+ */
+pid_t	get_my_pid(void);
 
 #endif

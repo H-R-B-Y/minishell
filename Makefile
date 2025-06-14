@@ -56,6 +56,7 @@ SRCS			:= \
 				$(SRC_DIR)/heredoc_handler.c/handle_redirects.c \
 				\
 				$(SRC_DIR)/init_process/init_process.c \
+				$(SRC_DIR)/init_process/restore_signals.c \
 				$(SRC_DIR)/init_process/shell_utils.c \
 				$(SRC_DIR)/init_process/signal_handlers.c \
 				\

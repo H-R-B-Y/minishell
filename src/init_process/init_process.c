@@ -6,11 +6,12 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 11:48:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/12 16:59:34 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/14 17:12:44 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
 
 void sig_int_handle_interactive(int sig, siginfo_t *info, void *context);
 
@@ -30,12 +31,15 @@ int	event(void)
 int	signals_interactive(t_minishell *shell, struct sigaction *act)
 {
 	// SIGINT = clear prompt, newline, clean start, do not add too history
-	act->sa_handler = SIG_IGN;
-	sigaction(SIGQUIT, act, &shell->old_sigquit);
-	act->sa_flags |= SA_SIGINFO;
-	act->sa_sigaction = sig_int_handle_interactive;
 	// SIGQUIT = do nothing (ignore)	;
-	sigaction(SIGINT, act, &shell->old_sigint);
+	act->sa_handler = SIG_IGN;
+	sigaction(SIGQUIT, act, &shell->old_handlers[SIGQUIT]);
+	sigaction(SIGTSTP, act, &shell->old_handlers[SIGTSTP]);
+	act->sa_flags |= SA_SIGINFO;
+	act->sa_flags |= SA_RESTART;
+	act->sa_handler = 0;
+	act->sa_sigaction = sig_int_handle_interactive;
+	sigaction(SIGINT, act, &shell->old_handlers[SIGINT]);
 	// any others?
 	rl_event_hook = event;
 	return (0);
@@ -55,9 +59,13 @@ int signals_non_interactive(t_minishell *shell, struct sigaction *act)
 int	setup_signals(t_minishell *shell)
 {
 	struct sigaction	action;
+	int					i;
 
 	action = (struct sigaction){0};
 	sigemptyset(&action.sa_mask);
+	i = -1;
+	while (++i < 32)
+		sigaction(i, 0, &shell->old_handlers[i]);
 	if (shell->interactive_mode)
 		signals_interactive(shell, &action);
 	else
@@ -80,6 +88,7 @@ int	init_process(t_minishell *shell, char **envp)
 	// init debugger
 	if (!init_debugger(&shell->info))
 		printf("debugger not enabled: %s\n", strerror(errno));
+	shell->fsm_data.debuginfo = &shell->info;
 	// reset for command
 	reset_for_command(shell);
 	return (0);

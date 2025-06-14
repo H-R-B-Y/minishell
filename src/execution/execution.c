@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:13:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/12 18:34:35 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/13 18:18:25 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,7 +277,7 @@ void	execute_command(char *path, char **argv, char**envp)
 	pid = fork();
 	if (pid == 0)
 	{
-		signal(SIGINT, SIG_DFL);
+		// signal(SIGINT, SIG_DFL);
 		char	*exec_path = NULL;
 		if (ft_strchr(path, '/'))
 			execve(path, argv, envp);
@@ -289,9 +289,7 @@ void	execute_command(char *path, char **argv, char**envp)
 			execve(exec_path, argv, envp);
 	}
 	else if (pid > 0)
-		while(waitpid(pid, NULL, 0) ==-1)
-			{if (errno == EINTR)
-				continue ;}
+		waitpid(pid, NULL, 0);
 	else
 		perror("fork failed");
 }
