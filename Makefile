@@ -34,6 +34,7 @@ SRCS			:= \
 				$(SRC_DIR)/builtins/utility_funcs.c \
 				\
 				$(SRC_DIR)/execution/execution.c \
+				$(SRC_DIR)/execution/prepare_redirects.c \
 				\
 				$(SRC_DIR)/debugger/adding_items.c \
 				$(SRC_DIR)/debugger/debugger_util.c \

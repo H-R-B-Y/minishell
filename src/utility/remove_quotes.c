@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:16:03 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/04 18:17:54 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/16 12:42:32 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,62 +72,66 @@ char	*remove_quotes(char *str, t_minishell *shell)
 	{
 		if (mode == QUOTE_NONE)
 		{
-			if (TC == '\'')
+			if (str[i[0]] == '\'')
 			{
 				mode = QUOTE_SINGLE;
 				i[0]++;
 				continue ;
 			}
-			if (TC == '"')
+			if (str[i[0]] == '"')
 			{
 				mode = QUOTE_DOUBLE;
 				i[0]++;
 				continue ;
 			}
-			if (TC == '\\')
+			if (str[i[0]] == '\\')
 			{
-				i[0]++;
-				if (TC == '$')
+				if (ft_strchr("$'\"\\", str[i[0]]))
 				{
-					_write_char(&output[i[1]], TC, i);
-					continue;
+					str[i[0]]++;
+					_write_char(&output[i[1]], str[i[0]], i);
+					continue ;
 				}
+				else
+					_write_char(&output[i[1]], str[i[0]], i);
 			}
-			if (TC == '$' && (mode == QUOTE_DOUBLE || mode == QUOTE_NONE))
+			if (str[i[0]] == '$' && (mode == QUOTE_DOUBLE || mode == QUOTE_NONE))
 			{
 				_expand_write_var(shell, &output, str, i);
 				continue ;
 			}
-			_write_char(&output[i[1]], TC, i);
+			_write_char(&output[i[1]], str[i[0]], i);
 			continue ;
 		}
-		if (TC == '\'' && mode == QUOTE_SINGLE)
+		if (str[i[0]] == '\'' && mode == QUOTE_SINGLE)
 		{
 			mode = QUOTE_NONE;
 			i[0]++;
 			continue;
 		}
-		if (TC == '"' && mode == QUOTE_DOUBLE)
+		if (str[i[0]] == '"' && mode == QUOTE_DOUBLE)
 		{
 			mode = QUOTE_NONE;
 			i[0]++;
 			continue;
 		}
-		if (TC == '$' && (mode == QUOTE_DOUBLE || mode == QUOTE_NONE))
+		if (str[i[0]] == '$' && (mode == QUOTE_DOUBLE || mode == QUOTE_NONE))
 		{
 			_expand_write_var(shell, &output, str, i);
 			continue;
 		}
-		if (TC == '\\' && mode == QUOTE_DOUBLE)
+		if (str[i[0]] == '\\' && mode == QUOTE_DOUBLE)
 		{
-			i[0]++;
-			if (TC == '$')
+			if (ft_strchr("$'\"\\", str[i[0]]))
 			{
-				_write_char(&output[i[1]], TC, i);
+				str[i[0]]++;
+				_write_char(&output[i[1]], str[i[0]], i);
 				continue ;
 			}
+			else
+				_write_char(&output[i[1]], str[i[0]], i);
 		}
-		_write_char(&output[i[1]], TC, i);
+		_write_char(&output[i[1]], str[i[0]], i);
 		continue;
 	}
 	return (output);

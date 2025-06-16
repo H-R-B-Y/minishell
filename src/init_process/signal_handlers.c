@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 14:55:51 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/13 13:30:35 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/16 13:14:34 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,12 @@ void	notify_reap_child(int sig, siginfo_t *info, void *context)
 	(void) info;
 	(void) context;
 	g_global_signal = sig;
+}
+
+void	default_sig_handle(int sig, siginfo_t *info, void *context)
+{
+	(void)info;
+	(void)context;
+	g_global_signal = sig;
+	// kill(-get_my_pid(), sig);
 }
