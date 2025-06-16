@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:13:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/13 18:18:25 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/16 11:53:41 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,14 +270,15 @@ int	set_any_env(t_minishell *shell)
 	return (0);
 }
 
-void	execute_command(char *path, char **argv, char**envp)
+void	execute_command(t_minishell *shell, char *path, char **argv, char**envp)
 {
 	int			pid;
 	
 	pid = fork();
 	if (pid == 0)
 	{
-		// signal(SIGINT, SIG_DFL);
+		restore_signals(shell);
+		map_fds(shell->current_tree);
 		char	*exec_path = NULL;
 		if (ft_strchr(path, '/'))
 			execve(path, argv, envp);
@@ -312,6 +313,8 @@ int	execute_ast(t_minishell *shell)
 	{
 		shell->current_tree->cmdv = cmdv_prep(shell); // handle variables
 		shell->current_tree->genv_l = ft_arrlen((void **)shell->environment);
+		if (prepare_fds(shell->current_tree) < 0)
+			return (-1);
 		if (shell->current_tree->cmd_i != (size_t)-1)
 		{
 			if (get_run_builtincmd(shell))
@@ -319,7 +322,7 @@ int	execute_ast(t_minishell *shell)
 					free_arr((void **)shell->current_tree->cmdv), 0);
 			else
 			{
-				execute_command(shell->current_tree->cmdv[shell->current_tree->cmd_i], 
+				execute_command(shell, shell->current_tree->cmdv[shell->current_tree->cmd_i], 
 					shell->current_tree->cmdv + shell->current_tree->cmd_i, 
 					shell->current_tree->envp);
 				ft_arrclear((void **)shell->current_tree->cmdv, free);

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 12:20:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/14 16:22:09 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/16 12:05:46 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ t_astnode	*create_ast_node(t_astype type,
 {
 	t_astnode	*me;
 
-	me = malloc(sizeof(t_astnode));
-	ft_bzero(me, sizeof(t_astnode));
+	me = calloc(1, sizeof(t_astnode));
 	me->type = type;
 	me->left_node = left;
 	me->right_node = right;

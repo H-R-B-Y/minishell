@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/14 17:16:18 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/16 13:15:58 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@ int	prep_tree(t_minishell *shell)
 	{
 		print_ast(shell->current_tree, "|	|");
 		dbg_add_ast(&shell->info, shell->current_tree);
+		if (shell->interactive_mode)
+			set_exection_signals();
 		execute_ast(shell);
+		setup_signals(shell);
 	}
 	else if (astcode == AST_ERR_SYNTAX)
 		printf("Parse error: Syntax Error\n");

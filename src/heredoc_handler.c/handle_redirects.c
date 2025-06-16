@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 16:49:12 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/01 15:24:12 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/16 12:12:27 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ t_redirect_desc *handle_redirect(t_token *redirect, t_token *filename)
 			(0 * (redirect->type == TOK_REDIR_IN))
 			+ (1 * (redirect->type == TOK_REDIR_OUT))
 			+ (2 * (redirect->type == TOK_REDIR_APPEND))],
-		.file_map.filename = filename->raw,
+		.file_map.filename = ft_strdup(filename->raw),
 		.file_map.to_fd = to_fd,
 	};
 	return (output);

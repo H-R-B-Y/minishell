@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:15:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/14 16:03:12 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/16 12:15:03 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,24 @@ int	prepare_fds(t_astnode *node)
 	corrected = ft_lstmap(node->redirect, (void *)file_to_fd_mapper, free); // WARN: free is not good enough, redirects will leak
 	if (!corrected)
 		return (perror("minishell"), -1);
-	ft_lstclear(&node->redirect, destroy_redirect);
+	ft_lstclear(&node->redirect, (void *)destroy_redirect);
 	node->redirect = corrected;
 	return (1);
+}
+
+void	map_fds(t_astnode *node)
+{
+	t_list	*list;
+	t_redirect_desc	*desc;
+
+	list = node->redirect;
+	while (list)
+	{
+		desc = list->content;
+		if (desc->subtype == REDIR_FD)
+			dup2(desc->fd_map.from_fd, desc->fd_map.to_fd);
+		else
+			printf("WARN: tried to dup from a filemap\n");
+		list = list->next;
+	}
 }

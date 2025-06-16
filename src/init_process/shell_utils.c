@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 12:01:50 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/14 17:16:38 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/16 13:09:28 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,7 @@ void	reset_for_command(t_minishell *shell)
 {
 	if (shell->rldata.current_hist_item)
 	{
-		if (!g_global_signal)
-			better_add_history(shell->rldata.current_hist_item);
+		better_add_history(shell->rldata.current_hist_item);
 		ft_dirtyswap((void *)&shell->rldata.current_hist_item, (void *)0, free);
 	}
 	if (shell->rldata.last_line)

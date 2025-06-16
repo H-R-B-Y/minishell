@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/14 17:09:36 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/16 13:07:50 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -330,10 +330,59 @@ int		is_git_dirty(void);
 void	restore_signals(const t_minishell *shell);
 
 /**
+ * @brief sets the global signal int to be sig
+ * 
+ * @param sig signal
+ * @param info info about signal
+ * @param context context for signal
+ */
+void	default_sig_handle(int sig, siginfo_t *info, void *context);
+
+/**
  * @brief Get the my pid
  * 
  * @return pid_t pid or -1 for error
  */
 pid_t	get_my_pid(void);
+
+/**
+ * @brief Get redirects ready before execution
+ * 
+ * @param node 
+ * @return int 
+ */
+int	prepare_fds(t_astnode *node);
+
+/**
+ * @brief map fds from fd map
+ * 
+ * @param node node containing redirect list
+ */
+void	map_fds(t_astnode *node);
+
+/**
+ * @brief unset some signal handlers for execution
+ * 
+ * @note 
+ * this is not a great way to do this, ideally we would just
+ * use a process group for the child process and set that as the main
+ * process group for the terminal so that minishell doesn't recieve the signal
+ * but in order to do that we would need to manage our own process groups
+ * and jobs using functions we dont have access too -_-
+ */
+void	set_exection_signals(void);
+
+/**
+ * @brief Set the up signal handlers 
+ * 
+ * @note
+ * this should not be globally accessible in an ideal world
+ * but we are constrained and so this does actually need to
+ * be called multiple times (unfortunatly)
+ * 
+ * @param shell the shell 
+ * @return int status code -1 on err
+ */
+int	setup_signals(t_minishell *shell);
 
 #endif
