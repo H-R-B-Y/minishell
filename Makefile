@@ -53,8 +53,8 @@ SRCS			:= \
 				$(SRC_DIR)/fsm_tokeniser/token_utils.c \
 				$(SRC_DIR)/fsm_tokeniser/tokeniser.c \
 				\
-				$(SRC_DIR)/heredoc_handler.c/handle_heredoc.c \
-				$(SRC_DIR)/heredoc_handler.c/handle_redirects.c \
+				$(SRC_DIR)/heredoc_handler/handle_heredoc.c \
+				$(SRC_DIR)/heredoc_handler/handle_redirects.c \
 				\
 				$(SRC_DIR)/init_process/init_process.c \
 				$(SRC_DIR)/init_process/restore_signals.c \
