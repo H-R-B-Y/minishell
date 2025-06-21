@@ -3,18 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   handle_heredoc.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:22:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/06 15:43:33 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/21 19:26:32 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+extern int	g_global_signal;
+
 char	*s_get_envany(t_minishell *shell, char *name);
 
-void	_replace_var(struct s_ast_internal *meta, int temp_file, char *line)
+static void	_replace_var(struct s_ast_internal *meta, int temp_file, char *line)
 {
 	size_t	i[2];
 	char	*var[2];
@@ -38,7 +40,7 @@ void	_replace_var(struct s_ast_internal *meta, int temp_file, char *line)
 	}
 }
 
-int	_read_heredoc(struct s_ast_internal *meta, char *delim, int temp_file, short handlevar)
+static int	_read_heredoc(struct s_ast_internal *meta, char *delim, int temp_file, short handlevar)
 {
 	char	*temp;
 	int		status;
@@ -54,21 +56,44 @@ int	_read_heredoc(struct s_ast_internal *meta, char *delim, int temp_file, short
 		else
 			write(temp_file, temp, ft_strlen(temp));
 		write(temp_file, "\n", 1);
-		status = next_line(meta->rldata, "heredoc");
+		status = next_line(meta->rldata, "heredoc > ");
 	}
 	if (status != READ_OK)
 		return (-1);
 	return (0);
 }
 
-extern int	g_global_signal;
+static int	prep_heredoc(struct s_ast_internal *meta, char *delim, short handle_vars)
+{
+	char	strs[2];
+	int		temp_file[2];
 
+	strs[0] = rem_quotes(delim);
+	strs[1] = ft_itoa(get_my_pid());
+	ft_dirtyswap(&strs[1], ft_strjoin("/tmp/minishell_heredoc_", strs[1]), free);
+	temp_file[0] = open(strs[1], O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR);
+	if (temp_file[0] == -1)
+		return (free(strs[0]), free(strs[1]), -1);
+	if (_read_heredoc(meta, strs[0], temp_file[1], handle_vars) != 0 && g_global_signal == SIGINT)
+	{
+		meta->error = AST_ERR_HEREDOC_EXIT;
+		return (-1);
+	}
+	close(temp_file[0]);
+	temp_file[0] = open(temp_file[0], O_RDONLY);
+	if (temp_file[0] == -1)
+		return (free(strs[0]), free(strs[1]), -1);
+	unlink(strs[1]);
+	return (free(strs[0]), free(strs[1]), temp_file[0]);
+}
+
+// GOOD READ BTW: 
+// https://www.oilshell.org/blog/2016/10/18.html
 t_redirect_desc	*handle_heredoc(struct s_ast_internal *meta, char *delim)
 {
 	t_redirect_desc	*output;
-	char			*clean_heredoc;
 	short			handle_vars;
-	int				temp_file;
+	int				temp_file[2];
 
 	if (!delim || !meta)
 		return (0);
@@ -78,13 +103,8 @@ t_redirect_desc	*handle_heredoc(struct s_ast_internal *meta, char *delim)
 	handle_vars = 0;
 	if (!ft_strchr(delim, '"') && !ft_strchr(delim, '\''))
 		handle_vars = 1;
-	clean_heredoc = remove_quotes(delim, meta->shell);
-	temp_file = open(getcwd(0, 0), O_RDONLY | __O_TMPFILE | O_RDWR, S_IRUSR | S_IWUSR);
-	if (temp_file == -1)
-		return (perror("minishell: heredoc"), free(output), (void *)0);
-	if (_read_heredoc(meta, clean_heredoc, temp_file, handle_vars) != 0 && g_global_signal == SIGINT)
-		meta->error = AST_ERR_HEREDOC_EXIT;
+	temp_file[0] = prep_heredoc(meta, delim, handle_vars);
 	(*output) = (t_redirect_desc){.type = REDIRECT_HEREDOC, .subtype = REDIR_FD,
-		.fd_map.from_fd = temp_file, .fd_map.to_fd = STDIN_FILENO};
+		.fd_map.from_fd = temp_file[0], .fd_map.to_fd = STDIN_FILENO};
 	return (output);
 }

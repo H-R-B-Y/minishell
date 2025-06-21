@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/16 13:07:50 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/21 17:00:34 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,11 @@ char			*str_vec_join(char **arr);
  */
 char			*_pop_line(char ***str);
 
+// this one doesnt expand vars
+char	*rem_quotes(const char *str);
+// this one does
 char	*remove_quotes(char *str, t_minishell *shell);
+// they should be renamed but i dont want to mess anything up
 
 /*
 Env Var helper functions:

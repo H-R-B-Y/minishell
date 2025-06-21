@@ -75,6 +75,7 @@ SRCS			:= \
 				$(SRC_DIR)/utility/get_my_pid.c \
 				$(SRC_DIR)/utility/operators.c \
 				$(SRC_DIR)/utility/pop_line.c \
+				$(SRC_DIR)/utility/rem_quote2.c \
 				$(SRC_DIR)/utility/remove_quotes.c \
 				$(SRC_DIR)/utility/sgetenv.c \
 				$(SRC_DIR)/utility/sgetenvany.c \
