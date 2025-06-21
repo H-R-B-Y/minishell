@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   remove_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:16:03 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/16 12:42:32 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/21 16:37:39 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char	*remove_quotes(char *str, t_minishell *shell)
 			}
 			if (str[i[0]] == '\\')
 			{
-				if (ft_strchr("$'\"\\", str[i[0]]))
+				if (ft_strchr("$'\"\\", str[i[0] + 1]))
 				{
 					str[i[0]]++;
 					_write_char(&output[i[1]], str[i[0]], i);
