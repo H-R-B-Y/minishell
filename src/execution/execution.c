@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:13:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/22 15:44:29 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/22 17:28:01 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,8 +261,12 @@ int	set_any_env(t_minishell *shell)
 		name = ft_strndup(argv[i], ft_strchr(argv[i], '=') - argv[i]);
 		if (name == NULL)
 			return (-1);
-		if (s_get_envid(shell, name) != -1) /// add here var manipulated by unset adn export to keep track of var in genvp
+		if (s_get_envid(shell, name) != -1 || _sgetanon(shell->unassigned_env, name) != -1) // to consider: only _sgetanon? no need to del in that case
+		{
+			if (_sgetanon(shell->unassigned_env, name) >= 0)
+				ft_arrdel_atindex((void **)shell->unassigned_env, _sgetanon(shell->unassigned_env, name), free);
 			set_n_envp(&shell->environment, argv + i, 1);
+		}
 		else
 			set_n_envp(&shell->local_env, argv + i, 1);
 		i++;
@@ -292,9 +296,11 @@ void	execute_command(t_minishell *shell, char *path, char **argv, char**envp)
 			execve(exec_path, argv, envp);
 	}
 	else if (pid > 0)
-		waitpid(pid, NULL, 0);
+		waitpid(pid, &returncode, 0);
 	else
 		perror("fork failed");
+	if (returncode != -1)
+		shell->return_code = WEXITSTATUS(returncode);
 }
 
 int	execute_ast(t_minishell *shell)
