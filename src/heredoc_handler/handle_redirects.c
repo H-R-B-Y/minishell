@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redirects.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 16:49:12 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/16 12:12:27 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/22 17:32:34 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ t_redirect_desc *handle_redirectfd(t_token *redirect)
 	(*output) = (t_redirect_desc){
 		.type = REDIRECT_FD,
 		.subtype = REDIR_FD,
-		.fd_map.from_fd = fds[0],
-		.fd_map.to_fd = fds[1],
+		.fd_map.from_fd = fds[1],
+		.fd_map.to_fd = fds[0],
 	};
 	return (output);
 }
