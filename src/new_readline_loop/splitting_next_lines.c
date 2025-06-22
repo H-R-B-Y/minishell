@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:16:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/07 14:57:15 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/14 17:04:19 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ size_t	split_extra_lines(t_readline_data *data, char *str)
 	return (data->extra_line_count);
 }
 
-int	next_line(t_readline_data *data, char *prompt)
+int	next_line(t_readline_data *data, const char *prompt)
 {
 	char	*temp;
 

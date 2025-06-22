@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 12:01:50 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/12 17:11:43 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/16 13:09:28 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,27 +47,20 @@ void	reset_for_command(t_minishell *shell)
 {
 	if (shell->rldata.current_hist_item)
 	{
-		if (!g_global_signal)
-			better_add_history(shell->rldata.current_hist_item);
-		printf("freeing hist item\n");
+		better_add_history(shell->rldata.current_hist_item);
 		ft_dirtyswap((void *)&shell->rldata.current_hist_item, (void *)0, free);
 	}
-	printf("freeing last line\n");
 	if (shell->rldata.last_line)
 		ft_dirtyswap((void *)&shell->rldata.last_line, (void *)0, free);
 	if (shell->rldata.extra_lines)
 	{
-		printf("freeing extra line\n");
 		ft_arrclear((void *)shell->rldata.extra_lines, free);
 		ft_dirtyswap((void *)&shell->rldata.extra_lines, (void *)0, free);
 		shell->rldata.extra_line_count = 0;
 	}
-	printf("freeing tokens\n");
 	ft_arrclear((void **)shell->tokenv, _destroy_token);
 	shell->tokenv = 0;
-	printf("freeing tree\n");
 	destroy_ast(&shell->current_tree);
-	printf("freeing fsm\n");
 	reset_fsm(&shell->fsm_data);
 	g_global_signal = 0;
 }

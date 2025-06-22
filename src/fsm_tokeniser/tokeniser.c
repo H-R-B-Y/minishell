@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:22:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/12 17:53:54 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/14 17:07:31 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ Is it needed? not really, so i guess i will leave it alone.
 
 // I cannot reduce this function to below 25 lines lol, need to split it out
 // or rename something 
-t_tokentype	_parse_loop_internals(t_tokint *tokeniser, char *str)
+t_tokentype	_parse_loop_internals(t_tokint *tokeniser, const char *str)
 {
 	char	c;
 
@@ -68,7 +68,7 @@ t_tokentype	_parse_loop_internals(t_tokint *tokeniser, char *str)
 	return (0);
 }
 
-t_tokentype	next_token_type(t_tokint *tokeniser, char *str)
+t_tokentype	next_token_type(t_tokint *tokeniser, const char *str)
 {
 	tokeniser->index_start = tokeniser->index_end;
 	if (!str[tokeniser->index_start])
@@ -91,7 +91,7 @@ t_tokentype	next_token_type(t_tokint *tokeniser, char *str)
 }
 
 t_tokretcode	set_retcode(t_fsmdata *fsm,
-	t_tokretcode code, char *str_condition)
+	const t_tokretcode code, char *str_condition)
 {
 	fsm->retcode = code;
 	if (code == PARSE_CONT)
@@ -117,7 +117,7 @@ void	state_change(t_fsmdata *fsm, t_fsmstate next_state)
 		next_state = ST_CONT;
 	fsm->last_state = fsm->state;
 	fsm->state = next_state;
-	dbg_add_state(static_debug_info(), fsm->state);
+	dbg_add_state(fsm->debuginfo, fsm->state);
 }
 
 t_tokretcode	correct_retcode(t_fsmdata *fsm)
@@ -145,7 +145,7 @@ t_tokretcode	correct_retcode(t_fsmdata *fsm)
 	return (set_retcode(fsm, PARSE_ERROR, ft_strdup("generic error")));
 }
 
-t_tokretcode	tokenise(t_fsmdata *fsm, char *str)
+t_tokretcode	tokenise(t_fsmdata *fsm, const char *str)
 {
 	t_fsmstate	next_state;
 

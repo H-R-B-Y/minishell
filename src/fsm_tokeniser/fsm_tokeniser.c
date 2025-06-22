@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:19:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/12 18:09:10 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/14 17:16:27 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,15 @@ void	reset_tokeniser(t_tokint *tokeniser)
 
 void	reset_fsm(t_fsmdata *fsm)
 {
-	printf("freeing tokens\n");
 	if (fsm->tokens)
 		free_token_list(fsm->tokens, free);
-	printf("freeing conditions\n");
 	if (fsm->str_condition)
 		ft_dirtyswap((void *)&fsm->str_condition, 0, free);
-	printf("resetting tokeniser\n");
 	reset_tokeniser(&fsm->tokeniser_internals);
 	(*fsm) = (t_fsmdata){
 		.state = ST_STRT, .retcode = PARSE_OK, .tokens = 0,
 		.tokeniser_internals = fsm->tokeniser_internals,
-		.paren_count = 0, .str_condition = 0,
+		.paren_count = 0, .str_condition = 0, .debuginfo = fsm->debuginfo
 	};
 }
 
@@ -89,8 +86,8 @@ const t_fsmtransition	*_fsm_trns(void)
 	return (transitions);
 }
 
-t_fsmstate	fsm_check_transition(t_fsmstate current_state,
-	t_tokentype next_token)
+t_fsmstate	fsm_check_transition(const t_fsmstate current_state,
+	const t_tokentype next_token)
 {
 	size_t					i;
 	const t_fsmtransition	*trns;

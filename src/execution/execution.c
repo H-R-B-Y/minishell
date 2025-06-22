@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:13:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/12 18:34:35 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/22 15:44:29 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,14 +270,17 @@ int	set_any_env(t_minishell *shell)
 	return (0);
 }
 
-void	execute_command(char *path, char **argv, char**envp)
+void	execute_command(t_minishell *shell, char *path, char **argv, char**envp)
 {
 	int			pid;
+	int			returncode;
 	
 	pid = fork();
+	returncode = -1;
 	if (pid == 0)
 	{
-		signal(SIGINT, SIG_DFL);
+		restore_signals(shell);
+		map_fds(shell->current_tree);
 		char	*exec_path = NULL;
 		if (ft_strchr(path, '/'))
 			execve(path, argv, envp);
@@ -289,9 +292,7 @@ void	execute_command(char *path, char **argv, char**envp)
 			execve(exec_path, argv, envp);
 	}
 	else if (pid > 0)
-		while(waitpid(pid, NULL, 0) ==-1)
-			{if (errno == EINTR)
-				continue ;}
+		waitpid(pid, NULL, 0);
 	else
 		perror("fork failed");
 }
@@ -314,6 +315,8 @@ int	execute_ast(t_minishell *shell)
 	{
 		shell->current_tree->cmdv = cmdv_prep(shell); // handle variables
 		shell->current_tree->genv_l = ft_arrlen((void **)shell->environment);
+		if (prepare_fds(shell->current_tree) < 0)
+			return (-1);
 		if (shell->current_tree->cmd_i != (size_t)-1)
 		{
 			if (get_run_builtincmd(shell))
@@ -321,7 +324,7 @@ int	execute_ast(t_minishell *shell)
 					free_arr((void **)shell->current_tree->cmdv), 0);
 			else
 			{
-				execute_command(shell->current_tree->cmdv[shell->current_tree->cmd_i], 
+				execute_command(shell, shell->current_tree->cmdv[shell->current_tree->cmd_i], 
 					shell->current_tree->cmdv + shell->current_tree->cmd_i, 
 					shell->current_tree->envp);
 				ft_arrclear((void **)shell->current_tree->cmdv, free);

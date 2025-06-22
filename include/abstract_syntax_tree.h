@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/06 15:40:40 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/14 15:58:33 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ struct s_redirect_desc
 		}				file_map;
 	};
 };
+
+void	destroy_redirect(t_redirect_desc *n);
 
 /**
  * @brief AST node types

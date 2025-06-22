@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:07:29 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/17 11:06:51 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/14 17:04:43 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define READLINE_LOOP_H
 
 # include "libft.h"
+
+typedef struct s_minishell	t_minishell;
 
 typedef enum e_readline_retcode	t_readline_retcode;
 enum e_readline_retcode
@@ -37,8 +39,10 @@ struct s_readline_data
 
 size_t	split_extra_lines(t_readline_data *data, char *str);
 
-int		next_line(t_readline_data *data, char *prompt);
+int		next_line(t_readline_data *data, const char *prompt);
 
 char	*_pop_line(char ***arr);
+
+int		read_until_complete_command(t_minishell *shell);
 
 #endif

@@ -6,16 +6,17 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 12:20:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/06 14:44:02 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/16 12:05:46 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static void	temp(void *n)
+void	destroy_redirect(t_redirect_desc *n)
 {
-	(void)n;
-	printf("This function has not been implemented yet");
+	if (n->subtype == REDIR_FILE)
+		free(n->file_map.filename);
+	free(n);
 }
 
 t_astnode	*create_ast_node(t_astype type,
@@ -23,14 +24,30 @@ t_astnode	*create_ast_node(t_astype type,
 {
 	t_astnode	*me;
 
-	me = malloc(sizeof(t_astnode));
-	ft_bzero(me, sizeof(t_astnode));
+	me = calloc(1, sizeof(t_astnode));
 	me->type = type;
 	me->left_node = left;
 	me->right_node = right;
 	me->tokens = token;
 	me->token_count = ft_arrlen((void *)token);
 	return (me);
+}
+
+void	close_fds_needed(t_list	*redirects)
+{
+	t_redirect_desc	*desc;
+	t_list			*node;
+
+	if (!redirects)
+		return ;
+	node = redirects;
+	while (node)
+	{
+		desc = node->content;
+		if (desc->subtype == REDIR_FD)
+			close(desc->fd_map.from_fd);
+		node = node->next;
+	}
 }
 
 void	destroy_ast_node(t_astnode *node)
@@ -43,7 +60,8 @@ void	destroy_ast_node(t_astnode *node)
 	// 	ft_arrclear((void *)node->cmdv, free);
 	if (node->envp)
 		ft_arrclear((void *)node->envp, free);
+	close_fds_needed(node->redirect);
 	if (node->redirect)
-		ft_lstclear(&node->redirect, temp);
+		ft_lstclear(&node->redirect, (void *)destroy_redirect);
 	free(node);
 }
