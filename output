@@ -1,1 +1,8 @@
-hello world
+awk: cmd. line:1: }{
+awk: cmd. line:1: ^ syntax error
+awk: cmd. line:1: }{
+awk: cmd. line:1: ^ syntax error
+awk: cmd. line:1: }{
+awk: cmd. line:1: ^ syntax error
+awk: cmd. line:1: }{
+awk: cmd. line:1: ^ syntax error

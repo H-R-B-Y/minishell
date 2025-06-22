@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:22:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/21 19:26:32 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/22 15:22:51 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,22 +65,22 @@ static int	_read_heredoc(struct s_ast_internal *meta, char *delim, int temp_file
 
 static int	prep_heredoc(struct s_ast_internal *meta, char *delim, short handle_vars)
 {
-	char	strs[2];
+	char	*strs[2];
 	int		temp_file[2];
 
 	strs[0] = rem_quotes(delim);
 	strs[1] = ft_itoa(get_my_pid());
-	ft_dirtyswap(&strs[1], ft_strjoin("/tmp/minishell_heredoc_", strs[1]), free);
+	ft_dirtyswap((void *)&strs[1], (void *)ft_strjoin("/tmp/minishell_heredoc_", strs[1]), free);
 	temp_file[0] = open(strs[1], O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR);
 	if (temp_file[0] == -1)
 		return (free(strs[0]), free(strs[1]), -1);
-	if (_read_heredoc(meta, strs[0], temp_file[1], handle_vars) != 0 && g_global_signal == SIGINT)
+	if (_read_heredoc(meta, strs[0], temp_file[0], handle_vars) != 0 && g_global_signal == SIGINT)
 	{
 		meta->error = AST_ERR_HEREDOC_EXIT;
 		return (-1);
 	}
 	close(temp_file[0]);
-	temp_file[0] = open(temp_file[0], O_RDONLY);
+	temp_file[0] = open(strs[1], O_RDONLY);
 	if (temp_file[0] == -1)
 		return (free(strs[0]), free(strs[1]), -1);
 	unlink(strs[1]);

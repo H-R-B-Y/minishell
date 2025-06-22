@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:13:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/21 17:40:03 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/22 15:44:29 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -273,8 +273,10 @@ int	set_any_env(t_minishell *shell)
 void	execute_command(t_minishell *shell, char *path, char **argv, char**envp)
 {
 	int			pid;
+	int			returncode;
 	
 	pid = fork();
+	returncode = -1;
 	if (pid == 0)
 	{
 		restore_signals(shell);

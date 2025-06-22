@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:21:04 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/14 16:09:09 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/22 15:20:44 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@
 // ██ ████ ██ ███████ ██ ██  ██ ██   ██ ███████    ██    █████   
 // ██  ██  ██ ██   ██ ██  ██ ██ ██   ██ ██   ██    ██    ██      
 // ██      ██ ██   ██ ██   ████ ██████  ██   ██    ██    ███████ 
+
+# ifndef RANDSEED
+#  define RANDSEED 42
+# endif
 
 /**
  * @brief Check if a character is a letter
@@ -603,5 +607,14 @@ void	ft_dirtyswap(void **a, void *b, void (*del)(void *));
  * @return size_t occurences
  */
 size_t	ft_strcountchar(char *str, char c);
+
+/**
+ * @brief Creates a random number based on the seed RANDSEED
+ * 
+ * @param min the minimum of the random number (inclusive)
+ * @param max the maximum of the random number (inclusive)
+ * @return int a new random number in the range
+ */
+int	ft_rand(int min, int max);
 
 #endif
