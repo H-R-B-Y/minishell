@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 17:46:41 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/12 17:40:09 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/14 16:21:58 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	*make_colour_string(short r, short g, short b)
 	return (parts[8]);
 }
 
-char	*status_code_part(t_minishell *shell)
+char	*status_code_part(const t_minishell *shell)
 {
 	char	*parts[10];
 
@@ -113,7 +113,7 @@ char	*directory_part(void)
 	return (output);
 }
 
-char	*create_prompt(t_minishell *shell)
+char	*create_prompt(const t_minishell *shell)
 {
 	char	*prompt;
 	char	*parts[10];

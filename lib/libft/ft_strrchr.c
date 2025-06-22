@@ -6,11 +6,11 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 19:28:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/05 11:56:27 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/14 16:09:01 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-char	*ft_strrchr(const char *s, int c)
+char	*ft_strrchr(const char *s, const int c)
 {
 	char	*start;
 

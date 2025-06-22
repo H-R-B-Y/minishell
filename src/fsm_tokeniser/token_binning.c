@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:36:40 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/12 17:56:02 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/14 16:50:39 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ t_tokentype	bin_token(const char *raw_token)
 	return (TOK_WORD);
 }
 
-t_tokentype	tokenise_type(t_tokint *tokeniser, char *str)
+t_tokentype	tokenise_type(t_tokint *tokeniser, const char *str)
 {
 	char	*substring;
 

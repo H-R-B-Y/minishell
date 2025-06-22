@@ -6,13 +6,13 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 15:25:40 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/23 20:39:16 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/14 16:48:15 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/fsm_tokeniser.h"
 
-const char	*tokretcode_str(t_tokretcode code)
+const char	*tokretcode_str(const t_tokretcode code)
 {
 	const char	*strs[TOKENISER_RETURNCODE_COUNT + 1] = {
 		"PARSE_OK", "PARSE_CONT", "PARSE_ERROR",
@@ -24,7 +24,7 @@ const char	*tokretcode_str(t_tokretcode code)
 	return (strs[code]);
 }
 
-const char	*fsmstate_str(t_fsmstate state)
+const char	*fsmstate_str(const t_fsmstate state)
 {
 	const char	*strs[STATE_COUNT + 1] = {
 		"Wrong state", "starting state", "word", "operator",

@@ -1,32 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_my_pid.c                                       :+:      :+:    :+:   */
+/*   restore_signals.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/06 13:18:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/14 16:06:57 by hbreeze          ###   ########.fr       */
+/*   Created: 2025/06/13 18:40:12 by hbreeze           #+#    #+#             */
+/*   Updated: 2025/06/16 13:12:59 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-pid_t	get_my_pid(void)
+void	restore_signals(const t_minishell *shell)
 {
-	char	*current[3];
-	char	*last_slash;
-	int		output;
+	int	i;
 
-	current[0] = getcwd(0, 0);
-	chdir("/proc/self");
-	current[1] = getcwd(0, 0);
-	last_slash = ft_strrchr(current[1], '/');
-	current[2] = ft_strdup(last_slash + 1);
-	output = ft_atoi(current[2]);
-	chdir(current[0]);
-	free(current[0]);
-	free(current[1]);
-	free(current[2]);
-	return (output);
+	i = 0;
+	while (i < 32)
+	{
+		sigaction(i, &shell->old_handlers[i], 0);
+		i++;
+	}
 }
+
+void	set_exection_signals(void)
+{
+	struct sigaction	p;
+
+	sigemptyset(&p.sa_mask);
+	p.sa_flags |= SA_SIGINFO;
+	p.sa_flags |= SA_RESTART;
+	p.sa_sigaction = default_sig_handle;
+	sigaction(SIGINT, &p, 0);
+}
+

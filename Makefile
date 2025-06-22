@@ -34,6 +34,7 @@ SRCS			:= \
 				$(SRC_DIR)/builtins/utility_funcs.c \
 				\
 				$(SRC_DIR)/execution/execution.c \
+				$(SRC_DIR)/execution/prepare_redirects.c \
 				\
 				$(SRC_DIR)/debugger/adding_items.c \
 				$(SRC_DIR)/debugger/debugger_util.c \
@@ -52,10 +53,11 @@ SRCS			:= \
 				$(SRC_DIR)/fsm_tokeniser/token_utils.c \
 				$(SRC_DIR)/fsm_tokeniser/tokeniser.c \
 				\
-				$(SRC_DIR)/heredoc_handler.c/handle_heredoc.c \
-				$(SRC_DIR)/heredoc_handler.c/handle_redirects.c \
+				$(SRC_DIR)/heredoc_handler/handle_heredoc.c \
+				$(SRC_DIR)/heredoc_handler/handle_redirects.c \
 				\
 				$(SRC_DIR)/init_process/init_process.c \
+				$(SRC_DIR)/init_process/restore_signals.c \
 				$(SRC_DIR)/init_process/shell_utils.c \
 				$(SRC_DIR)/init_process/signal_handlers.c \
 				\
@@ -73,6 +75,7 @@ SRCS			:= \
 				$(SRC_DIR)/utility/get_my_pid.c \
 				$(SRC_DIR)/utility/operators.c \
 				$(SRC_DIR)/utility/pop_line.c \
+				$(SRC_DIR)/utility/rem_quote2.c \
 				$(SRC_DIR)/utility/remove_quotes.c \
 				$(SRC_DIR)/utility/sgetenv.c \
 				$(SRC_DIR)/utility/sgetenvany.c \
