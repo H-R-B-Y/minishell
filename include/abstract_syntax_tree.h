@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   abstract_syntax_tree.h                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/14 15:58:33 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/22 17:13:34 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ struct s_redirect_desc
 		struct s_none2
 		{
 			char		*filename;
+			int			from_fd;
 			int			to_fd;
 		}				file_map;
 	};
