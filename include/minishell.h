@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/21 17:00:34 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/22 17:01:14 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,15 @@ struct s_minishell
 
 	short		interactive_mode;
 	struct sigaction	old_handlers[32];
+	
 	/*
 	this is the environment that will be passed down to any child process
 	at the start of the program we take a copy of the environment varaiables
 	so that we can edit them on the fly.
 	*/
 	char		**environment;
+
+	char		**unassigned_env;
 
 	/*
 	this is another environment variable array, this one however 
