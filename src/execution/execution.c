@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:13:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/22 17:28:01 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/24 21:50:12 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,6 +195,8 @@ static int	update_env(char ***envp, char *dup, char *name)
 	ssize_t	idx;
 	char	**old;
 
+	printf("\n\nget here 1 - ?\n\n");
+	ft_arriter((void **)(*envp), print_and_ret);
 	if (*envp == NULL)
 	{
 		*envp = ft_calloc(2, sizeof(char *));
@@ -215,6 +217,7 @@ static int	update_env(char ***envp, char *dup, char *name)
 	{
 		free((*envp)[idx]);
 		(*envp)[idx] = dup;
+		printf("\n\nget here???\n\n");
 	}
 	return (0);
 }
@@ -261,15 +264,22 @@ int	set_any_env(t_minishell *shell)
 		name = ft_strndup(argv[i], ft_strchr(argv[i], '=') - argv[i]);
 		if (name == NULL)
 			return (-1);
-		if (s_get_envid(shell, name) != -1 || _sgetanon(shell->unassigned_env, name) != -1) // to consider: only _sgetanon? no need to del in that case
+		printf("at set ANY ENV sgetanon for name \"%s\" in unassigned is %ld \n", name, _sgetanon(shell->unassigned_env, name));
+		if (s_get_envid(shell, name) >= 0 || _sgetidx(shell->unassigned_env, name) >= 0)  // to consider: only _sgetanon? no need to del in that case
 		{
-			if (_sgetanon(shell->unassigned_env, name) >= 0)
-				ft_arrdel_atindex((void **)shell->unassigned_env, _sgetanon(shell->unassigned_env, name), free);
+			printf("at set ANY ENV sgetanon for unassigned is %ld \n", _sgetidx(shell->unassigned_env, name));
+			if (_sgetidx(shell->unassigned_env, name) >= 0)
+				ft_dirtyswap((void *)&shell->unassigned_env,
+					ft_arrdel_atindex((void *)shell->unassigned_env, _sgetidx(shell->unassigned_env, name), free), free);	
 			set_n_envp(&shell->environment, argv + i, 1);
 		}
 		else
+		{
+			printf("hhere\n");
 			set_n_envp(&shell->local_env, argv + i, 1);
+		}
 		i++;
+		free(name);
 	}
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   remove_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:16:03 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/21 16:37:39 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/24 19:36:52 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int _expand_write_var(t_minishell *shell, char **output, char *str, size_t *i)
 	if (ft_isdigit((str)[i[0]]))
 		return (i[0]++, 1);
 	
-	printf("\nhere 1 old : %s\n", old);
+	// printf("\nhere 1 old : %s\n", old);
 		
 	vlen = 0;
 	while (ft_isalnum((str)[i[0] + vlen]))
@@ -45,11 +45,11 @@ int _expand_write_var(t_minishell *shell, char **output, char *str, size_t *i)
 	if (!v_name)
 		return (perror("minishell: var expansion"), 0);
 	i[0] += vlen;
-	printf("\nhere 1 old : %s ; v_name : %s ; v_len : %ld\n", old, v_name, vlen);
+	// printf("\nhere 1 old : %s ; v_name : %s ; v_len : %ld\n", old, v_name, vlen);
 	xpded_value = s_get_envany(shell, v_name);
 	if (!ft_strcmp(xpded_value, ""))
 		return (free(v_name), 1);
-	printf("\nhere 1 old : %s ; xpded_value : %s\n", old, xpded_value);
+	// printf("\nhere 1 old : %s ; xpded_value : %s\n", old, xpded_value);
 	*output = ft_calloc(ft_strlen(str + i[0]) + ft_strlen(old) + ft_strlen(xpded_value) + 1, sizeof(char));
 	if (!(*output))
 		return (*output = old, free(v_name), perror("minishell: var expansion"), 0);

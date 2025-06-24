@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:44:33 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/03 18:36:40 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/24 21:51:42 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,49 @@ void	export_no_sep(t_minishell *shell, char *item, char *name)
 {
 	ssize_t	in;
 
-	in = s_get_envid(shell, name);
-	if (in < 0)
+	in = _sgetanon(shell->local_env, name);
+	printf("sgetanon for unassigned is %ld \n", _sgetidx(shell->unassigned_env, name));
+	printf("sgetanon for local is %ld \n", in);
+	printf("sgetanon for env is %ld \n", _sgetanon(shell->environment, name));
+	if (in >= 0)
 		ft_dirtyswap((void *)&shell->environment,
-			ft_arradd_back((void *)shell->environment, ft_strjoin(item, "=")),
-			free);
-	else
-		ft_dirtyswap((void *)&shell->environment[in], ft_strjoin(item, "="),
-			free);
+			ft_arradd_back((void *)shell->environment, ft_strdup(shell->local_env[in])),
+			free);	
+	else if (_sgetanon(shell->environment, name) < 0)
+	{
+		printf("HERE?\n");
+		in = _sgetidx(shell->unassigned_env, name);
+		if (in < 0)
+		{
+			if (shell->unassigned_env == NULL)
+			{
+				shell->unassigned_env = (char **)ft_calloc(2, sizeof(char *));
+				if (shell->unassigned_env == NULL)
+					return ;
+				(shell->unassigned_env)[0] = ft_strdup(item);
+			}
+			else
+				ft_dirtyswap((void *)&shell->unassigned_env, 
+					ft_arradd_back((void *)shell->unassigned_env, ft_strdup(item)),
+					free);
+		}
+		else
+			ft_dirtyswap((void *)&shell->unassigned_env, 
+				ft_arradd_atindex((void *)shell->unassigned_env, ft_strdup(item), in),
+				free);
+			
+	}
 }
 
 void	export_with_sep(t_minishell *shell, char *item, char *name)
 {
 	ssize_t	in;
 
+	in = _sgetidx(shell->unassigned_env, name);
+	if (in >= 0)
+		ft_dirtyswap((void *)&shell->unassigned_env, 
+			ft_arrdel_atindex((void *)shell->unassigned_env, in, free),
+			free);
 	in = s_get_envid(shell, name);
 	if (in < 0)
 		ft_dirtyswap((void *)&shell->environment,
@@ -45,7 +74,7 @@ void	export_with_sep(t_minishell *shell, char *item, char *name)
 			free);
 	else
 		ft_dirtyswap((void *)&shell->environment[in],
-			ft_arradd_back((void *)shell->environment, ft_strdup(item)),
+			ft_arradd_atindex((void *)shell->environment, ft_strdup(item), in),
 			free);
 }
 
