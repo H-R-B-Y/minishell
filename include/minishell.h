@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/22 17:01:14 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/24 21:49:33 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,8 @@ accessible to the shell and not handed to the child processes.
 */
 
 ssize_t			_sgetanon(char **anon, char *name);
+
+ssize_t			_sgetidx(char **anon, char *name);
 
 /**
  * @brief get an environment variable from the internal tracked environment

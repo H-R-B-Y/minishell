@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/22 15:27:11 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/24 20:05:50 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,19 @@ int	main(int argc, char **argv, char **envp)
 	printf("Started with pid: %d\nStarted with seed: %d\n", get_my_pid(), ft_rand(0, 100));
 	while (1)
 	{
+		printf("\nENV*********************************************************\n\n");
+		ft_arriter((void *)shell.environment, print_and_ret);
+		printf("\nUNASSIGNED*********************************************************\n\n");
+		ft_arriter((void *)shell.unassigned_env, print_and_ret);
+		printf("\nLOCAL*********************************************************\n\n");
+		ft_arriter((void *)shell.local_env, print_and_ret);
 		if (next_command(&shell) == READ_EOF)
 			break ;
 		dbg_write_states(&shell.info);
 		dbg_write_tokens(&shell.info);
 		dbg_write_nodes(&shell.info);
 		dbg_write_end(&shell.info);
+		ft_arriter((void **)shell.unassigned_env, print_and_ret);
 		reset_for_command(&shell);
 	}
 	reset_for_command(&shell);

@@ -12,6 +12,29 @@
 
 #include "../../include/minishell.h"
 
+ssize_t	_sgetidx(char **anon, char *name)
+{
+	ssize_t	i;
+	size_t	len;
+
+	if (!anon)
+		return (-1);
+	i = 0;
+	len = ft_strlen(name);
+	while (1)
+	{
+		if (!anon[i])
+		{
+			i = -1;
+			break ;
+		}
+		if (!ft_strncmp(name, anon[i], len))
+			break ;
+		i++;
+	}
+	return (i);
+}
+
 ssize_t	_sgetanon(char **anon, char *name)
 {
 	ssize_t	i;
