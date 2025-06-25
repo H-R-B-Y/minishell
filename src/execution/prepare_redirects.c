@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:15:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/25 15:12:12 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/25 16:28:40 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_redirect_desc	*file_to_fd_mapper(const t_redirect_desc *redr)
 	p = ft_calloc(sizeof(t_redirect_desc), 1);
 	if (!p)
 		return (0);
-	if (redr->subtype == REDIR_FD)
+	if (redr->subtype == REDIR_FD || redr->subtype == CLOSE_FD)
 	{
 		*p = *redr;
 		return (p);
@@ -79,16 +79,24 @@ void	map_fds(t_astnode *node)
 	while (list)
 	{
 		desc = list->content;
-		if (desc->subtype == REDIR_FD)
+		if (desc->subtype == CLOSE_FD)
+			close(desc->fd_map.to_fd);
+		else if (desc->subtype == REDIR_FD)
 		{
 			current_fd = dup(desc->fd_map.from_fd);
 			dup2(current_fd, desc->fd_map.to_fd);
 			close(current_fd);
 			close(desc->fd_map.from_fd);
 		}
-		else
+		else if (desc->file_map.to_fd >= 0)
 		{
 			dup2(desc->file_map.from_fd, desc->file_map.to_fd);
+			close(desc->file_map.from_fd);
+		}
+		else
+		{
+			dup2(desc->file_map.from_fd, STDERR_FILENO);
+			dup2(desc->file_map.from_fd, STDOUT_FILENO);
 			close(desc->file_map.from_fd);
 		}
 		list = list->next;

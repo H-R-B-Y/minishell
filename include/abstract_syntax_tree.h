@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/25 13:33:04 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/25 16:17:30 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ enum	e_redirect_subtype
 {
 	REDIR_FILE,
 	REDIR_FD,
+	CLOSE_FD,
 };
 
 // Need some information about what we are redirecting

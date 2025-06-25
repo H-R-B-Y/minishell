@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:37:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/25 15:18:34 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/25 15:48:31 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	handle_potential_redirect(t_tokint *tokeniser, const char *str)
 	{
 		tokeniser->index_end++;
 		while (ft_iswhitespace(str[tokeniser->index_end]))
-			tokeniser->index_end++;	
+			tokeniser->index_end++;
 		if (ft_isdigit(str[tokeniser->index_end]))
 			while (str[tokeniser->index_end] 
 				&& (ft_isdigit(str[tokeniser->index_end])))
