@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:22:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/22 15:22:51 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/25 13:40:53 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,10 @@ static void	_replace_var(struct s_ast_internal *meta, int temp_file, char *line)
 	}
 }
 
-static int	_read_heredoc(struct s_ast_internal *meta, char *delim, int temp_file, short handlevar)
+static int	_read_heredoc(struct s_ast_internal *meta,
+	char *delim,
+	int temp_file,
+	short flags)
 {
 	char	*temp;
 	int		status;
@@ -51,7 +54,9 @@ static int	_read_heredoc(struct s_ast_internal *meta, char *delim, int temp_file
 		temp = meta->rldata->last_line;
 		if (!ft_strcmp(delim, temp))
 			break ;
-		if (handlevar && ft_strchr(temp, '$'))
+		while ((flags & 2) && temp[0] == '\t')
+			temp++;
+		if ((flags & 1) && ft_strchr(temp, '$'))
 			_replace_var(meta, temp_file, temp);
 		else
 			write(temp_file, temp, ft_strlen(temp));
@@ -89,7 +94,7 @@ static int	prep_heredoc(struct s_ast_internal *meta, char *delim, short handle_v
 
 // GOOD READ BTW: 
 // https://www.oilshell.org/blog/2016/10/18.html
-t_redirect_desc	*handle_heredoc(struct s_ast_internal *meta, char *delim)
+t_redirect_desc	*handle_heredoc(struct s_ast_internal *meta, char *delim, t_token *heredoc)
 {
 	t_redirect_desc	*output;
 	short			handle_vars;
@@ -103,7 +108,7 @@ t_redirect_desc	*handle_heredoc(struct s_ast_internal *meta, char *delim)
 	handle_vars = 0;
 	if (!ft_strchr(delim, '"') && !ft_strchr(delim, '\''))
 		handle_vars = 1;
-	temp_file[0] = prep_heredoc(meta, delim, handle_vars);
+	temp_file[0] = prep_heredoc(meta, delim, handle_vars + (!!ft_strchr(heredoc->raw, '-') * 2));
 	(*output) = (t_redirect_desc){.type = REDIRECT_HEREDOC, .subtype = REDIR_FD,
 		.fd_map.from_fd = temp_file[0], .fd_map.to_fd = STDIN_FILENO};
 	return (output);

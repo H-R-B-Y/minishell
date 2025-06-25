@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:15:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/22 17:24:36 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/25 15:12:12 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	redrtype_to_oflag(const int redr_type)
 		flag |= O_WRONLY;
 	if (redr_type == REDIRECT_OUTPUT_APPEND)
 		flag |= O_APPEND;
-	else
+	else if (redr_type != REDIRECT_INPUT)
 		flag |= O_TRUNC;
 	return (flag);
 }
@@ -84,9 +84,13 @@ void	map_fds(t_astnode *node)
 			current_fd = dup(desc->fd_map.from_fd);
 			dup2(current_fd, desc->fd_map.to_fd);
 			close(current_fd);
+			close(desc->fd_map.from_fd);
 		}
 		else
+		{
 			dup2(desc->file_map.from_fd, desc->file_map.to_fd);
+			close(desc->file_map.from_fd);
+		}
 		list = list->next;
 	}
 }

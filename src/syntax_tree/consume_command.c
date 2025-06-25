@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   consume_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 13:46:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/12 18:56:03 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/25 14:46:06 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,12 @@ void	post_consume_words(struct s_ast_internal *meta, t_astnode *node)
 	while (node->tokens[i[0]])
 	{
 		if (node->tokens[i[0]]->type == TOK_HEREDOC)
+		{
 			ft_lstadd_back(&node->redirect,
-				ft_lstnew(handle_heredoc(meta, node->tokens[++i[0]]->raw)));
-		// TOK_REDIR_APPEND && TOK_REDIR_FD && TOK_REDIR_IN && TOK_REDIR_OUT
+				ft_lstnew(handle_heredoc(meta, node->tokens[i[0] + 1]->raw, node->tokens[i[0]])));
+			i[0]++;
+		}
+		// TOK_REDIR_APPEND && TOK_REDIR_IN && TOK_REDIR_OUT
 		else if (ft_strchr("\4\5\3", node->tokens[i[0]]->type))
 		{
 			ft_lstadd_back(&node->redirect,
