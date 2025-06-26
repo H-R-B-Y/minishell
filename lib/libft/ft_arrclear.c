@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arrclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 14:40:45 by hurb              #+#    #+#             */
-/*   Updated: 2025/06/12 17:37:32 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/26 14:28:10 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	ft_arrclear(void **chunks, void (*f)(void *))
 {
 	void	**ch;
 
-	if (!chunks || !*chunks)
+	if (!chunks)
 		return ;
 	ch = chunks;
 	while (*chunks)
