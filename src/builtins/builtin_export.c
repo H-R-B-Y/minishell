@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:44:33 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/24 21:51:42 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/26 14:41:58 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,10 @@ void	export_with_sep(t_minishell *shell, char *item, char *name)
 		ft_dirtyswap((void *)&shell->environment[in],
 			ft_arradd_atindex((void *)shell->environment, ft_strdup(item), in),
 			free);
+	in = _sgetidx(shell->local_env, name);
+	if (in >= 0)
+		ft_dirtyswap((void *)&shell->local_env,
+			ft_arrdel_atindex((void *)shell->local_env, in, free), free);
 }
 
 // check if it exists in local vars and remove it
@@ -92,7 +96,7 @@ int	builtin_export(t_minishell *shell, char **argv, char **envp)
 	if (!sep)
 		name = ft_strdup(argv[1]);
 	else
-		name = ft_substr(argv[1], 0, argv[0] - sep);
+		name = ft_substr(argv[1], 0, sep - argv[1]);
 	(void (*[2])(t_minishell *, char *, char *)){export_no_sep, export_with_sep}
 		[!!sep](shell, argv[1], name);
 	in = s_get_internalenvid(shell, name);
