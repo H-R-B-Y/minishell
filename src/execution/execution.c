@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:13:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/25 16:28:50 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/26 14:12:34 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -290,7 +290,7 @@ void	execute_command(t_minishell *shell, char *path, char **argv, char**envp)
 			execve(exec_path, argv, envp);
 	}
 	else if (pid > 0)
-		waitpid(pid, NULL, 0);
+		waitpid(pid, shell->current_tree->return_value, 0);
 	else
 		perror("fork failed");
 }

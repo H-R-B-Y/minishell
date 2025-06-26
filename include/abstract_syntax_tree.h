@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/25 16:17:30 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/26 14:11:45 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,8 @@ struct	s_astnode
 	char		**envp;
 	size_t		genv_l;
 
-	int			return_code;
+	int			return_value;
+	short			return_code;
 };
 
 /**
