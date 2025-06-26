@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 11:14:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/26 12:40:48 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/26 14:10:18 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ struct	chld_info
 	pid_t	pid;
 	int		ret;
 	int		stat;
+	int		sign;
 };
 
 struct chld_info long_running_child()
@@ -80,6 +81,8 @@ void	waitonjob(pid_t pgid, struct chld_info **p, int count)
 			{
 				p[i[1]]->ret = ret;
 				p[i[1]]->stat = -1;
+				if ( WIFSIGNALED(ret))
+					p[i[1]]->sign = WTERMSIG(ret);
 			}
 			i[0]++;
 			i[1]++;
@@ -108,7 +111,7 @@ WAITJOB:
 	waitonjob(a.pid, (struct chld_info *[2]){&a, &b}, 2);
 	tcsetpgrp(STDIN_FILENO, getpid());
 	if (a.stat == b.stat && a.stat == -1)
-		return (printf("children dead\n"), 0);
+		return (printf("children dead\nsignal a: %d\nsignal b: %d", a.sign, b.sign), 0);
 	else
 	{
 		printf("CHILDREN SLEEPING\n");
