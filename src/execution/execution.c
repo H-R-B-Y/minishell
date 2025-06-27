@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:13:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/26 14:12:34 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/27 18:36:25 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ char	**cmdv_prep(t_minishell *shell)
 
 	
 	node = shell->current_tree;
-	argv = ft_calloc(node->token_count + 1, sizeof(char **));
+	argv = ft_calloc(node->token_count + 1, sizeof(char *));
 	if (!argv)
 		return (NULL);
 	i = 0;
@@ -285,12 +285,12 @@ void	execute_command(t_minishell *shell, char *path, char **argv, char**envp)
 		else
 			exec_path = get_exec_path(path, envp);
 		if (!exec_path)
-			perror_exit(path);
+		{reset_for_command(shell);perror_exit(path);}
 		else
 			execve(exec_path, argv, envp);
 	}
 	else if (pid > 0)
-		waitpid(pid, shell->current_tree->return_value, 0);
+		waitpid(pid, &shell->current_tree->return_value, 0);
 	else
 		perror("fork failed");
 }
@@ -312,6 +312,7 @@ int	execute_ast(t_minishell *shell)
 	if (shell->current_tree->type == AST_COMMAND)
 	{
 		shell->current_tree->cmdv = cmdv_prep(shell); // handle variables
+		glob_variable(shell->current_tree);
 		shell->current_tree->genv_l = ft_arrlen((void **)shell->environment);
 		if (prepare_fds(shell->current_tree) < 0)
 			return (-1);
@@ -328,7 +329,6 @@ int	execute_ast(t_minishell *shell)
 				ft_arrclear((void **)shell->current_tree->cmdv, free);
 				return (0);
 			}
-				
 		}
 		return (set_any_env(shell));
 	}

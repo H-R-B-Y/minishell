@@ -3,27 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   splitting_next_lines.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:16:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/14 17:04:19 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/27 13:42:02 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-size_t	split_extra_lines(t_readline_data *data, char *str)
+ssize_t	append_to_history_item(t_readline_data *data, char *str)
 {
-	char	**split;
-	char	*temp;
+	char *temp;
 
+	if (!str)
+		return (-1);
 	if (!data->current_hist_item)
 		temp = ft_strdup(str);
 	else
 		temp = str_join_with_sep(data->current_hist_item, str, "\n");
-	free(data->current_hist_item);
-	data->current_hist_item = temp;
-	split = ft_split(str, '\n');
+	ft_dirtyswap((void *)&data->current_hist_item, temp, free);
+	return (1);
+}
+
+size_t	split_extra_lines(t_readline_data *data, char *str)
+{
+	char	**split;
+
+	append_to_history_item(data, str);
+	split = ft_split(str, '\n'); // this should actually not use split, but something more complex that allows for empty strings
 	data->extra_lines = split;
 	data->extra_line_count = ft_arrlen((void *)split);
 	return (data->extra_line_count);
