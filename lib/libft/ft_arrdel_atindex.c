@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arrdel_atindex.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 17:20:38 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/26 16:36:48 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/26 15:05:41 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	**ft_arrdel_atindex(void **arr, size_t index, void (*del)(void *))
 	size_t	len;
 	void	**output;
 
-	if (!arr || !*arr)
+	if (!arr)
 		return (0);
 	len = ft_arrlen(arr);
 	output = ft_calloc(len, sizeof(void *));

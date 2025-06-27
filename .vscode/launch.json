@@ -32,7 +32,7 @@
 	"name": "(don't use)testing Launch",
 	"type": "cppdbg",
 	"request": "launch",
-	"program": "${workspaceRoot}/minishell",
+	"program": "${fileDirname}/a.out",
 	"args": [],
 	"stopAtEntry": false,
 	"cwd": "${workspaceRoot}",

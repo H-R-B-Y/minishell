@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:22:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/25 13:40:53 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/27 13:38:50 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,17 +49,19 @@ static int	_read_heredoc(struct s_ast_internal *meta,
 	int		status;
 
 	status = next_line(meta->rldata, "heredoc > ");
-	while(status == READ_OK)
+	while(status == READ_OK || status == READ_NOTHING)
 	{
 		temp = meta->rldata->last_line;
 		if (!ft_strcmp(delim, temp))
 			break ;
 		while ((flags & 2) && temp[0] == '\t')
 			temp++;
-		if ((flags & 1) && ft_strchr(temp, '$'))
+		if (status == READ_OK && (flags & 1) && ft_strchr(temp, '$'))
 			_replace_var(meta, temp_file, temp);
-		else
+		else if (status == READ_OK)
 			write(temp_file, temp, ft_strlen(temp));
+		else if (status == READ_NOTHING)
+			append_to_history_item(meta->rldata, "");
 		write(temp_file, "\n", 1);
 		status = next_line(meta->rldata, "heredoc > ");
 	}

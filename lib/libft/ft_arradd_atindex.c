@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arradd_atindex.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:53:54 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/31 14:24:55 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/26 15:05:20 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	**ft_arradd_atindex(void **arr, void *newitem, size_t index)
 	size_t	len;
 	void	**output;
 
-	if (!arr || !*arr)
+	if (!arr)
 		return (0);
 	if (index == 0)
 		return (ft_arradd_front(arr, newitem));
