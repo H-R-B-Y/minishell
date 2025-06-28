@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/24 20:05:50 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/28 19:38:17 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ int	main(int argc, char **argv, char **envp)
 		dbg_write_tokens(&shell.info);
 		dbg_write_nodes(&shell.info);
 		dbg_write_end(&shell.info);
-		ft_arriter((void **)shell.unassigned_env, print_and_ret);
 		reset_for_command(&shell);
 	}
 	reset_for_command(&shell);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arrmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 14:52:44 by hurb              #+#    #+#             */
-/*   Updated: 2025/05/02 17:52:41 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/27 16:30:40 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	**ft_arrmap(void **arr, void *(*f)(void *), void (*del)(void *))
 	size_t	idx;
 	void	**output;
 
-	if (!arr || !*arr)
+	if (!arr)
 		return ((void *)0);
 	len = ft_arrlen(arr);
 	output = malloc(sizeof(void *) * (len + 1));

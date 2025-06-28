@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arradd_back.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:52:31 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/26 14:25:25 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/27 17:36:31 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/libft.h"
+#include <stdio.h>
 
 void	**ft_arradd_back(void **arr, void *newitem)
 {

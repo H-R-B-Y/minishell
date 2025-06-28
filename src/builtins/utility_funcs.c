@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utility_funcs.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:57:17 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/04 18:21:22 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/28 19:46:09 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,12 @@ int	get_run_builtincmd(t_minishell *shell)
 
 	node = shell->current_tree;
 	argv = node->cmdv;
-	node->envp = (char **)ft_arrmap((void **)shell->environment,
-		(void *)ft_strdup, free);
-	if (!node->envp)
-		return (ft_arrclear((void **)argv, free), 
-			perror("minishell: ft_arrmap"), 0);
-	set_n_envp(&node->envp, argv, node->cmd_i);
+	set_n_envp(&shell->cmd_env, argv, node->cmd_i);
 	fncmap = mapped_builtins();
 	i = 0;
 	while (i < BLTINCOUNT)
 	{
-		if (!ft_strcmp(argv[0], fncmap[i].match))
+		if (!ft_strcmp(argv[node->cmd_i], fncmap[i].match))
 			return (fncmap[i].fnc(shell, argv + node->cmd_i, node->envp));
 		i++;
 	}
@@ -61,5 +56,24 @@ void	free_strvec(void *a)
 void	*print_and_ret(void *p)
 {
 	printf("%s\n", (char *)p);
+	return (p);
+}
+
+void	*export_print_and_ret(void *p)
+{
+	char	*str;
+
+	str = p;
+	ft_putstr_fd("declare -x ", 1);
+	while (*str)
+	{
+		if (*str == '=')
+		{
+			printf("=\"%s\"\n", ++str);
+			return (p);
+		}
+		ft_putchar_fd(*str++, 1);
+	}
+	ft_putchar_fd('\n', 1);
 	return (p);
 }
