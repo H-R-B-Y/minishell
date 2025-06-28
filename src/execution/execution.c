@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:13:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/24 21:50:12 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/27 18:06:47 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void free_arr(void **arr)
 	int	i;
 
 	i = 0;
+	if (!arr)
+		return ;
 	while (arr[i])
 	{
 		free(arr[i]);
@@ -150,11 +152,10 @@ char	**cmdv_prep(t_minishell *shell)
 }
 
 /* TODO **************************************
- * handle $    if $ folled by quotes, jump it. if on its own, cmd
-	* if var not exitant : move to the next char
-	* if \' open dont expand
-	* if \" expand
-
+ * case: cquinter@DESKTOP-7CUJOKT:~/42london/common_core/l3/minishell$ var=123 vamos=3234 export var
+		cquinter@DESKTOP-7CUJOKT:~/42london/common_core/l3/minishell$ env | grep var
+			var=123
+			XDG_DATA_DIRS=/usr/local/share:/usr/share:/var/lib/snapd/desktop
 	* 
 	* 
  * create a paralel linked list to index var, to be used by export when "expor var"
@@ -190,13 +191,11 @@ char	**cmdv_prep(t_minishell *shell)
 #include "../../include/libft.h"
 
 
-static int	update_env(char ***envp, char *dup, char *name)
+int	update_env(char ***envp, char *dup, char *name, ssize_t (*f)(char **, char *))
 {
 	ssize_t	idx;
 	char	**old;
 
-	printf("\n\nget here 1 - ?\n\n");
-	ft_arriter((void **)(*envp), print_and_ret);
 	if (*envp == NULL)
 	{
 		*envp = ft_calloc(2, sizeof(char *));
@@ -204,7 +203,7 @@ static int	update_env(char ***envp, char *dup, char *name)
 			return (-1);
 		return ((*envp)[0] = dup, 0);
 	}
-	idx = _sgetanon(*envp, name);
+	idx = f(*envp, name);
 	if (idx == -1)
 	{
 		old = *envp;
@@ -217,7 +216,6 @@ static int	update_env(char ***envp, char *dup, char *name)
 	{
 		free((*envp)[idx]);
 		(*envp)[idx] = dup;
-		printf("\n\nget here???\n\n");
 	}
 	return (0);
 }
@@ -241,10 +239,11 @@ int	set_n_envp(char ***envp, char **argv, size_t n)
 		dup = ft_strdup(argv[i]);
 		if (dup == NULL)
 			return (free(name), -1);
-		if (update_env(envp, dup, name) == -1)
+		if (update_env(envp, dup, name, _sgetanon) == -1)
 			return (free(dup), free(name), -1);
 		free(name);
 		i++;
+		
 	}
 	return (0);
 }
@@ -264,20 +263,15 @@ int	set_any_env(t_minishell *shell)
 		name = ft_strndup(argv[i], ft_strchr(argv[i], '=') - argv[i]);
 		if (name == NULL)
 			return (-1);
-		printf("at set ANY ENV sgetanon for name \"%s\" in unassigned is %ld \n", name, _sgetanon(shell->unassigned_env, name));
 		if (s_get_envid(shell, name) >= 0 || _sgetidx(shell->unassigned_env, name) >= 0)  // to consider: only _sgetanon? no need to del in that case
 		{
-			printf("at set ANY ENV sgetanon for unassigned is %ld \n", _sgetidx(shell->unassigned_env, name));
 			if (_sgetidx(shell->unassigned_env, name) >= 0)
 				ft_dirtyswap((void *)&shell->unassigned_env,
 					ft_arrdel_atindex((void *)shell->unassigned_env, _sgetidx(shell->unassigned_env, name), free), free);	
 			set_n_envp(&shell->environment, argv + i, 1);
 		}
 		else
-		{
-			printf("hhere\n");
 			set_n_envp(&shell->local_env, argv + i, 1);
-		}
 		i++;
 		free(name);
 	}
@@ -331,13 +325,19 @@ int	execute_ast(t_minishell *shell)
 	{
 		shell->current_tree->cmdv = cmdv_prep(shell); // handle variables
 		shell->current_tree->genv_l = ft_arrlen((void **)shell->environment);
+		shell->current_tree->envp = (char **)ft_arrmap((void **)shell->environment,
+			(void *)ft_strdup, free);
+		if (!shell->current_tree->envp)
+			return (ft_arrclear((void **)shell->current_tree->cmdv, free), 
+				perror("minishell: ft_arrmap"), 0);
+		shell->cmd_env = NULL;
 		if (prepare_fds(shell->current_tree) < 0)
 			return (-1);
 		if (shell->current_tree->cmd_i != (size_t)-1)
 		{
 			if (get_run_builtincmd(shell))
-				return (printf("SUCCESS at exec_command: executed builtin %s\n", shell->current_tree->cmdv[0]), 
-					free_arr((void **)shell->current_tree->cmdv), 0);
+				return (printf("SUCCESS at exec_command: executed builtin %s\n", shell->current_tree->cmdv[shell->current_tree->cmd_i]), 
+					free_arr((void **)shell->current_tree->cmdv), free_arr((void **)shell->cmd_env), 0);
 			else
 			{
 				execute_command(shell, shell->current_tree->cmdv[shell->current_tree->cmd_i], 

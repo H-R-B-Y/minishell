@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/24 21:49:33 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/28 19:17:08 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ struct s_minishell
 	char		**environment;
 
 	char		**unassigned_env;
+
+	char		**cmd_env;
 
 	/*
 	this is another environment variable array, this one however 
@@ -301,6 +303,8 @@ typedef int					(*t_builtincmd)(t_minishell *, char **, char **);
 int	get_run_builtincmd(t_minishell *shell);
 
 void	*print_and_ret(void *p);
+
+void	*export_print_and_ret(void *p);
 
 /**
  * @brief is current directory a git directory
