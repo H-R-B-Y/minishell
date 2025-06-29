@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arrclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 14:40:45 by hurb              #+#    #+#             */
-/*   Updated: 2025/06/26 14:28:10 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/29 11:43:19 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,3 +28,26 @@ void	ft_arrclear(void **chunks, void (*f)(void *))
 	}
 	free(ch);
 }
+
+/*void	ft_arrclear(void ***chunks, void (*f)(void *))
+{
+	void	**ch;
+	size_t	i;
+
+
+	if (!chunks || !*chunks)
+		return ;
+	if (!f)
+		f = free;
+	i = 0;
+	ch = *chunks;
+	while (ch[i])
+	{
+		if (f)
+			f(ch[i]);
+		ch[i] = NULL; 
+		i++;
+	}
+	free(ch);
+	*chunks = NULL;
+}*/

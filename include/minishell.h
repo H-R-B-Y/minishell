@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/28 19:17:08 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/29 13:33:01 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,6 @@ struct s_minishell
 	char		**environment;
 
 	char		**unassigned_env;
-
-	char		**cmd_env;
 
 	/*
 	this is another environment variable array, this one however 
@@ -281,7 +279,7 @@ Things that can be accessed externally in the builtins are
  * @param envp the current environment variables
  * @return int the statuscode
  */
-typedef int					(*t_builtincmd)(t_minishell *, char **, char **);
+typedef int					(*t_builtincmd)(t_minishell *, char **, char ***);
 
 
 /**
@@ -300,7 +298,9 @@ typedef int					(*t_builtincmd)(t_minishell *, char **, char **);
  * @param str string to check for a builtin command
  * @return t_builtincmd a function to run as a command
  */
-int	get_run_builtincmd(t_minishell *shell);
+t_builtincmd _get_builtincmd(t_astnode *node);
+
+int		exec_builtincmd(t_minishell *shell, t_astnode *node, t_builtincmd cmd);
 
 void	*print_and_ret(void *p);
 

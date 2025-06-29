@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:57:17 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/28 19:46:09 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/29 13:02:17 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,23 +27,32 @@ static const struct s_buitinmapping	*mapped_builtins(void)
 	return (builtinmap);
 }
 
-int	get_run_builtincmd(t_minishell *shell)
+t_builtincmd _get_builtincmd(t_astnode *node)
 {
 	const struct s_buitinmapping	*fncmap;
 	size_t							i;
-	char							**argv;
-	t_astnode						*node;
-
-	node = shell->current_tree;
-	argv = node->cmdv;
-	set_n_envp(&shell->cmd_env, argv, node->cmd_i);
+	
 	fncmap = mapped_builtins();
 	i = 0;
 	while (i < BLTINCOUNT)
 	{
-		if (!ft_strcmp(argv[node->cmd_i], fncmap[i].match))
-			return (fncmap[i].fnc(shell, argv + node->cmd_i, node->envp));
+		if (!ft_strcmp(node->cmdv[node->cmd_i], fncmap[i].match))
+			return (fncmap[i].fnc);
 		i++;
+	}
+	return (NULL);
+}
+
+int	exec_builtincmd(t_minishell *shell, t_astnode *node, t_builtincmd cmd)
+{
+	if (cmd)
+	{
+		set_n_envp(&node->envp, node->cmdv, node->cmd_i);
+		shell->return_code = cmd(shell,
+			node->cmdv + node->cmd_i, &node->envp);
+		if (node->envp)
+			ft_dirtyswap((void *)&node->envp, (void *)0, free);
+		return (1);
 	}
 	return (0);
 }

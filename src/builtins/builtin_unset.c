@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 15:13:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/29 17:00:11 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/29 11:46:39 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ so maybe that is what i should be working!
 // order in which we check these shouldnt really matter
 // because only one should be true at any given time.
 
-int	builtin_unset(t_minishell *shell, char **argv, char **envp)
+int	builtin_unset(t_minishell *shell, char **argv, char ***envp)
 {
 	ssize_t	in;
 	char	*name;
@@ -36,14 +36,14 @@ int	builtin_unset(t_minishell *shell, char **argv, char **envp)
 
 	(void)envp;
 	if (!argv[1])
-		return (1);
+		return (0);
 	sep = ft_strchr(argv[1], '=');
 	if (!sep)
 		name = ft_strdup(argv[1]);
 	else
 		name = ft_substr(argv[1], 0, sep - argv[1]);
 	if (!name)
-		return (1);
+		return (perror("minishell: unset: unable to malloc"), 1);
 	in = s_get_envid(shell, name);
 	if (in >= 0)
 		ft_dirtyswap((void *)&shell->environment,

@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/28 19:38:17 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/29 12:01:51 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	prep_tree(t_minishell *shell)
 		dbg_add_ast(&shell->info, shell->current_tree);
 		if (shell->interactive_mode)
 			set_exection_signals();
-		execute_ast(shell);
+		execute_ast(shell, shell->current_tree);
 		setup_signals(shell);
 	}
 	else if (astcode == AST_ERR_SYNTAX)
