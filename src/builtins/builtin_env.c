@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:34:33 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/27 17:57:10 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/29 11:46:51 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 
 void	*print_and_ret(void *p);
 
-int	builtin_env(t_minishell *shell, char **argv, char **envp)
+int	builtin_env(t_minishell *shell, char **argv, char ***envp)
 {
 	(void)argv;
 	(void)envp;
 	(void)shell;
 	ft_arriter((void *)shell->environment, print_and_ret);
-	ft_arriter((void *)shell->cmd_env, print_and_ret);
-	return (1);
+	ft_arriter((void *)(*envp), print_and_ret);
+	return (0);
 }
