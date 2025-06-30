@@ -6,13 +6,12 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 15:13:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/30 20:04:52 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/30 20:12:12 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../include/builtin.h"
-
 
 void	unset_any(t_minishell *shell, char *name)
 {

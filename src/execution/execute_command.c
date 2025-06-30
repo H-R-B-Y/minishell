@@ -25,24 +25,12 @@ void	get_exec_cmd(t_minishell *shell, t_astnode *node, t_builtincmd *b_in)
 		execve(exec_path, argv, node->envp);
 }
 
-int	fork_any_exec(t_minishell *shell, t_astnode *node, t_builtincmd cmd)
+int	exec_raw(t_minishell *shell, t_astnode *node, t_builtincmd cmd)
 {
-	pid_t	pid;
-	int		returncode;
-
-	pid = fork();
-	returncode = -1;
-	if (pid == 0)
-	{
-		if (cmd)
-			exec_builtincmd(shell, node, cmd);
-		else
-			get_exec_cmd(shell, node, NULL);
-	}
-	else if (pid > 0)
-		waitpid(pid, &returncode, 0);
-	if (returncode != -1)
-		shell->return_code = WEXITSTATUS(returncode);
+	if (cmd)
+		exec_builtincmd(shell, node, cmd);
+	else
+		get_exec_cmd(shell, node, NULL);
 	return (0);
 }
 
@@ -59,8 +47,9 @@ int	exec_default(t_minishell *shell, t_astnode *node, t_builtincmd cmd)
 		get_exec_cmd(shell, node, NULL);
 	else if (pid > 0)
 		waitpid(pid, &returncode, 0);
-	if (returncode != -1)
-		shell->return_code = WEXITSTATUS(returncode);
+	else
+		perror_exit(shell, "minishell: exec_cmd fork");
+	_set_returncode(&shell->return_code, returncode);
 	return (0);
 }
 
@@ -72,7 +61,7 @@ int	execute_command(t_minishell *shell, t_astnode *node)
 	if (node->cmd_i != (size_t)-1)
 	{
 		if (node->from_type == AST_PIPE)
-			fork_any_exec(shell, node, _get_builtincmd(node));
+			exec_raw(shell, node, _get_builtincmd(node));
 		else
 			exec_default(shell, node, _get_builtincmd(node));
 		return (0);
