@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:44:33 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/29 11:50:06 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/30 19:45:05 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	builtin_export(t_minishell *shell, char **argv, char ***envp)
 	i = 1;
 	if (!argv[i])
 		return (export_env_print(shell));
-	while (i + shell->current_tree->cmd_i < shell->current_tree->token_count)
+	while (argv[i])
 	{
 		sep = ft_strchr(argv[i], '=');
 		if (!sep)
