@@ -11,3 +11,13 @@ void	perror_exit(t_minishell *shell, char *message)
 	restore_signals(shell);
 	exit(EXIT_FAILURE);
 }
+
+void	_set_returncode(int *to_set, int code)
+{
+	if (WIFEXITED(code))
+		*to_set = WEXITSTATUS(code);
+	else if (WIFSIGNALED(code))
+		*to_set = 128 + WTERMSIG(code);
+	else
+		*to_set = 1;
+}

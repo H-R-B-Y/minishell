@@ -35,7 +35,8 @@ SRCS			:= \
 				\
 				$(SRC_DIR)/execution/execution.c \
 				$(SRC_DIR)/execution/execute_command.c \
-				$(SRC_DIR)/execution/error_handling_utils.c \
+				$(SRC_DIR)/execution/execute_pipe.c \
+				$(SRC_DIR)/execution/exit_handling_utils.c \
 				$(SRC_DIR)/execution/cmd_prep_utils.c \
 				$(SRC_DIR)/execution/prepare_redirects.c \
 				\
