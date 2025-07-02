@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/29 12:01:51 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/02 17:31:40 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,12 @@ int	main(int argc, char **argv, char **envp)
 	printf("Started with pid: %d\nStarted with seed: %d\n", get_my_pid(), ft_rand(0, 100));
 	while (1)
 	{
-		printf("\nENV*********************************************************\n\n");
-		ft_arriter((void *)shell.environment, print_and_ret);
-		printf("\nUNASSIGNED*********************************************************\n\n");
-		ft_arriter((void *)shell.unassigned_env, print_and_ret);
-		printf("\nLOCAL*********************************************************\n\n");
-		ft_arriter((void *)shell.local_env, print_and_ret);
+		// printf("\nENV*********************************************************\n\n");
+		// ft_arriter((void *)shell.environment, print_and_ret);
+		// printf("\nUNASSIGNED*********************************************************\n\n");
+		// ft_arriter((void *)shell.unassigned_env, print_and_ret);
+		// printf("\nLOCAL*********************************************************\n\n");
+		// ft_arriter((void *)shell.local_env, print_and_ret);
 		if (next_command(&shell) == READ_EOF)
 			break ;
 		dbg_write_states(&shell.info);
