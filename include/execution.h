@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:02:44 by cquinter          #+#    #+#             */
-/*   Updated: 2025/07/02 18:10:08 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/02 21:27:35 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int		set_any_env(t_minishell *shell);
 int		execute_command(t_minishell *shell, t_astnode *node);
 int		execute_pipe(t_minishell *shell, t_astnode *node);
 int		execute_subshell(t_minishell *shell, t_astnode *node);
+int		execute_seq(t_minishell *shell, t_astnode *node);
+int		execute_logical(t_minishell *shell, t_astnode *node);
 
 int		execute_ast(t_minishell *shell, t_astnode *node);
 
