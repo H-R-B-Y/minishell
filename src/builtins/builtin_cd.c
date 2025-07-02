@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:31:30 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/29 11:46:08 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/02 21:50:22 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ int	builtin_cd(t_minishell *shell, char **argv, char ***envp)
 		free(tmp);
 	}
 	else
-		chdir(argv[1]);
-	perror("builtin_cd");
+	{
+		if (chdir(argv[1]) == -1)
+			return (perror("minishell: builtin_cd"), 1);
+	}
 	return (0);
 }
