@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/21 17:00:34 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/29 13:33:01 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,15 @@ struct s_minishell
 
 	short		interactive_mode;
 	struct sigaction	old_handlers[32];
+	
 	/*
 	this is the environment that will be passed down to any child process
 	at the start of the program we take a copy of the environment varaiables
 	so that we can edit them on the fly.
 	*/
 	char		**environment;
+
+	char		**unassigned_env;
 
 	/*
 	this is another environment variable array, this one however 
@@ -194,6 +197,8 @@ accessible to the shell and not handed to the child processes.
 
 ssize_t			_sgetanon(char **anon, char *name);
 
+ssize_t			_sgetidx(char **anon, char *name);
+
 /**
  * @brief get an environment variable from the internal tracked environment
  * 
@@ -274,7 +279,7 @@ Things that can be accessed externally in the builtins are
  * @param envp the current environment variables
  * @return int the statuscode
  */
-typedef int					(*t_builtincmd)(t_minishell *, char **, char **);
+typedef int					(*t_builtincmd)(t_minishell *, char **, char ***);
 
 
 /**
@@ -293,9 +298,13 @@ typedef int					(*t_builtincmd)(t_minishell *, char **, char **);
  * @param str string to check for a builtin command
  * @return t_builtincmd a function to run as a command
  */
-int	get_run_builtincmd(t_minishell *shell);
+t_builtincmd _get_builtincmd(t_astnode *node);
+
+int		exec_builtincmd(t_minishell *shell, t_astnode *node, t_builtincmd cmd);
 
 void	*print_and_ret(void *p);
+
+void	*export_print_and_ret(void *p);
 
 /**
  * @brief is current directory a git directory
