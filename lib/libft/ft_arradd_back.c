@@ -6,18 +6,19 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:52:31 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/02 00:47:53 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/27 17:36:31 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/libft.h"
+#include <stdio.h>
 
 void	**ft_arradd_back(void **arr, void *newitem)
 {
 	void	**output;
 	size_t	len;
 
-	if (!arr || !*arr)
+	if (!arr)
 		return (0);
 	len = ft_arrlen(arr);
 	output = ft_calloc(len + 2, sizeof(void *));

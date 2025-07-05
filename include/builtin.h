@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:31:46 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/01 20:45:52 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/29 11:47:45 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 typedef struct s_minishell	t_minishell;
 
-typedef int (*t_builtincmd)(t_minishell *, char **, char **);
+typedef int (*t_builtincmd)(t_minishell *, char **, char ***);
 
 /*
 I will add some utility functions here for checking if 
@@ -45,7 +45,7 @@ Follows are prototypes for the builtin commandss
  * @param envp the current environment variables
  * @return int the statuscode
  */
-int	builtin_cd(t_minishell *shell, char **argv, char **envp);
+int	builtin_cd(t_minishell *shell, char **argv, char ***envp);
 
 /**
  * @brief echo some text
@@ -55,7 +55,7 @@ int	builtin_cd(t_minishell *shell, char **argv, char **envp);
  * @param envp the current environment variables
  * @return int the statuscode
  */
-int	builtin_echo(t_minishell *shell, char **argv, char **envp);
+int	builtin_echo(t_minishell *shell, char **argv, char ***envp);
 
 /*
  * @brief print all environment variables set
@@ -65,7 +65,7 @@ int	builtin_echo(t_minishell *shell, char **argv, char **envp);
  * @param envp the current environment variables
  * @return int 
  */
-int	builtin_env(t_minishell *shell, char **argv, char **envp);
+int	builtin_env(t_minishell *shell, char **argv, char ***envp);
 
 /**
  * @brief exit the shell
@@ -75,7 +75,7 @@ int	builtin_env(t_minishell *shell, char **argv, char **envp);
  * @param envp the current environment variables
  * @return int the status code (ignored in this case)
  */
-int	builtin_exit(t_minishell *shell, char **argv, char **envp);
+int	builtin_exit(t_minishell *shell, char **argv, char ***envp);
 
 /**
  * @brief add a new variable to the environment
@@ -85,7 +85,7 @@ int	builtin_exit(t_minishell *shell, char **argv, char **envp);
  * @param envp the current environment variables
  * @return int the return code
  */
-int	builtin_export(t_minishell *shell, char **argv, char **envp);
+int	builtin_export(t_minishell *shell, char **argv, char ***envp);
 
 /**
  * @brief print current working directory
@@ -95,7 +95,7 @@ int	builtin_export(t_minishell *shell, char **argv, char **envp);
  * @param envp the current environment variables
  * @return int the return code
  */
-int	builtin_pwd(t_minishell *shell, char **argv, char **envp);
+int	builtin_pwd(t_minishell *shell, char **argv, char ***envp);
 
 /**
  * @brief remove a variable from the environment
@@ -105,6 +105,6 @@ int	builtin_pwd(t_minishell *shell, char **argv, char **envp);
  * @param envp the current environment variables
  * @return int the status code
  */
-int	builtin_unset(t_minishell *shell, char **argv, char **envp);
+int	builtin_unset(t_minishell *shell, char **argv, char ***envp);
 
 #endif

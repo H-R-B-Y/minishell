@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   abstract_syntax_tree.h                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/14 15:58:33 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/29 13:31:17 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ struct	s_astnode
 	t_astype	type;
 	t_astnode	*left_node;
 	t_astnode	*right_node;
+	t_astype	from_type;
 
 	t_token		**tokens;
 	int			token_arr_freeable;
@@ -134,7 +135,7 @@ struct	s_astnode
 	size_t		cmd_i;
 	t_list		*redirect; // store the redirect descriptors in the list.
 	char		**envp;
-	size_t		genv_l;
+	size_t		genv_l; // to delete???
 
 	int			return_code;
 };

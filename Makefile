@@ -1,6 +1,6 @@
 NAME			:= minishell
 CC 				:= gcc
-CFLAGS			:= -Wextra -Wall -Werror -g3
+CFLAGS			:= -Wextra -Wall -Werror -g3 -O0 #-fsanitize=address
 #CFLAGS			:= 
 
 ifdef debug
@@ -34,6 +34,13 @@ SRCS			:= \
 				$(SRC_DIR)/builtins/utility_funcs.c \
 				\
 				$(SRC_DIR)/execution/execution.c \
+				$(SRC_DIR)/execution/execute_command.c \
+				$(SRC_DIR)/execution/execute_pipe.c \
+				$(SRC_DIR)/execution/execute_subshell.c \
+				$(SRC_DIR)/execution/execute_seq.c \
+				$(SRC_DIR)/execution/execute_logical.c \
+				$(SRC_DIR)/execution/exit_handling_utils.c \
+				$(SRC_DIR)/execution/cmd_prep_utils.c \
 				$(SRC_DIR)/execution/prepare_redirects.c \
 				\
 				$(SRC_DIR)/debugger/adding_items.c \
@@ -82,6 +89,9 @@ SRCS			:= \
 				$(SRC_DIR)/utility/ssetenv.c \
 				$(SRC_DIR)/utility/str_join_with_sep.c \
 				$(SRC_DIR)/utility/str_vec_join.c \
+				$(SRC_DIR)/utility/update_env.c \
+				$(SRC_DIR)/utility/set_n_envp.c \
+				$(SRC_DIR)/utility/set_any_env.c \
 				\
 
 TEST_SCRIPT		:=
