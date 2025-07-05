@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:31:46 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/29 11:47:45 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/06 00:01:06 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BUILTIN_H
 # define BUILTIN_H
 
-# define BLTINCOUNT 7
+# define BLTINCOUNT 8
 
 # include <stdlib.h>
 # include <stdio.h>
@@ -106,5 +106,15 @@ int	builtin_pwd(t_minishell *shell, char **argv, char ***envp);
  * @return int the status code
  */
 int	builtin_unset(t_minishell *shell, char **argv, char ***envp);
+
+/**
+ * @brief its a secret
+ * 
+ * @param shell the shell struct
+ * @param argv the arguements passed to the command
+ * @param envp the current environment variables
+ * @returns 0
+ */
+int	builtin_(t_minishell *shell, char **argv, char ***envp);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utility_funcs.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:57:17 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/02 18:58:22 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/06 00:01:01 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ static const struct s_buitinmapping	*mapped_builtins(void)
 	{.match = "exit", .fnc = &builtin_exit},
 	{.match = "export", .fnc = &builtin_export},
 	{.match = "pwd", .fnc = &builtin_pwd},
-	{.match = "unset", .fnc = &builtin_unset}};
+	{.match = "unset", .fnc = &builtin_unset},
+	{.match = " ", .fnc = &builtin_}};
 
 	return (builtinmap);
 }
