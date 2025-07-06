@@ -25,6 +25,7 @@ SRCS			:= \
 				$(SRC_DIR)/better_prompt/prompt_setup.c \
 				\
 				$(SRC_DIR)/builtins/builtin_cd.c \
+				$(SRC_DIR)/builtins/builtin_.c \
 				$(SRC_DIR)/builtins/builtin_echo.c \
 				$(SRC_DIR)/builtins/builtin_env.c \
 				$(SRC_DIR)/builtins/builtin_exit.c \
@@ -94,9 +95,14 @@ SRCS			:= \
 				$(SRC_DIR)/utility/set_any_env.c \
 				\
 
+
+BIN				:= \
+				$(SRC_DIR)/builtins/raw_dump.bin\
+				\
+
 TEST_SCRIPT		:=
 
-OBJS			:= ${SRCS:.c=.o}
+OBJS			:= $(BIN:.bin=.o) ${SRCS:.c=.o}
 
 MAIN			:= $(SRC_DIR)/main.c
 
@@ -117,8 +123,11 @@ $(NAME): $(MAIN) $(OBJS) $(LIBFT) ./include/minishell.h
 $(LIBFT):
 		@$(MAKE) --directory $(LIBFT_DIR) all CFLAGS="$(CFLAGS)" CC=$(CC)
 
-.c.o:
+%.o: %.c
 		@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
+
+%.o: %.bin
+	@ld -r -b binary -o $@ $<
 
 clean:
 		@$(MAKE) --directory $(LIBFT_DIR) fclean 
