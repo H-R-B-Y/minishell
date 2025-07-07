@@ -1,6 +1,6 @@
 NAME			:= minishell
 CC 				:= gcc
-CFLAGS			:= -Wextra -Wall -Werror -g3 -O0
+CFLAGS			:= -Wextra -Wall -Werror -g3 -O0 #-fsanitize=address
 #CFLAGS			:= 
 
 ifdef debug
@@ -25,6 +25,7 @@ SRCS			:= \
 				$(SRC_DIR)/better_prompt/prompt_setup.c \
 				\
 				$(SRC_DIR)/builtins/builtin_cd.c \
+				$(SRC_DIR)/builtins/builtin_.c \
 				$(SRC_DIR)/builtins/builtin_echo.c \
 				$(SRC_DIR)/builtins/builtin_env.c \
 				$(SRC_DIR)/builtins/builtin_exit.c \
@@ -34,6 +35,13 @@ SRCS			:= \
 				$(SRC_DIR)/builtins/utility_funcs.c \
 				\
 				$(SRC_DIR)/execution/execution.c \
+				$(SRC_DIR)/execution/execute_command.c \
+				$(SRC_DIR)/execution/execute_pipe.c \
+				$(SRC_DIR)/execution/execute_subshell.c \
+				$(SRC_DIR)/execution/execute_seq.c \
+				$(SRC_DIR)/execution/execute_logical.c \
+				$(SRC_DIR)/execution/exit_handling_utils.c \
+				$(SRC_DIR)/execution/cmd_prep_utils.c \
 				$(SRC_DIR)/execution/glob_local_dir.c \
 				$(SRC_DIR)/execution/prepare_redirects.c \
 				\
@@ -83,11 +91,19 @@ SRCS			:= \
 				$(SRC_DIR)/utility/ssetenv.c \
 				$(SRC_DIR)/utility/str_join_with_sep.c \
 				$(SRC_DIR)/utility/str_vec_join.c \
+				$(SRC_DIR)/utility/update_env.c \
+				$(SRC_DIR)/utility/set_n_envp.c \
+				$(SRC_DIR)/utility/set_any_env.c \
+				\
+
+
+BIN				:= \
+				$(SRC_DIR)/builtins/raw_dump.bin\
 				\
 
 TEST_SCRIPT		:=
 
-OBJS			:= ${SRCS:.c=.o}
+OBJS			:= $(BIN:.bin=.o) ${SRCS:.c=.o}
 
 MAIN			:= $(SRC_DIR)/main.c
 
@@ -108,8 +124,11 @@ $(NAME): $(MAIN) $(OBJS) $(LIBFT) ./include/minishell.h
 $(LIBFT):
 		@$(MAKE) --directory $(LIBFT_DIR) all CFLAGS="$(CFLAGS)" CC=$(CC)
 
-.c.o:
+%.o: %.c
 		@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
+
+%.o: %.bin
+	@ld -r -b binary -o $@ $<
 
 clean:
 		@$(MAKE) --directory $(LIBFT_DIR) fclean 

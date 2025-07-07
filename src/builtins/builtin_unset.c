@@ -6,44 +6,17 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 15:13:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/29 17:00:11 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/30 20:12:12 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../include/builtin.h"
 
-// this should be a utility function 
-void	free_strvec(void *a);
-
-/*
-
-Unset is not as easy because unset can be used on both the ENV and the
-shell local env, which clearly can be an issue
-
-I also dont have functions to remove items from arrays on the fly
-so maybe that is what i should be working!
-*/
-
-// order in which we check these shouldnt really matter
-// because only one should be true at any given time.
-
-int	builtin_unset(t_minishell *shell, char **argv, char **envp)
+void	unset_any(t_minishell *shell, char *name)
 {
 	ssize_t	in;
-	char	*name;
-	char	*sep;
-
-	(void)envp;
-	if (!argv[1])
-		return (1);
-	sep = ft_strchr(argv[1], '=');
-	if (!sep)
-		name = ft_strdup(argv[1]);
-	else
-		name = ft_substr(argv[1], 0, sep - argv[1]);
-	if (!name)
-		return (1);
+	
 	in = s_get_envid(shell, name);
 	if (in >= 0)
 		ft_dirtyswap((void *)&shell->environment,
@@ -53,7 +26,28 @@ int	builtin_unset(t_minishell *shell, char **argv, char **envp)
 	if (in >= 0)
 		ft_dirtyswap((void *)&shell->local_env,
 			ft_arrdel_atindex((void *)shell->local_env, in, free), free);
-	if (name)
+	in = _sgetidx(shell->unassigned_env, name);
+	if (in >= 0)
+		ft_dirtyswap((void *)&shell->unassigned_env,
+			ft_arrdel_atindex((void *)shell->unassigned_env, in, free), free);
+}
+
+int	builtin_unset(t_minishell *shell, char **argv, char ***envp)
+{
+	char	*name;
+	size_t	i;
+
+	(void)envp;
+	i = 1;
+	while (argv[i])
+	{
+		if (ft_strchr(argv[i], '=') && i++)
+			continue ;
+		name = ft_strdup(argv[i++]);
+		if (!name)
+			return (perror("minishell: unset"), 1);
+		unset_any(shell, name);
 		free(name);
+	}
 	return (0);
 }
