@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   restore_signals.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:40:12 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/16 13:12:59 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/07 16:23:47 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,6 @@ void	set_exection_signals(void)
 	p.sa_flags |= SA_RESTART;
 	p.sa_sigaction = default_sig_handle;
 	sigaction(SIGINT, &p, 0);
+	sigaction(SIGQUIT, &p, 0);
 }
 

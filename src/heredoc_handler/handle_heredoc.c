@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:22:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/27 13:38:50 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/07 16:28:54 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,10 @@ static int	_read_heredoc(struct s_ast_internal *meta,
 	status = next_line(meta->rldata, "heredoc > ");
 	while(status == READ_OK || status == READ_NOTHING)
 	{
+		if (g_global_signal != 0)
+		{
+			return (-1);
+		}
 		temp = meta->rldata->last_line;
 		if (!ft_strcmp(delim, temp))
 			break ;
