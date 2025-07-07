@@ -3,35 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:31:30 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/06 16:50:28 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/02 21:50:22 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../include/builtin.h"
 
-int	builtin_cd(t_minishell *shell, char **argv, char **envp)
+int	builtin_cd(t_minishell *shell, char **argv, char ***envp)
 {
 	char	*tmp;
 
 	(void)envp;
 	tmp = 0;
 	if (!argv)
-		return (errno = EINVAL, perror("builtin_cd"), -1);
+		return (errno = EINVAL, perror("builtin_cd"), 1);
 	if (argv[1] && argv[2])
-		return (ft_putstr_fd("minishell: builtin_cd: too many arguments\n", 2), 0);
+		return (ft_putstr_fd("minishell: builtin_cd: too many arguments\n", 2), 1);
 	if (!argv[1])
 	{
 		tmp = s_get_envany(shell, "HOME");
 		tmp = ft_strdup(tmp);
+		if (!tmp)
+			return (perror("minishell: builtin_cd"), 1);
 		chdir(tmp);
 		free(tmp);
 	}
 	else
-		chdir(argv[1]);
-	perror("builtin_cd");
-	return (1);
+	{
+		if (chdir(argv[1]) == -1)
+			return (perror("minishell: builtin_cd"), 1);
+	}
+	return (0);
 }

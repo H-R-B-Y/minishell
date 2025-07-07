@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 12:01:50 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/27 18:28:14 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/07 15:49:28 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ void	reset_for_command(t_minishell *shell)
 		ft_dirtyswap((void *)&shell->rldata.last_line, (void *)0, free);
 	if (shell->rldata.extra_lines)
 	{
-		ft_arrclear((void *)shell->rldata.extra_lines, free);
 		ft_dirtyswap((void *)&shell->rldata.extra_lines, (void *)0, free);
 		shell->rldata.extra_line_count = 0;
 	}

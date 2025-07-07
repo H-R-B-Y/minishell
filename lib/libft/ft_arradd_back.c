@@ -6,11 +6,12 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:52:31 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/26 15:05:26 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/07 15:48:02 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/libft.h"
+#include <stdio.h>
 
 void	**ft_arradd_back(void **arr, void *newitem)
 {

@@ -6,14 +6,14 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:21:44 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/28 11:53:24 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/06/29 11:46:14 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../include/builtin.h"
 
-int	builtin_echo(t_minishell *shell, char **argv, char **envp)
+int	builtin_echo(t_minishell *shell, char **argv, char ***envp)
 {
 	int		nlflag;
 	size_t	idx;
@@ -21,7 +21,7 @@ int	builtin_echo(t_minishell *shell, char **argv, char **envp)
 	(void)shell;
 	(void)envp;
 	if (!argv[1])
-		return (printf("\n"));
+		return (printf("\n"), 0);
 	nlflag = !ft_strcmp(argv[1], "-n");
 	idx = 1;
 	if (nlflag)
@@ -33,5 +33,5 @@ int	builtin_echo(t_minishell *shell, char **argv, char **envp)
 			printf(" ");
 	}
 	printf("%s", (char *[2]){"\n", ""}[nlflag]);
-	return (1);
+	return (0);
 }

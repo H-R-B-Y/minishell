@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/27 18:29:22 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/07 15:48:56 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	prep_tree(t_minishell *shell)
 		dbg_add_ast(&shell->info, shell->current_tree);
 		if (shell->interactive_mode)
 			set_exection_signals();
-		execute_ast(shell);
+		execute_ast(shell, shell->current_tree);
 		setup_signals(shell);
 	}
 	else if (astcode == AST_ERR_SYNTAX)
@@ -66,6 +66,12 @@ int	main(int argc, char **argv, char **envp)
 	printf("Started with pid: %d\nStarted with seed: %d\n", get_my_pid(), ft_rand(0, 100));
 	while (1)
 	{
+		// printf("\nENV*********************************************************\n\n");
+		// ft_arriter((void *)shell.environment, print_and_ret);
+		// printf("\nUNASSIGNED*********************************************************\n\n");
+		// ft_arriter((void *)shell.unassigned_env, print_and_ret);
+		// printf("\nLOCAL*********************************************************\n\n");
+		// ft_arriter((void *)shell.local_env, print_and_ret);
 		if (next_command(&shell) == READ_EOF)
 			break ;
 		dbg_write_states(&shell.info);
