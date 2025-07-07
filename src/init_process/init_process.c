@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_process.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 11:48:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/16 13:03:00 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/06 13:39:29 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,9 @@ int	init_process(t_minishell *shell, char **envp)
 	// setup signal handlers
 	if (!setup_signals(shell))
 		return (-2);
+	shell->my_pid = get_my_pid();
+	if (shell->my_pid == -1)
+		return (-3);
 	// init debugger
 	if (!init_debugger(&shell->info))
 		printf("debugger not enabled: %s\n", strerror(errno));

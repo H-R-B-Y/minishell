@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 13:37:48 by cquinter          #+#    #+#             */
-/*   Updated: 2025/06/29 14:24:30 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/07 22:51:17 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ char	**cmdv_prep(t_minishell *shell, t_astnode *node)
 	node->cmd_i = get_cmd_idx(node);
 	while(i < node->token_count)
 	{
-		argv[i] = remove_quotes(node->tokens[i][0].raw, shell);
+		argv[i] = rmv_quotes_xpnd_var(node->tokens[i][0].raw, shell);
 		if (!argv)
 		{
 			ft_dirtyswap((void **)&argv, NULL, free);

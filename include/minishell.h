@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/29 13:33:01 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/07 22:56:41 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ struct s_minishell
 	*/
 	t_astnode	*current_tree;
 
+	pid_t		my_pid;
+	
 	int			return_code;
 
 	/*
@@ -180,8 +182,9 @@ char			*_pop_line(char ***str);
 
 // this one doesnt expand vars
 char	*rem_quotes(const char *str);
-// this one does
-char	*remove_quotes(char *str, t_minishell *shell);
+
+// this one does expand vars. Not handling $'...'
+char	*rmv_quotes_xpnd_var(char *str, t_minishell *shell);
 // they should be renamed but i dont want to mess anything up
 
 /*
