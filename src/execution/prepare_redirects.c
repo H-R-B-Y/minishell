@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:15:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/07 15:45:30 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/07 16:19:56 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ t_redirect_desc	*file_to_fd_mapper(const t_redirect_desc *redr)
 	}
 	*p = *redr;
 	p->file_map.from_fd = open(redr->file_map.filename, redrtype_to_oflag(redr->type));
+	printf("Opened file %s at %d for redirect too %d\n",redr->file_map.filename, p->file_map.from_fd, p->file_map.to_fd);
 	if (p->file_map.from_fd == -1)
 	{
 		if (errno == ENOENT)
@@ -86,7 +87,6 @@ void	map_fds(t_astnode *node)
 			current_fd = dup(desc->fd_map.from_fd);
 			dup2(current_fd, desc->fd_map.to_fd);
 			close(current_fd);
-			close(desc->fd_map.from_fd);
 		}
 		else if (desc->file_map.to_fd >= 0)
 		{
