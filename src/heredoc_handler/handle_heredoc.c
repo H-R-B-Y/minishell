@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:22:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/07 16:28:54 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/08 13:29:00 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,12 @@ static int	_read_heredoc(struct s_ast_internal *meta,
 	short flags)
 {
 	char	*temp;
-	int		status;
+	t_readline_retcode		status;
 
 	status = next_line(meta->rldata, "heredoc > ");
 	while(status == READ_OK || status == READ_NOTHING)
 	{
+
 		if (g_global_signal != 0)
 		{
 			return (-1);
@@ -64,8 +65,6 @@ static int	_read_heredoc(struct s_ast_internal *meta,
 			_replace_var(meta, temp_file, temp);
 		else if (status == READ_OK)
 			write(temp_file, temp, ft_strlen(temp));
-		else if (status == READ_NOTHING)
-			append_to_history_item(meta->rldata, "");
 		write(temp_file, "\n", 1);
 		status = next_line(meta->rldata, "heredoc > ");
 	}

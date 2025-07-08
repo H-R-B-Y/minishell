@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/07 15:45:58 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/08 13:05:10 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -400,5 +400,7 @@ int	setup_signals(t_minishell *shell);
 
 
 ssize_t	glob_variable(t_astnode	*node);
+
+char	**simple_split(const char *str);
 
 #endif
