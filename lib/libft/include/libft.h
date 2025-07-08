@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:21:04 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/25 13:30:39 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/08 13:04:02 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -606,7 +606,7 @@ void	ft_dirtyswap(void **a, void *b, void (*del)(void *));
  * @param c character to count
  * @return size_t occurences
  */
-size_t	ft_strcountchar(char *str, char c);
+size_t	ft_strcountchar(const char *str, char c);
 
 /**
  * @brief Creates a random number based on the seed RANDSEED

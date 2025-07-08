@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 12:01:50 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/07 15:49:28 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/08 13:31:42 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int	better_add_history(char *string)
 	HIST_ENTRY	**the_history;
 	int			ret;
 
+	if (!string || !*string)
+		return (0);
 	the_history = history_list();
 	i = 0;
 	ret = 1;
