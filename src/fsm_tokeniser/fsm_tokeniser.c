@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fsm_tokeniser.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:19:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/14 17:16:27 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/08 16:47:49 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	reset_fsm(t_fsmdata *fsm)
 	if (fsm->tokens)
 		free_token_list(fsm->tokens, free);
 	if (fsm->str_condition)
-		ft_dirtyswap((void *)&fsm->str_condition, 0, free);
+		fsm->str_condition = 0;
 	reset_tokeniser(&fsm->tokeniser_internals);
 	(*fsm) = (t_fsmdata){
 		.state = ST_STRT, .retcode = PARSE_OK, .tokens = 0,
