@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/08 13:18:26 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/08 16:55:13 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ int	prep_tree(t_minishell *shell)
 	t_asterror	astcode;
 
 	shell->tokens = fsm_pop_list(&shell->fsm_data);
-	print_token_list(shell->tokens);
+	// print_token_list(shell->tokens);
 	dbg_add_token_list(&shell->info, shell->tokens);
 	shell->tokenv = (void *)ft_lstarr(shell->tokens);
 	ft_lstclear(&shell->tokens, 0);
 	astcode = produce_ast(shell, shell->tokenv, &shell->current_tree);
 	if (astcode == AST_ERR_NONE)
 	{
-		print_ast(shell->current_tree, "|	|");
+		// print_ast(shell->current_tree, "|	|");
 		dbg_add_ast(&shell->info, shell->current_tree);
 		if (shell->interactive_mode)
 			set_exection_signals();
