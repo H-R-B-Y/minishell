@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   remove_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:16:03 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/29 13:44:16 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/08 16:54:29 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,14 +117,8 @@ char	*remove_quotes(char *str, t_minishell *shell)
 			}
 			if (str[i[0]] == '\\')
 			{
-				if (ft_strchr("$'\"\\", str[i[0] + 1]))
-				{
-					str[i[0]]++;
-					_write_char(&output[i[1]], str[i[0]], i);
-					continue ;
-				}
-				else
-					_write_char(&output[i[1]], str[i[0]], i);
+				i[0]++;
+				_write_char(&output[i[1]], str[i[0]], i);
 			}
 			if (str[i[0]] == '$' && (mode == QUOTE_DOUBLE || mode == QUOTE_NONE))
 			{
@@ -153,9 +147,9 @@ char	*remove_quotes(char *str, t_minishell *shell)
 		}
 		if (str[i[0]] == '\\' && mode == QUOTE_DOUBLE)
 		{
-			if (ft_strchr("$'\"\\", str[i[0]]))
+			if (ft_strchr("$'\"\\", str[i[0] + 1]))
 			{
-				str[i[0]]++;
+				i[0]++;
 				_write_char(&output[i[1]], str[i[0]], i);
 				continue ;
 			}

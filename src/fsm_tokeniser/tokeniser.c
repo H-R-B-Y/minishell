@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokeniser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:22:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/14 17:07:31 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/08 16:56:03 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,9 @@
 #include "../../include/v_dbg.h"
 
 /*
-I think this would be better if it just returned an integer
-and all the internal states returned ints representing some 
-form of success code, then this function does have to return 
-a token type and can just signal success, then the final function
-can just return the intenal type from the tokeniser.
-
-But do any of these sub functions actually have a fail case?
-- I'm not sure.
-I guess all functions can potentially fail because we are allocating memory
-
-
-So these should all have some kind of int status to say if they are ok.
-
-Then if they are ok the FSM can retrieve the type from the tokeniser
-If not we return a generic error i suppose?
-
-What benefit does this have?
-
-It would make it easier to handle i guess?
-
-Is it needed? not really, so i guess i will leave it alone.
+Spaghetti code alert!
 */
 
-// I cannot reduce this function to below 25 lines lol, need to split it out
-// or rename something 
 t_tokentype	_parse_loop_internals(t_tokint *tokeniser, const char *str)
 {
 	char	c;
@@ -100,15 +78,15 @@ t_tokretcode	set_retcode(t_fsmdata *fsm,
 		fsm->tokeniser_internals.index_start = 0;
 	}
 	if (fsm->str_condition)
-		ft_dirtyswap((void *)&fsm->str_condition, 0, free);
+		fsm->str_condition = 0;
 	fsm->str_condition = str_condition;
 	return (code);
 }
 
 void	state_change(t_fsmdata *fsm, t_fsmstate next_state)
 {
-	printf("handle transition: %s to %s\n", fsmstate_str(fsm->state),
-		fsmstate_str(next_state));
+	// printf("handle transition: %s to %s\n", fsmstate_str(fsm->state),
+	// 	fsmstate_str(next_state));
 	if (fsm->state == ST_HDOC && next_state == ST_WORD)
 		fsm->tokeniser_internals.current_token->heredoc_delim = 1;
 	else if (fsm->state == ST_REDR && next_state == ST_WORD)
@@ -124,25 +102,25 @@ t_tokretcode	correct_retcode(t_fsmdata *fsm)
 {
 	if (fsm->paren_count < 0)
 		return (set_retcode(fsm, PARSE_ERROR,
-				ft_strdup("parenthesis dont make sense")));
+				"parenthesis dont make sense"));
 	if (fsm->state == ST_CONT)
 	{
 		state_change(fsm, fsm->last_state);
 		set_retcode(fsm, PARSE_CONT, 0);
 		if (fsm->tokeniser_internals.current_type == TOK_INCOMPLETE_STRING)
-			fsm->str_condition = ft_strdup("incomplete string");
+			fsm->str_condition = "incomplete string";
 		else if (fsm->state == ST_OPRA)
-			fsm->str_condition = ft_strdup("operation not finished");
+			fsm->str_condition = "operation not finished";
 		else if (fsm->paren_count > 0)
 		{
-			fsm->str_condition = ft_strdup("unclosed parenthesis");
+			fsm->str_condition = "unclosed parenthesis";
 			handle_subshell_newline(fsm);
 		}
 		return (PARSE_CONT);
 	}
 	if (fsm->state == ST_END)
 		return (state_change(fsm, ST_STRT), set_retcode(fsm, PARSE_OK, 0));
-	return (set_retcode(fsm, PARSE_ERROR, ft_strdup("generic error")));
+	return (set_retcode(fsm, PARSE_ERROR, "generic error"));
 }
 
 t_tokretcode	tokenise(t_fsmdata *fsm, const char *str)

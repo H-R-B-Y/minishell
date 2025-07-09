@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   consume_subshell.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 13:46:33 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/31 16:50:18 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/25 15:54:26 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,16 @@ void		ast_subcommand_redirects(struct s_ast_internal *meta, t_astnode *node)
 {
 	// TOK_REDIR_APPEND && TOK_REDIR_FD && TOK_REDIR_IN && TOK_REDIR_OUT;
 	while(meta->tokens[meta->consumed] && 
-		ft_strchr("\3\4\5\17", meta->tokens[meta->consumed]->type))
+		ft_strchr("\3\4\5\6\17", meta->tokens[meta->consumed]->type))
 	{
-		if (meta->tokens[meta->consumed]->type == TOK_REDIR_FD)
+		if (meta->tokens[meta->consumed]->type == TOK_HEREDOC)
+		{
+			ft_lstadd_back(&node->redirect,
+				ft_lstnew(handle_heredoc(meta, meta->tokens[meta->consumed + 1]->raw,
+					meta->tokens[meta->consumed])));
+			meta->consumed++;
+		}
+		else if (meta->tokens[meta->consumed]->type == TOK_REDIR_FD)
 			ft_lstadd_back(&node->redirect,
 				ft_lstnew(handle_redirectfd(meta->tokens[meta->consumed])));
 		else

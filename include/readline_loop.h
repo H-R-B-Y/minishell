@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline_loop.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:07:29 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/14 17:04:43 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/27 13:38:08 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,7 @@ int		next_line(t_readline_data *data, const char *prompt);
 char	*_pop_line(char ***arr);
 
 int		read_until_complete_command(t_minishell *shell);
+
+ssize_t	append_to_history_item(t_readline_data *data, char *str);
 
 #endif

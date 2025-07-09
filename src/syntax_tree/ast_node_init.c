@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_node_init.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 12:20:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/29 11:04:39 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/07 15:49:40 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ void	close_fds_needed(t_list	*redirects)
 	while (node)
 	{
 		desc = node->content;
-		if (desc->subtype == REDIR_FD)
-			close(desc->fd_map.from_fd);
+		if (desc->subtype == REDIR_FILE)
+			close(desc->file_map.from_fd);
 		node = node->next;
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_handlers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:37:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/14 16:56:00 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/25 15:48:31 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,32 +16,31 @@ t_tokentype		_parse_loop_internals(t_tokint *tokeniser, const char *str);
 
 void	handle_potential_redirect(t_tokint *tokeniser, const char *str)
 {
+	char	t;
+
 	while (str[tokeniser->index_end] && isdigit(str[tokeniser->index_end]))
 		tokeniser->index_end++;
-	if (str[tokeniser->index_end] == '<')
+	t = str[tokeniser->index_end];
+	if (!(t == '<' || t == '>'))
 	{
-		tokeniser->index_end++;
-		if (str[tokeniser->index_end] == '<')
-			tokeniser->index_end++;
-	}
-	else if (str[tokeniser->index_end] == '>')
-	{
-		tokeniser->index_end++;
-		if (str[tokeniser->index_end] == '>')
-			tokeniser->index_end++;
-		else if (str[tokeniser->index_end] == '&')
-		{
-			tokeniser->index_end++;
-			if (ft_isdigit(str[tokeniser->index_end]))
-				while (str[tokeniser->index_end]
-					&& ft_isdigit(str[tokeniser->index_end]))
-					tokeniser->index_end++;
-			else if (str[tokeniser->index_end] == '-')
-				tokeniser->index_end++;
-		}
-	}
-	else
 		_parse_loop_internals(tokeniser, str);
+		return ;
+	}
+	tokeniser->index_end++;
+	if (str[tokeniser->index_end] == t)
+		tokeniser->index_end++;
+	else if (str[tokeniser->index_end] == '&')
+	{
+		tokeniser->index_end++;
+		while (ft_iswhitespace(str[tokeniser->index_end]))
+			tokeniser->index_end++;
+		if (ft_isdigit(str[tokeniser->index_end]))
+			while (str[tokeniser->index_end] 
+				&& (ft_isdigit(str[tokeniser->index_end])))
+				tokeniser->index_end++;
+		else if (str[tokeniser->index_end] == '-')
+			tokeniser->index_end++;
+	}
 }
 
 void	handle_operator(t_tokint *tokeniser, const char *str)
@@ -49,7 +48,7 @@ void	handle_operator(t_tokint *tokeniser, const char *str)
 	char	c;
 
 	c = str[tokeniser->index_end];
-	if (ft_isdigit(c) || c == '>')
+	if (ft_isdigit(c) || c == '>' || c == '<')
 		handle_potential_redirect(tokeniser, str);
 	else if (c == '&' && str[tokeniser->index_end + 1] == '>')
 		tokeniser->index_end += 2 + (1 * (str[tokeniser->index_end + 1]
