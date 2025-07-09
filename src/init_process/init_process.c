@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 11:48:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/06 13:39:29 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/09 21:13:49 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,6 @@ int	init_process(t_minishell *shell, char **envp)
 		printf("debugger not enabled: %s\n", strerror(errno));
 	shell->fsm_data.debuginfo = &shell->info;
 	// reset for command
-	reset_for_command(shell);
+	reset_for_command(shell, READ_START);
 	return (0);
 }

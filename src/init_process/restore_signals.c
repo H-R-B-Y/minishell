@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   restore_signals.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:40:12 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/07 16:23:47 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/09 21:27:21 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	set_exection_signals(void)
 {
 	struct sigaction	p;
 
+	ft_bzero(&p, sizeof(p));
 	sigemptyset(&p.sa_mask);
 	p.sa_flags |= SA_SIGINFO;
 	p.sa_flags |= SA_RESTART;

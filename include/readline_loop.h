@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline_loop.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:07:29 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/27 13:38:08 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/09 21:04:41 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ typedef struct s_minishell	t_minishell;
 typedef enum e_readline_retcode	t_readline_retcode;
 enum e_readline_retcode
 {
+	READ_START,
 	READ_OK,
 	READ_NOTHING,
 	READ_EOF,
@@ -31,10 +32,10 @@ enum e_readline_retcode
 typedef struct s_readline_data	t_readline_data;
 struct s_readline_data
 {
-	char	**extra_lines;
-	size_t	extra_line_count;
-	char	*current_hist_item;
-	char	*last_line;
+	char				**extra_lines;
+	size_t				extra_line_count;
+	char				*current_hist_item;
+	char				*last_line;
 };
 
 size_t	split_extra_lines(t_readline_data *data, char *str);

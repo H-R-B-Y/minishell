@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/09 16:49:42 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/09 21:06:45 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,10 +133,9 @@ struct s_minishell
 	struct s_dbg_info	info;
 };
 
-void	reset_for_command(t_minishell *shell);
 int		init_process(t_minishell *shell, char **envp);
 int		better_add_history(char *string);
-void	reset_for_command(t_minishell *shell);
+void	reset_for_command(t_minishell *shell, t_readline_retcode rl_code);
 char	*create_prompt(const t_minishell *shell);
 
 /**
