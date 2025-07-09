@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redirects.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 16:49:12 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/16 12:12:27 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/25 16:21:03 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,20 @@ t_redirect_desc *handle_redirectfd(t_token *redirect)
 	if (!sep)
 		sep = ft_strchr(redirect->raw, '<');
 	extract_tofromfds(redirect->raw, sep, fds);
-	(*output) = (t_redirect_desc){
+	if (redirect->raw[ft_strlen(redirect->raw) - 1] != '-')
+		(*output) = (t_redirect_desc){
 		.type = REDIRECT_FD,
 		.subtype = REDIR_FD,
-		.fd_map.from_fd = fds[0],
-		.fd_map.to_fd = fds[1],
-	};
+		.fd_map.from_fd = fds[1],
+		.fd_map.to_fd = fds[0],
+		};
+	else
+		(*output) = (t_redirect_desc){
+		.type = REDIRECT_FD,
+		.subtype = CLOSE_FD,
+		.fd_map.from_fd = fds[1],
+		.fd_map.to_fd = fds[0],
+		};
 	return (output);
 }
 
@@ -73,6 +81,8 @@ t_redirect_desc *handle_redirect(t_token *redirect, t_token *filename)
 		sep = ft_strchr(redirect->raw, '<');
 	if (sep == redirect->raw)
 		to_fd = (int [2]){0, 1}[(redirect->type != TOK_REDIR_IN)];
+	else if (*redirect->raw == '&')
+		to_fd = -1;
 	else
 		to_fd = get_tofd(redirect->raw, sep);
 	(*output) = (t_redirect_desc){

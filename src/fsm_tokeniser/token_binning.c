@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_binning.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:36:40 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/14 16:50:39 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/06/25 16:16:11 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,19 @@ t_tokentype	potential_redirect(const char *raw_token)
 	i++;
 	if (raw_token[i] == '>' && !raw_token[i + 1])
 		return (TOK_REDIR_APPEND);
-	if (raw_token[i] == '<' && !raw_token[i + 1])
+	if (raw_token[i] == '<' && (!raw_token[i + 1] || (raw_token[i + 1] == '-' && !raw_token[i + 2])))
 		return (TOK_HEREDOC);
-	if (raw_token[i] == '&' && ft_isdigit(raw_token[i + 1]))
+	if (raw_token[i] == '&')
 	{
 		i++;
-		while (ft_isdigit(raw_token[i]))
+		while (ft_iswhitespace(raw_token[i]))
 			i++;
+		if (!(ft_isdigit(raw_token[i]) || raw_token[i] == '-'))
+			return (TOK_NONE);
+		i++;
+		if (raw_token[i - 1] != '-')
+			while (ft_isdigit(raw_token[i]))
+				i++;
 		if (!raw_token[i])
 			return (TOK_REDIR_FD);
 	}
@@ -56,9 +62,7 @@ t_tokentype	bin_token(const char *raw_token)
 	if (*raw_token == '|')
 		return (TOK_PIPE + (7 * (raw_token[1]
 					&& raw_token[1] == raw_token[0])));
-	if (*raw_token == '<')
-		return (TOK_REDIR_IN + (1 * (raw_token[1] == *raw_token)));
-	if (ft_isdigit(*raw_token) || *raw_token == '>')
+	if (ft_isdigit(*raw_token) || *raw_token == '>' || *raw_token == '<' )
 		return (potential_redirect(raw_token));
 	if (*raw_token == ';')
 		return (TOK_AFTER);

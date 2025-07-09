@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/29 13:33:01 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/08 13:05:10 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -397,5 +397,10 @@ void	set_exection_signals(void);
  * @return int status code -1 on err
  */
 int	setup_signals(t_minishell *shell);
+
+
+ssize_t	glob_variable(t_astnode	*node);
+
+char	**simple_split(const char *str);
 
 #endif

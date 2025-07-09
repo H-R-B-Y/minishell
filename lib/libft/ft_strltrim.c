@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcountchar.c                                  :+:      :+:    :+:   */
+/*   ft_strltrim.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/07 18:05:19 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/08 13:03:52 by hbreeze          ###   ########.fr       */
+/*   Created: 2025/06/25 13:24:48 by hbreeze           #+#    #+#             */
+/*   Updated: 2025/06/25 13:27:18 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/libft.h"
+#include <stdlib.h>
+#include "./include/libft.h"
 
-size_t	ft_strcountchar(const char *str, char c)
+char	*ft_strltrim(const char *s1, const char *set)
 {
-	size_t	count;
-	size_t	idx;
-
-	idx = 0;
-	count = 0;
-	while (str[idx])
-		count += 1 * (str[idx++] == c);
-	return (count);
+	if (!s1)
+		return (0);
+	if (!set)
+		return (ft_strdup((char *)s1));
+	while (*s1 && ft_strchr(set, *s1))
+		s1++;
+	return (ft_strdup(s1));
 }

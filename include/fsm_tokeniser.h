@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fsm_tokeniser.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/14 17:07:22 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/08 16:48:15 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,7 +248,7 @@ struct s_fsmtransition
  * @param tokens the current list of tokens
  * @param paren_count the count of parenthesis
  * @param tokeniser_internals the internal tokeniser data
- * @param str_condition a string (alloc'd) representing the state of the parser
+ * @param str_condition a string representing the state of the parser
  * 
  * @note
  * Really important that any updates to this struct are reflected in
