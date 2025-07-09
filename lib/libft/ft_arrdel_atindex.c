@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arrdel_atindex.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/22 17:20:38 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/26 22:14:00 by cquinter         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2025/07/07 15:48:41 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "include/libft.h"
 

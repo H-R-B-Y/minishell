@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prepare_redirects.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:15:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/29 13:39:23 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/07 16:19:56 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int	redrtype_to_oflag(const int redr_type)
 		flag |= O_WRONLY;
 	if (redr_type == REDIRECT_OUTPUT_APPEND)
 		flag |= O_APPEND;
+	else if (redr_type != REDIRECT_INPUT)
+		flag |= O_TRUNC;
 	return (flag);
 }
 
@@ -35,21 +37,20 @@ t_redirect_desc	*file_to_fd_mapper(const t_redirect_desc *redr)
 	p = ft_calloc(sizeof(t_redirect_desc), 1);
 	if (!p)
 		return (0);
-	if (redr->subtype == REDIR_FD)
+	if (redr->subtype == REDIR_FD || redr->subtype == CLOSE_FD)
 	{
 		*p = *redr;
 		return (p);
 	}
-	p->type = redr->type;
-	p->subtype = REDIR_FD;
-	p->fd_map.to_fd = redr->file_map.to_fd;
-	p->fd_map.from_fd = open(redr->file_map.filename, redrtype_to_oflag(redr->type));
-	if (p->fd_map.from_fd == -1)
+	*p = *redr;
+	p->file_map.from_fd = open(redr->file_map.filename, redrtype_to_oflag(redr->type));
+	printf("Opened file %s at %d for redirect too %d\n",redr->file_map.filename, p->file_map.from_fd, p->file_map.to_fd);
+	if (p->file_map.from_fd == -1)
 	{
 		if (errno == ENOENT)
-			p->fd_map.from_fd = open(redr->file_map.filename, redrtype_to_oflag(redr->type) | O_CREAT, 0755);
+			p->file_map.from_fd = open(redr->file_map.filename, redrtype_to_oflag(redr->type) | O_CREAT, 0755);
 		if (errno && errno != ENOENT)
-			return (0); // free p;
+			return (free(p), (void *)0);
 	}
 	return (p);
 }
@@ -60,27 +61,44 @@ int	prepare_fds(t_astnode *node)
 
 	if (!node->redirect)
 		return (0);
+	// this is not an efficient way to handle this -_-
 	corrected = ft_lstmap(node->redirect, (void *)file_to_fd_mapper, free); // WARN: free is not good enough, redirects will leak
 	if (!corrected)
 		return (perror("minishell"), -1);
-	ft_lstclear(&node->redirect, (void *)destroy_redirect);
+	ft_lstclear(&node->redirect, (void *)free);
 	node->redirect = corrected;
 	return (1);
 }
 
 void	map_fds(t_astnode *node)
 {
-	t_list	*list;
+	t_list			*list;
 	t_redirect_desc	*desc;
+	int				current_fd;
 
 	list = node->redirect;
 	while (list)
 	{
 		desc = list->content;
-		if (desc->subtype == REDIR_FD)
-			dup2(desc->fd_map.from_fd, desc->fd_map.to_fd);
+		if (desc->subtype == CLOSE_FD)
+			close(desc->fd_map.to_fd);
+		else if (desc->subtype == REDIR_FD)
+		{
+			current_fd = dup(desc->fd_map.from_fd);
+			dup2(current_fd, desc->fd_map.to_fd);
+			close(current_fd);
+		}
+		else if (desc->file_map.to_fd >= 0)
+		{
+			dup2(desc->file_map.from_fd, desc->file_map.to_fd);
+			close(desc->file_map.from_fd);
+		}
 		else
-			printf("WARN: tried to dup from a filemap\n");
+		{
+			dup2(desc->file_map.from_fd, STDERR_FILENO);
+			dup2(desc->file_map.from_fd, STDOUT_FILENO);
+			close(desc->file_map.from_fd);
+		}
 		list = list->next;
 	}
 }
