@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 13:37:48 by cquinter          #+#    #+#             */
-/*   Updated: 2025/07/07 22:51:17 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/09 17:54:35 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ size_t get_cmd_idx(t_astnode *node)
 			ft_strchr_idx(node->tokens[i][0].raw, '=') > ft_strchr_idx(node->tokens[i][0].raw, ' ') ||
 			ft_strchr_idx(node->tokens[i][0].raw, '=') > ft_strchr_idx(node->tokens[i][0].raw, ' ') ||
 			ft_strchr_idx(node->tokens[i][0].raw, '=') > ft_strchr_idx(node->tokens[i][0].raw, '$') ||
-			!ft_isalpha(node->tokens[i][0].raw[0]))
+			(node->tokens[i][0].raw[0] != '_' && !ft_isalpha(node->tokens[i][0].raw[0])))
 			break;
 		i++;
 	}

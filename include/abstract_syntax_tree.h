@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   abstract_syntax_tree.h                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/29 13:31:17 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/07 15:47:31 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ enum	e_redirect_subtype
 {
 	REDIR_FILE,
 	REDIR_FD,
+	CLOSE_FD,
 };
 
 // Need some information about what we are redirecting
@@ -76,6 +77,7 @@ struct s_redirect_desc
 		struct s_none2
 		{
 			char		*filename;
+			int			from_fd;
 			int			to_fd;
 		}				file_map;
 	};
@@ -137,7 +139,8 @@ struct	s_astnode
 	char		**envp;
 	size_t		genv_l; // to delete???
 
-	int			return_code;
+	int			return_value;
+	short			return_code;
 };
 
 /**
@@ -246,6 +249,6 @@ t_redirect_desc	*handle_redirectfd(t_token *redirect);
 
 t_redirect_desc	*handle_redirect(t_token *redirect, t_token *filename);
 
-t_redirect_desc	*handle_heredoc(struct s_ast_internal *meta, char *delim);
+t_redirect_desc	*handle_heredoc(struct s_ast_internal *meta, char *delim, t_token *heredoc);
 
 #endif

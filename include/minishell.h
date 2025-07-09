@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/07 22:56:41 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/09 16:49:42 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -400,5 +400,10 @@ void	set_exection_signals(void);
  * @return int status code -1 on err
  */
 int	setup_signals(t_minishell *shell);
+
+
+ssize_t	glob_variable(t_astnode	*node);
+
+char	**simple_split(const char *str);
 
 #endif

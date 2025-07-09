@@ -17,15 +17,16 @@
         },
 		{
             "type": "shell",
-            "label": "(don't use)testing make",
-            "command": "make",
+            "label": "testing make",
+            "command": "gcc",
             "args": [
-                "testing",
-                "clean",
-                "CFLAGS=\"-g3 -O0\""
+				"-O0",
+				"-g3",
+                "${fileBasename}",
+                "/home/hbreeze/Documents/minishell/lib/libft/libft.a",
             ],
             "options": {
-                "cwd": "${workspaceRoot}"
+                "cwd": "${fileDirname}"
             },
             "group": "build",
             "detail": "Task generated Manually."

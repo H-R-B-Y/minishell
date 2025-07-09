@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:16:03 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/07 23:07:40 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/09 17:57:28 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	*get_var_value(t_minishell *shell, char *str, size_t *i)
 	char	*v_name;
 
 	vlen = 0;
-	while (ft_isalnum((str)[i[0] + vlen]))
+	while (ft_isalnum((str)[i[0] + vlen]) || (str)[i[0] + vlen] == '_')
 		vlen++;
 	v_name = ft_strndup(str + i[0], vlen);
 	if (!v_name)
@@ -67,16 +67,16 @@ int _expand_write_var(t_minishell *shell, char **output, char *str, size_t *i)
 		to_write = ft_itoa(shell->return_code);
 	else if ((str)[i[0]] == '$')
 		to_write = ft_itoa(shell->my_pid);
-	else if (!ft_isalnum((str)[i[0]])) // handle {} ??
-		return (_write_char(&(*output)[i[1]], str[--i[0]], i), 1);
+	else if (str[i[0]] != '_' && !ft_isalnum((str)[i[0]])) // handle {} ??
+		return ((*output)[i[1]++] = str[i[0] - 1], 1);
 	else if (ft_isdigit((str)[i[0]])) // Pending: to handle argvs
 		return (i[0]++, 1);
 	else
 		to_write = get_var_value(shell, str, i);
 	if (!to_write)
-		return (_write_char(&(*output)[i[1]], str[--i[0]], i), 1);
+		return ((*output)[i[1]++] = str[i[0] - 1], 1);
 	else if (_realloc_write(output, to_write, str, i))
-		return (_write_char(&(*output)[i[1]], str[--i[0]], i), free(to_write), 1);
+		return ((*output)[i[1]++] = str[i[0] - 1], free(to_write), 1);
 	free(to_write);
 	return (0);
 }
