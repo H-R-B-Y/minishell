@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 12:01:50 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/08 13:58:09 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/09 21:13:24 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	_destroy_token(void *t)
 	destroy_token(t, free);
 }
 
-void	reset_for_command(t_minishell *shell)
+void	reset_for_command(t_minishell *shell, t_readline_retcode rl_code)
 {
 	if (shell->rldata.current_hist_item)
 	{
@@ -54,7 +54,8 @@ void	reset_for_command(t_minishell *shell)
 	}
 	if (shell->rldata.last_line)
 		ft_dirtyswap((void *)&shell->rldata.last_line, (void *)0, free);
-	if (shell->rldata.extra_lines)
+	if (shell->rldata.extra_lines &&
+		(rl_code == READ_NOTHING || rl_code == READ_EOF || rl_code == READ_START))
 	{
 		ft_dirtyswap((void *)&shell->rldata.extra_lines, (void *)0, free);
 		shell->rldata.extra_line_count = 0;
