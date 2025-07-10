@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:22:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/10 12:29:57 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/10 12:45:22 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ t_tokentype	parse_word_token(t_tokint *tokeniser, const char *str)
 t_tokentype	next_token_type(t_tokint *tokeniser, const char *str)
 {
 	tokeniser->index_start = tokeniser->index_end;
-	if (!str[tokeniser->index_start])
-		return (TOK_EOF);
 	if (tokeniser->quote_mode == QUOTE_NONE
 		&& ft_iswhitespace(str[tokeniser->index_start]))
 		tokeniser_skip_whitespace(tokeniser, str);
