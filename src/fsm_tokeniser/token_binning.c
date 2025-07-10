@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:36:40 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/10 12:15:58 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/10 13:39:37 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_tokentype	potential_redirect(const char *raw_token)
 		while (ft_iswhitespace(raw_token[i]))
 			i++;
 		if (!(ft_isdigit(raw_token[i]) || raw_token[i] == '-'))
-			return (TOK_NONE);
+			return (TOK_WORD);
 		i++;
 		if (raw_token[i - 1] != '-')
 			while (ft_isdigit(raw_token[i]))
@@ -48,7 +48,7 @@ t_tokentype	potential_redirect(const char *raw_token)
 		if (!raw_token[i])
 			return (TOK_REDIR_FD);
 	}
-	return (TOK_NONE);
+	return (TOK_WORD);
 }
 
 t_tokentype	bin_token(const char *raw_token)
@@ -59,19 +59,19 @@ t_tokentype	bin_token(const char *raw_token)
 		return (TOK_EOF);
 	if (*raw_token == '\'' || *raw_token == '"')
 		return (TOK_WORD);
-	if (*raw_token == '|')
+	if (*raw_token == '|' && (!raw_token[1] || !raw_token[2]))
 		return (TOK_PIPE + (7 * (raw_token[1]
 					&& raw_token[1] == raw_token[0])));
 	if (ft_isdigit(*raw_token) || *raw_token == '>' || *raw_token == '<' )
 		return (potential_redirect(raw_token));
-	if (*raw_token == ';')
+	if (*raw_token == ';' && !raw_token[1])
 		return (TOK_AFTER);
-	if (*raw_token == '&' && raw_token[1] != '>')
+	if (*raw_token == '&' && raw_token[1] != '>' && (!raw_token[1] || !raw_token[2]))
 		return (TOK_AMP - (4 * (raw_token[1]
 					&& raw_token[0] == raw_token[1])));
-	if (*raw_token == '&' && raw_token[1] == '>')
+	if (*raw_token == '&' && raw_token[1] == '>' && !raw_token[2])
 		return (TOK_REDIR_OUT + (1 * (raw_token[1] == raw_token[2])));
-	if (*raw_token == '(' || *raw_token == ')')
+	if ((*raw_token == '(' || *raw_token == ')') && !raw_token[1])
 		return (TOK_LPAREN + (*raw_token == ')'));
 	return (TOK_WORD);
 }

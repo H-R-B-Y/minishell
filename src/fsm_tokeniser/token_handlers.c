@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:37:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/09 14:24:15 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/10 13:42:59 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,14 @@ void	handle_unclosed_quote(t_tokint *tokeniser, const char *str)
 
 int	handle_token_type(t_fsmdata *fsm)
 {
+	if (fsm->tokeniser_internals.previous_line
+		&& fsm->tokeniser_internals.current_type != TOK_WORD
+		&& fsm->tokeniser_internals.current_type != TOK_INCOMPLETE_STRING)
+	{
+		append_anon_token(fsm, TOK_WORD,
+			fsm->tokeniser_internals.previous_line);
+		fsm->tokeniser_internals.previous_line = 0;
+	}
 	if (fsm->tokeniser_internals.current_type == TOK_LPAREN)
 		fsm->paren_count++;
 	if (fsm->tokeniser_internals.current_type == TOK_RPAREN)
