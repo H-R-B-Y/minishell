@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:22:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/08 16:56:03 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/10 12:29:57 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,17 @@
 #include "../../include/v_dbg.h"
 
 /*
-Spaghetti code alert!
-*/
+If this returns a value it is because we have definitly found the end of the token,
+if it returns 0 we might still be in a quote or have an unclosed string.
 
-t_tokentype	_parse_loop_internals(t_tokint *tokeniser, const char *str)
+so we need to check the quote mode to verify if we are still in a quote or not.
+
+this might need to be refactored so that tokenise_type can handle the quote mode
+and return the correct token type, instead of `next_token_type` having to.
+
+this would allow us to always return a valid token type from this function.
+*/
+t_tokentype	parse_word_token(t_tokint *tokeniser, const char *str)
 {
 	char	c;
 
@@ -25,10 +32,13 @@ t_tokentype	_parse_loop_internals(t_tokint *tokeniser, const char *str)
 	{
 		c = str[tokeniser->index_end];
 		if (c == '\\' && tokeniser->quote_mode != QUOTE_SINGLE
-			&& str[tokeniser->index_end + 1] && ++tokeniser->index_end
-			&& ++tokeniser->index_end)
-			continue ;
-		if (tokeniser->quote_mode == QUOTE_NONE)
+			&& str[tokeniser->index_end + 1])
+			tokeniser->index_end++;
+		else if (tokeniser->quote_mode == QUOTE_DOUBLE && c == '"')
+			tokeniser->quote_mode = QUOTE_NONE;
+		else if (tokeniser->quote_mode == QUOTE_SINGLE && c == '\'')
+			tokeniser->quote_mode = QUOTE_NONE;
+		else if (tokeniser->quote_mode == QUOTE_NONE)
 		{
 			if (c == '\'')
 				tokeniser->quote_mode = QUOTE_SINGLE;
@@ -37,13 +47,9 @@ t_tokentype	_parse_loop_internals(t_tokint *tokeniser, const char *str)
 			else if (isoperator(c) || ft_iswhitespace(c) || c == '\0')
 				return (tokenise_type(tokeniser, str));
 		}
-		else if (tokeniser->quote_mode == QUOTE_DOUBLE && c == '"')
-			tokeniser->quote_mode = QUOTE_NONE;
-		else if (tokeniser->quote_mode == QUOTE_SINGLE && c == '\'')
-			tokeniser->quote_mode = QUOTE_NONE;
 		tokeniser->index_end++;
 	}
-	return (0);
+	return (tokenise_type(tokeniser, str));
 }
 
 t_tokentype	next_token_type(t_tokint *tokeniser, const char *str)
@@ -51,21 +57,14 @@ t_tokentype	next_token_type(t_tokint *tokeniser, const char *str)
 	tokeniser->index_start = tokeniser->index_end;
 	if (!str[tokeniser->index_start])
 		return (TOK_EOF);
-	if (ft_iswhitespace(str[tokeniser->index_start]))
+	if (tokeniser->quote_mode == QUOTE_NONE
+		&& ft_iswhitespace(str[tokeniser->index_start]))
 		tokeniser_skip_whitespace(tokeniser, str);
 	if (tokeniser->quote_mode == QUOTE_NONE
 		&& (isoperator(str[tokeniser->index_start])
 			|| ft_isdigit(str[tokeniser->index_start])))
 		return (handle_operator(tokeniser, str), tokenise_type(tokeniser, str));
-	if (_parse_loop_internals(tokeniser, str))
-		return (tokeniser->current_type);
-	if (tokeniser->quote_mode != QUOTE_NONE || (tokeniser->index_end > 1
-			&& str[tokeniser->index_end - 1] == '\\'
-			&& str[tokeniser->index_end - 2] != '\\'))
-		return (handle_unclosed_quote(tokeniser, str), TOK_INCOMPLETE_STRING);
-	else if (tokeniser->index_start < tokeniser->index_end)
-		return (tokenise_type(tokeniser, str));
-	return (TOK_EOF);
+	return (parse_word_token(tokeniser, str));
 }
 
 t_tokretcode	set_retcode(t_fsmdata *fsm,
@@ -77,16 +76,12 @@ t_tokretcode	set_retcode(t_fsmdata *fsm,
 		fsm->tokeniser_internals.index_end = 0;
 		fsm->tokeniser_internals.index_start = 0;
 	}
-	if (fsm->str_condition)
-		fsm->str_condition = 0;
 	fsm->str_condition = str_condition;
 	return (code);
 }
 
 void	state_change(t_fsmdata *fsm, t_fsmstate next_state)
 {
-	// printf("handle transition: %s to %s\n", fsmstate_str(fsm->state),
-	// 	fsmstate_str(next_state));
 	if (fsm->state == ST_HDOC && next_state == ST_WORD)
 		fsm->tokeniser_internals.current_token->heredoc_delim = 1;
 	else if (fsm->state == ST_REDR && next_state == ST_WORD)
@@ -131,8 +126,7 @@ t_tokretcode	tokenise(t_fsmdata *fsm, const char *str)
 		reset_fsm(fsm);
 	if (!str)
 		return (set_retcode(fsm, PARSE_ERROR, "invalid string"));
-	while (fsm->state != ST_END
-		&& fsm->state != ST_CONT
+	while (fsm->state != ST_END && fsm->state != ST_CONT
 		&& fsm->state != ST_WRNG)
 	{
 		fsm->tokeniser_internals.current_type

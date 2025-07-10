@@ -6,13 +6,13 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:37:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/25 15:48:31 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/09 14:24:15 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-t_tokentype		_parse_loop_internals(t_tokint *tokeniser, const char *str);
+t_tokentype		parse_word_token(t_tokint *tokeniser, const char *str);
 
 void	handle_potential_redirect(t_tokint *tokeniser, const char *str)
 {
@@ -21,11 +21,9 @@ void	handle_potential_redirect(t_tokint *tokeniser, const char *str)
 	while (str[tokeniser->index_end] && isdigit(str[tokeniser->index_end]))
 		tokeniser->index_end++;
 	t = str[tokeniser->index_end];
-	if (!(t == '<' || t == '>'))
-	{
-		_parse_loop_internals(tokeniser, str);
+	if ((!(t == '<' || t == '>'))
+		&& (parse_word_token(tokeniser, str) || 1))
 		return ;
-	}
 	tokeniser->index_end++;
 	if (str[tokeniser->index_end] == t)
 		tokeniser->index_end++;

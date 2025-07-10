@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:36:40 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/25 16:16:11 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/10 12:15:58 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,11 @@ t_tokentype	bin_token(const char *raw_token)
 t_tokentype	tokenise_type(t_tokint *tokeniser, const char *str)
 {
 	char	*substring;
-
+	
+	if (tokeniser->quote_mode != QUOTE_NONE || (tokeniser->index_end > 1
+		&& str[tokeniser->index_end - 1] == '\\'
+		&& str[tokeniser->index_end - 2] != '\\'))
+		return (handle_unclosed_quote(tokeniser, str), TOK_INCOMPLETE_STRING);
 	substring = ft_substr(str, tokeniser->index_start,
 			tokeniser->index_end - tokeniser->index_start);
 	tokeniser->current_type = bin_token(substring);

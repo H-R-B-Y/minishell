@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fsm_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 15:25:40 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/14 16:48:15 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/09 14:00:02 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 const char	*tokretcode_str(const t_tokretcode code)
 {
-	const char	*strs[TOKENISER_RETURNCODE_COUNT + 1] = {
+	static const char	*strs[TOKENISER_RETURNCODE_COUNT + 1] = {
 		"PARSE_OK", "PARSE_CONT", "PARSE_ERROR",
 		"to string error"
 	};
@@ -26,7 +26,7 @@ const char	*tokretcode_str(const t_tokretcode code)
 
 const char	*fsmstate_str(const t_fsmstate state)
 {
-	const char	*strs[STATE_COUNT + 1] = {
+	static const char	*strs[STATE_COUNT + 1] = {
 		"Wrong state", "starting state", "word", "operator",
 		"sequence", "subshell open", "subshell close", "heredoc",
 		"redirection", "continue state", "end state",

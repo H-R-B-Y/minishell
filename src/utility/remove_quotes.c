@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:16:03 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/08 16:54:29 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/10 12:28:15 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,9 @@ char	*remove_quotes(char *str, t_minishell *shell)
 			}
 			if (str[i[0]] == '\\')
 			{
-				i[0]++;
+				i[0] += 1;
 				_write_char(&output[i[1]], str[i[0]], i);
+				continue;
 			}
 			if (str[i[0]] == '$' && (mode == QUOTE_DOUBLE || mode == QUOTE_NONE))
 			{
