@@ -9,6 +9,24 @@ true  || echo SKIP
 echo $?
 false && true || echo FALLBACK
 echo $?
+
+
+#new line management
+echo vamos ;
+env | 
+
+grep HOME ; echo "
+$?"
+
+echo vamos ;
+env | 
+
+grep HOME ; echo 
+"
+$?"
+
+
+
 grep nomatch /dev/null | cat && echo PIPE
 echo $?
 (cd /; false) || echo PARENT

@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 12:01:50 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/09 21:13:24 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/09 23:20:25 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	reset_for_command(t_minishell *shell, t_readline_retcode rl_code)
 {
 	if (shell->rldata.current_hist_item)
 	{
+		// printf("test: %s",shell->rldata.current_hist_item);
 		better_add_history(shell->rldata.current_hist_item);
 		ft_dirtyswap((void *)&shell->rldata.current_hist_item, (void *)0, free);
 	}

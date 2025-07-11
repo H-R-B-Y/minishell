@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/09 21:14:44 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/10 00:22:07 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	prep_tree(t_minishell *shell)
 	t_asterror	astcode;
 
 	shell->tokens = fsm_pop_list(&shell->fsm_data);
-	// print_token_list(shell->tokens);4az
+	// print_token_list(shell->tokens);
 	dbg_add_token_list(&shell->info, shell->tokens);
 	shell->tokenv = (void *)ft_lstarr(shell->tokens);
 	ft_lstclear(&shell->tokens, 0);
@@ -46,6 +46,7 @@ int	next_command(t_minishell *shell)
 	while (rl_code != READ_NOTHING)
 	{
 		rl_code = read_until_complete_command(shell);
+		// append_n_to_history_item(&shell->rldata, shell->rldata.last_line);
 		if (rl_code == READ_OK)
 			prep_tree(shell);
 		else if (rl_code == READ_BADPARSE)

@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/09 21:06:45 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/10 12:17:20 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -400,9 +400,8 @@ void	set_exection_signals(void);
  */
 int	setup_signals(t_minishell *shell);
 
-
 ssize_t	glob_variable(t_astnode	*node);
 
-char	**simple_split(const char *str);
+char	**simple_split(const char *str, t_readline_data *data);
 
 #endif
