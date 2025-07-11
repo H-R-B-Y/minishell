@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:07:29 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/09 21:04:41 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/10 12:17:30 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,6 @@ char	*_pop_line(char ***arr);
 
 int		read_until_complete_command(t_minishell *shell);
 
-ssize_t	append_to_history_item(t_readline_data *data, char *str);
+ssize_t	append_to_history_item(t_readline_data *data, char **str);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 17:24:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/09 19:04:13 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/11 00:19:30 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,13 @@ int	read_until_complete_command(t_minishell *shell)
 	fsm_code = tokenise(&shell->fsm_data, shell->rldata.last_line);
 	while (fsm_code == PARSE_CONT)
 	{
+		append_to_history_item(&shell->rldata, &shell->rldata.last_line);
 		rl_code = read_with_temp_prompt(shell, shell->fsm_data.str_condition);
 		if (rl_code != READ_OK)
 			return (rl_code);
 		fsm_code = tokenise(&shell->fsm_data, shell->rldata.last_line);
 	}
+	append_to_history_item(&shell->rldata, &shell->rldata.last_line);
 	if (fsm_code == PARSE_ERROR)
 		return (READ_BADPARSE);
 	return (READ_OK);

@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   token_binning.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:36:40 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/25 16:16:11 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/11 01:02:04 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/fsm_tokeniser.h"
+// #include "../../include/fsm_tokeniser.h"
+#include "../../include/minishell.h"
 
 /*
 Would it be better to have some form of 
@@ -79,6 +80,8 @@ t_tokentype	bin_token(const char *raw_token)
 t_tokentype	tokenise_type(t_tokint *tokeniser, const char *str)
 {
 	char	*substring;
+	char 	*nlp;
+	size_t	end_i;
 
 	substring = ft_substr(str, tokeniser->index_start,
 			tokeniser->index_end - tokeniser->index_start);
@@ -88,8 +91,16 @@ t_tokentype	tokenise_type(t_tokint *tokeniser, const char *str)
 		.raw = substring, .type = tokeniser->current_type,};
 	if (tokeniser->current_type == TOK_WORD && tokeniser->previous_line)
 	{
-		ft_dirtyswap((void *)&tokeniser->current_token->raw,
-			ft_strjoin(tokeniser->previous_line, substring), free);
+		nlp = ft_strrchr(tokeniser->previous_line, '\n');
+		end_i = ft_strlen(tokeniser->previous_line) - 1;
+		if (!nlp || nlp != (tokeniser->previous_line + end_i))
+			ft_dirtyswap((void *)&tokeniser->current_token->raw,
+				str_vec_join((char *[4]){tokeniser->previous_line, "\n", substring, 0}),
+				free);
+		else
+			ft_dirtyswap((void *)&tokeniser->current_token->raw,
+				str_vec_join((char *[3]){tokeniser->previous_line, substring, 0}),
+				free);
 		ft_dirtyswap((void *)&tokeniser->previous_line, 0, free);
 	}
 	return (tokeniser->current_type);

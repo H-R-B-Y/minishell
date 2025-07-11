@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_handlers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:37:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/25 15:48:31 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/11 00:39:30 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,16 +63,28 @@ void	handle_operator(t_tokint *tokeniser, const char *str)
 void	handle_unclosed_quote(t_tokint *tokeniser, const char *str)
 {
 	char	*temp;
-
+	char 	*nlp;
+	size_t	end_i;
+	
 	temp = ft_substr(str, tokeniser->index_start,
 			tokeniser->index_end - tokeniser->index_start);
-	if (tokeniser->previous_line)
+	if (!tokeniser->previous_line)
+	{
 		ft_dirtyswap((void *)&tokeniser->previous_line,
-			str_vec_join((char *[4]){tokeniser->previous_line, temp, "\n", 0}),
+			str_vec_join((char *[2]){temp, 0}),
+			free);
+		free(temp);
+		return ;
+	}
+	nlp = ft_strrchr(tokeniser->previous_line, '\n');
+	end_i = ft_strlen(tokeniser->previous_line) - 1;
+	if (!nlp || nlp != (tokeniser->previous_line + end_i))
+		ft_dirtyswap((void *)&tokeniser->previous_line,
+			str_vec_join((char *[4]){tokeniser->previous_line, "\n", temp, 0}),
 			free);
 	else
 		ft_dirtyswap((void *)&tokeniser->previous_line,
-			str_vec_join((char *[3]){temp, "\n", 0}),
+			str_vec_join((char *[3]){tokeniser->previous_line, temp, 0}),
 			free);
 	free(temp);
 }
