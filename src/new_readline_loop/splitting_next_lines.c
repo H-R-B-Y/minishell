@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:16:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/08 13:28:52 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/11 18:05:11 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,12 @@ int	next_line(t_readline_data *data, const char *prompt)
 		data->last_line = _pop_line(&data->extra_lines);
 		data->extra_line_count--;
 		ft_dirtyswap((void *)&data->last_line, ft_strrtrim(data->last_line, "\n"), free);
-		if (!*data->last_line)
-			return (READ_NOTHING);
-		else if (data->last_line)
+		if (data->last_line)
 			return (READ_OK);
+		else if (!data->last_line)
+			return (READ_ERROR);
+		else if (!*data->last_line)
+			return (READ_NOTHING);
 		return (READ_ERROR);
 	}
 	temp = readline(prompt);

@@ -7,6 +7,7 @@ ifdef debug
 CFLAGS += -DFD_DBG=3
 endif
 
+
 MAKEFLAGS		+= --no-print-directory
 
 LIBFLAGS		:= -lreadline -lhistory
@@ -159,8 +160,6 @@ post:
 		@printf "\b\b\b\b\b\b\b\b\b\b\b\b\b\033[38;2;0;200;0mDone\033[0m  ꒱ ‧₊˚⭒\n"
 		@printf "\n"
 
-.PHONY: all clean fclean re test pre post rm coverage norm
-
 coverage:
 ifeq ($(TEST_SCRIPT),)
 	@printf "There has been an issue running coverage: no script to run program\n"
@@ -178,6 +177,13 @@ else
 	@find . -name '*.gcda' -delete
 	@find . -name '*.gcno' -delete
 endif
+
+
+test: $(NAME)
+	@$(MAKE) --directory lib/fault_injection re
+	@printf "MALLOC_FAIL_RATE=30 MALLOC_FAIL_VERBOSE=1 LD_PRELOAD=./lib/fault_injection/faultinject.so ./$(NAME)\n"
+
+.PHONY: all clean fclean re test pre post rm coverage
 
 # reference for cleanup
 # nm -C --defined-only *.o | grep ' T ' > defined.txt
