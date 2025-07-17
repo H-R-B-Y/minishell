@@ -2,8 +2,8 @@ CC = gcc
 CFLAGS = -Wall -fPIC -O0 -g3
 LDFLAGS = -shared -ldl
 
-NAME = faultinject.so
-SRC = src.c
+NAME = fault_injector.so
+SRC = fault_injector.c
 
 all: $(NAME)
 

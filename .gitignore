@@ -1,6 +1,7 @@
 *.out
 *.o
 *.a
+*.so
 *.tmp
 .env
 venv

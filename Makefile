@@ -1,6 +1,6 @@
 NAME			:= minishell
 CC 				:= gcc
-CFLAGS			:= -Wextra -Wall -Werror -g3 -O0 #-fsanitize=address
+CFLAGS			:= -Wextra -Wall -Werror -g -fno-inline -rdynamic -O0 #-fsanitize=address
 #CFLAGS			:= 
 
 ifdef debug
