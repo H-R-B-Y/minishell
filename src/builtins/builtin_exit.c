@@ -6,39 +6,33 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:38:10 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/29 14:32:35 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/19 17:29:50 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../include/builtin.h"
 
-static void	warning_message(void)
-{
-	printf("entire process cleanup has not been ");
-	printf("implemented yet, memory leaks will occur here\n");
-}
-
-/*
-Probably not a good idea to allow memory leaks here, but in fairness
-bash leaks here so idk.
-
-I will attempt to cleanup here though, just in case.
-*/
-// think it would be good to accept a status code from input here.
 int	builtin_exit(t_minishell *shell, char **argv, char ***envp)
 {
-	(void)shell;
-	(void)argv;
+	int	status;
+	size_t	argc;
+
 	(void)envp;
-	warning_message();
-
-	// reset_for_command(shell);
-	// fflush(stdout);
-	// free(shell->prompt);
-	// ft_arrclear((void *)shell->environment, free);
-	// restore_signals(shell);
-
 	printf("exit\n");
-	exit(42);
+	argc = ft_arrlen((void **)argv);
+	if (argc > 2)
+		return (ft_putstr_fd("minishell: exit: too many arguments\n", 2), 
+			EXIT_FAILURE);
+	else if (argc == 2)
+		status = ft_atoi(argv[1]);
+	// if (*envp)
+	// 	ft_arrclear((void **)(*envp), free);
+	// if (argv)
+	// 	ft_arrclear((void **)argv, free);
+	clean_shell(shell);
+	if (argc == 2)
+		exit(status);
+	else
+		exit(42);
 }
