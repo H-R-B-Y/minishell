@@ -161,6 +161,8 @@ post:
 
 .PHONY: all clean fclean re test pre post rm coverage norm
 
+valgrind: valgrind --leak-check=full --show-leak-kinds=all --gen-suppressions=all -s --suppressions=supp.supp ./minishell 2> valgrind_output
+
 coverage:
 ifeq ($(TEST_SCRIPT),)
 	@printf "There has been an issue running coverage: no script to run program\n"

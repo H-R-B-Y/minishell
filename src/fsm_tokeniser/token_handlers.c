@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_handlers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:37:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/11 00:39:30 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/21 17:42:36 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ void	handle_unclosed_quote(t_tokint *tokeniser, const char *str)
 	
 	temp = ft_substr(str, tokeniser->index_start,
 			tokeniser->index_end - tokeniser->index_start);
+	if (!temp)
+		return ; // TODO: figure out the best way to signal this error to the rest of the process
 	if (!tokeniser->previous_line)
 	{
 		ft_dirtyswap((void *)&tokeniser->previous_line,

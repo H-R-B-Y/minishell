@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/10 00:22:07 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/21 18:11:42 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,12 @@ int	prep_tree(t_minishell *shell)
 	t_asterror	astcode;
 
 	shell->tokens = fsm_pop_list(&shell->fsm_data);
-	// print_token_list(shell->tokens);
 	dbg_add_token_list(&shell->info, shell->tokens);
 	shell->tokenv = (void *)ft_lstarr(shell->tokens);
 	ft_lstclear(&shell->tokens, 0);
 	astcode = produce_ast(shell, shell->tokenv, &shell->current_tree);
 	if (astcode == AST_ERR_NONE)
 	{
-		// print_ast(shell->current_tree, "|	|");
 		dbg_add_ast(&shell->info, shell->current_tree);
 		if (shell->interactive_mode)
 			set_exection_signals();
@@ -46,18 +44,31 @@ int	next_command(t_minishell *shell)
 	while (rl_code != READ_NOTHING)
 	{
 		rl_code = read_until_complete_command(shell);
-		// append_n_to_history_item(&shell->rldata, shell->rldata.last_line);
 		if (rl_code == READ_OK)
-			prep_tree(shell);
+		{
+			if(prep_tree(shell) == AST_ERR_FATAL)
+				return (READ_FATAL);
+		}
 		else if (rl_code == READ_BADPARSE)
 			printf("Parse error: %s!\n", shell->fsm_data.str_condition);
-		else if (rl_code == READ_ERROR)
-			printf("Issue encountered while reading!\n"); // should probably collect some data to provide the user when this happens
+		else if (rl_code == READ_ERROR) // error is recoverable 
+			return (rl_code);
 		else if (rl_code == READ_EOF)
+			return (rl_code);
+		else if (rl_code == READ_FATAL) // fatal means exit
 			return (rl_code);
 		reset_for_command(shell, rl_code);
 	}
 	return (rl_code);
+}
+
+void	free_everything(t_minishell *shell)
+{
+	reset_for_command(shell, READ_NOTHING);
+	fflush(stdout);
+	free(shell->prompt);
+	ft_arrclear((void *)shell->environment, free);
+	restore_signals(shell);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -71,25 +82,17 @@ int	main(int argc, char **argv, char **envp)
 	printf("Started with pid: %d\nStarted with seed: %d\n", get_my_pid(), ft_rand(0, 100));
 	while (1)
 	{
-		// printf("\nENV*********************************************************\n\n");
-		// ft_arriter((void *)shell.environment, print_and_ret);
-		// printf("\nUNASSIGNED*********************************************************\n\n");
-		// ft_arriter((void *)shell.unassigned_env, print_and_ret);
-		// printf("\nLOCAL*********************************************************\n\n");
-		// ft_arriter((void *)shell.local_env, print_and_ret);
 		rl_code = next_command(&shell);
 		if (rl_code == READ_EOF)
 			break ;
+		else if (rl_code == READ_FATAL)
+			return (-1); // NOTE: free memory here
 		dbg_write_states(&shell.info);
 		dbg_write_tokens(&shell.info);
 		dbg_write_nodes(&shell.info);
 		dbg_write_end(&shell.info);
 		reset_for_command(&shell, rl_code);
 	}
-	reset_for_command(&shell, READ_NOTHING);
-	fflush(stdout);
-	free(shell.prompt);
-	ft_arrclear((void *)shell.environment, free);
-	restore_signals(&shell);
+	free_everything(&shell);
 	return (0);
 }

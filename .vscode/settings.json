@@ -13,6 +13,5 @@
 		"signal.h": "c",
 		"signal-defs.h": "c",
 		"stdlib.h": "c"
-		"typeinfo": "c"
 	}
 }
