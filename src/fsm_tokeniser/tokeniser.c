@@ -3,19 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   tokeniser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:22:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/11 00:19:18 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/21 17:48:47 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/fsm_tokeniser.h"
 #include "../../include/v_dbg.h"
-
-/*
-Spaghetti code alert!
-*/
 
 t_tokentype	_parse_loop_internals(t_tokint *tokeniser, const char *str)
 {
@@ -85,8 +81,6 @@ t_tokretcode	set_retcode(t_fsmdata *fsm,
 
 void	state_change(t_fsmdata *fsm, t_fsmstate next_state)
 {
-	// printf("handle transition: %s to %s\n", fsmstate_str(fsm->state),
-	// 	fsmstate_str(next_state));
 	if (fsm->state == ST_HDOC && next_state == ST_WORD)
 		fsm->tokeniser_internals.current_token->heredoc_delim = 1;
 	else if (fsm->state == ST_REDR && next_state == ST_WORD)
@@ -130,13 +124,15 @@ t_tokretcode	tokenise(t_fsmdata *fsm, const char *str)
 	if (fsm->retcode == PARSE_ERROR)
 		reset_fsm(fsm);
 	if (!str)
-		return (set_retcode(fsm, PARSE_ERROR, "invalid string"));
+		return (set_retcode(fsm, PARSE_FATAL, "invalid string"));
 	while (fsm->state != ST_END
 		&& fsm->state != ST_CONT
 		&& fsm->state != ST_WRNG)
 	{
 		fsm->tokeniser_internals.current_type
 			= next_token_type(&fsm->tokeniser_internals, str);
+		if (fsm->tokeniser_internals.current_type == TOK_ERR)
+			return (set_retcode(fsm, PARSE_ERROR, "UNRECOVERABLE")); // maybe we should differenciate between errors and fatal errors
 		next_state = fsm_check_transition(fsm->state,
 				fsm->tokeniser_internals.current_type);
 		if (!handle_token_type(fsm))

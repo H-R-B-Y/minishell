@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fsm_tokeniser.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/11 00:28:20 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/21 17:48:37 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ enum e_tokentype
 	TOK_INCOMPLETE_STRING,
 	/// redirect to an fd isntead of a file n>&m
 	TOK_REDIR_FD,
+	// ERROR in case we need to signal to the rest of the program
+	TOK_ERR,
 	/// count of total token types
 	TOK_COUNT
 };
@@ -168,6 +170,8 @@ enum e_tokretcode
 	/// Parsing was not successful
 	/// fsm will need clearing / will clear on next call
 	PARSE_ERROR,
+	// PARSER FATAL
+	PARSE_FATAL,
 	/// Count of different return codes
 	TOKENISER_RETURNCODE_COUNT
 };

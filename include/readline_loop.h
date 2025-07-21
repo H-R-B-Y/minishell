@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline_loop.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:07:29 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/10 12:17:30 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/21 17:49:43 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,9 @@ enum e_readline_retcode
 	READ_OK,
 	READ_NOTHING,
 	READ_EOF,
-	READ_ERROR, // split this out later into different issues
+	READ_ERROR,
 	READ_BADPARSE,
+	READ_FATAL,
 	READ_RETCODE_COUNT
 };
 

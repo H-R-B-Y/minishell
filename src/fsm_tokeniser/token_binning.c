@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_binning.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:36:40 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/11 01:02:04 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/21 17:45:17 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_tokentype	potential_redirect(const char *raw_token)
 		if (!raw_token[i])
 			return (TOK_REDIR_FD);
 	}
-	return (TOK_NONE);
+	return (TOK_WORD);
 }
 
 t_tokentype	bin_token(const char *raw_token)
@@ -87,6 +87,8 @@ t_tokentype	tokenise_type(t_tokint *tokeniser, const char *str)
 			tokeniser->index_end - tokeniser->index_start);
 	tokeniser->current_type = bin_token(substring);
 	tokeniser->current_token = ft_calloc(1, sizeof(t_token));
+	if (!tokeniser->current_token)
+		return (TOK_ERR);
 	(*tokeniser->current_token) = (t_token){.heredoc_delim = 0,
 		.raw = substring, .type = tokeniser->current_type,};
 	if (tokeniser->current_type == TOK_WORD && tokeniser->previous_line)

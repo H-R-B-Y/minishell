@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/07 15:47:31 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/21 17:52:39 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ enum e_asterror
 	AST_ERR_NONE,
 	AST_ERR_SYNTAX,
 	AST_ERR_HEREDOC_EXIT,
+	AST_ERR_FATAL,
 	AST_ERR_COUNT,
 };
 

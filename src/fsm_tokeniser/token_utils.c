@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:36:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/14 16:56:54 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/21 17:41:46 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ void	append_anon_token(t_fsmdata *fsm, const t_tokentype type, const char *str)
 	t_token	*tok;
 
 	tok = malloc(sizeof(t_token));
+	if (!tok)
+		return ; // just have to assume we cannot catch this?
 	*tok = (t_token){.heredoc_delim = 0, .raw = (void *)str, .type = type};
 	ft_lstadd_back(&fsm->tokens, ft_lstnew(tok));
 }
