@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:37:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/21 17:42:36 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/22 14:21:09 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,6 @@ void	handle_operator(t_tokint *tokeniser, const char *str)
 void	handle_unclosed_quote(t_tokint *tokeniser, const char *str)
 {
 	char	*temp;
-	char 	*nlp;
-	size_t	end_i;
 	
 	temp = ft_substr(str, tokeniser->index_start,
 			tokeniser->index_end - tokeniser->index_start);
@@ -78,9 +76,7 @@ void	handle_unclosed_quote(t_tokint *tokeniser, const char *str)
 		free(temp);
 		return ;
 	}
-	nlp = ft_strrchr(tokeniser->previous_line, '\n');
-	end_i = ft_strlen(tokeniser->previous_line) - 1;
-	if (!nlp || nlp != (tokeniser->previous_line + end_i))
+	if (last_newline_not_end(tokeniser->previous_line))
 		ft_dirtyswap((void *)&tokeniser->previous_line,
 			str_vec_join((char *[4]){tokeniser->previous_line, "\n", temp, 0}),
 			free);

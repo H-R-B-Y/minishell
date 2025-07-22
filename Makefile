@@ -71,6 +71,7 @@ SRCS			:= \
 				$(SRC_DIR)/init_process/signal_handlers.c \
 				\
 				$(SRC_DIR)/new_readline_loop/read_command_loop.c \
+				$(SRC_DIR)/new_readline_loop/readline_wrapper.c \
 				$(SRC_DIR)/new_readline_loop/splitting_next_lines.c \
 				\
 				$(SRC_DIR)/syntax_tree/ast_node_init.c \
@@ -82,6 +83,7 @@ SRCS			:= \
 				$(SRC_DIR)/syntax_tree/syntax_util.c \
 				\
 				$(SRC_DIR)/utility/get_my_pid.c \
+				$(SRC_DIR)/utility/last_newline_not_end.c \
 				$(SRC_DIR)/utility/operators.c \
 				$(SRC_DIR)/utility/pop_line.c \
 				$(SRC_DIR)/utility/rem_quote2.c \
@@ -161,7 +163,8 @@ post:
 
 .PHONY: all clean fclean re test pre post rm coverage norm
 
-valgrind: valgrind --leak-check=full --show-leak-kinds=all --gen-suppressions=all -s --suppressions=supp.supp ./minishell 2> valgrind_output
+valgrind:
+	@printf "valgrind --leak-check=full --show-leak-kinds=all --gen-suppressions=all -s --suppressions=supp.supp ./minishell 2> valgrind_output"
 
 coverage:
 ifeq ($(TEST_SCRIPT),)

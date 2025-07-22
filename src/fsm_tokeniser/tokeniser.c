@@ -6,13 +6,16 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:22:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/21 17:48:47 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/22 14:21:51 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/fsm_tokeniser.h"
 #include "../../include/v_dbg.h"
 
+// This to be renamed
+// need to make sure this is the only place where the token type is
+// determined, and that this doesn't just return something useless
 t_tokentype	_parse_loop_internals(t_tokint *tokeniser, const char *str)
 {
 	char	c;
@@ -21,10 +24,13 @@ t_tokentype	_parse_loop_internals(t_tokint *tokeniser, const char *str)
 	{
 		c = str[tokeniser->index_end];
 		if (c == '\\' && tokeniser->quote_mode != QUOTE_SINGLE
-			&& str[tokeniser->index_end + 1] && ++tokeniser->index_end
-			&& ++tokeniser->index_end)
-			continue ;
-		if (tokeniser->quote_mode == QUOTE_NONE)
+			&& str[tokeniser->index_end + 1])
+			tokeniser->index_end++;
+		else if (tokeniser->quote_mode == QUOTE_DOUBLE && c == '"')
+			tokeniser->quote_mode = QUOTE_NONE;
+		else if (tokeniser->quote_mode == QUOTE_SINGLE && c == '\'')
+			tokeniser->quote_mode = QUOTE_NONE;
+		else if (tokeniser->quote_mode == QUOTE_NONE)
 		{
 			if (c == '\'')
 				tokeniser->quote_mode = QUOTE_SINGLE;
@@ -33,35 +39,22 @@ t_tokentype	_parse_loop_internals(t_tokint *tokeniser, const char *str)
 			else if (isoperator(c) || ft_iswhitespace(c) || c == '\0')
 				return (tokenise_type(tokeniser, str));
 		}
-		else if (tokeniser->quote_mode == QUOTE_DOUBLE && c == '"')
-			tokeniser->quote_mode = QUOTE_NONE;
-		else if (tokeniser->quote_mode == QUOTE_SINGLE && c == '\'')
-			tokeniser->quote_mode = QUOTE_NONE;
 		tokeniser->index_end++;
 	}
-	return (0);
+	return (tokenise_type(tokeniser, str));
 }
 
 t_tokentype	next_token_type(t_tokint *tokeniser, const char *str)
 {
 	tokeniser->index_start = tokeniser->index_end;
-	if (!str[tokeniser->index_start])
-		return (TOK_EOF);
-	if (ft_iswhitespace(str[tokeniser->index_start]))
+	if (tokeniser->quote_mode == QUOTE_NONE
+		&& ft_iswhitespace(str[tokeniser->index_start]))
 		tokeniser_skip_whitespace(tokeniser, str);
 	if (tokeniser->quote_mode == QUOTE_NONE
 		&& (isoperator(str[tokeniser->index_start])
 			|| ft_isdigit(str[tokeniser->index_start])))
 		return (handle_operator(tokeniser, str), tokenise_type(tokeniser, str));
-	if (_parse_loop_internals(tokeniser, str))
-		return (tokeniser->current_type);
-	if (tokeniser->quote_mode != QUOTE_NONE || (tokeniser->index_end > 1
-			&& str[tokeniser->index_end - 1] == '\\'
-			&& str[tokeniser->index_end - 2] != '\\'))
-		return (handle_unclosed_quote(tokeniser, str), TOK_INCOMPLETE_STRING);
-	else if (tokeniser->index_start < tokeniser->index_end)
-		return (tokenise_type(tokeniser, str));
-	return (TOK_EOF);
+	return (_parse_loop_internals(tokeniser, str));
 }
 
 t_tokretcode	set_retcode(t_fsmdata *fsm,

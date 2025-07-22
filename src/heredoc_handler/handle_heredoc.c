@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:22:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/08 13:29:00 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/22 15:37:07 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,7 @@ static int	_read_heredoc(struct s_ast_internal *meta,
 	{
 
 		if (g_global_signal != 0)
-		{
 			return (-1);
-		}
 		temp = meta->rldata->last_line;
 		if (!ft_strcmp(delim, temp))
 			break ;
