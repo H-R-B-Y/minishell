@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:36:40 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/21 17:45:17 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/22 14:20:38 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,21 @@ t_tokentype	bin_token(const char *raw_token)
 	return (TOK_WORD);
 }
 
+static int	unfinished_string_check(t_tokint *tokeniser, const char *str)
+{
+	if (tokeniser->quote_mode != QUOTE_NONE || (tokeniser->index_end > 1
+		&& str[tokeniser->index_end - 1] == '\\'
+		&& str[tokeniser->index_end - 2] != '\\'))
+		return (1);
+	return (0);
+}
+
 t_tokentype	tokenise_type(t_tokint *tokeniser, const char *str)
 {
 	char	*substring;
-	char 	*nlp;
-	size_t	end_i;
 
+	if (unfinished_string_check(tokeniser, str))
+		return (handle_unclosed_quote(tokeniser, str), TOK_INCOMPLETE_STRING);
 	substring = ft_substr(str, tokeniser->index_start,
 			tokeniser->index_end - tokeniser->index_start);
 	tokeniser->current_type = bin_token(substring);
@@ -92,10 +101,8 @@ t_tokentype	tokenise_type(t_tokint *tokeniser, const char *str)
 	(*tokeniser->current_token) = (t_token){.heredoc_delim = 0,
 		.raw = substring, .type = tokeniser->current_type,};
 	if (tokeniser->current_type == TOK_WORD && tokeniser->previous_line)
-	{
-		nlp = ft_strrchr(tokeniser->previous_line, '\n');
-		end_i = ft_strlen(tokeniser->previous_line) - 1;
-		if (!nlp || nlp != (tokeniser->previous_line + end_i))
+	{ // can the following be put into a subfunction, isn't this code duplicated somewhere else?
+		if (last_newline_not_end(tokeniser->previous_line))
 			ft_dirtyswap((void *)&tokeniser->current_token->raw,
 				str_vec_join((char *[4]){tokeniser->previous_line, "\n", substring, 0}),
 				free);

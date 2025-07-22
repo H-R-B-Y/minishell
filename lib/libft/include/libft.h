@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:21:04 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/08 13:04:02 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/22 15:38:32 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define LIBFT_H
 
 # include <stdlib.h>
+# include <sys/types.h>
 # include <errno.h>
 
 // ███    ███  █████  ███    ██ ██████   █████  ████████ ███████ 
@@ -596,17 +597,18 @@ void	**ft_arrjoin(void **arr1, void **arr2);
  * @param a pointer to a value you want to swap
  * @param b the new value
  * @param del function to free the original contents of a (optional)
+ * @return returns the new value stored in a
  */
-void	ft_dirtyswap(void **a, void *b, void (*del)(void *));
+void	*ft_dirtyswap(void **a, void *b, void (*del)(void *));
 
 /**
  * @brief count the occurences of c in str
  * 
  * @param str string to check
  * @param c character to count
- * @return size_t occurences
+ * @return ssize_t occurences or -1
  */
-size_t	ft_strcountchar(const char *str, char c);
+ssize_t	ft_strcountchar(const char *str, char c);
 
 /**
  * @brief Creates a random number based on the seed RANDSEED

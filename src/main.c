@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/21 18:11:42 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/22 14:53:29 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,14 @@ int	next_command(t_minishell *shell)
 	return (rl_code);
 }
 
-void	free_everything(t_minishell *shell)
+int	free_everything(t_minishell *shell, int code)
 {
 	reset_for_command(shell, READ_NOTHING);
 	fflush(stdout);
 	free(shell->prompt);
 	ft_arrclear((void *)shell->environment, free);
 	restore_signals(shell);
+	return (code);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -79,20 +80,20 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	init_process(&shell, envp);
-	printf("Started with pid: %d\nStarted with seed: %d\n", get_my_pid(), ft_rand(0, 100));
+	if (shell.interactive_mode)
+		printf("Started with pid: %d\nStarted with seed: %d\n", get_my_pid(), ft_rand(0, 100));
 	while (1)
 	{
 		rl_code = next_command(&shell);
 		if (rl_code == READ_EOF)
 			break ;
 		else if (rl_code == READ_FATAL)
-			return (-1); // NOTE: free memory here
+			return (free_everything(&shell, -1));
 		dbg_write_states(&shell.info);
 		dbg_write_tokens(&shell.info);
 		dbg_write_nodes(&shell.info);
 		dbg_write_end(&shell.info);
 		reset_for_command(&shell, rl_code);
 	}
-	free_everything(&shell);
-	return (0);
+	return (free_everything(&shell, 0));
 }

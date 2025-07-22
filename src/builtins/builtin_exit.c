@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:38:10 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/21 18:12:57 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/22 14:54:14 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	builtin_exit(t_minishell *shell, char **argv, char ***envp)
 	(void)shell;
 	(void)argv;
 	(void)envp;
-	free_everything(shell);
 	printf("exit\n");
-	exit(42);
+	exit(free_everything(shell, 42));
 }

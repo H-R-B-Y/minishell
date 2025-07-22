@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:07:29 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/21 17:49:43 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/22 15:40:03 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,10 @@ struct s_readline_data
 	size_t				extra_line_count;
 	char				*current_hist_item;
 	char				*last_line;
+	short int			*interactive_mode;
 };
 
-size_t	split_extra_lines(t_readline_data *data, char *str);
+ssize_t	split_extra_lines(t_readline_data *data, char *str);
 
 int		next_line(t_readline_data *data, const char *prompt);
 
@@ -48,5 +49,7 @@ char	*_pop_line(char ***arr);
 int		read_until_complete_command(t_minishell *shell);
 
 ssize_t	append_to_history_item(t_readline_data *data, char **str);
+
+char	*readline_wrapper(t_readline_data *data, const char *prompt);
 
 #endif
