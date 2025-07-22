@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/22 16:58:06 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/22 17:28:12 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,5 +251,10 @@ t_redirect_desc	*handle_redirectfd(t_token *redirect);
 t_redirect_desc	*handle_redirect(t_token *redirect, t_token *filename);
 
 t_redirect_desc	*handle_heredoc(struct s_ast_internal *meta, char *delim, t_token *heredoc);
+
+/**
+ * @brief private to ast internal are we able to continue consuming
+ */
+int	_continue_parsing(struct s_ast_internal *meta);
 
 #endif

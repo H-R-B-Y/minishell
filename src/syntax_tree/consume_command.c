@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 13:46:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/22 17:13:01 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/22 17:29:06 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ ssize_t	ast_consume_words(struct s_ast_internal *meta, t_astnode *node)
 	ssize_t	i;
 
 	eaten = 0;
-	while (meta->tokens[meta->consumed] && meta->tokens[meta->consumed + eaten]
+	while (_continue_parsing(meta) && meta->tokens[meta->consumed + eaten]
 		&& ft_strchr("\1\3\4\5\6\17", meta->tokens[meta->consumed + eaten]->type))
 		eaten++;
 	node->tokens = ft_calloc(eaten + 1, sizeof(t_token *));

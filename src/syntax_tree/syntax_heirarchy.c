@@ -6,13 +6,13 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 12:20:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/22 17:11:49 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/22 17:27:42 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static int	_continue_parsing(struct s_ast_internal *meta)
+int	_continue_parsing(struct s_ast_internal *meta)
 {
 	if (!meta->tokens[meta->consumed])
 		return (0);
