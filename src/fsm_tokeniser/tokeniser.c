@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:22:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/22 14:21:51 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/22 17:04:57 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 // This to be renamed
 // need to make sure this is the only place where the token type is
 // determined, and that this doesn't just return something useless
-t_tokentype	_parse_loop_internals(t_tokint *tokeniser, const char *str)
+t_tokentype	skip_token_str(t_tokint *tokeniser, const char *str)
 {
 	char	c;
 
@@ -54,7 +54,7 @@ t_tokentype	next_token_type(t_tokint *tokeniser, const char *str)
 		&& (isoperator(str[tokeniser->index_start])
 			|| ft_isdigit(str[tokeniser->index_start])))
 		return (handle_operator(tokeniser, str), tokenise_type(tokeniser, str));
-	return (_parse_loop_internals(tokeniser, str));
+	return (skip_token_str(tokeniser, str));
 }
 
 t_tokretcode	set_retcode(t_fsmdata *fsm,
@@ -101,7 +101,8 @@ t_tokretcode	correct_retcode(t_fsmdata *fsm)
 		else if (fsm->paren_count > 0)
 		{
 			fsm->str_condition = "unclosed parenthesis";
-			handle_subshell_newline(fsm);
+			if (handle_subshell_newline(fsm) < 0)
+				return (PARSE_FATAL);
 		}
 		return (PARSE_CONT);
 	}
@@ -125,14 +126,14 @@ t_tokretcode	tokenise(t_fsmdata *fsm, const char *str)
 		fsm->tokeniser_internals.current_type
 			= next_token_type(&fsm->tokeniser_internals, str);
 		if (fsm->tokeniser_internals.current_type == TOK_ERR)
-			return (set_retcode(fsm, PARSE_ERROR, "UNRECOVERABLE")); // maybe we should differenciate between errors and fatal errors
+			return (set_retcode(fsm, PARSE_ERROR, "UNRECOVERABLE"));
 		next_state = fsm_check_transition(fsm->state,
 				fsm->tokeniser_internals.current_type);
 		if (!handle_token_type(fsm))
 			next_state = ST_WRNG;
 		state_change(fsm, next_state);
 		if (next_state != ST_END && next_state != ST_WRNG
-			&& next_state != ST_CONT)
+			&& next_state != ST_CONT) // what do we do if the following doesnt work should list add back maybe return the pointer of the thing added, so we can null check it?
 			ft_lstadd_back(&(fsm->tokens),
 				ft_lstnew(tokeniser_pop_token(&fsm->tokeniser_internals)));
 	}
