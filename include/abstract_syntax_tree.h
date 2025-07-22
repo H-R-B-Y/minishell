@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/21 17:52:39 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/22 16:58:06 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,7 +237,7 @@ t_astnode	*ast_parse_subcommand(struct s_ast_internal *meta);
  * @param meta the metadata struct containing info about the tree
  * @param node the ??? too tired cannot remember
  */
-size_t		ast_consume_words(struct s_ast_internal *meta, t_astnode *node);
+ssize_t		ast_consume_words(struct s_ast_internal *meta, t_astnode *node);
 
 /**
  * @brief print the ast

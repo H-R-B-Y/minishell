@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 12:20:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/21 16:57:55 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/22 17:15:50 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	destroy_redirect(t_redirect_desc *n)
 {
+	if (!n)
+		return ;
 	if (n->subtype == REDIR_FILE)
 		free(n->file_map.filename);
 	free(n);
@@ -46,9 +48,11 @@ void	close_fds_needed(t_list	*redirects)
 	while (node)
 	{
 		desc = node->content;
+		node = node->next;
+		if (!desc)
+			continue ;
 		if (desc->subtype == REDIR_FILE)
 			close(desc->file_map.from_fd);
-		node = node->next;
 	}
 }
 

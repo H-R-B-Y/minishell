@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:22:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/22 15:37:07 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/22 16:55:56 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ extern int	g_global_signal;
 
 char	*s_get_envany(t_minishell *shell, char *name);
 
-static void	_replace_var(struct s_ast_internal *meta, int temp_file, char *line)
+static int	_replace_var(struct s_ast_internal *meta, int temp_file, char *line)
 {
 	size_t	i[2];
 	char	*var[2];
@@ -33,11 +33,14 @@ static void	_replace_var(struct s_ast_internal *meta, int temp_file, char *line)
 		while (line[i[1]] && line[i[1]] != '$' && !ft_iswhitespace(line[i[1]]))
 			i[1]++;
 		var[0] = ft_substr(line, i[0] + 1, i[1] - i[0]);
+		if (!var[0])
+			return (-1);
 		var[1] = s_get_envany(meta->shell, var[0]);
 		free(var[0]);
 		write(temp_file, var[1], ft_strlen(var[1]));
 		i[0] = i[1];
 	}
+	return (1);
 }
 
 static int	_read_heredoc(struct s_ast_internal *meta,
@@ -59,8 +62,9 @@ static int	_read_heredoc(struct s_ast_internal *meta,
 			break ;
 		while ((flags & 2) && temp[0] == '\t')
 			temp++;
-		if (status == READ_OK && (flags & 1) && ft_strchr(temp, '$'))
-			_replace_var(meta, temp_file, temp);
+		if (status == READ_OK && (flags & 1) && ft_strchr(temp, '$')
+			&& _replace_var(meta, temp_file, temp) < 0)
+			return (-1);
 		else if (status == READ_OK)
 			write(temp_file, temp, ft_strlen(temp));
 		write(temp_file, "\n", 1);
@@ -82,10 +86,12 @@ static int	prep_heredoc(struct s_ast_internal *meta, char *delim, short handle_v
 	temp_file[0] = open(strs[1], O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR);
 	if (temp_file[0] == -1)
 		return (free(strs[0]), free(strs[1]), -1);
-	if (_read_heredoc(meta, strs[0], temp_file[0], handle_vars) != 0 && g_global_signal == SIGINT)
+	if (_read_heredoc(meta, strs[0], temp_file[0], handle_vars) != 0)
 	{
-		meta->error = AST_ERR_HEREDOC_EXIT;
-		return (-1);
+		meta->error = AST_ERR_FATAL;
+		if (g_global_signal == SIGINT)
+			meta->error = AST_ERR_HEREDOC_EXIT;
+		return (free(strs[0]), free(strs[1]), -1);
 	}
 	close(temp_file[0]);
 	temp_file[0] = open(strs[1], O_RDONLY);
@@ -114,5 +120,7 @@ t_redirect_desc	*handle_heredoc(struct s_ast_internal *meta, char *delim, t_toke
 	temp_file[0] = prep_heredoc(meta, delim, handle_vars + (!!ft_strchr(heredoc->raw, '-') * 2));
 	(*output) = (t_redirect_desc){.type = REDIRECT_HEREDOC, .subtype = REDIR_FD,
 		.fd_map.from_fd = temp_file[0], .fd_map.to_fd = STDIN_FILENO};
+	if (temp_file[0] < 0)
+		return (free(output), NULL);
 	return (output);
 }

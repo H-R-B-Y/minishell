@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:36:40 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/22 14:20:38 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/22 16:45:26 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,12 +96,12 @@ t_tokentype	tokenise_type(t_tokint *tokeniser, const char *str)
 			tokeniser->index_end - tokeniser->index_start);
 	tokeniser->current_type = bin_token(substring);
 	tokeniser->current_token = ft_calloc(1, sizeof(t_token));
-	if (!tokeniser->current_token)
+	if (!substring || !tokeniser->current_token)
 		return (TOK_ERR);
 	(*tokeniser->current_token) = (t_token){.heredoc_delim = 0,
 		.raw = substring, .type = tokeniser->current_type,};
 	if (tokeniser->current_type == TOK_WORD && tokeniser->previous_line)
-	{ // can the following be put into a subfunction, isn't this code duplicated somewhere else?
+	{ // what do we do if str vec join fails here
 		if (last_newline_not_end(tokeniser->previous_line))
 			ft_dirtyswap((void *)&tokeniser->current_token->raw,
 				str_vec_join((char *[4]){tokeniser->previous_line, "\n", substring, 0}),

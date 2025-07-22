@@ -6,13 +6,13 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:37:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/22 14:21:09 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/22 17:04:43 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-t_tokentype		_parse_loop_internals(t_tokint *tokeniser, const char *str);
+t_tokentype		skip_token_str(t_tokint *tokeniser, const char *str);
 
 void	handle_potential_redirect(t_tokint *tokeniser, const char *str)
 {
@@ -23,7 +23,7 @@ void	handle_potential_redirect(t_tokint *tokeniser, const char *str)
 	t = str[tokeniser->index_end];
 	if (!(t == '<' || t == '>'))
 	{
-		_parse_loop_internals(tokeniser, str);
+		skip_token_str(tokeniser, str);
 		return ;
 	}
 	tokeniser->index_end++;
@@ -98,11 +98,13 @@ int	handle_token_type(t_fsmdata *fsm)
 	return (1);
 }
 
-void	handle_subshell_newline(t_fsmdata *fsm)
+int	handle_subshell_newline(t_fsmdata *fsm)
 {
 	if (!(fsm->state != ST_OPRA && fsm->state != ST_SEQ
 			&& fsm->state != ST_LSSH))
-		return ;
-	append_anon_token(fsm, TOK_AFTER, ft_strdup(";"));
+		return (0);
+	if (!append_anon_token(fsm, TOK_AFTER, ft_strdup(";")))
+		return (-1);
 	state_change(fsm, ST_SEQ);
+	return (1);
 }

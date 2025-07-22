@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/21 17:48:37 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/22 16:49:53 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -408,8 +408,9 @@ int				handle_token_type(t_fsmdata *fsm);
  * a sequence then we need to insert a sequence.
  * 
  * @param fsm the finite state machine struct
+ * @return 1 if ok, 0 if failed
  */
-void			handle_subshell_newline(t_fsmdata *fsm);
+int			handle_subshell_newline(t_fsmdata *fsm);
 
 /**
  * @brief is a character an operator
@@ -506,11 +507,12 @@ void			free_token_vector(t_token **vec, void (*del_raw)(void *));
  * 
  * well its just used once at the moment to insert a sequence character.
  * 
- * @param fsm 
- * @param type 
- * @param str 
+ * @param fsm the finite state machine
+ * @param type the type of the token to add
+ * @param str the raw token contents
+ * @return 1 if ok, 0 if failed
  */
-void			append_anon_token(t_fsmdata *fsm, const t_tokentype type, const char *str);
+int			append_anon_token(t_fsmdata *fsm, const t_tokentype type, const char *str);
 
 /**
  * @brief Find the next token in the string and return its type
