@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_skipping.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:42:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/10 23:27:09 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/23 15:10:29 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ void	tokeniser_skip_whitespace(t_tokint *tokeniser, const char *str)
 {
 	if (!str || !*str)
 		return ;
-	if (tokeniser->current_type != TOK_INCOMPLETE_STRING)
+	if (tokeniser->curr_type != TOK_INCOMPLETE_STRING)
 	{	
-		while (ft_iswhitespace(str[tokeniser->index_start]))
-			tokeniser->index_start++;
+		while (ft_iswhitespace(str[tokeniser->i_start]))
+			tokeniser->i_start++;
 	}
-	tokeniser->index_end = tokeniser->index_start;
+	tokeniser->i_end = tokeniser->i_start;
 }

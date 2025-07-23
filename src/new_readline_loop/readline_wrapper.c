@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 15:22:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/22 16:25:04 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/23 15:25:07 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@ char	*readline_wrapper(t_readline_data *data, const char *prompt)
 {
 	char	*p[2];
 
+	// how do i test to see if the prompt needs to be redisplayed?
+	// as in, when the previous line did not end in a newline, I want the prompt,
+	// to be on the next line, not after the end of the previous line?
+	// HOW though 
 	if (*data->interactive_mode)
 		return (readline(prompt));
 	p[0] = get_next_line(STDIN_FILENO);

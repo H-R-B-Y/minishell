@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:37:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/23 14:26:25 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/23 15:10:29 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,28 +18,28 @@ void	handle_potential_redirect(t_tokint *tokeniser, const char *str)
 {
 	char	t;
 
-	while (str[tokeniser->index_end] && isdigit(str[tokeniser->index_end]))
-		tokeniser->index_end++;
-	t = str[tokeniser->index_end];
+	while (str[tokeniser->i_end] && isdigit(str[tokeniser->i_end]))
+		tokeniser->i_end++;
+	t = str[tokeniser->i_end];
 	if (!(t == '<' || t == '>'))
 	{
 		skip_token_str(tokeniser, str);
 		return ;
 	}
-	tokeniser->index_end++;
-	if (str[tokeniser->index_end] == t)
-		tokeniser->index_end++;
-	else if (str[tokeniser->index_end] == '&')
+	tokeniser->i_end++;
+	if (str[tokeniser->i_end] == t)
+		tokeniser->i_end++;
+	else if (str[tokeniser->i_end] == '&')
 	{
-		tokeniser->index_end++;
-		while (ft_iswhitespace(str[tokeniser->index_end]))
-			tokeniser->index_end++;
-		if (ft_isdigit(str[tokeniser->index_end]))
-			while (str[tokeniser->index_end] 
-				&& (ft_isdigit(str[tokeniser->index_end])))
-				tokeniser->index_end++;
-		else if (str[tokeniser->index_end] == '-')
-			tokeniser->index_end++;
+		tokeniser->i_end++;
+		while (ft_iswhitespace(str[tokeniser->i_end]))
+			tokeniser->i_end++;
+		if (ft_isdigit(str[tokeniser->i_end]))
+			while (str[tokeniser->i_end] 
+				&& (ft_isdigit(str[tokeniser->i_end])))
+				tokeniser->i_end++;
+		else if (str[tokeniser->i_end] == '-')
+			tokeniser->i_end++;
 	}
 }
 
@@ -47,49 +47,49 @@ void	handle_operator(t_tokint *tokeniser, const char *str)
 {
 	char	c;
 
-	c = str[tokeniser->index_end];
+	c = str[tokeniser->i_end];
 	if (ft_isdigit(c) || c == '>' || c == '<')
 		handle_potential_redirect(tokeniser, str);
-	else if (c == '&' && str[tokeniser->index_end + 1] == '>')
-		tokeniser->index_end += 2 + (1 * (str[tokeniser->index_end + 1]
-					== str[tokeniser->index_end + 2]));
+	else if (c == '&' && str[tokeniser->i_end + 1] == '>')
+		tokeniser->i_end += 2 + (1 * (str[tokeniser->i_end + 1]
+					== str[tokeniser->i_end + 2]));
 	else if (!ft_strchr(";()", c)
-		&& c == str[tokeniser->index_end + 1])
-		tokeniser->index_end = tokeniser->index_end + 2;
+		&& c == str[tokeniser->i_end + 1])
+		tokeniser->i_end = tokeniser->i_end + 2;
 	else
-		tokeniser->index_end = tokeniser->index_end + 1;
+		tokeniser->i_end = tokeniser->i_end + 1;
 }
 
 int	handle_unclosed_quote(t_tokint *tokeniser, const char *str)
 {
 	char	*temp;
 	
-	temp = ft_substr(str, tokeniser->index_start,
-			tokeniser->index_end - tokeniser->index_start);
+	temp = ft_substr(str, tokeniser->i_start,
+			tokeniser->i_end - tokeniser->i_start);
 	if (!temp)
 		return (0);
-	if (!tokeniser->previous_line)
-		ft_dirtyswap((void *)&tokeniser->previous_line,
+	if (!tokeniser->prev_line)
+		ft_dirtyswap((void *)&tokeniser->prev_line,
 			str_vec_join((char *[2]){temp, 0}), free);
-	else if (last_newline_not_end(tokeniser->previous_line))
-		ft_dirtyswap((void *)&tokeniser->previous_line,
-			str_vec_join((char *[4]){tokeniser->previous_line, "\n", temp, 0}),
+	else if (last_newline_not_end(tokeniser->prev_line))
+		ft_dirtyswap((void *)&tokeniser->prev_line,
+			str_vec_join((char *[4]){tokeniser->prev_line, "\n", temp, 0}),
 			free);
 	else
-		ft_dirtyswap((void *)&tokeniser->previous_line,
-			str_vec_join((char *[3]){tokeniser->previous_line, temp, 0}),
+		ft_dirtyswap((void *)&tokeniser->prev_line,
+			str_vec_join((char *[3]){tokeniser->prev_line, temp, 0}),
 			free);
 	free(temp);
-	if (!tokeniser->previous_line)
+	if (!tokeniser->prev_line)
 		return (0);
 	return (1);
 }
 
 int	handle_token_type(t_fsmdata *fsm)
 {
-	if (fsm->tokeniser_internals.current_type == TOK_LPAREN)
+	if (fsm->tok_int.curr_type == TOK_LPAREN)
 		fsm->paren_count++;
-	if (fsm->tokeniser_internals.current_type == TOK_RPAREN)
+	if (fsm->tok_int.curr_type == TOK_RPAREN)
 		fsm->paren_count--;
 	if (fsm->paren_count < 0)
 		return (0);
