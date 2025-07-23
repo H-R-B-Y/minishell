@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strrchr.c                                       :+:      :+:    :+:   */
+/*   last_newline_not_end.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/27 19:28:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/22 13:58:15 by hbreeze          ###   ########.fr       */
+/*   Created: 2025/07/22 14:14:07 by hbreeze           #+#    #+#             */
+/*   Updated: 2025/07/22 14:19:48 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-char	*ft_strrchr(const char *s, const int c)
-{
-	char	*start;
+#include "../../include/minishell.h"
 
-	if (!s)
-		return (0);
-	start = (char *)s;
-	while (*s)
-		s++;
-	while (start < s && (unsigned char)*s != (unsigned char)c)
-		s--;
-	if ((unsigned char)*s == (unsigned char)c)
-		return ((char *)s);
+int	last_newline_not_end(const char *str)
+{
+	char	*nlp;
+	size_t	end_i;
+
+	nlp = ft_strrchr(str, '\n');
+	end_i = ft_strlen(str) - 1;
+	if (!nlp || nlp != (str + end_i))
+		return (1);
 	return (0);
 }
+

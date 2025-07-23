@@ -4,7 +4,7 @@
 void	perror_exit(t_minishell *shell, char *message)
 {
 	perror(message);
-	reset_for_command(shell);
+	reset_for_command(shell, READ_NOTHING);
 	fflush(stdout);
 	free(shell->prompt);
 	ft_arrclear((void *)shell->environment, free);

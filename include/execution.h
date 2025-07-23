@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:02:44 by cquinter          #+#    #+#             */
-/*   Updated: 2025/07/02 21:27:35 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/06 13:29:51 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,6 @@
 # include "./abstract_syntax_tree.h"
 # include "./builtin.h"
 # include <unistd.h>
-
-# define EXEC_ALLCHILD 1
-# define EXEC_DEFAULT 0
-
-
 
 void	perror_exit(t_minishell *shell, char *message); // TODO: check if correct clean up everything and exit
 void	_set_returncode(int *to_set, int code);

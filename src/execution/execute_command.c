@@ -56,6 +56,7 @@ int	exec_default(t_minishell *shell, t_astnode *node, t_builtincmd cmd)
 int	execute_command(t_minishell *shell, t_astnode *node)
 {
 	node->cmdv = cmdv_prep(shell, node); // pending: shorten remove quotes and clean up in case of error
+	glob_variable(node);
 	if (prepare_fds(node) < 0)
 		return (-1);
 	if (node->cmd_i != (size_t)-1)

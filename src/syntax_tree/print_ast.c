@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   print_ast.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 16:27:31 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/06 11:27:05 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/23 14:37:11 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	_print_indents(char *indent, size_t depth)
+static void	_print_indents(const char *indent, size_t depth)
 {
 	while (depth--)
 		printf("%s", indent);
 }
 
-void	_print_ast_type(t_astnode *head)
+static void	_print_ast_type(const t_astnode *head)
 {
 	static const char	*node_types[AST_TYPE_COUNT]
 		= {"NONE", "COMMAND", "AND", "OR", "SEQ", "PIPE", "SUBSHELL"};
@@ -26,14 +26,14 @@ void	_print_ast_type(t_astnode *head)
 	printf("%s", node_types[head->type]);
 }
 
-static inline void	_print_token_str(t_token *tok)
+static inline void	_print_token_str(const t_token *tok)
 {
 	if (!tok)
 		return ;
 	printf("%s ", tok->raw);
 }
 
-void	_print_ast(t_astnode *head, char *indent, size_t depth)
+static void	_print_ast(const t_astnode *head, const char *indent, size_t depth)
 {
 	if (!head)
 		return ;
@@ -47,7 +47,7 @@ void	_print_ast(t_astnode *head, char *indent, size_t depth)
 	_print_ast(head->right_node, indent, depth + 1);
 }
 
-void	print_ast(t_astnode *head, char *indent)
+void	print_ast(const t_astnode *head, const char *indent)
 {
 	_print_ast(head, indent, 0);
 	printf("\n");

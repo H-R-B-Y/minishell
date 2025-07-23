@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_split.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 12:54:04 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/08 13:13:23 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/10 18:47:09 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static size_t	count_words(const char	*str)
 	return (ft_strcountchar(str, '\n') + 1);
 }
 
-char	**simple_split(const char *str)
+char	**simple_split(const char *str, t_readline_data *data)
 {
 	size_t	count;
 	size_t	idx[3];
@@ -28,8 +28,10 @@ char	**simple_split(const char *str)
 	if (!count)
 		return (0);
 	output = ft_calloc(count + 1, sizeof(char *));
-	idx[1] = 0;
-	idx[2] = 0;
+	ft_memset(idx, 0, sizeof(idx));
+	if (!str[idx[1]] && data->last_line)
+		return(ft_dirtyswap((void *)&output, 
+			ft_arradd_front((void *)output, ft_strdup("\n")), free), output);
 	while (str[idx[1]])
 	{
 		idx[0] = idx[1];
