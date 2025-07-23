@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/17 14:23:11 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/17 15:10:53 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/23 14:30:18 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <unistd.h>
 #include <execinfo.h>
 #include <string.h>
+#include <errno.h>
 
 static void	*(*real_malloc)(size_t) = NULL;
 static int	(*real_open)(const char *, int, ...) = NULL;
@@ -103,7 +104,10 @@ void	*malloc(size_t size)
 	in_malloc = 1;
 	count++;
 	if (malloc_fail_at && count > malloc_fail_at)
+	{
 		ptr = NULL;
+		*(__errno_location()) = ENOMEM;
+	}
 	else
 		ptr = real_malloc(size);
 	if (verbose && !ptr)

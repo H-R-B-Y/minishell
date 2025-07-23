@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:36:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/22 16:47:46 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/23 14:32:27 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	append_anon_token(t_fsmdata *fsm, const t_tokentype type, const char *str)
 
 	tok = malloc(sizeof(t_token));
 	if (!tok)
-		return (0); // just have to assume we cannot catch this?
+		return (0);
 	*tok = (t_token){.heredoc_delim = 0, .raw = (void *)str, .type = type};
 	ft_lstadd_back(&fsm->tokens, ft_lstnew(tok));
 	return (1);

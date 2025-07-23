@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:22:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/22 17:04:57 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/23 14:11:47 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ t_tokretcode	tokenise(t_fsmdata *fsm, const char *str)
 		fsm->tokeniser_internals.current_type
 			= next_token_type(&fsm->tokeniser_internals, str);
 		if (fsm->tokeniser_internals.current_type == TOK_ERR)
-			return (set_retcode(fsm, PARSE_ERROR, "UNRECOVERABLE"));
+			return (set_retcode(fsm, PARSE_FATAL, "UNRECOVERABLE"));
 		next_state = fsm_check_transition(fsm->state,
 				fsm->tokeniser_internals.current_type);
 		if (!handle_token_type(fsm))
