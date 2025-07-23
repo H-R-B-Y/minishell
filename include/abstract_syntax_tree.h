@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/22 17:28:12 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/23 14:37:25 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,7 +244,7 @@ ssize_t		ast_consume_words(struct s_ast_internal *meta, t_astnode *node);
  * @param head the head node of the tree
  * @param indent the indent to use for child nodes
  */
-void		print_ast(t_astnode *head, char *indent);
+void		print_ast(const t_astnode *head, const char *indent);
 
 t_redirect_desc	*handle_redirectfd(t_token *redirect);
 

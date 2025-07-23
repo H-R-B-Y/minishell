@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 12:20:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/22 17:15:50 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/23 14:59:05 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,12 @@ void	close_fds_needed(t_list	*redirects)
 		node = node->next;
 		if (!desc)
 			continue ;
-		if (desc->subtype == REDIR_FILE)
+		if (desc->subtype == REDIR_FILE
+			&& desc->file_map.from_fd > 2)
+// note, im not sure we need this, it may
+// be better to add a flag to the redirct node,
+// to atleast tell us if it was initialized
+// (if it was initialized then closing 0,1,2 is probably what the user intended)
 			close(desc->file_map.from_fd);
 	}
 }
