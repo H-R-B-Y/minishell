@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 12:01:50 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/22 15:22:05 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/23 18:12:12 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	better_add_history(char *string)
 
 void	_destroy_token(void *t)
 {
+	
 	destroy_token(t, free);
 }
 

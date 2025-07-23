@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:22:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/23 14:11:47 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/23 18:20:22 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_tokentype	next_token_type(t_tokint *tokeniser, const char *str)
 	if (tokeniser->quote_mode == QUOTE_NONE
 		&& (isoperator(str[tokeniser->index_start])
 			|| ft_isdigit(str[tokeniser->index_start])))
-		return (handle_operator(tokeniser, str), tokenise_type(tokeniser, str));
+		return (handle_operator(tokeniser, str));
 	return (skip_token_str(tokeniser, str));
 }
 
