@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:19:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/08 16:47:49 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/23 14:19:23 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	reset_tokeniser(t_tokint *tokeniser)
 	if (tokeniser->current_token)
 		destroy_token(tokeniser->current_token, free);
 	if (tokeniser->previous_line)
-		{printf("freed prev line! %s\n", tokeniser->previous_line);ft_dirtyswap((void *)&tokeniser->previous_line, 0, free);}
+		ft_dirtyswap((void *)&tokeniser->previous_line, 0, free);
 	*tokeniser = (t_tokint){
 		.current_token = 0,
 		.current_type = TOK_NONE,

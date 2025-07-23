@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_process.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 11:48:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/16 13:03:00 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/22 15:21:57 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,11 +85,15 @@ int	init_process(t_minishell *shell, char **envp)
 	// setup signal handlers
 	if (!setup_signals(shell))
 		return (-2);
+	shell->my_pid = get_my_pid();
+	if (shell->my_pid == -1)
+		return (-3);
 	// init debugger
 	if (!init_debugger(&shell->info))
 		printf("debugger not enabled: %s\n", strerror(errno));
 	shell->fsm_data.debuginfo = &shell->info;
 	// reset for command
-	reset_for_command(shell);
+	reset_for_command(shell, READ_START);
+	shell->rldata.interactive_mode = &shell->interactive_mode;
 	return (0);
 }

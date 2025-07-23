@@ -3,161 +3,135 @@
 /*                                                        :::      ::::::::   */
 /*   remove_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:16:03 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/08 16:54:29 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/09 17:57:28 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-#define TC str[i[0]]
-
-void	_write_char(char *too, char what, size_t *idx)
+int	_realloc_write(char **output, const char *to_write, const char *str, size_t *i)
 {
-	*too = what;
-	idx[0]++;
-	idx[1]++;
-}
-
-void _write_str(char **output, char *str, size_t *i)
-{
-	while (*str)
-	{
-		_write_char(&(*output)[i[1]], *str, i);
-		str++;
-	}
-}
-
-int _expand_write_special(t_minishell *shell, char **output, char *str, size_t *i)
-{
-	char	*to_write;
-	// size_t	len2add;
 	char	*temp;
+	size_t	newlen;
+	size_t	oldlen;
+	size_t	to_write_len;
 	
-	i[0]++;
-	if ((str)[i[0]] == '?')
-	{
-		temp = *output;
-		to_write = ft_itoa(shell->return_code);
-		if (!to_write)
-			return (perror("minishell: ft_itoa: unable to expand $"),
-				_write_char(&(*output)[i[1]], str[--i[0]], i), 1);
-		// len2add = ft_strlen(to_write);
-		*output = ft_calloc(ft_strlen(str + i[0]) + ft_strlen(temp) + ft_strlen(to_write) + 1, sizeof(char));
-		if (!(*output))
-			return (*output = temp, free(to_write), perror("minishell: var expansion"), _write_char(&(*output)[i[1]], str[--i[0]], i), 1);
-		ft_memcpy(*output, temp, ft_strlen(temp));
-		_write_str(output, to_write, i);
-		free(temp);
-		free(to_write);
-		return (1);
-	}
-	if (!ft_isalnum((str)[i[0]]))
-		return (_write_char(&(*output)[i[1]], str[--i[0]], i), 1);
-	if (ft_isdigit((str)[i[0]])) // Pending: to handle argvs
-		return (i[0]++, 1);
+	if (!to_write)
+		return (perror("minishell: ft_itoa: unable to expand $"), 1);
+	temp = *output;
+	to_write_len = ft_strlen(to_write);
+	oldlen = i[1];
+	newlen = oldlen + ft_strlen(str + i[0]) + to_write_len + 1;
+	*output = ft_calloc(newlen, sizeof(char));
+	if (!(*output))
+		return (*output = temp, perror("minishell: var expansion"), 1);
+	ft_memcpy(*output, temp, oldlen);
+	ft_memcpy(*output + oldlen, to_write, to_write_len);
+	if (ft_strchr("?$", str[i[0]]))
+		i[0]++;
+	else
+		i[0] += i[2];
+	i[1] += to_write_len;
 	return (0);
 }
 
-int _expand_write_var(t_minishell *shell, char **output, char *str, size_t *i)
+char	*get_var_value(t_minishell *shell, char *str, size_t *i)
 {
-	char	*old;
 	size_t	vlen;
 	char	*xpded_value;
 	char	*v_name;
 
-	old = *output;
-	if (_expand_write_special(shell, output, str, i))
-		return (0);
 	vlen = 0;
-	while (ft_isalnum((str)[i[0] + vlen]))
+	while (ft_isalnum((str)[i[0] + vlen]) || (str)[i[0] + vlen] == '_')
 		vlen++;
 	v_name = ft_strndup(str + i[0], vlen);
 	if (!v_name)
-		return (perror("minishell: var expansion"), 0);
-	i[0] += vlen;
-	xpded_value = s_get_envany(shell, v_name);
-	if (!ft_strcmp(xpded_value, ""))
-		return (free(v_name), 1);
-	*output = ft_calloc(ft_strlen(str + i[0]) + ft_strlen(old) + ft_strlen(xpded_value) + 1, sizeof(char));
-	if (!(*output))
-		return (*output = old, free(v_name), perror("minishell: var expansion"), 0);
-	ft_memcpy(*output, old, ft_strlen(old));
-	ft_strlcat(*output, xpded_value, ft_strlen(str + i[0]) + ft_strlen(old) + ft_strlen(xpded_value) + 1);
-	i[1] += ft_strlen(xpded_value);
-	return (free(v_name), free(old), 0);
+		return (perror("minishell: var expansion"), NULL);
+	xpded_value = ft_strdup(s_get_envany(shell, v_name));
+	if (!xpded_value)
+		return (free(v_name), NULL);
+	i[2] = vlen;
+	free(v_name);
+	return (xpded_value);
 }
 
-char	*remove_quotes(char *str, t_minishell *shell)
+int _expand_write_var(t_minishell *shell, char **output, char *str, size_t *i)
 {
-	size_t			i[2];
+	char	*to_write;
+	
+	i[0]++;
+	if ((str)[i[0]] == '?')
+		to_write = ft_itoa(shell->return_code);
+	else if ((str)[i[0]] == '$')
+		to_write = ft_itoa(shell->my_pid);
+	else if (str[i[0]] != '_' && !ft_isalnum((str)[i[0]])) // handle {} ??
+		return ((*output)[i[1]++] = str[i[0] - 1], 1);
+	else if (ft_isdigit((str)[i[0]])) // Pending: to handle argvs
+		return (i[0]++, 1);
+	else
+		to_write = get_var_value(shell, str, i);
+	if (!to_write)
+		return ((*output)[i[1]++] = str[i[0] - 1], 1);
+	else if (_realloc_write(output, to_write, str, i))
+		return ((*output)[i[1]++] = str[i[0] - 1], free(to_write), 1);
+	free(to_write);
+	return (0);
+}
+
+static void	quoted_backslash(const char *str,
+	size_t *i, char *output, t_quote_mode mode)
+{
+	if (ft_strchr("$'\"\\", str[i[0] + 1]))
+	{
+		if (mode == QUOTE_SINGLE)
+			output[i[1]++] = str[i[0]++];
+		else
+			i[0]++;
+		output[i[1]++] = str[i[0]++];
+	}
+	else
+		output[i[1]++] = str[i[0]++];
+}
+
+static void	handle_nonquoted(const char *str,
+	size_t *i, char *output, t_quote_mode *mode)
+{
+	if (str[i[0]] == '\'' && ++i[0])
+		*mode = QUOTE_SINGLE;
+	else if (str[i[0]] == '"' && ++i[0])
+		*mode = QUOTE_DOUBLE;
+	else if (str[i[0]] == '\\' && ++i[0])
+		output[i[1]++] = str[i[0]++];
+	else
+		output[i[1]++] = str[i[0]++];
+}
+
+char	*rmv_quotes_xpnd_var(char *str, t_minishell *shell)
+{
+	size_t			i[3];
 	t_quote_mode	mode;
 	char			*output;
 
 	output = ft_calloc(ft_strlen(str) + 1, sizeof(char));
-	ft_bzero(i, sizeof(size_t) * 2);
+	ft_bzero(i, sizeof(size_t) * 3);
 	mode = QUOTE_NONE;
-	while (str[i[0]])
+	while(str[i[0]])
 	{
-		if (mode == QUOTE_NONE)
-		{
-			if (str[i[0]] == '\'')
-			{
-				mode = QUOTE_SINGLE;
-				i[0]++;
-				continue ;
-			}
-			if (str[i[0]] == '"')
-			{
-				mode = QUOTE_DOUBLE;
-				i[0]++;
-				continue ;
-			}
-			if (str[i[0]] == '\\')
-			{
-				i[0]++;
-				_write_char(&output[i[1]], str[i[0]], i);
-			}
-			if (str[i[0]] == '$' && (mode == QUOTE_DOUBLE || mode == QUOTE_NONE))
-			{
-				_expand_write_var(shell, &output, str, i);
-				continue ;
-			}
-			_write_char(&output[i[1]], str[i[0]], i);
-			continue ;
-		}
-		if (str[i[0]] == '\'' && mode == QUOTE_SINGLE)
-		{
-			mode = QUOTE_NONE;
-			i[0]++;
-			continue;
-		}
-		if (str[i[0]] == '"' && mode == QUOTE_DOUBLE)
-		{
-			mode = QUOTE_NONE;
-			i[0]++;
-			continue;
-		}
 		if (str[i[0]] == '$' && (mode == QUOTE_DOUBLE || mode == QUOTE_NONE))
-		{
 			_expand_write_var(shell, &output, str, i);
-			continue;
-		}
-		if (str[i[0]] == '\\' && mode == QUOTE_DOUBLE)
-		{
-			if (ft_strchr("$'\"\\", str[i[0] + 1]))
-			{
-				i[0]++;
-				_write_char(&output[i[1]], str[i[0]], i);
-				continue ;
-			}
-			else
-				_write_char(&output[i[1]], str[i[0]], i);
-		}
-		_write_char(&output[i[1]], str[i[0]], i);
-		continue;
+		else if (mode == QUOTE_NONE)
+			handle_nonquoted(str, i, output, &mode);
+		else if (mode == QUOTE_DOUBLE && str[i[0]] == '"' && ++i[0])
+			mode = QUOTE_NONE;
+		else if (mode == QUOTE_SINGLE && str[i[0]] == '\'' && ++i[0])
+			mode = QUOTE_NONE;
+		else if (str[i[0]] == '\\')
+			quoted_backslash(str, i, output, mode);
+		else
+			output[i[1]++] = str[i[0]++];
 	}
 	return (output);
 }

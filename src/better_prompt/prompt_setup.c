@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt_setup.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 17:46:41 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/14 16:21:58 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/22 15:37:24 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,6 @@ char	*create_prompt(const t_minishell *shell)
 	char	*prompt;
 	char	*parts[10];
 
-	if (!shell->interactive_mode)
-		return (ft_strdup(""));
 	parts[0] = status_code_part(shell);
 	parts[1] = directory_part();
 	parts[2] = git_branch_part();
