@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/07 15:47:31 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/23 14:37:25 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ enum e_asterror
 	AST_ERR_NONE,
 	AST_ERR_SYNTAX,
 	AST_ERR_HEREDOC_EXIT,
+	AST_ERR_FATAL,
 	AST_ERR_COUNT,
 };
 
@@ -236,19 +237,24 @@ t_astnode	*ast_parse_subcommand(struct s_ast_internal *meta);
  * @param meta the metadata struct containing info about the tree
  * @param node the ??? too tired cannot remember
  */
-size_t		ast_consume_words(struct s_ast_internal *meta, t_astnode *node);
+ssize_t		ast_consume_words(struct s_ast_internal *meta, t_astnode *node);
 
 /**
  * @brief print the ast
  * @param head the head node of the tree
  * @param indent the indent to use for child nodes
  */
-void		print_ast(t_astnode *head, char *indent);
+void		print_ast(const t_astnode *head, const char *indent);
 
 t_redirect_desc	*handle_redirectfd(t_token *redirect);
 
 t_redirect_desc	*handle_redirect(t_token *redirect, t_token *filename);
 
 t_redirect_desc	*handle_heredoc(struct s_ast_internal *meta, char *delim, t_token *heredoc);
+
+/**
+ * @brief private to ast internal are we able to continue consuming
+ */
+int	_continue_parsing(struct s_ast_internal *meta);
 
 #endif

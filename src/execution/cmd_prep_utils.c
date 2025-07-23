@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_prep_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 13:37:48 by cquinter          #+#    #+#             */
-/*   Updated: 2025/07/09 17:54:35 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/23 13:45:25 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,9 @@ char	*get_exec_path(t_minishell *shell, char *cmd, char **envp)
 		}
 		if (access(exec_path, X_OK) == 0)
 			break ;
-		free(exec_path);
+// this break causes the following free to leak, because break
+// means we never free anything after we have found the real path
+		free(exec_path); 
 		i++;
 	}
 	if (!path[i])
