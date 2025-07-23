@@ -1,0 +1,444 @@
+==276869== Memcheck, a memory error detector
+==276869== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==276869== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==276869== Command: ./minishell
+==276869== 
+==276934== 
+==276934== HEAP SUMMARY:
+==276934==     in use at exit: 208,489 bytes in 231 blocks
+==276934==   total heap usage: 718 allocs, 487 frees, 267,564 bytes allocated
+==276934== 
+==276934== LEAK SUMMARY:
+==276934==    definitely lost: 0 bytes in 0 blocks
+==276934==    indirectly lost: 0 bytes in 0 blocks
+==276934==      possibly lost: 0 bytes in 0 blocks
+==276934==    still reachable: 0 bytes in 0 blocks
+==276934==         suppressed: 208,489 bytes in 231 blocks
+==276934== 
+==276934== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+--276934-- 
+--276934-- used_suppression:     39 readline_xmalloc_calls supp.supp:2 suppressed: 181,568 bytes in 201 blocks
+--276934-- used_suppression:      5 readline_calloc_calls supp.supp:10 suppressed: 9,536 bytes in 5 blocks
+--276934-- used_suppression:      9 readline_libtinfo_malloc_calls supp.supp:17 suppressed: 7,455 bytes in 9 blocks
+--276934-- used_suppression:      4 readline_libtinfo_realloc_calls supp.supp:24 suppressed: 4,120 bytes in 4 blocks
+--276934-- used_suppression:      2 readline_xrealloc_calls supp.supp:71 suppressed: 1,544 bytes in 2 blocks
+--276934-- used_suppression:      4 readline_realloc_malloc_calls supp.supp:56 suppressed: 4,096 bytes in 4 blocks
+--276934-- used_suppression:      4 readline_strdup_calls supp.supp:94 suppressed: 130 bytes in 4 blocks
+--276934-- used_suppression:      1 libtinfo_tsearch_malloc_calls supp.supp:108 suppressed: 24 bytes in 1 blocks
+--276934-- used_suppression:      1 readline_init_malloc_calls supp.supp:101 suppressed: 16 bytes in 1 blocks
+==276934== 
+==276934== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==276975== 
+==276975== HEAP SUMMARY:
+==276975==     in use at exit: 208,548 bytes in 234 blocks
+==276975==   total heap usage: 804 allocs, 570 frees, 273,677 bytes allocated
+==276975== 
+==276975== LEAK SUMMARY:
+==276975==    definitely lost: 0 bytes in 0 blocks
+==276975==    indirectly lost: 0 bytes in 0 blocks
+==276975==      possibly lost: 0 bytes in 0 blocks
+==276975==    still reachable: 0 bytes in 0 blocks
+==276975==         suppressed: 208,548 bytes in 234 blocks
+==276975== 
+==276975== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+--276975-- 
+--276975-- used_suppression:     39 readline_xmalloc_calls supp.supp:2 suppressed: 181,627 bytes in 204 blocks
+--276975-- used_suppression:      5 readline_calloc_calls supp.supp:10 suppressed: 9,536 bytes in 5 blocks
+--276975-- used_suppression:      9 readline_libtinfo_malloc_calls supp.supp:17 suppressed: 7,455 bytes in 9 blocks
+--276975-- used_suppression:      4 readline_libtinfo_realloc_calls supp.supp:24 suppressed: 4,120 bytes in 4 blocks
+--276975-- used_suppression:      2 readline_xrealloc_calls supp.supp:71 suppressed: 1,544 bytes in 2 blocks
+--276975-- used_suppression:      4 readline_realloc_malloc_calls supp.supp:56 suppressed: 4,096 bytes in 4 blocks
+--276975-- used_suppression:      4 readline_strdup_calls supp.supp:94 suppressed: 130 bytes in 4 blocks
+--276975-- used_suppression:      1 libtinfo_tsearch_malloc_calls supp.supp:108 suppressed: 24 bytes in 1 blocks
+--276975-- used_suppression:      1 readline_init_malloc_calls supp.supp:101 suppressed: 16 bytes in 1 blocks
+==276975== 
+==276975== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+help: No such file or directory
+==277062== 
+==277062== HEAP SUMMARY:
+==277062==     in use at exit: 209,071 bytes in 261 blocks
+==277062==   total heap usage: 1,042 allocs, 781 frees, 290,893 bytes allocated
+==277062== 
+==277062== 7 bytes in 1 blocks are indirectly lost in loss record 3 of 75
+==277062==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==277062==    by 0x48AABAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==277062==    by 0x48A1B39: alloc_history_entry (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==277062==    by 0x48A3F65: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==277062==    by 0x1108F1: better_add_history (shell_utils.c:39)
+==277062==    by 0x110955: reset_for_command (shell_utils.c:53)
+==277062==    by 0x10A562: next_command (main.c:60)
+==277062==    by 0x10A65C: main (main.c:87)
+==277062== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   fun:xmalloc
+   fun:alloc_history_entry
+   fun:add_history
+   fun:better_add_history
+   fun:reset_for_command
+   fun:next_command
+   fun:main
+}
+==277062== 12 bytes in 1 blocks are indirectly lost in loss record 7 of 75
+==277062==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==277062==    by 0x48AABAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==277062==    by 0x48A3F28: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==277062==    by 0x1108F1: better_add_history (shell_utils.c:39)
+==277062==    by 0x110955: reset_for_command (shell_utils.c:53)
+==277062==    by 0x10A562: next_command (main.c:60)
+==277062==    by 0x10A65C: main (main.c:87)
+==277062== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   fun:xmalloc
+   fun:add_history
+   fun:better_add_history
+   fun:reset_for_command
+   fun:next_command
+   fun:main
+}
+==277062== 43 (24 direct, 19 indirect) bytes in 1 blocks are definitely lost in loss record 18 of 75
+==277062==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==277062==    by 0x48AABAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==277062==    by 0x48A1B1D: alloc_history_entry (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==277062==    by 0x48A3F65: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==277062==    by 0x1108F1: better_add_history (shell_utils.c:39)
+==277062==    by 0x110955: reset_for_command (shell_utils.c:53)
+==277062==    by 0x10A562: next_command (main.c:60)
+==277062==    by 0x10A65C: main (main.c:87)
+==277062== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:xmalloc
+   fun:alloc_history_entry
+   fun:add_history
+   fun:better_add_history
+   fun:reset_for_command
+   fun:next_command
+   fun:main
+}
+==277062== 419 bytes in 19 blocks are definitely lost in loss record 34 of 75
+==277062==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==277062==    by 0x114912: ft_substr (ft_substr.c:28)
+==277062==    by 0x114529: ft_split (ft_split.c:71)
+==277062==    by 0x10C843: set_path_and_cmd (cmd_prep_utils.c:18)
+==277062==    by 0x10C8FB: get_exec_path (cmd_prep_utils.c:37)
+==277062==    by 0x10C0D3: get_exec_cmd (execute_command.c:21)
+==277062==    by 0x10C1DF: exec_default (execute_command.c:47)
+==277062==    by 0x10C2FA: execute_command (execute_command.c:67)
+==277062==    by 0x10BFBC: execute_ast (execution.c:28)
+==277062==    by 0x10A495: prep_tree (main.c:31)
+==277062==    by 0x10A4FA: next_command (main.c:49)
+==277062==    by 0x10A65C: main (main.c:87)
+==277062== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:ft_substr
+   fun:ft_split
+   fun:set_path_and_cmd
+   fun:get_exec_path
+   fun:get_exec_cmd
+   fun:exec_default
+   fun:execute_command
+   fun:execute_ast
+   fun:prep_tree
+   fun:next_command
+   fun:main
+}
+==277062== LEAK SUMMARY:
+==277062==    definitely lost: 443 bytes in 20 blocks
+==277062==    indirectly lost: 19 bytes in 2 blocks
+==277062==      possibly lost: 0 bytes in 0 blocks
+==277062==    still reachable: 0 bytes in 0 blocks
+==277062==         suppressed: 208,609 bytes in 239 blocks
+==277062== 
+==277062== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+--277062-- 
+--277062-- used_suppression:     41 readline_xmalloc_calls supp.supp:2 suppressed: 181,688 bytes in 209 blocks
+--277062-- used_suppression:      5 readline_calloc_calls supp.supp:10 suppressed: 9,536 bytes in 5 blocks
+--277062-- used_suppression:      9 readline_libtinfo_malloc_calls supp.supp:17 suppressed: 7,455 bytes in 9 blocks
+--277062-- used_suppression:      4 readline_libtinfo_realloc_calls supp.supp:24 suppressed: 4,120 bytes in 4 blocks
+--277062-- used_suppression:      2 readline_xrealloc_calls supp.supp:71 suppressed: 1,544 bytes in 2 blocks
+--277062-- used_suppression:      4 readline_realloc_malloc_calls supp.supp:56 suppressed: 4,096 bytes in 4 blocks
+--277062-- used_suppression:      4 readline_strdup_calls supp.supp:94 suppressed: 130 bytes in 4 blocks
+--277062-- used_suppression:      1 libtinfo_tsearch_malloc_calls supp.supp:108 suppressed: 24 bytes in 1 blocks
+--277062-- used_suppression:      1 readline_init_malloc_calls supp.supp:101 suppressed: 16 bytes in 1 blocks
+==277062== 
+==277062== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+hello: No such file or directory
+world: No such file or directory
+==277123== 
+==277123== HEAP SUMMARY:
+==277123==     in use at exit: 209,121 bytes in 264 blocks
+==277123==   total heap usage: 1,117 allocs, 853 frees, 296,722 bytes allocated
+==277123== 
+==277123== 7 bytes in 1 blocks are indirectly lost in loss record 2 of 75
+==277123==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==277123==    by 0x48AABAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==277123==    by 0x48A1B39: alloc_history_entry (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==277123==    by 0x48A3F65: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==277123==    by 0x1108F1: better_add_history (shell_utils.c:39)
+==277123==    by 0x110955: reset_for_command (shell_utils.c:53)
+==277123==    by 0x10A562: next_command (main.c:60)
+==277123==    by 0x10A65C: main (main.c:87)
+==277123== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   fun:xmalloc
+   fun:alloc_history_entry
+   fun:add_history
+   fun:better_add_history
+   fun:reset_for_command
+   fun:next_command
+   fun:main
+}
+==277123== 12 bytes in 1 blocks are indirectly lost in loss record 6 of 75
+==277123==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==277123==    by 0x48AABAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==277123==    by 0x48A3F28: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==277123==    by 0x1108F1: better_add_history (shell_utils.c:39)
+==277123==    by 0x110955: reset_for_command (shell_utils.c:53)
+==277123==    by 0x10A562: next_command (main.c:60)
+==277123==    by 0x10A65C: main (main.c:87)
+==277123== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   fun:xmalloc
+   fun:add_history
+   fun:better_add_history
+   fun:reset_for_command
+   fun:next_command
+   fun:main
+}
+==277123== 43 (24 direct, 19 indirect) bytes in 1 blocks are definitely lost in loss record 18 of 75
+==277123==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==277123==    by 0x48AABAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==277123==    by 0x48A1B1D: alloc_history_entry (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==277123==    by 0x48A3F65: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==277123==    by 0x1108F1: better_add_history (shell_utils.c:39)
+==277123==    by 0x110955: reset_for_command (shell_utils.c:53)
+==277123==    by 0x10A562: next_command (main.c:60)
+==277123==    by 0x10A65C: main (main.c:87)
+==277123== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:xmalloc
+   fun:alloc_history_entry
+   fun:add_history
+   fun:better_add_history
+   fun:reset_for_command
+   fun:next_command
+   fun:main
+}
+==277123== 419 bytes in 19 blocks are definitely lost in loss record 34 of 75
+==277123==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==277123==    by 0x114912: ft_substr (ft_substr.c:28)
+==277123==    by 0x114529: ft_split (ft_split.c:71)
+==277123==    by 0x10C843: set_path_and_cmd (cmd_prep_utils.c:18)
+==277123==    by 0x10C8FB: get_exec_path (cmd_prep_utils.c:37)
+==277123==    by 0x10C0D3: get_exec_cmd (execute_command.c:21)
+==277123==    by 0x10C161: exec_raw (execute_command.c:33)
+==277123==    by 0x10C2D6: execute_command (execute_command.c:65)
+==277123==    by 0x10BFBC: execute_ast (execution.c:28)
+==277123==    by 0x10C394: _write_pipe (execute_pipe.c:11)
+==277123==    by 0x10C4DB: execute_pipe (execute_pipe.c:40)
+==277123==    by 0x10BF7C: execute_ast (execution.c:24)
+==277123== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:ft_substr
+   fun:ft_split
+   fun:set_path_and_cmd
+   fun:get_exec_path
+   fun:get_exec_cmd
+   fun:exec_raw
+   fun:execute_command
+   fun:execute_ast
+   fun:_write_pipe
+   fun:execute_pipe
+   fun:execute_ast
+}
+==277123== LEAK SUMMARY:
+==277123==    definitely lost: 443 bytes in 20 blocks
+==277123==    indirectly lost: 19 bytes in 2 blocks
+==277123==      possibly lost: 0 bytes in 0 blocks
+==277123==    still reachable: 0 bytes in 0 blocks
+==277123==         suppressed: 208,659 bytes in 242 blocks
+==277123== 
+==277123== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+--277123-- 
+--277123-- used_suppression:     41 readline_xmalloc_calls supp.supp:2 suppressed: 181,738 bytes in 212 blocks
+--277123-- used_suppression:      5 readline_calloc_calls supp.supp:10 suppressed: 9,536 bytes in 5 blocks
+--277123-- used_suppression:      9 readline_libtinfo_malloc_calls supp.supp:17 suppressed: 7,455 bytes in 9 blocks
+--277123-- used_suppression:      4 readline_libtinfo_realloc_calls supp.supp:24 suppressed: 4,120 bytes in 4 blocks
+--277123-- used_suppression:      2 readline_xrealloc_calls supp.supp:71 suppressed: 1,544 bytes in 2 blocks
+--277123-- used_suppression:      4 readline_realloc_malloc_calls supp.supp:56 suppressed: 4,096 bytes in 4 blocks
+--277123-- used_suppression:      4 readline_strdup_calls supp.supp:94 suppressed: 130 bytes in 4 blocks
+--277123-- used_suppression:      1 libtinfo_tsearch_malloc_calls supp.supp:108 suppressed: 24 bytes in 1 blocks
+--277123-- used_suppression:      1 readline_init_malloc_calls supp.supp:101 suppressed: 16 bytes in 1 blocks
+==277123== 
+==277123== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+==277124== 
+==277124== HEAP SUMMARY:
+==277124==     in use at exit: 209,121 bytes in 264 blocks
+==277124==   total heap usage: 1,117 allocs, 853 frees, 296,722 bytes allocated
+==277124== 
+==277124== 7 bytes in 1 blocks are indirectly lost in loss record 2 of 75
+==277124==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==277124==    by 0x48AABAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==277124==    by 0x48A1B39: alloc_history_entry (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==277124==    by 0x48A3F65: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==277124==    by 0x1108F1: better_add_history (shell_utils.c:39)
+==277124==    by 0x110955: reset_for_command (shell_utils.c:53)
+==277124==    by 0x10A562: next_command (main.c:60)
+==277124==    by 0x10A65C: main (main.c:87)
+==277124== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   fun:xmalloc
+   fun:alloc_history_entry
+   fun:add_history
+   fun:better_add_history
+   fun:reset_for_command
+   fun:next_command
+   fun:main
+}
+==277124== 12 bytes in 1 blocks are indirectly lost in loss record 6 of 75
+==277124==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==277124==    by 0x48AABAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==277124==    by 0x48A3F28: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==277124==    by 0x1108F1: better_add_history (shell_utils.c:39)
+==277124==    by 0x110955: reset_for_command (shell_utils.c:53)
+==277124==    by 0x10A562: next_command (main.c:60)
+==277124==    by 0x10A65C: main (main.c:87)
+==277124== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   fun:xmalloc
+   fun:add_history
+   fun:better_add_history
+   fun:reset_for_command
+   fun:next_command
+   fun:main
+}
+==277124== 43 (24 direct, 19 indirect) bytes in 1 blocks are definitely lost in loss record 18 of 75
+==277124==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==277124==    by 0x48AABAC: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==277124==    by 0x48A1B1D: alloc_history_entry (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==277124==    by 0x48A3F65: add_history (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.1)
+==277124==    by 0x1108F1: better_add_history (shell_utils.c:39)
+==277124==    by 0x110955: reset_for_command (shell_utils.c:53)
+==277124==    by 0x10A562: next_command (main.c:60)
+==277124==    by 0x10A65C: main (main.c:87)
+==277124== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:xmalloc
+   fun:alloc_history_entry
+   fun:add_history
+   fun:better_add_history
+   fun:reset_for_command
+   fun:next_command
+   fun:main
+}
+==277124== 419 bytes in 19 blocks are definitely lost in loss record 34 of 75
+==277124==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==277124==    by 0x114912: ft_substr (ft_substr.c:28)
+==277124==    by 0x114529: ft_split (ft_split.c:71)
+==277124==    by 0x10C843: set_path_and_cmd (cmd_prep_utils.c:18)
+==277124==    by 0x10C8FB: get_exec_path (cmd_prep_utils.c:37)
+==277124==    by 0x10C0D3: get_exec_cmd (execute_command.c:21)
+==277124==    by 0x10C161: exec_raw (execute_command.c:33)
+==277124==    by 0x10C2D6: execute_command (execute_command.c:65)
+==277124==    by 0x10BFBC: execute_ast (execution.c:28)
+==277124==    by 0x10C42D: _read_pipe (execute_pipe.c:22)
+==277124==    by 0x10C520: execute_pipe (execute_pipe.c:45)
+==277124==    by 0x10BF7C: execute_ast (execution.c:24)
+==277124== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:ft_substr
+   fun:ft_split
+   fun:set_path_and_cmd
+   fun:get_exec_path
+   fun:get_exec_cmd
+   fun:exec_raw
+   fun:execute_command
+   fun:execute_ast
+   fun:_read_pipe
+   fun:execute_pipe
+   fun:execute_ast
+}
+==277124== LEAK SUMMARY:
+==277124==    definitely lost: 443 bytes in 20 blocks
+==277124==    indirectly lost: 19 bytes in 2 blocks
+==277124==      possibly lost: 0 bytes in 0 blocks
+==277124==    still reachable: 0 bytes in 0 blocks
+==277124==         suppressed: 208,659 bytes in 242 blocks
+==277124== 
+==277124== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+--277124-- 
+--277124-- used_suppression:     41 readline_xmalloc_calls supp.supp:2 suppressed: 181,738 bytes in 212 blocks
+--277124-- used_suppression:      5 readline_calloc_calls supp.supp:10 suppressed: 9,536 bytes in 5 blocks
+--277124-- used_suppression:      9 readline_libtinfo_malloc_calls supp.supp:17 suppressed: 7,455 bytes in 9 blocks
+--277124-- used_suppression:      4 readline_libtinfo_realloc_calls supp.supp:24 suppressed: 4,120 bytes in 4 blocks
+--277124-- used_suppression:      2 readline_xrealloc_calls supp.supp:71 suppressed: 1,544 bytes in 2 blocks
+--277124-- used_suppression:      4 readline_realloc_malloc_calls supp.supp:56 suppressed: 4,096 bytes in 4 blocks
+--277124-- used_suppression:      4 readline_strdup_calls supp.supp:94 suppressed: 130 bytes in 4 blocks
+--277124-- used_suppression:      1 libtinfo_tsearch_malloc_calls supp.supp:108 suppressed: 24 bytes in 1 blocks
+--277124-- used_suppression:      1 readline_init_malloc_calls supp.supp:101 suppressed: 16 bytes in 1 blocks
+==277124== 
+==277124== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:tsearch
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.3
+   fun:_nc_tiparm
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.1
+   fun:rl_redisplay
+   fun:_rl_internal_char_cleanup
+   fun:readline_internal_char
+   fun:readline
+   fun:readline_wrapper
+   fun:next_line
+   fun:read_until_complete_command
+}

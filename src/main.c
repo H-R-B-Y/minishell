@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/22 17:15:01 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/23 14:18:17 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 extern int	g_global_signal;
 
-int	prep_tree(t_minishell *shell)
+int	create_tree_and_run(t_minishell *shell)
 {
 	t_asterror	astcode;
 
@@ -29,7 +29,8 @@ int	prep_tree(t_minishell *shell)
 		if (shell->interactive_mode)
 			set_exection_signals();
 		execute_ast(shell, shell->current_tree);
-		setup_signals(shell);
+		if (shell->interactive_mode)
+			setup_signals(shell);
 	}
 	else if (astcode == AST_ERR_SYNTAX)
 		printf("Parse error: Syntax Error\n");
@@ -44,12 +45,7 @@ int	next_command(t_minishell *shell)
 	while (rl_code != READ_NOTHING)
 	{
 		rl_code = read_until_complete_command(shell);
-		if (rl_code == READ_OK)
-		{
-			if(prep_tree(shell) == AST_ERR_FATAL)
-				return (READ_FATAL);
-		}
-		else if (rl_code == READ_BADPARSE)
+		if (rl_code == READ_BADPARSE)
 			printf("Parse error: %s!\n", shell->fsm_data.str_condition);
 		else if (rl_code == READ_ERROR) // error is recoverable 
 			return (rl_code);
@@ -57,6 +53,9 @@ int	next_command(t_minishell *shell)
 			return (rl_code);
 		else if (rl_code == READ_FATAL) // fatal means exit
 			return (rl_code);
+		else if (rl_code == READ_OK
+			&& create_tree_and_run(shell) == AST_ERR_FATAL)
+			return (READ_FATAL);
 		reset_for_command(shell, rl_code);
 	}
 	return (rl_code);

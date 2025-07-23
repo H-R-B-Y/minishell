@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/22 16:49:53 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/23 14:26:20 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -385,8 +385,9 @@ void			handle_operator(t_tokint *tokeniser, const char *str);
  * 
  * @param tokeniser the tokeniser struct
  * @param str the string being parsed
+ * @return int 0 if error in allocation or 1 if ok
  */
-void			handle_unclosed_quote(t_tokint *tokeniser, const char *str);
+int			handle_unclosed_quote(t_tokint *tokeniser, const char *str);
 
 /**
  * @brief Utility function for making sure that we keep track of stats

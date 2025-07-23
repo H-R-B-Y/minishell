@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:37:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/22 17:04:43 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/23 14:26:25 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,23 +60,18 @@ void	handle_operator(t_tokint *tokeniser, const char *str)
 		tokeniser->index_end = tokeniser->index_end + 1;
 }
 
-void	handle_unclosed_quote(t_tokint *tokeniser, const char *str)
+int	handle_unclosed_quote(t_tokint *tokeniser, const char *str)
 {
 	char	*temp;
 	
 	temp = ft_substr(str, tokeniser->index_start,
 			tokeniser->index_end - tokeniser->index_start);
 	if (!temp)
-		return ; // TODO: figure out the best way to signal this error to the rest of the process
+		return (0);
 	if (!tokeniser->previous_line)
-	{
 		ft_dirtyswap((void *)&tokeniser->previous_line,
-			str_vec_join((char *[2]){temp, 0}),
-			free);
-		free(temp);
-		return ;
-	}
-	if (last_newline_not_end(tokeniser->previous_line))
+			str_vec_join((char *[2]){temp, 0}), free);
+	else if (last_newline_not_end(tokeniser->previous_line))
 		ft_dirtyswap((void *)&tokeniser->previous_line,
 			str_vec_join((char *[4]){tokeniser->previous_line, "\n", temp, 0}),
 			free);
@@ -85,6 +80,9 @@ void	handle_unclosed_quote(t_tokint *tokeniser, const char *str)
 			str_vec_join((char *[3]){tokeniser->previous_line, temp, 0}),
 			free);
 	free(temp);
+	if (!tokeniser->previous_line)
+		return (0);
+	return (1);
 }
 
 int	handle_token_type(t_fsmdata *fsm)
