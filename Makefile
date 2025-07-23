@@ -164,7 +164,7 @@ post:
 .PHONY: all clean fclean re test pre post rm coverage norm
 
 valgrind:
-	@printf "valgrind --leak-check=full --show-leak-kinds=all --gen-suppressions=all -s --suppressions=supp.supp ./minishell 2> valgrind_output"
+	@printf "valgrind --leak-check=full --show-leak-kinds=all --gen-suppressions=all -s --suppressions=supp.supp ./minishell"
 
 coverage:
 ifeq ($(TEST_SCRIPT),)
