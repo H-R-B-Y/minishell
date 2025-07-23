@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/23 14:18:17 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/23 15:18:25 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,27 +37,25 @@ int	create_tree_and_run(t_minishell *shell)
 	return (astcode);
 }
 
+// This shouldn't have used a loop, idk what i was thinking,
+// we already have a loop in the main function that will do this for us
 int	next_command(t_minishell *shell)
 {
 	t_readline_retcode	rl_code;
 	
 	rl_code = READ_START;
-	while (rl_code != READ_NOTHING)
-	{
-		rl_code = read_until_complete_command(shell);
-		if (rl_code == READ_BADPARSE)
-			printf("Parse error: %s!\n", shell->fsm_data.str_condition);
-		else if (rl_code == READ_ERROR) // error is recoverable 
-			return (rl_code);
-		else if (rl_code == READ_EOF)
-			return (rl_code);
-		else if (rl_code == READ_FATAL) // fatal means exit
-			return (rl_code);
-		else if (rl_code == READ_OK
-			&& create_tree_and_run(shell) == AST_ERR_FATAL)
-			return (READ_FATAL);
-		reset_for_command(shell, rl_code);
-	}
+	rl_code = read_until_complete_command(shell);
+	if (rl_code == READ_BADPARSE)
+		printf("Parse error: %s!\n", shell->fsm_data.str_cond);
+	else if (rl_code == READ_ERROR) // error is recoverable 
+		return (rl_code);
+	else if (rl_code == READ_EOF)
+		return (rl_code);
+	else if (rl_code == READ_FATAL) // fatal means exit
+		return (rl_code);
+	else if (rl_code == READ_OK
+		&& create_tree_and_run(shell) == AST_ERR_FATAL)
+		return (READ_FATAL);
 	return (rl_code);
 }
 

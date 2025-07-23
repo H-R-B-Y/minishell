@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/23 14:26:20 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/23 15:14:12 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,29 +131,29 @@ struct s_token
 /**
  * @brief internal struct for the tokeniser
  * 
- * @param index_start the index of the start of the current token
- * @param index_end the end index of the current token
- * @param current_type the type of the current token
+ * @param i_start the index of the start of the current token
+ * @param i_end the end index of the current token
+ * @param curr_type the type of the current token
  * @param quote_mode the quote mode we are currently in
- * @param previous_line this is only for the case of the unfinished string
- * @param current_token malloc'd token, populated when next token type is found
+ * @param prev_line this is only for the case of the unfinished string
+ * @param curr_token malloc'd token, populated when next token type is found
  * 
  */
 typedef struct s_tokint			t_tokint;
 struct s_tokint
 {
 	/// the index of the start of the current token
-	size_t			index_start;
+	size_t			i_start;
 	/// the index of the end of the current token
-	size_t			index_end;
+	size_t			i_end;
 	/// the type of the current token
-	t_tokentype		current_type;
+	t_tokentype		curr_type;
 	/// the quote mode we are currently in
 	t_quote_mode	quote_mode;
 	/// any data required from the previous line
-	char			*previous_line;
+	char			*prev_line;
 	/// malloc'd token, needs to be pop'd
-	t_token			*current_token;
+	t_token			*curr_token;
 };
 
 /**
@@ -172,6 +172,8 @@ enum e_tokretcode
 	PARSE_ERROR,
 	// PARSER FATAL
 	PARSE_FATAL,
+	// nothing created from input 
+	PARSE_NOTHING,
 	/// Count of different return codes
 	TOKENISER_RETURNCODE_COUNT
 };
@@ -251,8 +253,8 @@ struct s_fsmtransition
  * @param retcode the current return code
  * @param tokens the current list of tokens
  * @param paren_count the count of parenthesis
- * @param tokeniser_internals the internal tokeniser data
- * @param str_condition a string representing the state of the parser
+ * @param tok_int the internal tokeniser data
+ * @param str_cond a string representing the state of the parser
  * 
  * @note
  * Really important that any updates to this struct are reflected in
@@ -275,10 +277,10 @@ struct s_fsmdata
 	/// the count of open parenthesis
 	long int		paren_count;
 	/// the internal tokeniser data
-	t_tokint		tokeniser_internals;
+	t_tokint		tok_int;
 	void			*debuginfo;
 	/// a string representation of the condition upon return
-	char			*str_condition;
+	char			*str_cond;
 };
 
 /**
