@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fsm_tokeniser.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/11 00:28:20 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/23 14:26:20 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ enum e_tokentype
 	TOK_INCOMPLETE_STRING,
 	/// redirect to an fd isntead of a file n>&m
 	TOK_REDIR_FD,
+	// ERROR in case we need to signal to the rest of the program
+	TOK_ERR,
 	/// count of total token types
 	TOK_COUNT
 };
@@ -168,6 +170,8 @@ enum e_tokretcode
 	/// Parsing was not successful
 	/// fsm will need clearing / will clear on next call
 	PARSE_ERROR,
+	// PARSER FATAL
+	PARSE_FATAL,
 	/// Count of different return codes
 	TOKENISER_RETURNCODE_COUNT
 };
@@ -381,8 +385,9 @@ void			handle_operator(t_tokint *tokeniser, const char *str);
  * 
  * @param tokeniser the tokeniser struct
  * @param str the string being parsed
+ * @return int 0 if error in allocation or 1 if ok
  */
-void			handle_unclosed_quote(t_tokint *tokeniser, const char *str);
+int			handle_unclosed_quote(t_tokint *tokeniser, const char *str);
 
 /**
  * @brief Utility function for making sure that we keep track of stats
@@ -404,8 +409,9 @@ int				handle_token_type(t_fsmdata *fsm);
  * a sequence then we need to insert a sequence.
  * 
  * @param fsm the finite state machine struct
+ * @return 1 if ok, 0 if failed
  */
-void			handle_subshell_newline(t_fsmdata *fsm);
+int			handle_subshell_newline(t_fsmdata *fsm);
 
 /**
  * @brief is a character an operator
@@ -502,11 +508,12 @@ void			free_token_vector(t_token **vec, void (*del_raw)(void *));
  * 
  * well its just used once at the moment to insert a sequence character.
  * 
- * @param fsm 
- * @param type 
- * @param str 
+ * @param fsm the finite state machine
+ * @param type the type of the token to add
+ * @param str the raw token contents
+ * @return 1 if ok, 0 if failed
  */
-void			append_anon_token(t_fsmdata *fsm, const t_tokentype type, const char *str);
+int			append_anon_token(t_fsmdata *fsm, const t_tokentype type, const char *str);
 
 /**
  * @brief Find the next token in the string and return its type

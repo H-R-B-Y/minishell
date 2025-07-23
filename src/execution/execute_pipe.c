@@ -9,7 +9,7 @@ void	_write_pipe(t_minishell *shell, t_astnode *node, int *fd)
 	close(fd[0]);
 	node->from_type = AST_PIPE;
 	execute_ast(shell, node);
-	builtin_exit(shell, NULL, NULL);
+	exit(free_everything(shell, 0));
 }
 
 void	_read_pipe(t_minishell *shell, t_astnode *node, int *fd)
@@ -20,7 +20,7 @@ void	_read_pipe(t_minishell *shell, t_astnode *node, int *fd)
 	close(fd[0]);
 	node->from_type = AST_PIPE;
 	execute_ast(shell, node);
-	builtin_exit(shell, NULL, NULL);
+	exit(free_everything(shell, 0));
 }
 
 int	execute_pipe(t_minishell *shell, t_astnode *node)

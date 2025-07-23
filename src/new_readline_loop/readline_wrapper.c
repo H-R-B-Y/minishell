@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strrchr.c                                       :+:      :+:    :+:   */
+/*   readline_wrapper.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/27 19:28:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/22 13:58:15 by hbreeze          ###   ########.fr       */
+/*   Created: 2025/07/22 15:22:34 by hbreeze           #+#    #+#             */
+/*   Updated: 2025/07/22 16:25:04 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-char	*ft_strrchr(const char *s, const int c)
-{
-	char	*start;
+#include "../../include/minishell.h"
+#include "../../include/get_next_line.h"
 
-	if (!s)
-		return (0);
-	start = (char *)s;
-	while (*s)
-		s++;
-	while (start < s && (unsigned char)*s != (unsigned char)c)
-		s--;
-	if ((unsigned char)*s == (unsigned char)c)
-		return ((char *)s);
-	return (0);
+
+char	*readline_wrapper(t_readline_data *data, const char *prompt)
+{
+	char	*p[2];
+
+	if (*data->interactive_mode)
+		return (readline(prompt));
+	p[0] = get_next_line(STDIN_FILENO);
+	p[1] = ft_strrchr(p[0], '\n');
+	if (p[1])
+		*p[1] = '\0';
+	return (p[0]);
 }

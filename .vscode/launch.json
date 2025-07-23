@@ -12,7 +12,8 @@
 		"args": [],
 		"stopAtEntry": true,
 		"cwd": "${workspaceRoot}",
-		"environment": [],
+		"environment": [
+		],
 		"externalConsole": false,
 		"MIMode": "gdb",
 		"setupCommands": [
@@ -24,6 +25,26 @@
 			{
 				"description": "Set Disassembly Flavor to Intel",
 				"text": "-gdb-set disassembly-flavor intel",
+				"ignoreFailures": true
+			},
+			{
+				"description": "Use ld preload for fault injection",
+				"text": "-gdb-set environment LD_PRELOAD=./lib/fault_injection/fault_injector.so",
+				"ignoreFailures": true
+			},
+			{
+				"description": "Set MALLOC_FAIL_RATE",
+				"text": "-gdb-set environment MALLOC_FAIL_AT=10000",
+				"ignoreFailures": true
+			},
+			{
+				"description": "Set MALLOC_FAIL_VERBOSE",
+				"text": "-gdb-set environment FAIL_VERBOSE=1",
+				"ignoreFailures": true
+			},
+			{
+				"description": "Set FAULT_BLACKLIST",
+				"text": "-gdb-set environment FAULT_BLACKLIST=readline",
 				"ignoreFailures": true
 			}
 		],

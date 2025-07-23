@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_process.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 11:48:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/09 21:13:49 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/22 15:21:57 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,5 +94,6 @@ int	init_process(t_minishell *shell, char **envp)
 	shell->fsm_data.debuginfo = &shell->info;
 	// reset for command
 	reset_for_command(shell, READ_START);
+	shell->rldata.interactive_mode = &shell->interactive_mode;
 	return (0);
 }

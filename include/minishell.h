@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/10 12:17:20 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/22 15:42:10 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -403,5 +403,15 @@ int	setup_signals(t_minishell *shell);
 ssize_t	glob_variable(t_astnode	*node);
 
 char	**simple_split(const char *str, t_readline_data *data);
+
+int	free_everything(t_minishell *shell, int code);
+
+/**
+ * @brief check if the string either doesnt contain a newline
+ * or if the string does but the newline is not at the end of the string
+ * @note added to remove duplication
+ * @param str the string to check
+ */
+int	last_newline_not_end(const char *str);
 
 #endif

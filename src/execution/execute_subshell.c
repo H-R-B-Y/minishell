@@ -9,8 +9,12 @@ int	execute_subshell(t_minishell *shell, t_astnode *node)
 	pid = fork();
 	if (pid == 0)
 	{
+		// Note that subshells can be owners of redirects, 
+		// the node will need to have its redircts mapped BEFORE calling the rest of the
+		// ast? maybe (i have not tested if the subshell redirects get overridden by the
+		// child nodes redirects)
 		execute_ast(shell, node->left_node);
-		exit(shell->return_code);
+		exit(free_everything(shell, 0));
 	}
 	else if (pid > 0)
 		waitpid(pid, &status, 0);

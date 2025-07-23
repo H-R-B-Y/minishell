@@ -3,14 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   token_binning.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:36:40 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/11 01:02:04 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/23 14:27:26 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "../../include/fsm_tokeniser.h"
 #include "../../include/minishell.h"
 
 /*
@@ -49,9 +48,19 @@ t_tokentype	potential_redirect(const char *raw_token)
 		if (!raw_token[i])
 			return (TOK_REDIR_FD);
 	}
-	return (TOK_NONE);
+	return (TOK_WORD);
 }
 
+/*
+I HATE this
+
+Maybe it could be done using a static map,
+loop through the map and each one defines a token type to produce?
+
+idk, probably too late to rewrite this though
+
+NOTE: lol i already commented this above LOL
+*/
 t_tokentype	bin_token(const char *raw_token)
 {
 	if (!raw_token)
@@ -77,23 +86,32 @@ t_tokentype	bin_token(const char *raw_token)
 	return (TOK_WORD);
 }
 
+static int	unfinished_string_check(t_tokint *tokeniser, const char *str)
+{
+	if (tokeniser->quote_mode != QUOTE_NONE || (tokeniser->index_end > 1
+		&& str[tokeniser->index_end - 1] == '\\'
+		&& str[tokeniser->index_end - 2] != '\\'))
+		return (1);
+	return (0);
+}
+
 t_tokentype	tokenise_type(t_tokint *tokeniser, const char *str)
 {
 	char	*substring;
-	char 	*nlp;
-	size_t	end_i;
 
+	if (unfinished_string_check(tokeniser, str))
+		return ((int[2]){TOK_INCOMPLETE_STRING, TOK_ERR}[!handle_unclosed_quote(tokeniser, str)]);
 	substring = ft_substr(str, tokeniser->index_start,
 			tokeniser->index_end - tokeniser->index_start);
 	tokeniser->current_type = bin_token(substring);
 	tokeniser->current_token = ft_calloc(1, sizeof(t_token));
+	if (!substring || !tokeniser->current_token)
+		return (TOK_ERR);
 	(*tokeniser->current_token) = (t_token){.heredoc_delim = 0,
 		.raw = substring, .type = tokeniser->current_type,};
 	if (tokeniser->current_type == TOK_WORD && tokeniser->previous_line)
-	{
-		nlp = ft_strrchr(tokeniser->previous_line, '\n');
-		end_i = ft_strlen(tokeniser->previous_line) - 1;
-		if (!nlp || nlp != (tokeniser->previous_line + end_i))
+	{ // what do we do if str vec join fails here
+		if (last_newline_not_end(tokeniser->previous_line))
 			ft_dirtyswap((void *)&tokeniser->current_token->raw,
 				str_vec_join((char *[4]){tokeniser->previous_line, "\n", substring, 0}),
 				free);

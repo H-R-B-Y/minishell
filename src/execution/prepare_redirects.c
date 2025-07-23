@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:15:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/07 16:19:56 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/23 14:59:37 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ int	redrtype_to_oflag(const int redr_type)
 	return (flag);
 }
 
+// printf("Opened file %s at %d for redirect too %d\n",redr->file_map.filename,
+// 	p->file_map.from_fd, p->file_map.to_fd);
 t_redirect_desc	*file_to_fd_mapper(const t_redirect_desc *redr)
 {
 	t_redirect_desc	*p;
@@ -44,7 +46,6 @@ t_redirect_desc	*file_to_fd_mapper(const t_redirect_desc *redr)
 	}
 	*p = *redr;
 	p->file_map.from_fd = open(redr->file_map.filename, redrtype_to_oflag(redr->type));
-	printf("Opened file %s at %d for redirect too %d\n",redr->file_map.filename, p->file_map.from_fd, p->file_map.to_fd);
 	if (p->file_map.from_fd == -1)
 	{
 		if (errno == ENOENT)
@@ -61,7 +62,6 @@ int	prepare_fds(t_astnode *node)
 
 	if (!node->redirect)
 		return (0);
-	// this is not an efficient way to handle this -_-
 	corrected = ft_lstmap(node->redirect, (void *)file_to_fd_mapper, free); // WARN: free is not good enough, redirects will leak
 	if (!corrected)
 		return (perror("minishell"), -1);
