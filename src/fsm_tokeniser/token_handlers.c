@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:37:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/23 14:26:25 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/23 18:20:14 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_tokentype		skip_token_str(t_tokint *tokeniser, const char *str);
 
-void	handle_potential_redirect(t_tokint *tokeniser, const char *str)
+t_tokentype	handle_potential_redirect(t_tokint *tokeniser, const char *str)
 {
 	char	t;
 
@@ -22,10 +22,7 @@ void	handle_potential_redirect(t_tokint *tokeniser, const char *str)
 		tokeniser->index_end++;
 	t = str[tokeniser->index_end];
 	if (!(t == '<' || t == '>'))
-	{
-		skip_token_str(tokeniser, str);
-		return ;
-	}
+		return (skip_token_str(tokeniser, str));
 	tokeniser->index_end++;
 	if (str[tokeniser->index_end] == t)
 		tokeniser->index_end++;
@@ -41,15 +38,16 @@ void	handle_potential_redirect(t_tokint *tokeniser, const char *str)
 		else if (str[tokeniser->index_end] == '-')
 			tokeniser->index_end++;
 	}
+	return (tokenise_type(tokeniser, str));
 }
 
-void	handle_operator(t_tokint *tokeniser, const char *str)
+t_tokentype	handle_operator(t_tokint *tokeniser, const char *str)
 {
 	char	c;
 
 	c = str[tokeniser->index_end];
 	if (ft_isdigit(c) || c == '>' || c == '<')
-		handle_potential_redirect(tokeniser, str);
+		return (handle_potential_redirect(tokeniser, str));
 	else if (c == '&' && str[tokeniser->index_end + 1] == '>')
 		tokeniser->index_end += 2 + (1 * (str[tokeniser->index_end + 1]
 					== str[tokeniser->index_end + 2]));
@@ -58,6 +56,7 @@ void	handle_operator(t_tokint *tokeniser, const char *str)
 		tokeniser->index_end = tokeniser->index_end + 2;
 	else
 		tokeniser->index_end = tokeniser->index_end + 1;
+	return (tokenise_type(tokeniser, str));
 }
 
 int	handle_unclosed_quote(t_tokint *tokeniser, const char *str)
