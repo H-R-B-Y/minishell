@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 17:24:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/23 15:15:07 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/24 09:56:50 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ static int	read_with_temp_prompt(t_minishell *shell, char *temp)
 	int		code;
 
 	temp_prmpt = ft_strjoin(temp, " > ");
+	if (!temp_prmpt)
+		perror_exit(shell, "minishell:readline_loop");
 	code = next_line(&shell->rldata, temp_prmpt);
 	free(temp_prmpt);
 	return (code);
