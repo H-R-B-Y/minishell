@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/23 18:27:03 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/24 16:32:11 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,29 +41,25 @@ int	next_command(t_minishell *shell)
 {
 	t_readline_retcode	rl_code;
 	
-	rl_code = READ_START;
-	while (rl_code != READ_NOTHING)
-	{
-		rl_code = read_until_complete_command(shell);
-		if (rl_code == READ_BADPARSE)
-			printf("Parse error: %s!\n", shell->fsm_data.str_condition);
-		else if (rl_code == READ_ERROR) // error is recoverable 
-			return (rl_code);
-		else if (rl_code == READ_EOF)
-			return (rl_code);
-		else if (rl_code == READ_FATAL) // fatal means exit
-			return (rl_code);
-		else if (rl_code == READ_OK
-			&& create_tree_and_run(shell) == AST_ERR_FATAL)
-			return (READ_FATAL);
-		reset_for_command(shell, rl_code);
-	}
+	rl_code = read_until_complete_command(shell);
+	if (rl_code == READ_BADPARSE)
+		printf("Parse error: %s!\n", shell->fsm_data.str_condition);
+	else if (rl_code == READ_ERROR) // error is recoverable 
+		return (rl_code);
+	else if (rl_code == READ_EOF)
+		return (rl_code);
+	else if (rl_code == READ_FATAL) // fatal means exit
+		return (rl_code);
+	else if (rl_code == READ_OK
+		&& create_tree_and_run(shell) == AST_ERR_FATAL)
+		return (READ_FATAL);
 	return (rl_code);
 }
 
 int	free_everything(t_minishell *shell, int code)
 {
 	reset_for_command(shell, READ_NOTHING);
+	// ft_arriter((void **)history_list(), remove_history)
 	fflush(stdout);
 	free(shell->prompt);
 	ft_arrclear((void *)shell->environment, free);

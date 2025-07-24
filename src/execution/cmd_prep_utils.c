@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_prep_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 13:37:48 by cquinter          #+#    #+#             */
-/*   Updated: 2025/07/23 13:45:25 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/24 13:54:09 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,19 +43,17 @@ char	*get_exec_path(t_minishell *shell, char *cmd, char **envp)
 		if (!exec_path)
 		{
 			free(dash_cmd);
-			ft_dirtyswap((void **)&path, NULL, free);
+			ft_arrclear((void **)path, free);
 			perror_exit(shell, "minishell: ft_strjoin");
 		}
 		if (access(exec_path, X_OK) == 0)
 			break ;
-// this break causes the following free to leak, because break
-// means we never free anything after we have found the real path
 		free(exec_path); 
 		i++;
 	}
 	if (!path[i])
-		return(free(dash_cmd), ft_dirtyswap((void **)&path, NULL, free), NULL);
-	return(free(dash_cmd), ft_dirtyswap((void **)&path, NULL, free), exec_path);
+		return(free(dash_cmd), ft_arrclear((void **)path, free), NULL);
+	return(free(dash_cmd), ft_arrclear((void **)path, free), exec_path);
 }
 
 size_t get_cmd_idx(t_astnode *node)

@@ -1,15 +1,11 @@
 
 #include "../../include/minishell.h"
 
-int	set_any_env(t_minishell *shell)
+int	set_any_env(t_minishell *shell, char **argv, size_t	n)
 {
-	char	**argv;
 	char	*name;
-	size_t	n;
 	size_t	i;
 
-	argv = shell->current_tree->cmdv;
-	n = shell->current_tree->token_count;
 	i = 0;
 	while (i < n)
 	{

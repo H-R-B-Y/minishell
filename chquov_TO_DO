@@ -1,0 +1,20 @@
+## b_in exit handling argv
+## fix leaks at cmd_prep_utils.c and rmv_quotes_xpnd_var
+cd update env
+
+ - 0 -  /42CC/minishelll (execute_ast) > echo $vamos
+
+ - 0 -  /42CC/minishelll (execute_ast) > luna=vasdf ; vamos=test2222
+ - 0 -  /42CC/minishelll (execute_ast) > echo $vamos
+test2222
+ - 0 -  /42CC/minishelll (execute_ast) > exit
+fix leak when previous
+
+
+current_history based on tokens, handle heredoc
+redirects in b_ins
+exit fuctions
+catch all malloc fails (look up: ft_calloc)
+CMD error message:
+	 permission denied vs is a directory
+	 command not found vs No such file or directory

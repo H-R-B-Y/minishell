@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:36:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/23 18:12:21 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/24 13:28:54 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	destroy_token(t_token *token, void (*del_raw)(void *))
 {
 	if (!token)
 		return ;
-	printf("freeing token %p\n", token);
+	// printf("freeing token %p\n", token);
 	if (token->raw && del_raw)
 		del_raw(token->raw);
 	free(token);

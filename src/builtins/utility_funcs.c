@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utility_funcs.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:57:17 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/06 00:01:01 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/24 14:45:30 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,6 @@ int	exec_builtincmd(t_minishell *shell, t_astnode *node, t_builtincmd cmd)
 		set_n_envp(&node->envp, node->cmdv, node->cmd_i);
 		shell->return_code = cmd(shell,
 			node->cmdv + node->cmd_i, &node->envp);
-		if (node->envp)
-			ft_dirtyswap((void *)&node->envp, (void *)0, free);
 		return (0);
 	}
 	return (0);
