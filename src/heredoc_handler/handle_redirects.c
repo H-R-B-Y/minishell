@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 16:49:12 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/22 17:22:55 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/24 14:23:45 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ t_redirect_desc *handle_redirect(t_token *redirect, t_token *filename)
 	else
 		to_fd = get_tofd(redirect->raw, sep);
 	(*output) = (t_redirect_desc){.type = (t_redirect_type [3]){
-		REDIRECT_INPUT, REDIRECT_OUTPUT, REDIRECT_OUTPUT_APPEND}[
+		REDIRECT_IN, REDIRECT_OUT, REDIRECT_OUT_A}[
 			(0 * (redirect->type == TOK_REDIR_IN))
 			+ (1 * (redirect->type == TOK_REDIR_OUT))
 			+ (2 * (redirect->type == TOK_REDIR_APPEND))],

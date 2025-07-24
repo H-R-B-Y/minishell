@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/24 10:31:55 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/24 15:51:31 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,9 +188,9 @@ variable expansion.
 The second is the internal variables, these are tracked by the shell but only
 accessible to the shell and not handed to the child processes.
 */
-
+// TODO: comment this
 ssize_t			_sgetanon(char **anon, char *name);
-
+// TODO: comment this
 ssize_t			_sgetidx(char **anon, char *name);
 
 /**
@@ -414,10 +414,26 @@ void	set_exection_signals(void);
  */
 int	setup_signals(t_minishell *shell);
 
+/**
+ * @brief Check node for variables that might need to be globbed
+ * @param node the node to check for globbing
+ */
 ssize_t	glob_variable(t_astnode	*node);
 
+/**
+ * @brief Split on each newline of the string
+ * @param str string to split
+ * @param data the readline loop internals
+ * @returns the split string
+ */
 char	**simple_split(const char *str, t_readline_data *data);
 
+/**
+ * @brief free everything
+ * @param shell reference to the shell
+ * @param code return code to return
+ * @returns code 
+ */
 int	free_everything(t_minishell *shell, int code);
 
 /**

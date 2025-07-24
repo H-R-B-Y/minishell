@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/24 14:00:05 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/24 14:11:01 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ int	next_command(t_minishell *shell)
 	else if (rl_code == READ_OK
 		&& create_tree_and_run(shell) == AST_ERR_FATAL)
 		return (READ_FATAL);
+	else if (rl_code == READ_FATAL)
+		perror_exit(shell, "minishell:readline_loop");
 	return (rl_code);
 }
 
@@ -83,8 +85,6 @@ int	main(int argc, char **argv, char **envp)
 		rl_code = next_command(&shell);
 		if (rl_code == READ_EOF)
 			break ;
-		else if (rl_code == READ_FATAL)
-			perror_exit(&shell, "minishell");
 		dbg_write_states(&shell.info);
 		dbg_write_tokens(&shell.info);
 		dbg_write_nodes(&shell.info);

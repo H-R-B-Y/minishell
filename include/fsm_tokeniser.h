@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/24 13:48:02 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/24 15:45:47 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,22 @@
 # include "libft.h"
 # include <stdio.h>
 
+/// @brief The total number of state transitions
 # define TRNSCOUNT 38
-
-/*
-This section covers the main token types, 
-skipping the tokens, and binning the tokens
-*/
 
 /**
  * @brief quote modes that the tokeniser can be in
- * 
  */
 typedef enum e_quote_mode		t_quote_mode;
 enum e_quote_mode
 {
-	/// No quotes for current token
+	/// @brief No quotes for current token
 	QUOTE_NONE,
-	/// We are in a single quote 
+	/// @brief We are in a single quote 
 	QUOTE_SINGLE,
-	/// We are in a double quote
+	/// @brief We are in a double quote
 	QUOTE_DOUBLE,
-	/// Just pased a dash 
-	
-	/// Count of quote modes
+	/// @brief Count of quote modes
 	QUOTE_MODE_COUNT,
 };
 
@@ -49,41 +42,41 @@ enum e_quote_mode
 typedef enum e_tokentype		t_tokentype;
 enum e_tokentype
 {
-	/// if token is returned there is an error
+	/// @brief if token is returned there is an error
 	TOK_NONE,
-	/// word token can be cmd / file / arg / heredoc deliminator
+	/// @brief word token can be cmd / file / arg / heredoc deliminator
 	TOK_WORD,
-	/// pipe token is just `|` pipe
+	/// @brief pipe token is just `|` pipe
 	TOK_PIPE,
-	/// redirect out `>` must be followed by a filename (word)
+	/// @brief redirect out `>` must be followed by a filename (word)
 	TOK_REDIR_OUT,
-	/// redirect append `>>` must be followed by a filename (word)
+	/// @brief redirect append `>>` must be followed by a filename (word)
 	TOK_REDIR_APPEND,
-	/// redirect in `<` must be followed by a filename (word)
+	/// @brief redirect in `<` must be followed by a filename (word)
 	TOK_REDIR_IN,
-	/// heredoc `<<` must be followed by a word
+	/// @brief heredoc `<<` must be followed by a word
 	TOK_HEREDOC,
-	/// after ; 
+	/// @brief after ; 
 	TOK_AFTER,
-	/// and if condition `&&`
+	/// @brief and if condition `&&`
 	TOK_AND_IF,
-	/// or if condition `||`
+	/// @brief or if condition `||`
 	TOK_OR_IF,
-	/// left parenthesis `(`
+	/// @brief left parenthesis `(`
 	TOK_LPAREN,
-	/// right parenthesis `)`
+	/// @brief right parenthesis `)`
 	TOK_RPAREN,
-	/// background operator `&`
+	/// @brief background operator `&`
 	TOK_AMP,
-	/// end of input
+	/// @brief end of input
 	TOK_EOF,
-	/// tokeniser error couldn't complete a string sequence
+	/// @brief tokeniser error couldn't complete a string sequence
 	TOK_INCOMPLETE_STRING,
-	/// redirect to an fd isntead of a file n>&m
+	/// @brief redirect to an fd isntead of a file n>&m
 	TOK_REDIR_FD,
-	// ERROR in case we need to signal to the rest of the program
+	/// @brief ERROR in case we need to signal to the rest of the program
 	TOK_ERR,
-	/// count of total token types
+	/// @brief count of total token types
 	TOK_COUNT
 };
 
@@ -114,17 +107,17 @@ enum e_tokentype
 typedef struct s_token			t_token;
 struct s_token
 {
-	/// the type of this token
+	/// @brief the type of this token
 	t_tokentype	type;
-	/// the raw token string
+	/// @brief the raw token string
 	char		*raw;
-	/// flag this token as a heredoc deliminator
+	/// @brief flag this token as a heredoc deliminator
 	int			heredoc_delim;
-	/// flag this token as a filename for a redirect
+	/// @brief flag this token as a filename for a redirect
 	int			redirect_file;
-	/// flag if the quotes have been removed
+	/// @brief flag if the quotes have been removed
 	int			quotes_removed;
-	/// flag if the variables have been expanded
+	/// @brief flag if the variables have been expanded
 	int			variables_expanded;
 };
 
@@ -142,17 +135,17 @@ struct s_token
 typedef struct s_tokint			t_tokint;
 struct s_tokint
 {
-	/// the index of the start of the current token
+	/// @brief the index of the start of the current token
 	size_t			i_start;
-	/// the index of the end of the current token
+	/// @brief the index of the end of the current token
 	size_t			i_end;
-	/// the type of the current token
+	/// @brief the type of the current token
 	t_tokentype		curr_type;
-	/// the quote mode we are currently in
+	/// @brief the quote mode we are currently in
 	t_quote_mode	quote_mode;
-	/// any data required from the previous line
+	/// @brief any data required from the previous line
 	char			*prev_line;
-	/// malloc'd token, needs to be pop'd
+	/// @brief malloc'd token, needs to be pop'd
 	t_token			*curr_token;
 };
 
@@ -163,18 +156,18 @@ struct s_tokint
 typedef enum e_tokretcode		t_tokretcode;
 enum e_tokretcode
 {
-	/// Parsing was successful and fsm will contain a list of tokens
+	/// @brief Parsing was successful and fsm will contain a list of tokens
 	PARSE_OK,
-	/// Parsing needs to be continued on the next line
+	/// @brief Parsing needs to be continued on the next line
 	PARSE_CONT,
-	/// Parsing was not successful
+	/// @brief Parsing was not successful
 	/// fsm will need clearing / will clear on next call
 	PARSE_ERROR,
-	// PARSER FATAL
+	/// @brief PARSER FATAL
 	PARSE_FATAL,
-	// nothing created from input 
+	/// @brief nothing created from input 
 	PARSE_NOTHING,
-	/// Count of different return codes
+	/// @brief Count of different return codes
 	TOKENISER_RETURNCODE_COUNT
 };
 
@@ -196,29 +189,29 @@ enum e_tokretcode
 typedef enum e_fsmstate			t_fsmstate;
 enum e_fsmstate
 {
-	/// Wrong state (not always an error depends on last token)
+	/// @brief Wrong state (not always an error depends on last token)
 	ST_WRNG,
-	/// Starting state
+	/// @brief Starting state
 	ST_STRT,
-	/// Word state
+	/// @brief Word state
 	ST_WORD,
-	/// Operator state
+	/// @brief Operator state
 	ST_OPRA,
-	/// Sequence state
+	/// @brief Sequence state
 	ST_SEQ,
-	/// Left subshell `(`
+	/// @brief Left subshell `(`
 	ST_LSSH,
-	/// Right subshell `)`
+	/// @brief Right subshell `)`
 	ST_RSSH,
-	/// Heredoc state
+	/// @brief Heredoc state
 	ST_HDOC,
-	/// Redirect state
+	/// @brief Redirect state
 	ST_REDR,
-	/// Continue State
+	/// @brief Continue State
 	ST_CONT,
-	/// End state
+	/// @brief End state
 	ST_END,
-	/// Count of states 
+	/// @brief Count of states 
 	STATE_COUNT
 };
 
@@ -238,11 +231,11 @@ enum e_fsmstate
 typedef struct s_fsmtransition	t_fsmtransition;
 struct s_fsmtransition
 {
-	/// the state we are transitioning from
+	/// @brief the state we are transitioning from
 	t_fsmstate	from_state;
-	/// the accepted token types
+	/// @brief the accepted token types
 	char		*token_types;
-	/// the resulting state
+	/// @brief the resulting state
 	t_fsmstate	too_state;
 };
 
@@ -266,20 +259,21 @@ struct s_fsmtransition
 typedef struct s_fsmdata		t_fsmdata;
 struct s_fsmdata
 {
-	/// the current state of the fsm
+	/// @brief the current state of the fsm
 	t_fsmstate		state;
-	/// the previous state of the fsm
+	/// @brief the previous state of the fsm
 	t_fsmstate		last_state;
-	/// the return code of the fsm
+	/// @brief the return code of the fsm
 	t_tokretcode	retcode;
-	/// the token list
+	/// @brief the token list
 	t_list			*tokens;
-	/// the count of open parenthesis
+	/// @brief the count of open parenthesis
 	long int		paren_count;
-	/// the internal tokeniser data
+	/// @brief the internal tokeniser data
 	t_tokint		tok_int;
+	/// @brief Reference to the debug info
 	void			*debuginfo;
-	/// a string representation of the condition upon return
+	/// @brief a string representation of the condition upon return
 	char			*str_cond;
 };
 

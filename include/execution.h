@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:02:44 by cquinter          #+#    #+#             */
-/*   Updated: 2025/07/19 15:08:14 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/24 14:41:25 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ int		execute_pipe(t_minishell *shell, t_astnode *node);
 int		execute_subshell(t_minishell *shell, t_astnode *node);
 int		execute_seq(t_minishell *shell, t_astnode *node);
 int		execute_logical(t_minishell *shell, t_astnode *node);
-
 int		execute_ast(t_minishell *shell, t_astnode *node);
 
 #endif
