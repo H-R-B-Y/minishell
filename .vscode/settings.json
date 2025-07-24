@@ -12,7 +12,8 @@
 		"v_dbg.h": "c",
 		"signal.h": "c",
 		"signal-defs.h": "c",
-		"stdlib.h": "c"
+		"stdlib.h": "c",
+		"random": "c"
 	},
 	"C_Cpp.errorSquiggles": "disabled"
 }

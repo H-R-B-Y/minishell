@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/24 13:42:31 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/24 14:00:05 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,6 @@ int	next_command(t_minishell *shell)
 		return (rl_code);
 	else if (rl_code == READ_EOF)
 		return (rl_code);
-	else if (rl_code == READ_FATAL) // fatal means exit
-		return (rl_code);
 	else if (rl_code == READ_OK
 		&& create_tree_and_run(shell) == AST_ERR_FATAL)
 		return (READ_FATAL);
@@ -86,13 +84,7 @@ int	main(int argc, char **argv, char **envp)
 		if (rl_code == READ_EOF)
 			break ;
 		else if (rl_code == READ_FATAL)
-		// I have been thinking about this here alot,
-		// I tried to pull the error all the way back to the main context of the
-		// process, but i realized that it's actually better to just exit as soon
-		// as we have access to the shell, this way we can actually give 
-		// a relevant error message to the user, instead of just fatal.
-		// So I am going to refactor this again.
-			perror_exit(&shell, "minishell:fatal");
+			perror_exit(&shell, "minishell");
 		dbg_write_states(&shell.info);
 		dbg_write_tokens(&shell.info);
 		dbg_write_nodes(&shell.info);

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/24 13:42:48 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/24 13:48:02 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -375,7 +375,7 @@ t_tokentype		tokenise_type(t_tokint *tokeniser, const char *str);
  * @param tokeniser the tokeniser struct
  * @param str the string being parsed
  */
-t_tokentype			handle_operator(t_tokint *tokeniser, const char *str);
+void			handle_operator(t_tokint *tokeniser, const char *str);
 
 /**
  * @brief handle unclosed quote by duping the unfinished string

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:22:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/24 13:44:00 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/24 13:51:35 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 // This to be renamed
 // need to make sure this is the only place where the token type is
 // determined, and that this doesn't just return something useless
-t_tokentype	skip_token_str(t_tokint *tokeniser, const char *str)
+void	skip_token_str(t_tokint *tokeniser, const char *str)
 {
 	char	c;
 
@@ -37,11 +37,10 @@ t_tokentype	skip_token_str(t_tokint *tokeniser, const char *str)
 			else if (c == '"')
 				tokeniser->quote_mode = QUOTE_DOUBLE;
 			else if (isoperator(c) || ft_iswhitespace(c) || c == '\0')
-				return (tokenise_type(tokeniser, str));
+				break ;//(tokenise_type(tokeniser, str))
 		}
 		tokeniser->i_end++;
 	}
-	return (tokenise_type(tokeniser, str));
 }
 
 t_tokentype	next_token_type(t_tokint *tokeniser, const char *str)
@@ -51,10 +50,12 @@ t_tokentype	next_token_type(t_tokint *tokeniser, const char *str)
 		&& ft_iswhitespace(str[tokeniser->i_start]))
 		tokeniser_skip_whitespace(tokeniser, str);
 	if (tokeniser->quote_mode == QUOTE_NONE
-		&& (isoperator(str[tokeniser->index_start])
-			|| ft_isdigit(str[tokeniser->index_start])))
-		return (handle_operator(tokeniser, str));
-	return (skip_token_str(tokeniser, str));
+		&& (isoperator(str[tokeniser->i_start])
+			|| ft_isdigit(str[tokeniser->i_start])))
+		handle_operator(tokeniser, str);
+	else
+		skip_token_str(tokeniser, str);
+	return (tokenise_type(tokeniser, str));
 }
 
 t_tokretcode	set_retcode(t_fsmdata *fsm,
