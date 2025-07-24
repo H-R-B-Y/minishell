@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/22 15:42:10 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/24 10:31:55 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,96 +46,88 @@
 # include "./builtin.h"
 
 /**
- * @brief the main struct for storing minishell state
- * @param environment placeholder for when we store environment
- * @param tokens a linked list of tokens created from the lexar
- * @param tokenv a vector array of tokens (null terminated)
- * @param current_tree the current AST tree produced from the tokens
- * @param current_line the current line to add to history
- * @param current_pipeline the current command string we are running
- * @param extra_lines a vector array of extra lines read from readline
+ * @brief redo this comment
  * 
- * @note extra lines should not be populated after readline loop
- * (it should be free'd)
- * @param prompt I thought it would be nice if we allowed the prompt 
- * to be customised so i made it a variable, should probably indicate current
- * directory too.
  */
 typedef struct s_minishell	t_minishell;
 struct s_minishell
 {
-
+	/// @brief Interactive mode flag (stdin is a terminal)
 	short		interactive_mode;
+	/// @brief signal handlers copied from the start of the process
+	/// (so they can be restored)
 	struct sigaction	old_handlers[32];
-	
-	/*
-	this is the environment that will be passed down to any child process
-	at the start of the program we take a copy of the environment varaiables
-	so that we can edit them on the fly.
-	*/
+	/// @brief Environment array copied at the start of the process
 	char		**environment;
-
+	/// @brief Environment variables that have been created but unassigned
 	char		**unassigned_env;
-
-	/*
-	this is another environment variable array, this one however 
-	is only in the context of the current shell, it can be used for variable
-	expansion but cannot be passed to child processes.
-	*/
+	/// @brief Shell local variables
 	char		**local_env;
-
-	/*
-	tokens list is just for the internal tokenisation process, it probably
-	shouldnt be included as part of the main struct! ~ i can remove this later
-	*/
+	/// @brief List of tokens relevant to the current job
 	t_list		*tokens;
-
-	/*
-	token vector is part of the main struct solely as a reference for cleaning up
-	all the tokens need to be kept for the entire execution process
-	(well only until they are executed i guess)
-	but if this reference to them here this is all we need to cleanup
-	*/
+	/// @brief Tokens but as an array, for easier access
 	t_token		**tokenv;
-
-	/*
-	current tree, nodes will need to be free'd but their internal tokens
-	do not have to be free'd
-	*/
+	/// @brief The execution tree relevant to the current job
 	t_astnode	*current_tree;
-
+	/// @brief PID of the shell
 	pid_t		my_pid;
-	
+	/// @brief Return code of the previous command / job 
 	int			return_code;
-
-	/*
-	internal finite state machine data*/
+	/// @brief Internal information relevant to the finite state machine
 	t_fsmdata	fsm_data;
-
+	/// @brief Internal information relevant to the readline loop
 	t_readline_data	rldata;
-	/*
-	i think the best way to handle this would be to keep concatinating
-	the readlines until we reach the point where we have a valid AST.
-
-	then append the history item.
-
-	then run the execution tree.
-	*/
-	// this is everything we have read for the current pipeline.
+	/// @brief Current line (? do we still need this)
 	char		*current_line;
-	// this is everything we are tokenising and running
+	/// @brief Current pipeline (? do we still need this?)
 	char		*current_pipeline;
-	// this is every line that we are not currently tokenising
+	/// @brief Extra lines from input (? arent these in the rldata now?)
 	char		**extra_lines;
-
+	/// @brief Current prompt
 	char		*prompt;
-
+	/// @brief Data relevant for dumping binary data out to a fd
 	struct s_dbg_info	info;
 };
 
+/**
+ * @brief Initialise the shell
+ * 
+ * Checks for interactive mode,
+ * Sets up signal handlers
+ * Sets some config for libreadline
+ * 
+ * @param shell Reference to the shell
+ * @param envp the environment passed in at start
+ * @return int 0 is ok, < 0 is an error
+ */
 int		init_process(t_minishell *shell, char **envp);
+
+/**
+ * @brief Adds to readline history but does not duplicate
+ * 
+ * @param string The history item that we want to add
+ * @return int status code
+ */
 int		better_add_history(char *string);
+
+/**
+ * @brief Cleanup ready for the next command (or at exit time)
+ * 
+ * This will free anything heap allocated so this doubles as
+ * a safe way to cleanup.
+ * 
+ * @param shell Reference to the shell internals
+ * @param rl_code readline code
+ * (so we dont free anything that might be needed later)
+ */
 void	reset_for_command(t_minishell *shell, t_readline_retcode rl_code);
+
+/**
+ * @brief Creates the prompt with colours and git info
+ * 
+ * @param shell refernce to the shell object
+ * @return char* the prompt! 
+ */
 char	*create_prompt(const t_minishell *shell);
 
 /**
@@ -302,10 +294,32 @@ typedef int					(*t_builtincmd)(t_minishell *, char **, char ***);
  */
 t_builtincmd _get_builtincmd(t_astnode *node);
 
+/**
+ * @brief Execute a bultin command
+ * 
+ * @param shell Reference to the shell
+ * @param node Reference to the ast node that calls this
+ * @param cmd The builtin function ptr
+ * @return int 0?
+ */
 int		exec_builtincmd(t_minishell *shell, t_astnode *node, t_builtincmd cmd);
 
+/**
+ * @warning Assumes p is a string, for use in arriter
+ * @brief print the string p and return it
+ * 
+ * @param p a string
+ * @return void* same string
+ */
 void	*print_and_ret(void *p);
 
+/**
+ * @warning assumes p is a str (for use in arriter)
+ * @brief print a string with export syntax
+ * 
+ * @param p a string
+ * @return void* the same string
+ */
 void	*export_print_and_ret(void *p);
 
 /**

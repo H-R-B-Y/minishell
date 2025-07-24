@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/23 15:18:25 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/24 10:08:51 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,13 @@ int	main(int argc, char **argv, char **envp)
 		if (rl_code == READ_EOF)
 			break ;
 		else if (rl_code == READ_FATAL)
-			return (free_everything(&shell, -1));
+		// I have been thinking about this here alot,
+		// I tried to pull the error all the way back to the main context of the
+		// process, but i realized that it's actually better to just exit as soon
+		// as we have access to the shell, this way we can actually give 
+		// a relevant error message to the user, instead of just fatal.
+		// So I am going to refactor this again.
+			perror_exit(&shell, "minishell:fatal");
 		dbg_write_states(&shell.info);
 		dbg_write_tokens(&shell.info);
 		dbg_write_nodes(&shell.info);

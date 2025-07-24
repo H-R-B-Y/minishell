@@ -6,12 +6,14 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:16:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/22 15:24:47 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/24 10:14:07 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+// Why is string being passed in by reference?
+// It should also be const str i think!
 ssize_t	append_to_history_item(t_readline_data *data, char **str)
 {
 	char *temp;
