@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:02:44 by cquinter          #+#    #+#             */
-/*   Updated: 2025/07/06 13:29:51 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/19 15:08:14 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include "./builtin.h"
 # include <unistd.h>
 
+void	clean_shell(t_minishell *shell);
+void	clean_exit_status(t_minishell *shell, int status);
 void	perror_exit(t_minishell *shell, char *message); // TODO: check if correct clean up everything and exit
 void	_set_returncode(int *to_set, int code);
 
