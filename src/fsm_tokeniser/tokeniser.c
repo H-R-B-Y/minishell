@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:22:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/24 13:51:35 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/24 17:27:03 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,8 +134,9 @@ t_tokretcode	tokenise(t_fsmdata *fsm, const char *str)
 			next_state = ST_WRNG;
 		state_change(fsm, next_state);
 		if (next_state != ST_END && next_state != ST_WRNG && next_state != ST_CONT)
-			ft_lstadd_back(&(fsm->tokens), ft_lstnew(
-				tokeniser_pop_token(&fsm->tok_int)));
+			ft_lstadd_back(&(fsm->tokens), ft_lstnew(tokeniser_pop_token(&fsm->tok_int)));
+		else
+			destroy_token(tokeniser_pop_token(&fsm->tok_int), free);
 	}
 	return (correct_retcode(fsm));
 }
