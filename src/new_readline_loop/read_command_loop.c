@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 17:24:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/24 09:56:50 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/24 13:59:40 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	read_until_complete_command(t_minishell *shell)
 	t_tokretcode		fsm_code;
 
 	if (shell->interactive_mode && !ft_dirtyswap((void *)&shell->prompt, (void *)create_prompt(shell), free))
-		return (READ_FATAL);
+		perror_exit(shell, "minishell:readline_loop");
 	rl_code = next_line(&shell->rldata, shell->prompt);
 	if (rl_code != READ_OK)
 		return (rl_code);
@@ -48,7 +48,7 @@ int	read_until_complete_command(t_minishell *shell)
 	if (fsm_code == PARSE_ERROR)
 		return (READ_BADPARSE);
 	else if (fsm_code == PARSE_FATAL)
-		return (READ_FATAL);
+		perror_exit(shell, "minishell:tokeniser");
 	else if (fsm_code == PARSE_NOTHING)
 		return (READ_NOTHING);
 	return (READ_OK);

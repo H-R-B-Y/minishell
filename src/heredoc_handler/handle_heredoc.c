@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:22:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/22 16:55:56 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/24 14:02:31 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,9 @@ static int	_read_heredoc(struct s_ast_internal *meta,
 		write(temp_file, "\n", 1);
 		status = next_line(meta->rldata, "heredoc > ");
 	}
-	if (status != READ_OK)
+	if (status == READ_FATAL)
+		perror_exit(meta->shell, "minishell:heredoc");
+	else if (status != READ_OK)
 		return (-1);
 	return (0);
 }

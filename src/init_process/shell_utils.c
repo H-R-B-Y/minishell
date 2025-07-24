@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 12:01:50 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/23 18:12:12 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/24 13:58:12 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int	better_add_history(char *string)
 
 void	_destroy_token(void *t)
 {
-	
 	destroy_token(t, free);
 }
 
@@ -50,7 +49,6 @@ void	reset_for_command(t_minishell *shell, t_readline_retcode rl_code)
 {
 	if (shell->rldata.current_hist_item)
 	{
-		// printf("test: %s",shell->rldata.current_hist_item);
 		better_add_history(shell->rldata.current_hist_item);
 		ft_dirtyswap((void *)&shell->rldata.current_hist_item, (void *)0, free);
 	}
