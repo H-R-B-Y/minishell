@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/24 15:48:08 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/24 16:15:17 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ enum e_asttype
  * @param cmdv The argument array
  * @param cmd_i The index of the actual command path in cmdv
  * @param envp The environment array
- * @param genv_l IDK ????????/
+ * @param genv_l IDK
  * @param return_value Return code from waitpid
  * @param return_code Actual number that the process returned
  */
@@ -187,7 +187,7 @@ struct	s_astnode
 	t_list		*redirect;
 	/// @brief The environment array
 	char		**envp;
-	/// @brief IDK ????????/
+	/// @brief IDK 
 	size_t		genv_l; // to delete???
 	/// @brief Return code from waitpid
 	int			return_value;

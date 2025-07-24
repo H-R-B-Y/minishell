@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 12:20:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/24 14:05:21 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/24 16:15:30 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,7 @@ int	produce_ast(t_minishell *shell, t_token **tokens, t_astnode **output)
 		return (AST_ERR_SYNTAX);
 	meta.tokens = tokens;
 	meta.consumed = 0;
-	meta.left_node = 0;
 	meta.shell = shell;
-	meta.right_node = 0;
 	meta.rldata = &shell->rldata;
 	meta.error = AST_ERR_NONE;
 	head = ast_parse_seperators(&meta);
