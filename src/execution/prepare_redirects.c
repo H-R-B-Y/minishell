@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:15:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/23 14:59:37 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/24 14:23:45 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ int	redrtype_to_oflag(const int redr_type)
 	int	flag;
 
 	flag = 0;
-	if (redr_type == REDIRECT_INPUT)
+	if (redr_type == REDIRECT_IN)
 		flag |= O_RDONLY;
-	else if (redr_type == REDIRECT_OUTPUT || redr_type == REDIRECT_OUTPUT_APPEND)
+	else if (redr_type == REDIRECT_OUT || redr_type == REDIRECT_OUT_A)
 		flag |= O_WRONLY;
-	if (redr_type == REDIRECT_OUTPUT_APPEND)
+	if (redr_type == REDIRECT_OUT_A)
 		flag |= O_APPEND;
-	else if (redr_type != REDIRECT_INPUT)
+	else if (redr_type != REDIRECT_IN)
 		flag |= O_TRUNC;
 	return (flag);
 }

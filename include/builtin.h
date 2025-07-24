@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:31:46 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/06 00:01:06 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/24 15:48:40 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,21 @@
 
 typedef struct s_minishell	t_minishell;
 
+/**
+ * @brief typedef for all builtins
+ */
 typedef int (*t_builtincmd)(t_minishell *, char **, char ***);
 
-/*
-I will add some utility functions here for checking if 
-a command is a builtin
-*/
-
-struct s_buitinmapping {
+/**
+ * @brief Internal struct for mapping strings to builtins
+ * @param match The string to match
+ * @param fnc The function it pertains too
+ */
+struct s_buitinmapping
+{
+	/// @brief The string to match
 	char			*match;
+	/// @brief The function it pertains too
 	t_builtincmd	fnc;
 };
 
