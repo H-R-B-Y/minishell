@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:16:03 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/09 17:57:28 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/24 14:26:15 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,11 @@ int	_realloc_write(char **output, const char *to_write, const char *str, size_t 
 	else
 		i[0] += i[2];
 	i[1] += to_write_len;
+	free(temp);
 	return (0);
 }
 
-char	*get_var_value(t_minishell *shell, char *str, size_t *i)
+static char	*get_var_value(t_minishell *shell, char *str, size_t *i)
 {
 	size_t	vlen;
 	char	*xpded_value;

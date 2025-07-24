@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/22 15:42:10 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/24 16:48:59 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ struct s_minishell
 };
 
 int		init_process(t_minishell *shell, char **envp);
-int		better_add_history(char *string);
+int		better_add_history(t_minishell *shell, char *string);
 void	reset_for_command(t_minishell *shell, t_readline_retcode rl_code);
 char	*create_prompt(const t_minishell *shell);
 

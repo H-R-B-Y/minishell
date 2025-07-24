@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:38:10 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/23 19:01:10 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/24 13:26:34 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,5 @@ int	builtin_exit(t_minishell *shell, char **argv, char ***envp)
 	clean_shell(shell);
 	if (argc > 1)
 		exit(status);
-	else
-		exit(0);
+	exit(0);
 }

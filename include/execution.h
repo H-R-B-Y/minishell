@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:02:44 by cquinter          #+#    #+#             */
-/*   Updated: 2025/07/19 15:08:14 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/24 14:38:37 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	**cmdv_prep(t_minishell *shell, t_astnode *node);
 
 int		update_env(char ***envp, char *dup, char *name, ssize_t (f)(char **, char *));
 int		set_n_envp(char ***envp, char **argv, size_t n);
-int		set_any_env(t_minishell *shell);
+int		set_any_env(t_minishell *shell, char **argv, size_t n);
 
 int		execute_command(t_minishell *shell, t_astnode *node);
 int		execute_pipe(t_minishell *shell, t_astnode *node);
