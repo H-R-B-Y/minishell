@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:36:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/24 13:28:54 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/25 22:48:55 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,11 @@ void	destroy_token(t_token *token, void (*del_raw)(void *))
 {
 	if (!token)
 		return ;
-	// printf("freeing token %p\n", token);
+	
 	if (token->raw && del_raw)
 		del_raw(token->raw);
 	free(token);
+	printf("freed token %p\n", token);
 }
 
 void	free_token_list(t_list *list, void (*del_raw)(void *))
