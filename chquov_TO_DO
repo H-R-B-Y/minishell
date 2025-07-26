@@ -1,15 +1,9 @@
 ## b_in exit handling argv
 ## fix leaks at cmd_prep_utils.c and rmv_quotes_xpnd_var
-cd update env
-
- - 0 -  /42CC/minishelll (execute_ast) > echo $vamos
-
- - 0 -  /42CC/minishelll (execute_ast) > luna=vasdf ; vamos=test2222
- - 0 -  /42CC/minishelll (execute_ast) > echo $vamos
-test2222
- - 0 -  /42CC/minishelll (execute_ast) > exit
-fix leak when previous
-
+## cd update env
+## fixed read_line leaks by cleaning extralines using ft_arrclear; relevant when pasting cmds.
+## updated better_add_history to only add history when necesary 
+#	and only checking the last item in history, rather than going through all of them. Still some leaks from tokenise_type. I will move on to other tasks as I know you are still making changes to the tokeniser
 
 current_history based on tokens, handle heredoc
 redirects in b_ins
