@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/24 16:48:59 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/26 17:01:43 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@
 
 # include "./libft.h"
 # include "./v_dbg.h"
-# include "./fsm_tokeniser.h"
 # include "./readline_loop.h"
 # include "./abstract_syntax_tree.h"
 # include "./execution.h"
 # include "./builtin.h"
+# include "./fsm_tokeniser.h"
 
 /**
  * @brief the main struct for storing minishell state

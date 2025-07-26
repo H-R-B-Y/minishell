@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:36:40 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/25 22:43:42 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/25 23:02:48 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ t_tokentype	tokenise_type(t_tokint *tokeniser, const char *str)
 			tokeniser->index_end - tokeniser->index_start);
 	tokeniser->current_type = bin_token(substring);
 	tokeniser->current_token = ft_calloc(1, sizeof(t_token));
-	printf("created token: %p\n", tokeniser->current_token);
+	// printf("created token: %p\n", tokeniser->current_token);
 	if (!substring || !tokeniser->current_token)
 		return (TOK_ERR);
 	(*tokeniser->current_token) = (t_token){.heredoc_delim = 0,
