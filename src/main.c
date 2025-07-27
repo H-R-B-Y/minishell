@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 20:08:22 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 21:06:12 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,14 @@ int	next_command(t_minishell *shell)
 
 int	free_everything(t_minishell *shell, int code)
 {
-	reset_for_command(shell, READ_NOTHING);
-	fflush(stdout);
-	free(shell->prompt);
-	ft_arrclear((void *)shell->environment, free);
-	restore_signals(shell);
-	return (code);
+	return (reset_for_command(shell, READ_NOTHING),
+		fflush(stdout),
+		free(shell->prompt),
+		ft_arrclear((void *)shell->environment,
+			free),
+		restore_signals(shell),
+		code
+	);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -85,10 +87,8 @@ int	main(int argc, char **argv, char **envp)
 		rl_code = next_command(&shell);
 		if (rl_code == READ_EOF)
 			break ;
-		dbg_write_states(&shell.info);
-		dbg_write_tokens(&shell.info);
-		dbg_write_nodes(&shell.info);
-		dbg_write_end(&shell.info);
+		(dbg_write_states(&shell.info), dbg_write_tokens(&shell.info));
+		(dbg_write_nodes(&shell.info), dbg_write_end(&shell.info));
 		reset_for_command(&shell, rl_code);
 	}
 	return (free_everything(&shell, 0));

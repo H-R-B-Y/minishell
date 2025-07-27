@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 20:21:20 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 20:28:14 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 21:09:15 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	_remove_from_unassigned(t_minishell *shell, char *name)
 
 	new_env = ft_arrdel_atindex((void *)shell->unassigned_env,
 			_sgetidx(shell->unassigned_env, name), free);
-	ft_dirtyswap(&shell->unassigned_env, new_env, free);
+	ft_dirtyswap((void *)&shell->unassigned_env, new_env, free);
 }
 
 int	set_any_env(t_minishell *shell)
