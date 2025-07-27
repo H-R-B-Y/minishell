@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/24 15:51:31 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 20:47:33 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,38 +53,38 @@ typedef struct s_minishell	t_minishell;
 struct s_minishell
 {
 	/// @brief Interactive mode flag (stdin is a terminal)
-	short		interactive_mode;
+	short				interactive_mode;
 	/// @brief signal handlers copied from the start of the process
 	/// (so they can be restored)
 	struct sigaction	old_handlers[32];
 	/// @brief Environment array copied at the start of the process
-	char		**environment;
+	char				**environment;
 	/// @brief Environment variables that have been created but unassigned
-	char		**unassigned_env;
+	char				**unassigned_env;
 	/// @brief Shell local variables
-	char		**local_env;
+	char				**local_env;
 	/// @brief List of tokens relevant to the current job
-	t_list		*tokens;
+	t_list				*tokens;
 	/// @brief Tokens but as an array, for easier access
-	t_token		**tokenv;
+	t_token				**tokenv;
 	/// @brief The execution tree relevant to the current job
-	t_astnode	*current_tree;
+	t_astnode			*current_tree;
 	/// @brief PID of the shell
-	pid_t		my_pid;
+	pid_t				my_pid;
 	/// @brief Return code of the previous command / job 
-	int			return_code;
+	int					return_code;
 	/// @brief Internal information relevant to the finite state machine
-	t_fsmdata	fsm_data;
+	t_fsmdata			fsm_data;
 	/// @brief Internal information relevant to the readline loop
-	t_readline_data	rldata;
+	t_readline_data		rldata;
 	/// @brief Current line (? do we still need this)
-	char		*current_line;
+	char				*current_line;
 	/// @brief Current pipeline (? do we still need this?)
-	char		*current_pipeline;
+	char				*current_pipeline;
 	/// @brief Extra lines from input (? arent these in the rldata now?)
-	char		**extra_lines;
+	char				**extra_lines;
 	/// @brief Current prompt
-	char		*prompt;
+	char				*prompt;
 	/// @brief Data relevant for dumping binary data out to a fd
 	struct s_dbg_info	info;
 };
@@ -100,7 +100,7 @@ struct s_minishell
  * @param envp the environment passed in at start
  * @return int 0 is ok, < 0 is an error
  */
-int		init_process(t_minishell *shell, char **envp);
+int				init_process(t_minishell *shell, char **envp);
 
 /**
  * @brief Adds to readline history but does not duplicate
@@ -108,7 +108,7 @@ int		init_process(t_minishell *shell, char **envp);
  * @param string The history item that we want to add
  * @return int status code
  */
-int		better_add_history(char *string);
+int				better_add_history(char *string);
 
 /**
  * @brief Cleanup ready for the next command (or at exit time)
@@ -120,7 +120,7 @@ int		better_add_history(char *string);
  * @param rl_code readline code
  * (so we dont free anything that might be needed later)
  */
-void	reset_for_command(t_minishell *shell, t_readline_retcode rl_code);
+void			reset_for_command(t_minishell *shell, t_readline_retcode rl_code);
 
 /**
  * @brief Creates the prompt with colours and git info
@@ -128,7 +128,7 @@ void	reset_for_command(t_minishell *shell, t_readline_retcode rl_code);
  * @param shell refernce to the shell object
  * @return char* the prompt! 
  */
-char	*create_prompt(const t_minishell *shell);
+char			*create_prompt(const t_minishell *shell);
 
 /**
  * @brief print out a token list in columns
@@ -172,10 +172,10 @@ char			*str_vec_join(char **arr);
 char			*_pop_line(char ***str);
 
 // this one doesnt expand vars
-char	*rem_quotes(const char *str);
+char			*rem_quotes(const char *str);
 
 // this one does expand vars. Not handling $'...'
-char	*rmv_quotes_xpnd_var(char *str, t_minishell *shell);
+char			*rmv_quotes_xpnd_var(char *str, t_minishell *shell);
 // they should be renamed but i dont want to mess anything up
 
 /*
@@ -236,7 +236,7 @@ ssize_t			s_get_internalenvid(t_minishell *shell, char *name);
  * @param name name of var
  * @return char* a string lol
  */
-char	*s_get_envany(t_minishell *shell, char *name);
+char			*s_get_envany(t_minishell *shell, char *name);
 
 /**
  * @brief get an ENV string from the shell's environment
@@ -245,7 +245,7 @@ char	*s_get_envany(t_minishell *shell, char *name);
  * @param name the name of the environment variable
  * @return char* the env string from the environment
  */
-char 	*s_get_fromthis_env(char **env, char *name);
+char			*s_get_fromthis_env(char **env, char *name);
 
 /*
 Things that can be accessed externally in the builtins are
@@ -273,7 +273,7 @@ Things that can be accessed externally in the builtins are
  * @param envp the current environment variables
  * @return int the statuscode
  */
-typedef int					(*t_builtincmd)(t_minishell *, char **, char ***);
+typedef int			*t_builtincmd)(t_minishell *, char **, char ***);
 
 
 /**
@@ -292,7 +292,7 @@ typedef int					(*t_builtincmd)(t_minishell *, char **, char ***);
  * @param str string to check for a builtin command
  * @return t_builtincmd a function to run as a command
  */
-t_builtincmd _get_builtincmd(t_astnode *node);
+t_builtincmd	_get_builtincmd(t_astnode *node);
 
 /**
  * @brief Execute a bultin command
@@ -302,7 +302,7 @@ t_builtincmd _get_builtincmd(t_astnode *node);
  * @param cmd The builtin function ptr
  * @return int 0?
  */
-int		exec_builtincmd(t_minishell *shell, t_astnode *node, t_builtincmd cmd);
+int				exec_builtincmd(t_minishell *shell, t_astnode *node, t_builtincmd cmd);
 
 /**
  * @warning Assumes p is a string, for use in arriter
@@ -311,7 +311,7 @@ int		exec_builtincmd(t_minishell *shell, t_astnode *node, t_builtincmd cmd);
  * @param p a string
  * @return void* same string
  */
-void	*print_and_ret(void *p);
+void			*print_and_ret(void *p);
 
 /**
  * @warning assumes p is a str (for use in arriter)
@@ -320,21 +320,21 @@ void	*print_and_ret(void *p);
  * @param p a string
  * @return void* the same string
  */
-void	*export_print_and_ret(void *p);
+void			*export_print_and_ret(void *p);
 
 /**
  * @brief is current directory a git directory
  * 
  * @return int 1 if is git directory
  */
-int		is_git_dir(void);
+int				is_git_dir(void);
 
 /**
  * @brief user has git installed at /usr/bin/git
  * 
  * @return int 1 if user has git
  */
-int		has_git(void);
+int				has_git(void);
 
 /**
  * @brief generic run a git command
@@ -342,21 +342,21 @@ int		has_git(void);
  * @param argv args to pass to git command
  * @return char* output of git command
  */
-char	*run_git_command(const char **argv);
+char			*run_git_command(const char **argv);
 
 /**
  * @brief git work tree is dirty
  * 
  * @return int 1 if the git tree is dirty
  */
-int		is_git_dirty(void);
+int				is_git_dirty(void);
 
 /**
  * @brief Restore signals to what they were before the shell init process
  * 
  * @param shell Pointer to the shell
  */
-void	restore_signals(const t_minishell *shell);
+void			restore_signals(const t_minishell *shell);
 
 /**
  * @brief sets the global signal int to be sig
@@ -365,14 +365,14 @@ void	restore_signals(const t_minishell *shell);
  * @param info info about signal
  * @param context context for signal
  */
-void	default_sig_handle(int sig, siginfo_t *info, void *context);
+void			default_sig_handle(int sig, siginfo_t *info, void *context);
 
 /**
  * @brief Get the my pid
  * 
  * @return pid_t pid or -1 for error
  */
-pid_t	get_my_pid(void);
+pid_t			get_my_pid(void);
 
 /**
  * @brief Get redirects ready before execution
@@ -380,14 +380,14 @@ pid_t	get_my_pid(void);
  * @param node 
  * @return int 
  */
-int	prepare_fds(t_astnode *node);
+int				prepare_fds(t_astnode *node);
 
 /**
  * @brief map fds from fd map
  * 
  * @param node node containing redirect list
  */
-void	map_fds(t_astnode *node);
+void			map_fds(t_astnode *node);
 
 /**
  * @brief unset some signal handlers for execution
@@ -399,7 +399,7 @@ void	map_fds(t_astnode *node);
  * but in order to do that we would need to manage our own process groups
  * and jobs using functions we dont have access too -_-
  */
-void	set_exection_signals(void);
+void			set_exection_signals(void);
 
 /**
  * @brief Set the up signal handlers 
@@ -412,13 +412,13 @@ void	set_exection_signals(void);
  * @param shell the shell 
  * @return int status code -1 on err
  */
-int	setup_signals(t_minishell *shell);
+int				setup_signals(t_minishell *shell);
 
 /**
  * @brief Check node for variables that might need to be globbed
  * @param node the node to check for globbing
  */
-ssize_t	glob_variable(t_astnode	*node);
+ssize_t			glob_variable(t_astnode	*node);
 
 /**
  * @brief Split on each newline of the string
@@ -426,7 +426,7 @@ ssize_t	glob_variable(t_astnode	*node);
  * @param data the readline loop internals
  * @returns the split string
  */
-char	**simple_split(const char *str, t_readline_data *data);
+char			**simple_split(const char *str, t_readline_data *data);
 
 /**
  * @brief free everything
@@ -434,7 +434,7 @@ char	**simple_split(const char *str, t_readline_data *data);
  * @param code return code to return
  * @returns code 
  */
-int	free_everything(t_minishell *shell, int code);
+int				free_everything(t_minishell *shell, int code);
 
 /**
  * @brief check if the string either doesnt contain a newline
@@ -442,6 +442,6 @@ int	free_everything(t_minishell *shell, int code);
  * @note added to remove duplication
  * @param str the string to check
  */
-int	last_newline_not_end(const char *str);
+int				last_newline_not_end(const char *str);
 
 #endif

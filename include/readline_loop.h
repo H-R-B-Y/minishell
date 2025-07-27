@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:07:29 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/24 10:14:32 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 20:47:47 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "libft.h"
 
-typedef struct s_minishell	t_minishell;
+typedef struct s_minishell		t_minishell;
 
 typedef enum e_readline_retcode	t_readline_retcode;
 enum e_readline_retcode

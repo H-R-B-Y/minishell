@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/24 16:15:17 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 20:49:28 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ struct s_redirect_desc
 	};
 };
 
-void	destroy_redirect(t_redirect_desc *n);
+void			destroy_redirect(t_redirect_desc *n);
 
 /**
  * @brief AST node types
@@ -203,14 +203,14 @@ struct	s_astnode
  * @param right the right child node
  * @returns a new tree node (head allocated)
  */
-t_astnode	*create_ast_node(t_astype type,
-				t_token **token, t_astnode *left, t_astnode *right);
+t_astnode		*create_ast_node(t_astype type,
+					t_token **token, t_astnode *left, t_astnode *right);
 
 /**
  * @brief destroy a tree node (free it)
  * @param node the node the destroy
  */
-void		destroy_ast_node(t_astnode *node);
+void			destroy_ast_node(t_astnode *node);
 
 /**
  * @brief internal struct for ast construction
@@ -218,7 +218,8 @@ void		destroy_ast_node(t_astnode *node);
  * @param shell Reference to the shell
  * @param rldata Reference to the internal readline loop data
  * @param error Error code for the AST constructor
- * @param consumed The count of tokens that have been consumed during the construction
+ * @param consumed The count of tokens that have been consumed during the
+ * construction
  */
 struct s_ast_internal
 {
@@ -235,63 +236,64 @@ struct s_ast_internal
  * @param count count of tokens in the array (TODO:i dont think we need this)
  * @returns head node of the tree
  */
-int	produce_ast(t_minishell *shell, t_token **tokens, t_astnode **output);
+int				produce_ast(t_minishell *shell,
+					t_token **tokens, t_astnode **output);
 
 /**
  * @brief destroy abstract syntax tree
  * @param node the head node of the tree
  * I dont think i have actually written this function? 
  */
-void		destroy_ast(t_astnode **node);
+void			destroy_ast(t_astnode **node);
 
 /**
  * @brief create a new ast node from seperators
  * @param meta the metadata struct containing info about the tree.
  * @returns new ast node (head allocated)
  */
-t_astnode	*ast_parse_seperators(struct s_ast_internal *meta);
+t_astnode		*ast_parse_seperators(struct s_ast_internal *meta);
 
 /**
  * @brief create a new ast node from and or tokens
  * @param meta the metadata struct containing info about the tree.
  * @returns new ast node (head allocated)
  */
-t_astnode	*ast_parse_and_or(struct s_ast_internal *meta);
+t_astnode		*ast_parse_and_or(struct s_ast_internal *meta);
 
 /**
  * @brief create a new ast node from pipe token
  * @param meta the metadata struct containing info about the tree.
  * @returns new ast node (head allocated)
  */
-t_astnode	*ast_parse_pipe(struct s_ast_internal *meta);
+t_astnode		*ast_parse_pipe(struct s_ast_internal *meta);
 
 /**
  * @brief create a new ast node from command tokens
  * @param meta the metadata struct containing info about the tree.
  * @returns new ast node (head allocated)
  */
-t_astnode	*ast_parse_command(struct s_ast_internal *meta);
+t_astnode		*ast_parse_command(struct s_ast_internal *meta);
 
 /**
  * @brief create a new ast node from subcommand tokens
  * @param meta the metadata struct containing info about the tree.
  * @returns new ast node (head allocated)
  */
-t_astnode	*ast_parse_subcommand(struct s_ast_internal *meta);
+t_astnode		*ast_parse_subcommand(struct s_ast_internal *meta);
 
 /**
  * @brief consume contiguous word tokens into a single command token
  * @param meta the metadata struct containing info about the tree
  * @param node the ??? too tired cannot remember
  */
-ssize_t		ast_consume_words(struct s_ast_internal *meta, t_astnode *node);
+ssize_t			ast_consume_words(struct s_ast_internal *meta, t_astnode *node);
 
 /**
  * @brief print the ast
  * @param head the head node of the tree
  * @param indent the indent to use for child nodes
  */
-void		print_ast(const t_astnode *head, const char *indent);
+void			print_ast(const t_astnode *head, const char *indent);
 
 /**
  * @brief Process for handling redirecting file descriptors
@@ -312,11 +314,12 @@ t_redirect_desc	*handle_redirect(t_token *redirect, t_token *filename);
  * @param delim The heredoc deliminator
  * @param heredoc The token that specifies the heredoc
  */
-t_redirect_desc	*handle_heredoc(struct s_ast_internal *meta, const char *delim, t_token *heredoc);
+t_redirect_desc	*handle_heredoc(struct s_ast_internal *meta,
+					const char *delim, t_token *heredoc);
 
 /**
  * @brief private to ast internal are we able to continue consuming
  */
-int	_continue_parsing(struct s_ast_internal *meta);
+int				_continue_parsing(struct s_ast_internal *meta);
 
 #endif

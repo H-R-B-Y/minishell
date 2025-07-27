@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:31:46 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/24 15:48:40 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 20:49:10 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ typedef struct s_minishell	t_minishell;
 /**
  * @brief typedef for all builtins
  */
-typedef int (*t_builtincmd)(t_minishell *, char **, char ***);
+typedef int					(*t_builtincmd)(t_minishell *, char **, char ***);
 
 /**
  * @brief Internal struct for mapping strings to builtins
