@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 11:48:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 18:53:42 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 19:48:54 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	init_process(t_minishell *shell, char **envp)
 {
 	ft_bzero(shell, sizeof(t_minishell));
 	shell->environment = (void *)ft_arrmap(
-		(void *)envp, (void *)ft_strdup, free);
+			(void *)envp, (void *)ft_strdup, free);
 	if (!shell->environment)
 		return (-1);
 	shell->interactive_mode = isatty(STDIN_FILENO);

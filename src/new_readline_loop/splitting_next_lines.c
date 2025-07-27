@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:16:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 18:34:59 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 20:04:27 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,25 +47,27 @@ ssize_t	split_extra_lines(t_readline_data *data, char *str)
 	return (data->extra_line_count);
 }
 
+static int	_pop_extra(t_readline_data *data)
+{
+	if (data->last_line)
+		ft_dirtyswap((void *)&data->last_line, (void *)0, free);
+	data->last_line = _pop_line(&data->extra_lines);
+	data->extra_line_count--;
+	if (!data->last_line)
+		return (READ_FATAL);
+	else if (!*data->last_line)
+		return (READ_NOTHING);
+	return (READ_OK);
+}
+
 int	next_line(t_readline_data *data, const char *prompt)
 {
 	char	*temp;
 	ssize_t	code;
 
 	if (data->extra_line_count)
-	{
-		if (data->last_line)
-			ft_dirtyswap((void *)&data->last_line, (void *)0, free);
-		data->last_line = _pop_line(&data->extra_lines);
-		data->extra_line_count--;
-		if (!data->last_line)
-			return (READ_FATAL);
-		else if (!*data->last_line)
-			return (READ_NOTHING);
-		return (READ_OK);
-	}
+		return (_pop_extra(data));
 	temp = readline_wrapper(data, prompt);
-	printf("read %s signal is %d\n", temp, g_global_signal);
 	if (!temp)
 		return (READ_EOF);
 	if (!*temp && (!data->last_line || g_global_signal))

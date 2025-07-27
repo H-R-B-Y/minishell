@@ -6,57 +6,12 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:22:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 18:31:23 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 19:58:51 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/fsm_tokeniser.h"
 #include "../../include/v_dbg.h"
-
-// This to be renamed
-// need to make sure this is the only place where the token type is
-// determined, and that this doesn't just return something useless
-void	skip_token_str(t_tokint *tokeniser, const char *str)
-{
-	char	c;
-
-	while (str[tokeniser->i_end])
-	{
-		c = str[tokeniser->i_end];
-		if (c == '\\' && tokeniser->quote_mode != QUOTE_SINGLE
-			&& str[tokeniser->i_end + 1])
-			tokeniser->i_end++;
-		else if (tokeniser->quote_mode == QUOTE_DOUBLE && c == '"')
-			tokeniser->quote_mode = QUOTE_NONE;
-		else if (tokeniser->quote_mode == QUOTE_SINGLE && c == '\'')
-			tokeniser->quote_mode = QUOTE_NONE;
-		else if (tokeniser->quote_mode == QUOTE_NONE)
-		{
-			if (c == '\'')
-				tokeniser->quote_mode = QUOTE_SINGLE;
-			else if (c == '"')
-				tokeniser->quote_mode = QUOTE_DOUBLE;
-			else if (isoperator(c) || ft_iswhitespace(c) || c == '\0')
-				break ;
-		}
-		tokeniser->i_end++;
-	}
-}
-
-t_tokentype	next_token_type(t_tokint *tokeniser, const char *str)
-{
-	tokeniser->i_start = tokeniser->i_end;
-	if (tokeniser->quote_mode == QUOTE_NONE
-		&& ft_iswhitespace(str[tokeniser->i_start]))
-		tokeniser_skip_whitespace(tokeniser, str);
-	if (tokeniser->quote_mode == QUOTE_NONE
-		&& (isoperator(str[tokeniser->i_start])
-			|| ft_isdigit(str[tokeniser->i_start])))
-		handle_operator(tokeniser, str);
-	else
-		skip_token_str(tokeniser, str);
-	return (tokenise_type(tokeniser, str));
-}
 
 t_tokretcode	set_retcode(t_fsmdata *fsm,
 	const t_tokretcode code, char *str_condition)
@@ -112,6 +67,26 @@ t_tokretcode	correct_retcode(t_fsmdata *fsm)
 	return (set_retcode(fsm, PARSE_ERROR, "generic error"));
 }
 
+static int	_accept_token(t_fsmdata *fsm, t_fsmstate *next_state)
+{
+	t_list	*token;
+
+	if (!handle_token_type(fsm))
+		*next_state = ST_WRNG;
+	state_change(fsm, *next_state);
+	if (*next_state != ST_END && *next_state != ST_WRNG
+		&& *next_state != ST_CONT)
+	{
+		token = ft_lstnew(tokeniser_pop_token(&fsm->tok_int));
+		if (!token)
+			return (-1);
+		ft_lstadd_back(&(fsm->tokens), token);
+	}
+	else
+		destroy_token(tokeniser_pop_token(&fsm->tok_int), free);
+	return (0);
+}
+
 t_tokretcode	tokenise(t_fsmdata *fsm, const char *str)
 {
 	t_fsmstate	next_state;
@@ -130,15 +105,8 @@ t_tokretcode	tokenise(t_fsmdata *fsm, const char *str)
 		if (fsm->tok_int.curr_type == TOK_ERR)
 			return (set_retcode(fsm, PARSE_FATAL, "UNRECOVERABLE"));
 		next_state = fsm_check_transition(fsm->state, fsm->tok_int.curr_type);
-		if (!handle_token_type(fsm))
-			next_state = ST_WRNG;
-		state_change(fsm, next_state);
-		if (next_state != ST_END && next_state != ST_WRNG
-			&& next_state != ST_CONT)
-			ft_lstadd_back(&(fsm->tokens),
-				ft_lstnew(tokeniser_pop_token(&fsm->tok_int)));
-		else
-			destroy_token(tokeniser_pop_token(&fsm->tok_int), free);
+		if (_accept_token(fsm, &next_state) < 0)
+			return (set_retcode(fsm, PARSE_FATAL, "UNRECOVERABLE"));
 	}
 	return (correct_retcode(fsm));
 }
