@@ -6,28 +6,35 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 13:46:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/23 14:34:38 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 18:33:01 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static int	_add_redirects(struct s_ast_internal *meta, t_astnode *node, size_t *i, t_token ***new_tokenv)
+static int	_add_redirects(struct s_ast_internal *meta,
+	t_astnode *node,
+	size_t *i,
+	t_token ***new_tokenv
+)
 {
 	if (node->tokens[i[0]]->type == TOK_HEREDOC)
 	{
 		ft_lstadd_back(&node->redirect,
-			ft_lstnew(handle_heredoc(meta, node->tokens[i[0] + 1]->raw, node->tokens[i[0]])));
+			ft_lstnew(handle_heredoc(meta, node->tokens[i[0] + 1]->raw,
+					node->tokens[i[0]])));
 		i[0]++;
 	}
 	else if (ft_strchr("\4\5\3", node->tokens[i[0]]->type))
 	{
 		ft_lstadd_back(&node->redirect,
-			ft_lstnew(handle_redirect(node->tokens[i[0]], node->tokens[i[0] +1 ])));
+			ft_lstnew(handle_redirect(node->tokens[i[0]],
+					node->tokens[i[0] + 1])));
 		i[0]++;
 	}
 	else if (node->tokens[i[0]]->type == TOK_REDIR_FD)
-		ft_lstadd_back(&node->redirect, ft_lstnew(handle_redirectfd(node->tokens[i[0]])));
+		ft_lstadd_back(&node->redirect,
+			ft_lstnew(handle_redirectfd(node->tokens[i[0]])));
 	else
 		(*new_tokenv)[i[1]++] = node->tokens[i[0]];
 	if (node->redirect && ft_lstlast(node->redirect)->content == NULL)
@@ -41,7 +48,7 @@ static int	post_consume_words(struct s_ast_internal *meta, t_astnode *node)
 	t_token	**new_tokenv;
 
 	(void)meta;
-	ft_bzero(i, sizeof(size_t) * 2); // what do we do if the following fails (omg there are so many places this can break)
+	ft_bzero(i, sizeof(size_t) * 2);
 	new_tokenv = ft_calloc(ft_arrlen((void *)node->tokens) + 1, sizeof(void *));
 	while (node->tokens[i[0]])
 	{
@@ -61,7 +68,8 @@ ssize_t	ast_consume_words(struct s_ast_internal *meta, t_astnode *node)
 
 	eaten = 0;
 	while (_continue_parsing(meta) && meta->tokens[meta->consumed + eaten]
-		&& ft_strchr("\1\3\4\5\6\17", meta->tokens[meta->consumed + eaten]->type))
+		&& ft_strchr("\1\3\4\5\6\17",
+			meta->tokens[meta->consumed + eaten]->type))
 		eaten++;
 	node->tokens = ft_calloc(eaten + 1, sizeof(t_token *));
 	if (!node->tokens)

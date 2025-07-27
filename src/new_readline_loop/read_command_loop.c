@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 17:24:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/24 13:59:40 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 18:34:37 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ int	read_until_complete_command(t_minishell *shell)
 	t_readline_retcode	rl_code;
 	t_tokretcode		fsm_code;
 
-	if (shell->interactive_mode && !ft_dirtyswap((void *)&shell->prompt, (void *)create_prompt(shell), free))
+	if (shell->interactive_mode && !ft_dirtyswap((void *)&shell->prompt,
+			(void *)create_prompt(shell), free))
 		perror_exit(shell, "minishell:readline_loop");
 	rl_code = next_line(&shell->rldata, shell->prompt);
 	if (rl_code != READ_OK)

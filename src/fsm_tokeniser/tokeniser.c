@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:22:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/24 17:27:03 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 18:31:23 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	skip_token_str(t_tokint *tokeniser, const char *str)
 			else if (c == '"')
 				tokeniser->quote_mode = QUOTE_DOUBLE;
 			else if (isoperator(c) || ft_iswhitespace(c) || c == '\0')
-				break ;//(tokenise_type(tokeniser, str))
+				break ;
 		}
 		tokeniser->i_end++;
 	}
@@ -133,8 +133,10 @@ t_tokretcode	tokenise(t_fsmdata *fsm, const char *str)
 		if (!handle_token_type(fsm))
 			next_state = ST_WRNG;
 		state_change(fsm, next_state);
-		if (next_state != ST_END && next_state != ST_WRNG && next_state != ST_CONT)
-			ft_lstadd_back(&(fsm->tokens), ft_lstnew(tokeniser_pop_token(&fsm->tok_int)));
+		if (next_state != ST_END && next_state != ST_WRNG
+			&& next_state != ST_CONT)
+			ft_lstadd_back(&(fsm->tokens),
+				ft_lstnew(tokeniser_pop_token(&fsm->tok_int)));
 		else
 			destroy_token(tokeniser_pop_token(&fsm->tok_int), free);
 	}
