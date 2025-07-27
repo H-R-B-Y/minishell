@@ -3,22 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   remove_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:16:03 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/09 17:57:28 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/27 20:21:15 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	_realloc_write(char **output, const char *to_write, const char *str, size_t *i)
+int	_realloc_write(char **output,
+	const char *to_write,
+	const char *str,
+	size_t *i
+)
 {
 	char	*temp;
 	size_t	newlen;
 	size_t	oldlen;
 	size_t	to_write_len;
-	
+
 	if (!to_write)
 		return (perror("minishell: ft_itoa: unable to expand $"), 1);
 	temp = *output;
@@ -58,10 +62,10 @@ char	*get_var_value(t_minishell *shell, char *str, size_t *i)
 	return (xpded_value);
 }
 
-int _expand_write_var(t_minishell *shell, char **output, char *str, size_t *i)
+int	_expand_write_var(t_minishell *shell, char **output, char *str, size_t *i)
 {
 	char	*to_write;
-	
+
 	i[0]++;
 	if ((str)[i[0]] == '?')
 		to_write = ft_itoa(shell->return_code);
@@ -118,7 +122,7 @@ char	*rmv_quotes_xpnd_var(char *str, t_minishell *shell)
 	output = ft_calloc(ft_strlen(str) + 1, sizeof(char));
 	ft_bzero(i, sizeof(size_t) * 3);
 	mode = QUOTE_NONE;
-	while(str[i[0]])
+	while (str[i[0]])
 	{
 		if (str[i[0]] == '$' && (mode == QUOTE_DOUBLE || mode == QUOTE_NONE))
 			_expand_write_var(shell, &output, str, i);

@@ -3,16 +3,65 @@
 /*                                                        :::      ::::::::   */
 /*   sgetenvany.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:06:15 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/04 16:31:15 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/27 20:10:26 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-char *s_get_envany(t_minishell *shell, char *name)
+ssize_t	_sgetidx(char **anon, char *name)
+{
+	ssize_t	i;
+	size_t	len;
+
+	if (!anon)
+		return (-1);
+	i = 0;
+	len = ft_strlen(name);
+	while (1)
+	{
+		if (!anon[i])
+		{
+			i = -1;
+			break ;
+		}
+		if (!ft_strncmp(name, anon[i], len))
+			break ;
+		i++;
+	}
+	return (i);
+}
+
+ssize_t	_sgetanon(char **anon, char *name)
+{
+	ssize_t	i;
+	size_t	len;
+	char	*temp;
+
+	if (!anon)
+		return (-1);
+	i = 0;
+	temp = str_vec_join((char *[3]){name, "=", 0});
+	len = ft_strlen(temp);
+	while (1)
+	{
+		if (!anon[i])
+		{
+			i = -1;
+			break ;
+		}
+		if (!ft_strncmp(temp, anon[i], len))
+			break ;
+		i++;
+	}
+	free(temp);
+	return (i);
+}
+
+char	*s_get_envany(t_minishell *shell, char *name)
 {
 	ssize_t	i;
 
