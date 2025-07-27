@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   restore_signals.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:40:12 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/09 21:27:21 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/27 18:49:51 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,3 @@ void	set_exection_signals(void)
 	sigaction(SIGINT, &p, 0);
 	sigaction(SIGQUIT, &p, 0);
 }
-

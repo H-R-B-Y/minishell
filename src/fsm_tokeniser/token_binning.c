@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:36:40 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 18:30:14 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 18:57:10 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,14 @@ static t_tokentype	_p_redirect_amp(const char *raw_token, int i)
 	while (ft_iswhitespace(raw_token[i]))
 		i++;
 	if (!(ft_isdigit(raw_token[i]) || raw_token[i] == '-'))
-		return (TOK_NONE);
+		return (TOK_WORD);
 	i++;
 	if (raw_token[i - 1] != '-')
 		while (ft_isdigit(raw_token[i]))
 			i++;
 	if (!raw_token[i])
 		return (TOK_REDIR_FD);
+	return (TOK_WORD);
 }
 
 t_tokentype	potential_redirect(const char *raw_token)
@@ -113,18 +114,15 @@ t_tokentype	tokenise_type(t_tokint *tokeniser, const char *str)
 		return (TOK_ERR);
 	(*tokeniser->curr_token) = (t_token){.heredoc_delim = 0,
 		.raw = substring, .type = tokeniser->curr_type,};
-	if (tokeniser->curr_type == TOK_WORD && tokeniser->prev_line)
-	{
-		if (last_newline_not_end(tokeniser->prev_line))
-			ft_dirtyswap((void *)&tokeniser->curr_token->raw,
-				str_vec_join((char *[4])
-				{tokeniser->prev_line, "\n", substring, 0}),
-				free);
-		else
-			ft_dirtyswap((void *)&tokeniser->curr_token->raw,
-				str_vec_join((char *[3]){tokeniser->prev_line, substring, 0}),
-				free);
-		ft_dirtyswap((void *)&tokeniser->prev_line, 0, free);
-	}
+	if (!(tokeniser->curr_type == TOK_WORD && tokeniser->prev_line))
+		return (tokeniser->curr_type);
+	if (last_newline_not_end(tokeniser->prev_line))
+		ft_dirtyswap((void *)&tokeniser->curr_token->raw, str_vec_join(
+				(char *[4]){tokeniser->prev_line, "\n", substring, 0}), free);
+	else
+		ft_dirtyswap((void *)&tokeniser->curr_token->raw,
+			str_vec_join((char *[3]){tokeniser->prev_line, substring, 0}),
+			free);
+	ft_dirtyswap((void *)&tokeniser->prev_line, 0, free);
 	return (tokeniser->curr_type);
 }
