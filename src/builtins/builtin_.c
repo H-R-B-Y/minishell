@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_easter.c                                   :+:      :+:    :+:   */
+/*   builtin_.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/05 20:31:11 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/05 23:59:27 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 20:50:37 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ int	builtin_(t_minishell *shell, char **argv, char ***envp)
 	(void)shell;
 	(void)argv;
 	(void)envp;
-	size = &_binary_src_builtins_raw_dump_bin_end - &_binary_src_builtins_raw_dump_bin_start;
+	size = &_binary_src_builtins_raw_dump_bin_end
+		- &_binary_src_builtins_raw_dump_bin_start;
 	write(1, &_binary_src_builtins_raw_dump_bin_start, size);
 	write(1, "\n", 1);
 	return (0);

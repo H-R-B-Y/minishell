@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 18:13:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/07 15:49:16 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 20:52:58 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	execute_ast(t_minishell *shell, t_astnode *node)
 {
 	if (!node)
-			return (-1);
+		return (-1);
 	if (node->type == AST_SUBSHELL)
 		execute_subshell(shell, node);
 	else if (node->type == AST_AND || node->type == AST_OR)

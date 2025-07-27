@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:15:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/24 14:23:45 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 20:52:38 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ int	prepare_fds(t_astnode *node)
 
 	if (!node->redirect)
 		return (0);
-	corrected = ft_lstmap(node->redirect, (void *)file_to_fd_mapper, free); // WARN: free is not good enough, redirects will leak
+	corrected = ft_lstmap(node->redirect,
+		(void *)file_to_fd_mapper, (void) *destroy_redirect);
 	if (!corrected)
 		return (perror("minishell"), -1);
 	ft_lstclear(&node->redirect, (void *)free);
@@ -70,35 +71,40 @@ int	prepare_fds(t_astnode *node)
 	return (1);
 }
 
+static void	_map(t_redirect_desc *desc)
+{
+	if (!desc)
+		return ;
+	if (desc->subtype == CLOSE_FD)
+		close(desc->fd_map.to_fd);
+	else if (desc->subtype == REDIR_FD)
+	{
+		current_fd = dup(desc->fd_map.from_fd);
+		dup2(current_fd, desc->fd_map.to_fd);
+		close(current_fd);
+	}
+	else if (desc->file_map.to_fd >= 0)
+	{
+		dup2(desc->file_map.from_fd, desc->file_map.to_fd);
+		close(desc->file_map.from_fd);
+	}
+	else
+	{
+		dup2(desc->file_map.from_fd, STDERR_FILENO);
+		dup2(desc->file_map.from_fd, STDOUT_FILENO);
+		close(desc->file_map.from_fd);
+	}
+}
+
 void	map_fds(t_astnode *node)
 {
 	t_list			*list;
-	t_redirect_desc	*desc;
 	int				current_fd;
 
 	list = node->redirect;
 	while (list)
 	{
-		desc = list->content;
-		if (desc->subtype == CLOSE_FD)
-			close(desc->fd_map.to_fd);
-		else if (desc->subtype == REDIR_FD)
-		{
-			current_fd = dup(desc->fd_map.from_fd);
-			dup2(current_fd, desc->fd_map.to_fd);
-			close(current_fd);
-		}
-		else if (desc->file_map.to_fd >= 0)
-		{
-			dup2(desc->file_map.from_fd, desc->file_map.to_fd);
-			close(desc->file_map.from_fd);
-		}
-		else
-		{
-			dup2(desc->file_map.from_fd, STDERR_FILENO);
-			dup2(desc->file_map.from_fd, STDOUT_FILENO);
-			close(desc->file_map.from_fd);
-		}
+		_map(list->content);
 		list = list->next;
 	}
 }
