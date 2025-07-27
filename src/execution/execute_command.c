@@ -21,8 +21,8 @@ void	get_exec_cmd(t_minishell *shell, t_astnode *node, t_builtincmd *b_in)
 		exec_path = get_exec_path(shell, path, node->envp);
 	if (!exec_path)
 		perror_exit(shell, path); // Pending: check if it is working currectly
-	else
-		execve(exec_path, argv, node->envp);
+	else if (execve(exec_path, argv, node->envp) < 0)
+		perror_exit(shell, "minishell:lol");
 }
 
 int	exec_raw(t_minishell *shell, t_astnode *node, t_builtincmd cmd)

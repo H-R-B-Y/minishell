@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 20:47:33 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 21:06:28 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -273,7 +273,7 @@ Things that can be accessed externally in the builtins are
  * @param envp the current environment variables
  * @return int the statuscode
  */
-typedef int			*t_builtincmd)(t_minishell *, char **, char ***);
+typedef int			(*t_builtincmd)(t_minishell *, char **, char ***);
 
 
 /**

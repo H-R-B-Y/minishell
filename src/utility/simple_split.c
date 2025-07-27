@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 12:54:04 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 20:19:35 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 21:09:03 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,16 @@ static void	*_empty_str_case(void ***output)
 
 char	**simple_split(const char *str, t_readline_data *data)
 {
-	size_t	count;
 	size_t	idx[3];
 	char	*next;
 	char	**output;
 
-	count = count_words(str);
 	output = ft_calloc(count_words(str) + 1, sizeof(char *));
 	if (!output)
 		return (0);
 	ft_memset(idx, 0, sizeof(idx));
 	if (!str[idx[1]] && data->last_line)
-		return (_empty_str_case(&output));
+		return (_empty_str_case((void *)&output));
 	while (str[idx[1]])
 	{
 		idx[0] = idx[1];

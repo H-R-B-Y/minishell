@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:37:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 19:43:32 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 20:58:35 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,5 @@ int	handle_subshell_newline(t_fsmdata *fsm)
 		return (0);
 	if (!append_anon_token(fsm, TOK_AFTER, ft_strdup(";")))
 		return (-1);
-	state_change(fsm, ST_SEQ);
-	return (1);
+	return (state_change(fsm, ST_SEQ), 1);
 }
