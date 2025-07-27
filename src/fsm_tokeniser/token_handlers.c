@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:37:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/24 13:49:40 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 18:30:24 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	handle_potential_redirect(t_tokint *tokeniser, const char *str)
 		while (ft_iswhitespace(str[tokeniser->i_end]))
 			tokeniser->i_end++;
 		if (ft_isdigit(str[tokeniser->i_end]))
-			while (str[tokeniser->i_end] 
+			while (str[tokeniser->i_end]
 				&& (ft_isdigit(str[tokeniser->i_end])))
 				tokeniser->i_end++;
 		else if (str[tokeniser->i_end] == '-')
@@ -63,7 +63,7 @@ void	handle_operator(t_tokint *tokeniser, const char *str)
 int	handle_unclosed_quote(t_tokint *tokeniser, const char *str)
 {
 	char	*temp;
-	
+
 	temp = ft_substr(str, tokeniser->i_start,
 			tokeniser->i_end - tokeniser->i_start);
 	if (!temp)

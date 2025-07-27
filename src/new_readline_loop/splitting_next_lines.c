@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:16:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 18:14:29 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 18:34:59 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ extern int	g_global_signal;
 // It should also be const str i think!
 ssize_t	append_to_history_item(t_readline_data *data, char **str)
 {
-	char *temp;
+	char	*temp;
 
 	if (!*str)
-		return (-1); // should this case be 0, then if malloc fails below we return -1? 
+		return (-1);
 	if (!data->current_hist_item)
 		temp = ft_strdup(*str);
 	else
@@ -74,5 +74,5 @@ int	next_line(t_readline_data *data, const char *prompt)
 	free(temp);
 	if (code)
 		return (next_line(data, prompt));
-	return (READ_FATAL); // not possible for split extra lines to return 0 so this doesnt need a condition block
+	return (READ_FATAL);
 }

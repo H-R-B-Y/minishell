@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 13:46:33 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/23 14:35:21 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 18:33:37 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ static int	_add_redirects(struct s_ast_internal *meta, t_astnode *node)
 	{
 		ft_lstadd_back(&node->redirect,
 			ft_lstnew(handle_heredoc(meta,
-				meta->tokens[meta->consumed + 1]->raw,
-				meta->tokens[meta->consumed])));
+					meta->tokens[meta->consumed + 1]->raw,
+					meta->tokens[meta->consumed])));
 		meta->consumed++;
 	}
 	else if (meta->tokens[meta->consumed]->type == TOK_REDIR_FD)
@@ -29,7 +29,7 @@ static int	_add_redirects(struct s_ast_internal *meta, t_astnode *node)
 	{
 		ft_lstadd_back(&node->redirect,
 			ft_lstnew(handle_redirect(meta->tokens[meta->consumed],
-				meta->tokens[meta->consumed + 1])));
+					meta->tokens[meta->consumed + 1])));
 		meta->consumed++;
 	}
 	if (node->redirect && ft_lstlast(node->redirect)->content == NULL)
@@ -40,9 +40,11 @@ static int	_add_redirects(struct s_ast_internal *meta, t_astnode *node)
 	return (1);
 }
 
-void		ast_subcommand_redirects(struct s_ast_internal *meta, t_astnode *node)
+void	ast_subcommand_redirects(struct s_ast_internal *meta,
+	t_astnode *node
+)
 {
-	while(_continue_parsing(meta)
+	while (_continue_parsing(meta)
 		&& ft_strchr("\3\4\5\6\17", meta->tokens[meta->consumed]->type))
 	{
 		if (_add_redirects(meta, node) < 0)
