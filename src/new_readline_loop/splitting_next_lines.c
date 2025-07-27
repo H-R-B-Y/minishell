@@ -6,11 +6,13 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:16:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/24 10:14:07 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 18:14:29 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+extern int	g_global_signal;
 
 // Why is string being passed in by reference?
 // It should also be const str i think!
@@ -63,9 +65,10 @@ int	next_line(t_readline_data *data, const char *prompt)
 		return (READ_OK);
 	}
 	temp = readline_wrapper(data, prompt);
+	printf("read %s signal is %d\n", temp, g_global_signal);
 	if (!temp)
 		return (READ_EOF);
-	if (!*temp && !data->last_line)
+	if (!*temp && (!data->last_line || g_global_signal))
 		return (READ_NOTHING);
 	code = split_extra_lines(data, temp);
 	free(temp);
