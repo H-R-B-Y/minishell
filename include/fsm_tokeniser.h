@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 19:43:12 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 20:47:56 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -383,7 +383,7 @@ void			handle_operator(t_tokint *tokeniser, const char *str);
  * @param str the string being parsed
  * @return int 0 if error in allocation or 1 if ok
  */
-int			handle_unclosed_quote(t_tokint *tokeniser, const char *str);
+int				handle_unclosed_quote(t_tokint *tokeniser, const char *str);
 
 /**
  * @brief Utility function for making sure that we keep track of stats
@@ -407,7 +407,7 @@ int				handle_token_type(t_fsmdata *fsm);
  * @param fsm the finite state machine struct
  * @return 1 if ok, 0 if failed
  */
-int			handle_subshell_newline(t_fsmdata *fsm);
+int				handle_subshell_newline(t_fsmdata *fsm);
 
 /**
  * @brief is a character an operator
@@ -509,7 +509,8 @@ void			free_token_vector(t_token **vec, void (*del_raw)(void *));
  * @param str the raw token contents
  * @return 1 if ok, 0 if failed
  */
-int			append_anon_token(t_fsmdata *fsm, const t_tokentype type, const char *str);
+int				append_anon_token(t_fsmdata *fsm,
+					const t_tokentype type, const char *str);
 
 /**
  * @brief Find the next token in the string and return its type
@@ -585,6 +586,6 @@ t_tokretcode	tokenise(t_fsmdata *fsm, const char *str);
  * @param tokeniser the tokensier internals
  * @param str the string currently being tokenised
  */
-void	skip_token_str(t_tokint *tokeniser, const char *str);
+void			skip_token_str(t_tokint *tokeniser, const char *str);
 
 #endif

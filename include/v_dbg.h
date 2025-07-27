@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   v_dbg.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 14:40:33 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/14 17:05:48 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 20:44:06 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #  define FD_DBG 0
 # endif
 
-#include "libft.h"
+# include "libft.h"
 
 enum	e_datatype
 {
@@ -41,7 +41,7 @@ struct	s_dbg_info
 	t_list	*nodes;
 };
 
-int		init_debugger(struct s_dbg_info *info);
+int			init_debugger(struct s_dbg_info *info);
 
 size_t		dbg_add_state(struct s_dbg_info *info, int state);
 size_t		dbg_write_states(struct s_dbg_info *info);
