@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/24 15:45:47 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 19:43:12 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -579,5 +579,12 @@ t_tokretcode	correct_retcode(t_fsmdata *fsm);
  * @return t_tokretcode the condition state of the parse
  */
 t_tokretcode	tokenise(t_fsmdata *fsm, const char *str);
+
+/**
+ * @brief skips a word token in the string
+ * @param tokeniser the tokensier internals
+ * @param str the string currently being tokenised
+ */
+void	skip_token_str(t_tokint *tokeniser, const char *str);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/24 14:11:01 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 20:03:10 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,8 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	init_process(&shell, envp);
 	if (shell.interactive_mode)
-		printf("Started with pid: %d\nStarted with seed: %d\n", get_my_pid(), ft_rand(0, 100));
-	printf("%ld\n", sizeof(t_token));
+		printf("Started with pid: %d\nStarted with seed: %d\n",
+			get_my_pid(), ft_rand(0, 100));
 	while (1)
 	{
 		rl_code = next_command(&shell);

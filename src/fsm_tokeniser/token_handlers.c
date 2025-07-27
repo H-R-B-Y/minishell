@@ -6,13 +6,11 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:37:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 18:30:24 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 19:43:32 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-void		skip_token_str(t_tokint *tokeniser, const char *str);
 
 void	handle_potential_redirect(t_tokint *tokeniser, const char *str)
 {
