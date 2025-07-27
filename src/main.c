@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 20:03:10 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 20:08:22 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,12 @@ int	create_tree_and_run(t_minishell *shell)
 int	next_command(t_minishell *shell)
 {
 	t_readline_retcode	rl_code;
-	
+
 	rl_code = READ_START;
 	rl_code = read_until_complete_command(shell);
 	if (rl_code == READ_BADPARSE)
 		printf("Parse error: %s!\n", shell->fsm_data.str_cond);
-	else if (rl_code == READ_ERROR) // error is recoverable 
+	else if (rl_code == READ_ERROR)
 		return (rl_code);
 	else if (rl_code == READ_EOF)
 		return (rl_code);

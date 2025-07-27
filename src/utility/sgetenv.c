@@ -1,65 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   s_get_env.c                                          :+:      :+:    :+:   */
+/*   sgetenv.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:55:48 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/26 15:47:53 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 20:10:40 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-ssize_t	_sgetidx(char **anon, char *name)
-{
-	ssize_t	i;
-	size_t	len;
-
-	if (!anon)
-		return (-1);
-	i = 0;
-	len = ft_strlen(name);
-	while (1)
-	{
-		if (!anon[i])
-		{
-			i = -1;
-			break ;
-		}
-		if (!ft_strncmp(name, anon[i], len))
-			break ;
-		i++;
-	}
-	return (i);
-}
-
-ssize_t	_sgetanon(char **anon, char *name)
-{
-	ssize_t	i;
-	size_t	len;
-	char	*temp;
-
-	if (!anon)
-		return (-1);
-	i = 0;
-	temp = str_vec_join((char *[3]){name, "=", 0});
-	len = ft_strlen(temp);
-	while (1)
-	{
-		if (!anon[i])
-		{
-			i = -1;
-			break ;
-		}
-		if (!ft_strncmp(temp, anon[i], len))
-			break ;
-		i++;
-	}
-	free(temp);
-	return (i);
-}
+ssize_t	_sgetidx(char **anon, char *name);
+ssize_t	_sgetanon(char **anon, char *name);
 
 /**
  * @brief get an ENV value from the main environment of the shell
@@ -101,7 +55,7 @@ ssize_t	s_get_envid(t_minishell *shell, char *name)
  * @param name the name of the environment variable
  * @return char* the env string from the environment
  */
-char 	*s_get_interalenv(t_minishell *shell, char *name)
+char	*s_get_interalenv(t_minishell *shell, char *name)
 {
 	ssize_t	index;
 
@@ -118,7 +72,7 @@ char 	*s_get_interalenv(t_minishell *shell, char *name)
  * @param name the name of the environment variable
  * @return char* the env string from the environment
  */
-char 	*s_get_fromthis_env(char **env, char *name)
+char	*s_get_fromthis_env(char **env, char *name)
 {
 	ssize_t	index;
 

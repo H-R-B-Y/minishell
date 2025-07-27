@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 14:14:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/22 14:19:48 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 20:20:16 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,3 @@ int	last_newline_not_end(const char *str)
 		return (1);
 	return (0);
 }
-
