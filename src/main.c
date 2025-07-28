@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 21:06:12 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/28 14:28:24 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ int	next_command(t_minishell *shell)
 
 int	free_everything(t_minishell *shell, int code)
 {
-	return (reset_for_command(shell, READ_NOTHING),
+	return (
+		reset_for_command(shell, READ_NOTHING),
 		fflush(stdout),
 		free(shell->prompt),
 		ft_arrclear((void *)shell->environment,
