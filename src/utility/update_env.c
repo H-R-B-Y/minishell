@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 20:20:12 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 21:06:58 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/28 16:32:28 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	update_env(char ***envp,
 	char *dup,
 	char *name,
-	ssize_t (*f)(char **, char *)
+	ssize_t (*f)(char **, const char *)
 )
 {
 	ssize_t	idx;

@@ -6,13 +6,13 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:06:15 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 20:10:26 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/28 16:35:51 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-ssize_t	_sgetidx(char **anon, char *name)
+ssize_t	_sgetidx(char **anon, const char *name)
 {
 	ssize_t	i;
 	size_t	len;
@@ -35,7 +35,7 @@ ssize_t	_sgetidx(char **anon, char *name)
 	return (i);
 }
 
-ssize_t	_sgetanon(char **anon, char *name)
+ssize_t	_sgetanon(char **anon, const char *name)
 {
 	ssize_t	i;
 	size_t	len;
@@ -44,7 +44,7 @@ ssize_t	_sgetanon(char **anon, char *name)
 	if (!anon)
 		return (-1);
 	i = 0;
-	temp = str_vec_join((char *[3]){name, "=", 0});
+	temp = str_vec_join((char *[3]){(void *)name, "=", 0});
 	len = ft_strlen(temp);
 	while (1)
 	{
@@ -61,7 +61,7 @@ ssize_t	_sgetanon(char **anon, char *name)
 	return (i);
 }
 
-char	*s_get_envany(t_minishell *shell, char *name)
+char	*s_get_envany(t_minishell *shell, const char *name)
 {
 	ssize_t	i;
 

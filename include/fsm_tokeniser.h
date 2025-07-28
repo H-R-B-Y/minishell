@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 20:47:56 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/28 16:23:00 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,10 +115,10 @@ struct s_token
 	int			heredoc_delim;
 	/// @brief flag this token as a filename for a redirect
 	int			redirect_file;
-	/// @brief flag if the quotes have been removed
-	int			quotes_removed;
-	/// @brief flag if the variables have been expanded
-	int			variables_expanded;
+	// /// @brief flag if the quotes have been removed
+	// int			quotes_removed;
+	// /// @brief flag if the variables have been expanded
+	// int			variables_expanded;
 };
 
 /**
