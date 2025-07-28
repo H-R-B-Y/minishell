@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 21:06:28 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/28 16:38:00 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,14 @@ struct s_minishell
 	char				*prompt;
 	/// @brief Data relevant for dumping binary data out to a fd
 	struct s_dbg_info	info;
+	/// @brief count of arguments passed to the program at execution
+	int					argc;
+	/// @brief arguments passed to program at execution
+	char				**argv;
+	/// @brief Not sure if this is going to be used,
+	/// but for _ expansion of arguments I was thinking
+	/// that we could set it globally, maybe?
+	char				*last_arg;
 };
 
 /**
@@ -120,7 +128,8 @@ int				better_add_history(char *string);
  * @param rl_code readline code
  * (so we dont free anything that might be needed later)
  */
-void			reset_for_command(t_minishell *shell, t_readline_retcode rl_code);
+void			reset_for_command(t_minishell *shell,
+					t_readline_retcode rl_code);
 
 /**
  * @brief Creates the prompt with colours and git info
@@ -150,7 +159,8 @@ void			print_token_list(const t_list *list);
  * for example "cat", "dog", " and " would produce:
  * cat and dog
  */
-char			*str_join_with_sep(const char *str1, const char *str2, const char *sep);
+char			*str_join_with_sep(const char *str1,
+					const char *str2, const char *sep);
 
 /**
  * @brief join together a null terminated array of strings
@@ -189,9 +199,9 @@ The second is the internal variables, these are tracked by the shell but only
 accessible to the shell and not handed to the child processes.
 */
 // TODO: comment this
-ssize_t			_sgetanon(char **anon, char *name);
+ssize_t			_sgetanon(char **anon, const char *name);
 // TODO: comment this
-ssize_t			_sgetidx(char **anon, char *name);
+ssize_t			_sgetidx(char **anon, const char *name);
 
 /**
  * @brief get an environment variable from the internal tracked environment
@@ -200,7 +210,7 @@ ssize_t			_sgetidx(char **anon, char *name);
  * @param name the name of the variable
  * @return char* the entire variable entry
  */
-char			*s_get_env(t_minishell *shell, char *name);
+char			*s_get_env(t_minishell *shell, const char *name);
 
 /**
  * @brief get the index of a variable in the internal tracked environment
@@ -209,7 +219,7 @@ char			*s_get_env(t_minishell *shell, char *name);
  * @param name the name of the variable
  * @return char* the entire variable entry
  */
-ssize_t			s_get_envid(t_minishell *shell, char *name);
+ssize_t			s_get_envid(t_minishell *shell, const char *name);
 
 /**
  * @brief get an shell local variable from the internal tracked variables
@@ -218,7 +228,7 @@ ssize_t			s_get_envid(t_minishell *shell, char *name);
  * @param name the name of the variable
  * @return char* the entire variable entry
  */
-char			*s_get_interalenv(t_minishell *shell, char *name);
+char			*s_get_interalenv(t_minishell *shell, const char *name);
 
 /**
  * @brief get the index of a shell local variable from the internal tracked vars
@@ -227,7 +237,7 @@ char			*s_get_interalenv(t_minishell *shell, char *name);
  * @param name the name of the variable
  * @return char* the entire variable entry
  */
-ssize_t			s_get_internalenvid(t_minishell *shell, char *name);
+ssize_t			s_get_internalenvid(t_minishell *shell, const char *name);
 
 /**
  * @brief get a env var from either internal or environment
@@ -236,7 +246,7 @@ ssize_t			s_get_internalenvid(t_minishell *shell, char *name);
  * @param name name of var
  * @return char* a string lol
  */
-char			*s_get_envany(t_minishell *shell, char *name);
+char			*s_get_envany(t_minishell *shell, const char *name);
 
 /**
  * @brief get an ENV string from the shell's environment
@@ -245,7 +255,7 @@ char			*s_get_envany(t_minishell *shell, char *name);
  * @param name the name of the environment variable
  * @return char* the env string from the environment
  */
-char			*s_get_fromthis_env(char **env, char *name);
+char			*s_get_fromthis_env(char **env,  const char *name);
 
 /*
 Things that can be accessed externally in the builtins are
@@ -302,7 +312,8 @@ t_builtincmd	_get_builtincmd(t_astnode *node);
  * @param cmd The builtin function ptr
  * @return int 0?
  */
-int				exec_builtincmd(t_minishell *shell, t_astnode *node, t_builtincmd cmd);
+int				exec_builtincmd(t_minishell *shell,
+					t_astnode *node, t_builtincmd cmd);
 
 /**
  * @warning Assumes p is a string, for use in arriter
@@ -443,5 +454,13 @@ int				free_everything(t_minishell *shell, int code);
  * @param str the string to check
  */
 int				last_newline_not_end(const char *str);
+
+/**
+ * @brief Expand a variable name, this includes all environments
+ * AND special variables
+ * @param shell the shell struct
+ * @param name the name of the variable to expand
+ */
+char	*get_var(t_minishell *shell, const char *name);
 
 #endif

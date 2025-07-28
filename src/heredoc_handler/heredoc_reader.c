@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 13:43:46 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/28 15:45:56 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/28 16:45:36 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 extern int	g_global_signal;
 
-char	*s_get_envany(t_minishell *shell, char *name);
+char	*s_get_envany(t_minishell *shell, const char *name);
 
 static size_t	_replace_var(struct s_ast_internal *meta,
 	const int temp_file,
@@ -31,9 +31,9 @@ static size_t	_replace_var(struct s_ast_internal *meta,
 	while (line[i] && !ft_iswhitespace(line[i]))
 		i++;
 	strs[0] = ft_substr(line, 0, i); // plus one?
-	strs[1] = s_get_envany(meta->shell, strs[0]);
+	strs[1] = get_var(meta->shell, strs[0] + 1);
 	write(temp_file, strs[1], ft_strlen(strs[1]));
-	return (i);
+	return (free(strs[1]), free(strs[0]), i);
 }
 
 static int	write_str(struct s_ast_internal *meta,
@@ -45,11 +45,11 @@ static int	write_str(struct s_ast_internal *meta,
 	size_t	i;
 
 	i = 0;
+	while ((flags & 2) && line[i] && line[i] == '\t')
+		++i;
 	while (line[i])
 	{
-		if (line[i] == '\t' && (flags & 2))
-			++i;
-		else if (line[i] == '$' && (flags & 1))
+		if (line[i] == '$' && (flags & 1))
 			i += _replace_var(meta, temp_file, line + i);
 		else
 			write(temp_file, &line[i++], 1);

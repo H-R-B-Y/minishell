@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ssetenv.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 14:23:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/26 15:50:50 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/28 16:37:01 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-ssize_t	s_get_envid(t_minishell *shell, char *name);
+ssize_t	s_get_envid(t_minishell *shell, const char *name);
 
 /*
 Note that here we are duping the string
@@ -24,7 +24,7 @@ if we are closing the program.
 the environment variable array in the shell is
 an allocated array of allocated strings.
 */
-int	ssetenv(t_minishell *shell, char *str)
+int	ssetenv(t_minishell *shell, const char *str)
 {
 	char	*kv[2];
 	char	*split;

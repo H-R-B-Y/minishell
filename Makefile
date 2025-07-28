@@ -84,6 +84,7 @@ SRCS			:= \
 				$(SRC_DIR)/syntax_tree/syntax_util.c \
 				\
 				$(SRC_DIR)/utility/get_my_pid.c \
+				$(SRC_DIR)/utility/get_var.c \
 				$(SRC_DIR)/utility/last_newline_not_end.c \
 				$(SRC_DIR)/utility/operators.c \
 				$(SRC_DIR)/utility/pop_line.c \

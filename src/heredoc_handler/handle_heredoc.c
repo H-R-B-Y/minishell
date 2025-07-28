@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:22:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/28 15:46:33 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/28 16:25:46 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 extern int	g_global_signal;
 
-char	*s_get_envany(t_minishell *shell, char *name);
 int		_read_heredoc(struct s_ast_internal *meta, const char *delim,
 	const int temp_file, const short flags);
 
@@ -36,7 +35,7 @@ static int	prep_heredoc(struct s_ast_internal *meta,
 			O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR);
 	if (temp_file[0] == -1)
 		return (free(strs[0]), free(strs[1]), -1);
-	if (_read_heredoc(meta,strs[0] + !!(handle_vars & 2),
+	if (_read_heredoc(meta, strs[0] + !!(handle_vars & 2),
 			temp_file[0], handle_vars) != 0)
 	{
 		if (g_global_signal == SIGINT)
@@ -53,8 +52,7 @@ static int	prep_heredoc(struct s_ast_internal *meta,
 // GOOD READ BTW: 
 // https://www.oilshell.org/blog/2016/10/18.html
 t_redirect_desc	*handle_heredoc(struct s_ast_internal *meta,
-	const char *delim,
-	t_token *heredoc
+	const char *delim
 )
 {
 	t_redirect_desc	*output;

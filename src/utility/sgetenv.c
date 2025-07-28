@@ -6,14 +6,14 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:55:48 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 20:10:40 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/28 16:37:32 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-ssize_t	_sgetidx(char **anon, char *name);
-ssize_t	_sgetanon(char **anon, char *name);
+ssize_t	_sgetidx(char **anon, const char *name);
+ssize_t	_sgetanon(char **anon, const char *name);
 
 /**
  * @brief get an ENV value from the main environment of the shell
@@ -24,7 +24,7 @@ ssize_t	_sgetanon(char **anon, char *name);
  * @param name the name of the variable 
  * @return char* the line from the environment
  */
-char	*s_get_env(t_minishell *shell, char *name)
+char	*s_get_env(t_minishell *shell, const char *name)
 {
 	ssize_t	index;
 
@@ -43,7 +43,7 @@ char	*s_get_env(t_minishell *shell, char *name)
  * @param name the name of the variable 
  * @return ssize_t the index in the array or -1
  */
-ssize_t	s_get_envid(t_minishell *shell, char *name)
+ssize_t	s_get_envid(t_minishell *shell,const char *name)
 {
 	return (_sgetanon(shell->environment, name));
 }
@@ -55,7 +55,7 @@ ssize_t	s_get_envid(t_minishell *shell, char *name)
  * @param name the name of the environment variable
  * @return char* the env string from the environment
  */
-char	*s_get_interalenv(t_minishell *shell, char *name)
+char	*s_get_interalenv(t_minishell *shell, const char *name)
 {
 	ssize_t	index;
 
@@ -72,7 +72,7 @@ char	*s_get_interalenv(t_minishell *shell, char *name)
  * @param name the name of the environment variable
  * @return char* the env string from the environment
  */
-char	*s_get_fromthis_env(char **env, char *name)
+char	*s_get_fromthis_env(char **env, const char *name)
 {
 	ssize_t	index;
 
@@ -89,7 +89,7 @@ char	*s_get_fromthis_env(char **env, char *name)
  * @param name the name of the environment variable
  * @return ssize_t the index in the array or -1
  */
-ssize_t	s_get_internalenvid(t_minishell *shell, char *name)
+ssize_t	s_get_internalenvid(t_minishell *shell, const char *name)
 {
 	return (_sgetanon(shell->local_env, name));
 }

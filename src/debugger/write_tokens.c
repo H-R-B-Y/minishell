@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 16:56:45 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 18:43:40 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/28 16:24:08 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ int	write_token(struct s_dbg_info *info, t_token *token)
 	write(info->fd, token->raw, ft_strlen(token->raw) + 1);
 	write(info->fd, &token->heredoc_delim, sizeof(int));
 	write(info->fd, &token->redirect_file, sizeof(int));
-	write(info->fd, &token->quotes_removed, sizeof(int));
-	write(info->fd, &token->variables_expanded, sizeof(int));
+	// write(info->fd, &token->quotes_removed, sizeof(int));
+	// write(info->fd, &token->variables_expanded, sizeof(int));
 	return (byte_count + (sizeof(int) * 2));
 }
 

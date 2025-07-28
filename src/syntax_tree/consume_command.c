@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 13:46:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 19:11:07 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/28 16:25:02 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ static int	_add_redirects(struct s_ast_internal *meta,
 	if (node->tokens[i[0]]->type == TOK_HEREDOC)
 	{
 		ft_lstadd_back(&node->redirect,
-			ft_lstnew(handle_heredoc(meta, node->tokens[i[0] + 1]->raw,
-					node->tokens[i[0]])));
+			ft_lstnew(handle_heredoc(meta, node->tokens[i[0] + 1]->raw)));
 		i[0]++;
 	}
 	else if (ft_strchr("\4\5\3", node->tokens[i[0]]->type))
