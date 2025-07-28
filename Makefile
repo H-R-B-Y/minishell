@@ -97,6 +97,7 @@ SRCS			:= \
 				$(SRC_DIR)/utility/update_env.c \
 				$(SRC_DIR)/utility/set_n_envp.c \
 				$(SRC_DIR)/utility/set_any_env.c \
+				$(SRC_DIR)/utility/init_pwd.c \
 				\
 
 

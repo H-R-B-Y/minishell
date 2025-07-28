@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_process.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 11:48:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/22 15:21:57 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/28 14:43:34 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ int	init_process(t_minishell *shell, char **envp)
 	shell->environment = (void *)ft_arrmap((void *)envp, (void *)ft_strdup, free);
 	if (!shell->environment)
 		return (-1);
+	init_pwd(shell, &shell->environment);
 	// check pty
 	shell->interactive_mode = isatty(STDIN_FILENO);
 	// setup signal handlers

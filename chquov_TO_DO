@@ -5,10 +5,15 @@
 ## updated better_add_history to only add history when necesary 
 #	and only checking the last item in history, rather than going through all of them. Still some leaks from tokenise_type. I will move on to other tasks as I know you are still making changes to the tokeniser
 
-current_history based on tokens, handle heredoc
+update PWD and OLDPWD at launch
+cd = OLDPWD update when PWD unset
+CMD 
+	error message:
+		permission denied vs is a directory
+		command not found vs No such file or directory
+	cmd_prep = a="cho 123" ; e$a
+
+current_history based on tokens, MISSING: handle heredoc
 redirects in b_ins
 exit fuctions
 catch all malloc fails (look up: ft_calloc)
-CMD error message:
-	 permission denied vs is a directory
-	 command not found vs No such file or directory

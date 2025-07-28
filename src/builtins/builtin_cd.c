@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:31:30 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/24 16:05:27 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/28 13:23:10 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void update_pwd(t_minishell *shell, char **envp)
 		perror_exit(shell, "minishell:cd");
 	}
 	pwd[2] = str_vec_join((char *[3]){"PWD=", pwd[0], 0});
-	if (!pwd[1])
+	if (!pwd[2])
 	{
 		ft_arrclear((void **)pwd, free);
 		perror_exit(shell, "minishell:cd");
@@ -39,8 +39,6 @@ static void update_pwd(t_minishell *shell, char **envp)
 	set_any_env(shell, pwd + 1, 2);
 	ft_arrclear((void **)pwd, free);
 }
-
-
 
 int	builtin_cd(t_minishell *shell, char **argv, char ***envp)
 {
