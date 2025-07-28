@@ -13,7 +13,8 @@
 		"signal.h": "c",
 		"signal-defs.h": "c",
 		"stdlib.h": "c",
-		"builtin.h": "c"
+		"builtin.h": "c",
+		"typeinfo": "c"
 	},
 	"C_Cpp.errorSquiggles": "disabled"
 }
