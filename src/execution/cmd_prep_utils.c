@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 13:37:48 by cquinter          #+#    #+#             */
-/*   Updated: 2025/07/27 21:30:35 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/29 17:13:40 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*get_exec_path(t_minishell *shell, char *cmd, char **envp)
 		if (!exec_path)
 		{
 			free(dash_cmd);
-			ft_dirtyswap((void **)&path, NULL, free);
+			ft_arrclear((void **)path, free);
 			perror_exit(shell, "minishell: ft_strjoin");
 		}
 		if (access(exec_path, X_OK) == 0)
@@ -52,8 +52,8 @@ char	*get_exec_path(t_minishell *shell, char *cmd, char **envp)
 		i++;
 	}
 	if (!path[i])
-		return(free(dash_cmd), ft_dirtyswap((void **)&path, NULL, free), NULL);
-	return(free(dash_cmd), ft_dirtyswap((void **)&path, NULL, free), exec_path);
+		return(free(dash_cmd), ft_arrclear((void **)path, free), NULL);
+	return(free(dash_cmd), ft_arrclear((void **)path, free), exec_path);
 }
 
 size_t get_cmd_idx(t_astnode *node)
@@ -91,7 +91,6 @@ char	**cmdv_prep(t_minishell *shell, t_astnode *node)
 	if (!argv)
 		return (NULL);
 	i = 0;
-	node->cmd_i = get_cmd_idx(node);
 	while(i < node->token_count)
 	{
 		argv[i] = rmv_quotes_xpnd_var(node->tokens[i][0].raw, shell);
@@ -102,5 +101,6 @@ char	**cmdv_prep(t_minishell *shell, t_astnode *node)
 		}
 		i++;
 	}
+	node->cmd_i = get_cmd_idx(node);
 	return (argv);
 }

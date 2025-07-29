@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+
+
 true  && echo OK
 echo $?
 false && echo BAD
@@ -9,7 +11,6 @@ true  || echo SKIP
 echo $?
 false && true || echo FALLBACK
 echo $?
-
 
 #new line management
 echo vamos ;
@@ -25,6 +26,12 @@ grep HOME ; echo
 "
 $?"
 
+
+<< eof
+vamos
+luna
+eso
+eof
 
 
 grep nomatch /dev/null | cat && echo PIPE

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 15:22:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 18:34:25 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/29 17:17:08 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ char	*readline_wrapper(t_readline_data *data, const char *prompt)
 {
 	char	*p[2];
 
+	ft_memset((void *)p, 0, sizeof(p));
 	if (*data->interactive_mode)
 		return (readline(prompt));
 	p[0] = get_next_line(STDIN_FILENO);

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:36:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/24 17:26:57 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/29 17:14:45 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	destroy_token(t_token *token, void (*del_raw)(void *))
 	if (token->raw && del_raw)
 		del_raw(token->raw);
 	free(token);
+	// printf("freed token %p\n", token);
 }
 
 void	free_token_list(t_list *list, void (*del_raw)(void *))

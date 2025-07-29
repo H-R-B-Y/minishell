@@ -67,5 +67,5 @@ int	execute_command(t_minishell *shell, t_astnode *node)
 			exec_default(shell, node, _get_builtincmd(node));
 		return (0);
 	}
-	return (set_any_env(shell));
+	return (set_any_env(shell, node->cmdv, node->token_count));
 }

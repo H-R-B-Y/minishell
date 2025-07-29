@@ -6,11 +6,54 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:16:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/28 18:01:53 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/29 17:18:47 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+extern int	g_global_signal;
+
+// Why is string being passed in by reference?
+// It should also be const str i think!
+
+// ssize_t	append_to_history_item(t_readline_data *data, char **str)
+// {
+// 	char *temp;
+
+// 	if (!*str)
+// 		return (-1); // should this case be 0, then if malloc fails below we return -1? 
+// 	if (!data->current_hist_item)
+// 		temp = ft_strdup(*str);
+// 	else
+// 	{
+// 		if (last_newline_not_end(data->current_hist_item))
+// 			temp = str_join_with_sep(data->current_hist_item, *str, "\n");
+// 		else
+// 			temp = ft_strjoin(data->current_hist_item, *str);
+// 	}
+// 	ft_dirtyswap((void *)&data->current_hist_item, temp, free);
+// 	return (1);
+// }
+
+// ssize_t	append_to_history_item(t_readline_data *data, char **str)
+// {
+// 	char *temp;
+
+// 	if (!*str)
+// 		return (-1); // should this case be 0, then if malloc fails below we return -1? 
+// 	if (!data->current_hist_item)
+// 		temp = ft_strdup(*str);
+// 	else
+// 	{
+// 		if (last_newline_not_end(data->current_hist_item))
+// 			temp = str_join_with_sep(data->current_hist_item, *str, "\n");
+// 		else
+// 			temp = ft_strjoin(data->current_hist_item, *str);
+// 	}
+// 	ft_dirtyswap((void *)&data->current_hist_item, temp, free);
+// 	return (1);
+// }
 
 extern int	g_global_signal;
 
@@ -21,19 +64,44 @@ ssize_t	append_to_history_item(t_readline_data *data, char **str)
 	char	*temp;
 
 	if (!*str)
-		return (-1);
+		return (0);
 	if (!data->current_hist_item)
 		temp = ft_strdup(*str);
 	else
-	{
-		if (last_newline_not_end(data->current_hist_item))
-			temp = str_join_with_sep(data->current_hist_item, *str, "\n");
-		else
-			temp = ft_strjoin(data->current_hist_item, *str);
-	}
+		temp = str_join_with_sep(data->current_hist_item, *str, " ");
+	if (!temp)
+		return (ft_dirtyswap((void *)&data->current_hist_item, temp, free), -1);
 	ft_dirtyswap((void *)&data->current_hist_item, temp, free);
 	return (1);
 }
+
+void	append_tokenv_to_history_item(t_minishell *shell, t_readline_data *rl_data, t_token **tokens)
+{
+	size_t	i;
+	
+	i = 0;
+	while (tokens && tokens[i])
+	{
+		if (append_to_history_item(rl_data, &tokens[i]->raw) < 0)
+			perror_exit(shell, "minishell: appending history");
+		i++;
+	}
+}
+
+// void	append_tokenv_to_history_item(t_minishell *shell, t_readline_data *rl_data, t_list *tokens)
+// {
+// 	t_token	*token;
+// 	t_list	*current;
+	
+// 	current = tokens;
+// 	while (current)
+// 	{
+// 		token = current->content;
+// 		if (append_to_history_item(rl_data, &token->raw) < 0)
+// 			perror_exit(shell, "minishell: appending history");
+// 		current = current->next;			
+// 	}
+// }
 
 ssize_t	split_extra_lines(t_readline_data *data, char *str)
 {
