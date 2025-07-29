@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_prep_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 13:37:48 by cquinter          #+#    #+#             */
-/*   Updated: 2025/07/29 17:13:40 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/29 17:58:10 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ char	**cmdv_prep(t_minishell *shell, t_astnode *node)
 		argv[i] = rmv_quotes_xpnd_var(node->tokens[i][0].raw, shell);
 		if (!argv)
 		{
-			ft_dirtyswap((void **)&argv, NULL, free);
+			ft_arrclear((void **)argv, free);
 			return (NULL);
 		}
 		i++;
