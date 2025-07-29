@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 20:21:20 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 21:09:15 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/29 17:19:58 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,3 +48,4 @@ int	set_any_env(t_minishell *shell)
 	}
 	return (0);
 }
+

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 13:46:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/28 16:25:02 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/29 17:18:50 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ ssize_t	ast_consume_words(struct s_ast_internal *meta, t_astnode *node)
 	}
 	if (!post_consume_words(meta, node))
 		return (-1);
+	// append_tokenv_to_history_item(shell, &shell->rldata, node->tokens);
 	node->token_count = ft_arrlen((void *)node->tokens);
 	return (eaten);
 }

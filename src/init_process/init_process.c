@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 11:48:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 19:48:54 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/29 17:15:43 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ int	init_process(t_minishell *shell, char **envp)
 			(void *)envp, (void *)ft_strdup, free);
 	if (!shell->environment)
 		return (-1);
+	init_pwd(shell, &shell->environment);
+	// check pty
 	shell->interactive_mode = isatty(STDIN_FILENO);
 	if (!setup_signals(shell))
 		return (-2);

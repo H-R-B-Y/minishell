@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/29 14:43:20 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/29 17:10:59 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@
 
 # include "./libft.h"
 # include "./v_dbg.h"
-# include "./fsm_tokeniser.h"
 # include "./readline_loop.h"
 # include "./abstract_syntax_tree.h"
 # include "./execution.h"
@@ -97,6 +96,7 @@ struct s_minishell
 	char				*last_arg;
 };
 
+void	init_pwd(t_minishell *shell, char ***envp);
 /**
  * @brief Initialise the shell
  * 
@@ -116,7 +116,7 @@ int				init_process(t_minishell *shell, char **envp);
  * @param string The history item that we want to add
  * @return int status code
  */
-int				better_add_history(char *string);
+int		better_add_history(t_minishell *shell, char *string);
 
 /**
  * @brief Cleanup ready for the next command (or at exit time)

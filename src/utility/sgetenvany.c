@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:06:15 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/28 16:35:51 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/29 17:20:01 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,5 @@ char	*s_get_envany(t_minishell *shell, const char *name)
 	i = s_get_internalenvid(shell, name);
 	if (i >= 0)
 		return (shell->local_env[i] + ft_strlen(name) + 1);
-	return ("");
+	return (NULL);
 }

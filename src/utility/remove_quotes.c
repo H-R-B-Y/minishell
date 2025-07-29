@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:16:03 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 20:21:15 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/29 17:18:59 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,11 @@ int	_realloc_write(char **output,
 	else
 		i[0] += i[2];
 	i[1] += to_write_len;
+	free(temp);
 	return (0);
 }
 
-char	*get_var_value(t_minishell *shell, char *str, size_t *i)
+static char	*get_var_value(t_minishell *shell, char *str, size_t *i)
 {
 	size_t	vlen;
 	char	*xpded_value;
