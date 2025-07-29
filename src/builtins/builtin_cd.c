@@ -6,18 +6,12 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:31:30 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/28 19:23:25 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/29 18:17:13 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../include/builtin.h"
-
-static void _free_arr_perror_exit(t_minishell *shell, void **arr)
-{
-	ft_arrclear((void **)arr, free);
-	perror_exit(shell, "minishell: cd:");
-}
 
 static void _set_pwd_env(t_minishell *shell, char **pwd)
 {
@@ -32,7 +26,7 @@ static void _set_pwd_env(t_minishell *shell, char **pwd)
 		{
 			dup = ft_strdup(pwd[1]);
 			if (!dup)
-				_free_arr_perror_exit(shell, (void **)pwd);
+				_free_arr_perror_exit(shell, (void **)pwd, "minishell: cd:");
 			update_env(&shell->unassigned_env, dup, "OLDPWD", _sgetidx);
 		}
 		set_any_env(shell, pwd + 2, 1);
@@ -56,10 +50,10 @@ static void update_pwd(t_minishell *shell, char **envp)
 	else
 		pwd[1] = ft_strdup("OLDPWD");
 	if (!pwd[1])
-		_free_arr_perror_exit(shell, (void **)pwd);
+		_free_arr_perror_exit(shell, (void **)pwd, "minishell: cd:");
 	pwd[2] = str_vec_join((char *[3]){"PWD=", pwd[0], 0});
 	if (!pwd[2])
-		_free_arr_perror_exit(shell, (void **)pwd);
+		_free_arr_perror_exit(shell, (void **)pwd, "minishell: cd:");
 	_set_pwd_env(shell, pwd);
 	ft_arrclear((void **)pwd, free);
 }

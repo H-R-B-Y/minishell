@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:02:44 by cquinter          #+#    #+#             */
-/*   Updated: 2025/07/29 17:09:04 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/29 18:20:27 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,6 @@
 # include <unistd.h>
 
 // TODO: Comment this header
-
-void	clean_shell(t_minishell *shell);
-void	clean_exit_status(t_minishell *shell, int status);
-void	perror_exit(t_minishell *shell, char *message); // TODO: check if correct clean up everything and exit
-void	_set_returncode(int *to_set, int code);
 
 char	*get_exec_path(t_minishell *shell, char *cmd, char **envp);
 char	**cmdv_prep(t_minishell *shell, t_astnode *node);

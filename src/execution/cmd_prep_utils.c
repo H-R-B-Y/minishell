@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 13:37:48 by cquinter          #+#    #+#             */
-/*   Updated: 2025/07/29 17:58:10 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/29 21:22:59 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,22 +85,26 @@ size_t get_cmd_idx(t_astnode *node)
 char	**cmdv_prep(t_minishell *shell, t_astnode *node)
 {
 	char	**argv;
-	size_t		i;
+	size_t	n_words;
+	char	**split;
+	size_t	i;
 	
-	argv = ft_calloc(node->token_count + 1, sizeof(char **));
+	n_words = node->token_count;
+	argv = ft_calloc(n_words + 1, sizeof(char **));
 	if (!argv)
 		return (NULL);
 	i = 0;
-	while(i < node->token_count)
+	node->cmd_i = get_cmd_idx(node);
+	while(i < n_words)
 	{
-		argv[i] = rmv_quotes_xpnd_var(node->tokens[i][0].raw, shell);
-		if (!argv)
-		{
-			ft_arrclear((void **)argv, free);
-			return (NULL);
-		}
+		if (!ft_dirtyswap((void **)(argv + i), get_var(shell, node->tokens[i][0].raw, 1), free))
+			_free_arr_perror_exit(shell, (void **)argv, "minishell: expand");
+		split = word_spliting(shell,)
+			if (!ft_dirtyswap(void **)&argv, word_spliting(shell, argv), ft_arrfree)
+			_free_arr_perror_exit(shell, (void **)argv, "minishell: word spliting");
+		if (!ft_dirtyswap((void **)(argv + i), rem_quotes(argv[i]), free))
+			_free_arr_perror_exit(shell, (void **)argv, "minishell: remove quotes");
 		i++;
 	}
-	node->cmd_i = get_cmd_idx(node);
 	return (argv);
 }

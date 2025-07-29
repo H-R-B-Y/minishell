@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_var.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 15:52:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/29 16:54:40 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/29 19:16:33 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,17 @@ static ssize_t	special_argv(t_minishell *shell,
 	return (1);
 }
 
+static ssize_t	special_quotes(t_minishell *shell,
+	const char *value,
+	char **output
+)
+{
+	(void)value;
+	(void)output;
+	(void)(shell);
+	return (0);
+}
+
 struct s_special_var
 {
 	const char	*match;
@@ -85,11 +96,12 @@ struct s_special_var
 static const struct s_special_var	*get_special(char c)
 {
 	int									i;
-	static const struct	s_special_var	cases[5] = {
+	static const struct	s_special_var	cases[6] = {
 		(struct s_special_var){.match="_",.f=special_last_param},
 		(struct s_special_var){.match="?",.f=special_result},
 		(struct s_special_var){.match="$",.f=special_pid},
 		(struct s_special_var){.match="0123456789",.f=special_argv}, // special case for $"" and $''
+		(struct s_special_var){.match="\"\'",.f=special_quotes},
 		(struct s_special_var){.match=0,.f=0}
 	};
 
@@ -146,7 +158,8 @@ size_t	is_other(t_minishell *shell, const char *value, char **output)
 	str = ft_substr(value, 0, i);
 	val = s_get_envany(shell, str);
 	free(str);
-	ft_dirtyswap((void *)output, ft_strjoin(*output, val), free);
+	if (val)
+		ft_dirtyswap((void *)output, ft_strjoin(*output, val), free);
 	return (i);
 }
 

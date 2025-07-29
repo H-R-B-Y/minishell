@@ -22,7 +22,7 @@ void	get_exec_cmd(t_minishell *shell, t_astnode *node, t_builtincmd *b_in)
 	if (!exec_path)
 		perror_exit(shell, path); // Pending: check if it is working currectly
 	else if (execve(exec_path, argv, node->envp) < 0)
-		perror_exit(shell, "minishell:lol");
+		perror_exit(shell, "minishell: PENDING TO EDIT ERROR MESSAGE");
 }
 
 int	exec_raw(t_minishell *shell, t_astnode *node, t_builtincmd cmd)

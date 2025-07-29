@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:21:04 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/29 14:05:15 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/29 21:06:19 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -515,6 +515,14 @@ size_t			ft_arrlen(void **chunks);
  * @warning chunks must be an array of heap allocated pointers
  */
 void			ft_arrclear(void **chunks, void (*f)(void *));
+
+/**
+ * @brief ft_arrclear using free by default. 
+ * free all items in an array using free() (including the array ptr)
+ * @param chunks the array of pointers to free
+ * @warning chunks must be an array of heap allocated pointers
+ */
+void			ft_arrfree(void **chunks);
 
 /**
  * @brief convert an array to a list of items

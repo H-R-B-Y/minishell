@@ -22,6 +22,12 @@ void	perror_exit(t_minishell *shell, char *message)
 	clean_exit_status(shell, EXIT_FAILURE);
 }
 
+void _free_arr_perror_exit(t_minishell *shell, void **arr, char *message)
+{
+	ft_arrclear((void **)arr, free);
+	perror_exit(shell, message);
+}
+
 void	_set_returncode(int *to_set, int code)
 {
 	if (WIFEXITED(code))
