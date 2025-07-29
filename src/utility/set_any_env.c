@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 20:21:20 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/29 17:19:58 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/29 17:22:41 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,13 @@ static void	_remove_from_unassigned(t_minishell *shell, char *name)
 	ft_dirtyswap((void *)&shell->unassigned_env, new_env, free);
 }
 
-int	set_any_env(t_minishell *shell)
+int	set_any_env(t_minishell *shell, char **argv, size_t n)
 {
-	char	**argv;
 	char	*name;
 	size_t	i;
 
-	argv = shell->current_tree->cmdv;
 	i = 0;
-	while (i < shell->current_tree->token_count)
+	while (i < n)
 	{
 		name = ft_strndup(argv[i], ft_strchr(argv[i], '=') - argv[i]);
 		if (name == NULL)
