@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:16:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 20:04:27 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/28 18:01:53 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	next_line(t_readline_data *data, const char *prompt)
 	if (!temp)
 		return (READ_EOF);
 	if (!*temp && (!data->last_line || g_global_signal))
-		return (READ_NOTHING);
+		return (free(temp), READ_NOTHING);
 	code = split_extra_lines(data, temp);
 	free(temp);
 	if (code)
