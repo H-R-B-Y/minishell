@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:16:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/26 17:51:24 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/28 20:30:07 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,20 +47,33 @@ ssize_t	append_to_history_item(t_readline_data *data, char **str)
 	return (1);
 }
 
-void	append_tokenv_to_history_item(t_minishell *shell, t_readline_data *rl_data, t_list *tokens)
+void	append_tokenv_to_history_item(t_minishell *shell, t_readline_data *rl_data, t_token **tokens)
 {
-	t_token	*token;
-	t_list	*current;
+	size_t	i;
 	
-	current = tokens;
-	while (current)
+	i = 0;
+	while (tokens && tokens[i])
 	{
-		token = current->content;
-		if (append_to_history_item(rl_data, &token->raw) < 0)
+		if (append_to_history_item(rl_data, &tokens[i]->raw) < 0)
 			perror_exit(shell, "minishell: appending history");
-		current = current->next;			
+		i++;
 	}
 }
+
+// void	append_tokenv_to_history_item(t_minishell *shell, t_readline_data *rl_data, t_list *tokens)
+// {
+// 	t_token	*token;
+// 	t_list	*current;
+	
+// 	current = tokens;
+// 	while (current)
+// 	{
+// 		token = current->content;
+// 		if (append_to_history_item(rl_data, &token->raw) < 0)
+// 			perror_exit(shell, "minishell: appending history");
+// 		current = current->next;			
+// 	}
+// }
 
 ssize_t	split_extra_lines(t_readline_data *data, char *str)
 {
@@ -95,7 +108,7 @@ int	next_line(t_readline_data *data, const char *prompt)
 	if (!temp)
 		return (READ_EOF);
 	if (!*temp && !data->last_line)
-		return (READ_NOTHING);
+		return (free(temp), READ_NOTHING);
 	code = split_extra_lines(data, temp);
 	free(temp);
 	if (code)

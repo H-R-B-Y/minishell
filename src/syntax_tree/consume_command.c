@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   consume_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 13:46:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/23 14:34:38 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/28 21:02:53 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ ssize_t	ast_consume_words(struct s_ast_internal *meta, t_astnode *node)
 	}
 	if (!post_consume_words(meta, node))
 		return (-1);
+	// append_tokenv_to_history_item(shell, &shell->rldata, node->tokens);
 	node->token_count = ft_arrlen((void *)node->tokens);
 	return (eaten);
 }
