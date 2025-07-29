@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/29 17:10:59 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/29 18:25:38 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -463,5 +463,13 @@ int				last_newline_not_end(const char *str);
  * @param flag 1 if you want to care about quotes else 0
  */
 char	*get_var(t_minishell *shell, const char *name, int flag);
+
+
+void	clean_shell(t_minishell *shell);
+void	clean_exit_status(t_minishell *shell, int status);
+void	perror_exit(t_minishell *shell, char *message); // TODO: check if correct clean up everything and exit
+void	_free_arr_perror_exit(t_minishell *shell, void **arr, char *message);
+void	_set_returncode(int *to_set, int code);
+
 
 #endif

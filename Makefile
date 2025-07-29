@@ -40,7 +40,6 @@ SRCS			:= \
 				$(SRC_DIR)/execution/execute_subshell.c \
 				$(SRC_DIR)/execution/execute_seq.c \
 				$(SRC_DIR)/execution/execute_logical.c \
-				$(SRC_DIR)/execution/exit_handling_utils.c \
 				$(SRC_DIR)/execution/cmd_prep_utils.c \
 				$(SRC_DIR)/execution/glob_local_dir.c \
 				$(SRC_DIR)/execution/prepare_redirects.c \
@@ -88,8 +87,7 @@ SRCS			:= \
 				$(SRC_DIR)/utility/last_newline_not_end.c \
 				$(SRC_DIR)/utility/operators.c \
 				$(SRC_DIR)/utility/pop_line.c \
-				$(SRC_DIR)/utility/rem_quote2.c \
-				$(SRC_DIR)/utility/remove_quotes.c \
+				$(SRC_DIR)/utility/rem_quotes.c \
 				$(SRC_DIR)/utility/sgetenv.c \
 				$(SRC_DIR)/utility/sgetenvany.c \
 				$(SRC_DIR)/utility/simple_split.c \
@@ -100,6 +98,7 @@ SRCS			:= \
 				$(SRC_DIR)/utility/set_n_envp.c \
 				$(SRC_DIR)/utility/set_any_env.c \
 				$(SRC_DIR)/utility/init_pwd.c \
+				$(SRC_DIR)/utility/exit_handling_utils.c \
 				\
 
 
