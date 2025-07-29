@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 15:52:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/29 15:14:29 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/29 16:54:40 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static const struct s_special_var	*get_special(char c)
 		(struct s_special_var){.match="_",.f=special_last_param},
 		(struct s_special_var){.match="?",.f=special_result},
 		(struct s_special_var){.match="$",.f=special_pid},
-		(struct s_special_var){.match="0123456789",.f=special_argv},
+		(struct s_special_var){.match="0123456789",.f=special_argv}, // special case for $"" and $''
 		(struct s_special_var){.match=0,.f=0}
 	};
 
@@ -176,7 +176,7 @@ ssize_t	handle_char(const char *value,
 		if (*value == '\'')
 			*mode = QUOTE_SINGLE;
 		else if (*value == '"')
-			*mode = QUOTE_SINGLE;
+			*mode = QUOTE_DOUBLE;
 		else if (*value == '\\')
 			i += 1;
 	}
@@ -202,8 +202,8 @@ char	*get_var(t_minishell *shell, const char *value, int flag)
 	while (value[i[0]])
 	{
 		i[1] = 0;
-		if (value[i[0]] && value[i[0]] == '$' && ++i[0]
-			&& (p == QUOTE_NONE || p == QUOTE_DOUBLE))
+		if (value[i[0]] && value[i[0]] == '$'
+			&& (p == QUOTE_NONE || p == QUOTE_DOUBLE) && ++i[0])
 			i[0] += handle_var(shell, &value[i[0]], &out);
 		else if (value[i[0]] && flag)
 			i[1] += handle_char(&value[i[0]], &p);
