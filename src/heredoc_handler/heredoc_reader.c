@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 13:43:46 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/29 14:47:33 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/29 16:57:44 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,22 @@ extern int	g_global_signal;
 
 char	*s_get_envany(t_minishell *shell, const char *name);
 
-static size_t	_replace_var(struct s_ast_internal *meta,
-	const int temp_file,
-	const char *line
-)
-{
-	size_t	i;
-	char	*strs[2];
+// static size_t	_replace_var(struct s_ast_internal *meta,
+// 	const int temp_file,
+// 	const char *line
+// )
+// {
+// 	size_t	i;
+// 	char	*strs[2];
 
-	i = 0;
-	while (line[i])
-		i++;
-	strs[0] = ft_substr(line, 0, i); // plus one?
-	strs[1] = get_var(meta->shell, strs[0], 0);
-	write(temp_file, strs[1], ft_strlen(strs[1]));
-	return (free(strs[1]), free(strs[0]), i);
-}
+// 	i = 0;
+// 	while (line[i])
+// 		i++;
+// 	strs[0] = ft_substr(line, 0, i); // plus one?
+// 	strs[1] = get_var(meta->shell, strs[0], 0);
+// 	write(temp_file, strs[1], ft_strlen(strs[1]));
+// 	return (free(strs[1]), free(strs[0]), i);
+// }
 
 static int	write_str(struct s_ast_internal *meta,
 	const char *line,
@@ -44,13 +44,13 @@ static int	write_str(struct s_ast_internal *meta,
 	i = 0;
 	while ((flags & 2) && line[i] && line[i] == '\t')
 		++i;
-	while (line[i])
+	if (ft_strchr(line, '$'))
 	{
-		if (line[i] == '$' && (flags & 1))
-			i += _replace_var(meta, temp_file, line + i);
-		else
-			write(temp_file, &line[i++], 1);
+		char *tmp = get_var(meta->shell, line, 0);
+		write(temp_file, tmp, ft_strlen(tmp));
 	}
+	else
+		write(temp_file, line, ft_strlen(line));
 	write(temp_file, "\n", 1);
 	return (1);
 }
