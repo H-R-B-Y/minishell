@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 13:43:46 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/28 16:45:36 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/29 14:47:33 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,10 @@ static size_t	_replace_var(struct s_ast_internal *meta,
 	char	*strs[2];
 
 	i = 0;
-	if (line[i + 1] && ft_iswhitespace(line[i + 1]))
-		return (write(temp_file, "$", 1), 1);
-	i++;
-	while (line[i] && !ft_iswhitespace(line[i]))
+	while (line[i])
 		i++;
 	strs[0] = ft_substr(line, 0, i); // plus one?
-	strs[1] = get_var(meta->shell, strs[0] + 1);
+	strs[1] = get_var(meta->shell, strs[0], 0);
 	write(temp_file, strs[1], ft_strlen(strs[1]));
 	return (free(strs[1]), free(strs[0]), i);
 }
