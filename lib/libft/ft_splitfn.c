@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_splitfn.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 18:11:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/02/13 16:37:06 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/30 15:46:03 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,15 @@ char	**ft_splitfn(char const *s, int (*delim)(int c))
 	while (*s)
 	{
 		if (delim(*s))
+		{
 			word_started = 1;
+			while (delim(*s))
+				s++;
+			continue ;
+		}
 		else if (!delim(*s) && word_started && word_started--)
 			output[word_index++] = ft_substr(s, 0, wordlenfn(s, delim));
-		s++;
+		s += wordlenfn(s, delim);
 	}
 	return (output);
 }

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/29 17:10:59 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/30 14:11:29 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -462,6 +462,6 @@ int				last_newline_not_end(const char *str);
  * @param name the name of the variable to expand
  * @param flag 1 if you want to care about quotes else 0
  */
-char	*get_var(t_minishell *shell, const char *name, int flag);
+char	**expand_and_split(t_minishell *shell, const char *name, int flag);
 
 #endif
