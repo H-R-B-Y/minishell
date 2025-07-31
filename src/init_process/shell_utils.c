@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 12:01:50 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/29 17:16:28 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/31 11:11:02 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	better_add_history(t_minishell *shell, char *string)
 		i= h_len - 1;
 	buff_str = ft_strrtrim(string, "\n"); // remove once current history is updated from tokens
 	if (!buff_str)
-		perror_exit(shell, "minishell: add history");
+		perror_exit(shell, "add history");
 	if (the_history && the_history[i])
 	{
 		if (!ft_strncmp(the_history[i]->line, buff_str,

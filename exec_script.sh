@@ -26,6 +26,24 @@ grep HOME ; echo
 "
 $?"
 
+echo
+echo vamos
+echo $?
+lunacos costo
+echo $?
+testdir
+echo $?
+./testdir
+echo $?
+mkdir testdir
+echo $?
+testdir
+echo $?
+./testdir
+echo $?
+ls -l | wc
+echo $?
+
 
 << eof
 vamos

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_process.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 11:48:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/29 17:15:43 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/31 11:07:16 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int	setup_signals(t_minishell *shell)
 int	init_process(t_minishell *shell, char **envp)
 {
 	ft_bzero(shell, sizeof(t_minishell));
+	shell->name = "minishell";
 	shell->environment = (void *)ft_arrmap(
 			(void *)envp, (void *)ft_strdup, free);
 	if (!shell->environment)

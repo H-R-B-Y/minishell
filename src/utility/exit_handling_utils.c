@@ -18,8 +18,13 @@ void	clean_exit_status(t_minishell *shell, int status)
 // TODO: test. ALso, maybe make a exit_message genral function to print and exit, success and failure
 void	perror_exit(t_minishell *shell, char *message)
 {
+	ft_putstr_fd(shell->name, 2);
+	ft_putstr_fd(": ", 2);
 	perror(message);
-	clean_exit_status(shell, EXIT_FAILURE);
+	if (errno == EISDIR)
+		clean_exit_status(shell, 126);
+	else
+		clean_exit_status(shell, EXIT_FAILURE);
 }
 
 void _free_arr_perror_exit(t_minishell *shell, void **arr, char *message)

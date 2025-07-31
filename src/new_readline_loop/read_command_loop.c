@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_command_loop.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 17:24:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/29 17:28:48 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/31 20:56:06 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	read_with_temp_prompt(t_minishell *shell, char *temp)
 
 	temp_prmpt = ft_strjoin(temp, " > ");
 	if (!temp_prmpt)
-		perror_exit(shell, "minishell:readline_loop");
+		perror_exit(shell, "readline_loop");
 	code = next_line(&shell->rldata, temp_prmpt);
 	free(temp_prmpt);
 	return (code);
@@ -30,6 +30,7 @@ static int	_tokenise_loop(t_minishell *shell,
 	t_readline_retcode *rl_code
 )
 {
+	shell->rldata.fsm_data = &shell->fsm_data;
 	*code = tokenise(&shell->fsm_data, shell->rldata.last_line);
 	while (*code == PARSE_CONT)
 	{
@@ -48,7 +49,7 @@ int	read_until_complete_command(t_minishell *shell)
 
 	if (shell->interactive_mode && !ft_dirtyswap((void *)&shell->prompt,
 			(void *)create_prompt(shell), free))
-		perror_exit(shell, "minishell:readline_loop");
+		perror_exit(shell, "readline_loop");
 	rl_code = next_line(&shell->rldata, shell->prompt);
 	if (rl_code != READ_OK)
 		return (rl_code);
@@ -57,7 +58,7 @@ int	read_until_complete_command(t_minishell *shell)
 	if (fsm_code == PARSE_ERROR)
 		return (READ_BADPARSE);
 	else if (fsm_code == PARSE_FATAL)
-		perror_exit(shell, "minishell:tokeniser");
+		perror_exit(shell, "tokeniser");
 	else if (fsm_code == PARSE_NOTHING)
 		return (READ_NOTHING);
 	return (READ_OK);

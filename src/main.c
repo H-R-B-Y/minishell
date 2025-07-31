@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/29 17:13:37 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/31 20:47:50 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	create_tree_and_run(t_minishell *shell)
 	dbg_add_token_list(&shell->info, shell->tokens);
 	shell->tokenv = (void *)ft_lstarr(shell->tokens);
 	ft_lstclear(&shell->tokens, 0);
-	append_tokenv_to_history_item(shell, &shell->rldata, shell->tokenv);
+	// append_tokenv_to_history_item(shell, &shell->rldata, shell->tokenv);
 	astcode = produce_ast(shell, shell->tokenv, &shell->current_tree);
 	if (astcode == AST_ERR_NONE)
 	{
@@ -57,7 +57,7 @@ int	next_command(t_minishell *shell)
 		&& create_tree_and_run(shell) == AST_ERR_FATAL)
 		return (READ_FATAL);
 	else if (rl_code == READ_FATAL)
-		perror_exit(shell, "minishell:readline_loop");
+		perror_exit(shell, "readline_loop");
 	return (rl_code);
 }
 

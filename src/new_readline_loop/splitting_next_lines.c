@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   splitting_next_lines.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:16:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/29 17:18:47 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/31 21:52:49 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,20 @@ ssize_t	append_to_history_item(t_readline_data *data, char **str)
 		return (0);
 	if (!data->current_hist_item)
 		temp = ft_strdup(*str);
+	else if (data->hdoc
+		|| data->fsm_data->tok_int.curr_type == TOK_INCOMPLETE_STRING)
+	{
+		if (last_newline_not_end(data->current_hist_item))
+			temp = str_join_with_sep(data->current_hist_item, *str, "\n");
+		else
+			temp = ft_strjoin(data->current_hist_item, *str);
+	}
 	else
 		temp = str_join_with_sep(data->current_hist_item, *str, " ");
 	if (!temp)
-		return (ft_dirtyswap((void *)&data->current_hist_item, temp, free), -1);
+		return (-1);
 	ft_dirtyswap((void *)&data->current_hist_item, temp, free);
+	// better_add_history(shell, data->current_hist_item);
 	return (1);
 }
 
@@ -83,7 +92,7 @@ void	append_tokenv_to_history_item(t_minishell *shell, t_readline_data *rl_data,
 	while (tokens && tokens[i])
 	{
 		if (append_to_history_item(rl_data, &tokens[i]->raw) < 0)
-			perror_exit(shell, "minishell: appending history");
+			perror_exit(shell, "appending history");
 		i++;
 	}
 }
@@ -98,7 +107,7 @@ void	append_tokenv_to_history_item(t_minishell *shell, t_readline_data *rl_data,
 // 	{
 // 		token = current->content;
 // 		if (append_to_history_item(rl_data, &token->raw) < 0)
-// 			perror_exit(shell, "minishell: appending history");
+// 			perror_exit(shell, "appending history");
 // 		current = current->next;			
 // 	}
 // }
@@ -125,6 +134,7 @@ static int	_pop_extra(t_readline_data *data)
 		return (READ_FATAL);
 	else if (!*data->last_line)
 		return (READ_NOTHING);
+	append_to_history_item(data, &data->last_line);
 	return (READ_OK);
 }
 

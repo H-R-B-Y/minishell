@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 13:37:48 by cquinter          #+#    #+#             */
-/*   Updated: 2025/07/29 21:22:59 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/31 11:10:36 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*get_exec_path(t_minishell *shell, char *cmd, char **envp)
 	int		i;
 
 	if (set_path_and_cmd(&path, &dash_cmd, cmd, envp))
-		perror_exit(shell, "minishell: unable to set cmd");
+		perror_exit(shell, "unable to set cmd");
 	i = 0;
 	while (path[i])
 	{
@@ -44,9 +44,9 @@ char	*get_exec_path(t_minishell *shell, char *cmd, char **envp)
 		{
 			free(dash_cmd);
 			ft_arrclear((void **)path, free);
-			perror_exit(shell, "minishell: ft_strjoin");
+			perror_exit(shell, "ft_strjoin");
 		}
-		if (access(exec_path, X_OK) == 0)
+		if (access(exec_path, F_OK) == 0)
 			break ;
 		free(exec_path); 
 		i++;
@@ -82,28 +82,86 @@ size_t get_cmd_idx(t_astnode *node)
 	return (i);
 }
 
+void	xpnd_param_var(t_minishell *shell, t_astnode *node, char ***argv, size_t *n)
+{
+	size_t	i;
+	
+	if (!argv && !*argv)
+		return ;
+	i = 0;
+	while(i < *n)
+	{
+		if (!ft_dirtyswap((void **)(argv[0] + i), get_var(shell, node->tokens[i][0].raw, 1), free))
+			_free_arr_perror_exit(shell, (void **)argv, "minishell: expand");
+		i++;
+	}
+}
+
+void	word_splitting(t_minishell *shell, t_astnode *node, char ***argv, size_t *n)
+{
+	size_t	i;
+	
+	(void)node;
+	if (!argv)
+		return ;
+	i = 0;
+	while(i < *n)
+	{
+		if (!ft_dirtyswap((void **)(argv[0] + i), rem_quotes(argv[0][i]), free))
+			_free_arr_perror_exit(shell, (void **)argv, "minishell: expand");
+		i++;
+	}
+}
+
+void	quote_removal(t_minishell *shell, t_astnode *node, char ***argv, size_t *n)
+{
+	size_t	i;
+	
+	(void)node;
+	if (!argv)
+		return ;
+	i = 0;
+	while(i < *n)
+	{
+		if (!ft_dirtyswap((void **)(argv[0] + i), rem_quotes(argv[0][i]), free))
+			_free_arr_perror_exit(shell, (void **)argv, "minishell: expand");
+		i++;
+	}
+}
+
+typedef struct s_shell_expansion_fnc
+{
+	void	(*f)(t_minishell *shell, t_astnode *node, char ***argv, size_t *n);
+}	t_shell_expansion_fnc;
+
+static t_shell_expansion_fnc	*set_expansion_fncs(void)
+{
+	static t_shell_expansion_fnc shell_expansion_fnc[3] = {
+		(t_shell_expansion_fnc){.f=xpnd_param_var},
+		// (shell_expansion_fnc){.f= word_splitting},
+		(t_shell_expansion_fnc){.f= quote_removal},
+		(t_shell_expansion_fnc){.f= 0},	
+	};
+	return (shell_expansion_fnc);
+}
+
 char	**cmdv_prep(t_minishell *shell, t_astnode *node)
 {
 	char	**argv;
-	size_t	n_words;
-	char	**split;
+	t_shell_expansion_fnc *xpnsion_f;
+	size_t	n;
 	size_t	i;
 	
-	n_words = node->token_count;
-	argv = ft_calloc(n_words + 1, sizeof(char **));
+	n = node->token_count;
+	argv = ft_calloc(n + 1, sizeof(char **));
 	if (!argv)
 		return (NULL);
-	i = 0;
+	xpnsion_f = set_expansion_fncs();
 	node->cmd_i = get_cmd_idx(node);
-	while(i < n_words)
+	i = 0;
+	while(xpnsion_f[i].f)
 	{
-		if (!ft_dirtyswap((void **)(argv + i), get_var(shell, node->tokens[i][0].raw, 1), free))
-			_free_arr_perror_exit(shell, (void **)argv, "minishell: expand");
-		split = word_spliting(shell,)
-			if (!ft_dirtyswap(void **)&argv, word_spliting(shell, argv), ft_arrfree)
-			_free_arr_perror_exit(shell, (void **)argv, "minishell: word spliting");
-		if (!ft_dirtyswap((void **)(argv + i), rem_quotes(argv[i]), free))
-			_free_arr_perror_exit(shell, (void **)argv, "minishell: remove quotes");
+		xpnsion_f[i].f(shell, node, &argv, &n);
 		i++;
 	}
 	return (argv);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline_loop.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:07:29 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/29 17:12:27 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/31 21:51:31 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "libft.h"
 
+typedef struct s_fsmdata		t_fsmdata;
 typedef struct s_minishell		t_minishell;
 
 typedef enum e_readline_retcode	t_readline_retcode;
@@ -51,6 +52,10 @@ struct s_readline_data
 	char				*last_line;
 	/// @brief Reference to the interactive mode flag in shell struct.
 	const short int		*interactive_mode;
+	/// @brief Internal information relevant to the finite state machine
+	t_fsmdata			*fsm_data;
+	/// @brief Heredoc flag. Used to append to history
+	int					hdoc;
 };
 
 /**
