@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   produce_syntax_tree.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 12:20:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/24 16:15:30 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/31 11:10:00 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	produce_ast(t_minishell *shell, t_token **tokens, t_astnode **output)
 	if (meta.error == AST_ERR_NONE)
 		*output = head;
 	else if (meta.error == AST_ERR_FATAL)
-		perror_exit(shell, "minishell:produce_ast");
+		perror_exit(shell, "produce_ast");
 	else
 	{
 		*output = 0;

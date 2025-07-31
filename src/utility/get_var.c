@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 15:52:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/29 19:16:33 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/31 11:10:00 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ ssize_t	handle_var(t_minishell *shell, const char *value, char **output)
 		return (_case);
 	else if (_case < 0)
 		return is_other(shell, value, output);
-	return (perror_exit(shell, "minishell:arg expansion"), -1);
+	return (perror_exit(shell, "arg expansion"), -1);
 }
 
 ssize_t	handle_char(const char *value,

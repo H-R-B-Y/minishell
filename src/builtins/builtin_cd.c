@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:31:30 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/29 18:17:13 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/31 11:10:30 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void update_pwd(t_minishell *shell, char **envp)
 	pwd = (char **)ft_calloc(4, sizeof(char *));
 	pwd[0] = getcwd(0, 0);
 	if (!pwd[0])
-		perror_exit(shell, "minishell: cd");
+		perror_exit(shell, "cd");
 	if (s_get_fromthis_env(envp, "PWD"))
 		pwd[1] = str_vec_join((char *[3]){"OLDPWD=", s_get_fromthis_env(envp, "PWD"), 0});
 	else if (s_get_envany(shell, "PWD"))

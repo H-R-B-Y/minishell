@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_reader.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 13:43:46 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/29 16:57:44 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/31 21:52:09 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	_read_heredoc(struct s_ast_internal *meta,
 	char				*temp;
 	t_readline_retcode	status;
 
+	meta->rldata->hdoc = 1;
 	status = next_line(meta->rldata, "heredoc > ");
 	while (status == READ_OK || status == READ_NOTHING)
 	{
@@ -76,6 +77,7 @@ int	_read_heredoc(struct s_ast_internal *meta,
 			write_str(meta, temp, temp_file, flags);
 		status = next_line(meta->rldata, "heredoc > ");
 	}
+	meta->rldata->hdoc = 0;
 	if (status == READ_FATAL)
 		perror_exit(meta->shell, "minishell:heredoc");
 	return (0 - (!(status == READ_OK || status == READ_EOF)));

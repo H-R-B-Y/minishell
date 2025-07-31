@@ -8,12 +8,12 @@ void init_pwd(t_minishell *shell, char ***envp)
 	pwd = (char **)ft_calloc(3, sizeof(char *));
 	pwd[0] = getcwd(0, 0);
 	if (!pwd[0])
-		perror_exit(shell, "minishell: cd");
+		perror_exit(shell, "cd");
 	pwd[1] = str_vec_join((char *[3]){"PWD=", pwd[0], 0});
 	if (!pwd[1])
 	{
 		ft_arrclear((void **)pwd, free);
-		perror_exit(shell, "minishell: cd");
+		perror_exit(shell, "cd");
 	}
 	if (_sgetanon(shell->environment, "OLDPWD") < 0)
 	{

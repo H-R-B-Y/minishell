@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/29 18:25:38 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/31 11:07:39 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ struct s_minishell
 	/// @brief Internal information relevant to the readline loop
 	t_readline_data		rldata;
 	/// @brief Current line (? do we still need this)
-	char				*current_line;
+	char				*ecurrent_line;
 	/// @brief Current pipeline (? do we still need this?)
 	char				*current_pipeline;
 	/// @brief Extra lines from input (? arent these in the rldata now?)
@@ -94,6 +94,7 @@ struct s_minishell
 	/// but for _ expansion of arguments I was thinking
 	/// that we could set it globally, maybe?
 	char				*last_arg;
+	char				*name;
 };
 
 void	init_pwd(t_minishell *shell, char ***envp);
@@ -113,7 +114,7 @@ int				init_process(t_minishell *shell, char **envp);
 /**
  * @brief Adds to readline history but does not duplicate
  * 
- * @param string The history item that we want to add
+ * @param string The histeory item that we want to add
  * @return int status code
  */
 int		better_add_history(t_minishell *shell, char *string);
