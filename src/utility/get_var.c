@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 15:52:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/30 18:29:32 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/01 14:30:41 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ typedef struct	s_expansion
 	int			flag;
 } t_expansion;
 
+// TODO: null check this please harvey!
 void	*vecjoin(void **vec1, void **vec2)
 {
 	size_t	size;
@@ -34,10 +35,10 @@ void	*vecjoin(void **vec1, void **vec2)
 	return (out);
 }
 
-static void	special_var_base(char **output, char *append)
-{
-	ft_dirtyswap((void *)output, ft_strjoin(*output, append), free);
-}
+// static void	special_var_base(char **output, char *append)
+// {
+// 	ft_dirtyswap((void *)output, ft_strjoin(*output, append), free);
+// }
 static ssize_t	special_last_param(t_minishell *shell,
 	const char *value,
 	char **output
@@ -121,16 +122,10 @@ static ssize_t	is_special(t_minishell *shell,
 {
 	const struct s_special_var	*_case;
 	ssize_t						ret;
-	char						*base;
-	size_t						i;
 
 	_case = get_special(ex->value[ex->v_i]);
 	if (!_case)
-	{
-		// if (ex->value[ex->v_i]) // this case is supposed to check if the next character is going to be part of the parameter name of if we can just drop in a $
-			// return (special_var_base(&ex->out[ex->o_i], "$"), 0);
 		return (-1);
-	}
 	ret = _case->f(shell, &ex->value[ex->v_i], res);
 	ex->v_i += ret;
 	return (ret);
@@ -142,7 +137,8 @@ ssize_t	is_other(t_minishell *shell, t_expansion *ex, char **res)
 	char	*str;
 
 	i = 0;
-	while (ex->value[ex->v_i + i] && ft_isalnum(ex->value[ex->v_i + i]))
+	while (ex->value[ex->v_i + i]
+		&& ft_isalnum(ex->value[ex->v_i + i]))
 		i++;
 	str = ft_substr(&ex->value[ex->v_i], 0, i);
 	*res = s_get_envany(shell, str);
@@ -158,7 +154,7 @@ ssize_t	handle_var(t_minishell *shell, t_expansion *ex)
 	char	**split;
 	char	**new_out;
 
-	_case = is_special(shell, ex);
+	_case = is_special(shell, ex, &res);
 	if (_case == 0)
 		return (perror_exit(shell, "minishell:parameter"), -1);
 	else if (_case < 0) // we only need to split the result when we are using non special? 
@@ -169,23 +165,19 @@ ssize_t	handle_var(t_minishell *shell, t_expansion *ex)
 		_case = is_other(shell, ex, &res); 
 		if (_case < 0) // Is other should return the resulting variable
 			perror_exit(shell, "minishell:parameter");
-
 	}
 	if (ex->flag & 2 && ex->mode == QUOTE_NONE)
 	{
 		// check if it should be split, or just split it
 		split = ft_splitfn(res, ft_iswhitespace); // expand this case to be IFS
-		if (ft_strchr(" \t", res[0]) || !ex->out[0][0])
+		if (ft_strchr(" \t", res[0]) || !ex->out[0][0]) // this either joins the next word with the last word or assigns the next word to the next slot in the out array
 		{
 			ft_dirtyswap((void *)&ex->out[ex->o_i], ft_strjoin(ex->out[ex->o_i], split[0]), free);
 			new_out = (void *)vecjoin((void *)ex->out, (void *)&split[1]);
-			ft_dirtyswap((void *)&ex->out, new_out, free); // this is ok because we dont want to free the items just the array
 		}
 		else
-		{
 			new_out = vecjoin((void *)ex->out, (void *)split);
-			ft_dirtyswap((void *)&ex->out, new_out, free); // this is ok because we dont want to free the items just the array
-		}
+		ft_dirtyswap((void *)&ex->out, new_out, free); // this is ok because we dont want to free the items just the array
 		new_out = (void *)ft_arradd_back((void *)ex->out, ft_strdup(""));
 		ft_dirtyswap((void *)&ex->out, new_out, free); // this is ok because we dont want to free the items just the array
 		ex->o_i += ft_arrlen((void *)split);

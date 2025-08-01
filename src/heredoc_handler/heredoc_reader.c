@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 13:43:46 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/30 15:44:33 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/01 14:29:47 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	write_str(struct s_ast_internal *meta,
 	{
 		char **tmp = expand_and_split(meta->shell, line, 3);
 		while (*tmp)
-			{write(temp_file, *tmp, ft_strlen(*tmp));tmp++;};
+			{write(temp_file, *tmp, ft_strlen(*tmp));tmp++;write(temp_file, "\n", 1);};
 	}
 	else
 		write(temp_file, line, ft_strlen(line));
