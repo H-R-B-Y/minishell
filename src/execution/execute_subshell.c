@@ -19,7 +19,7 @@ int	execute_subshell(t_minishell *shell, t_astnode *node)
 	else if (pid > 0)
 		waitpid(pid, &status, 0);
 	else
-		perror_exit(shell, "minishell: subshell");
+		perror_exit(shell, "subshell");
 	_set_returncode(&shell->return_code, status);
 	return (shell->return_code);
 }

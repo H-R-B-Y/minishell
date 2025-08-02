@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:15:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/23 14:59:37 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 21:08:24 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ int	redrtype_to_oflag(const int redr_type)
 	int	flag;
 
 	flag = 0;
-	if (redr_type == REDIRECT_INPUT)
+	if (redr_type == REDIRECT_IN)
 		flag |= O_RDONLY;
-	else if (redr_type == REDIRECT_OUTPUT || redr_type == REDIRECT_OUTPUT_APPEND)
+	else if (redr_type == REDIRECT_OUT || redr_type == REDIRECT_OUT_A)
 		flag |= O_WRONLY;
-	if (redr_type == REDIRECT_OUTPUT_APPEND)
+	if (redr_type == REDIRECT_OUT_A)
 		flag |= O_APPEND;
-	else if (redr_type != REDIRECT_INPUT)
+	else if (redr_type != REDIRECT_IN)
 		flag |= O_TRUNC;
 	return (flag);
 }
@@ -62,7 +62,8 @@ int	prepare_fds(t_astnode *node)
 
 	if (!node->redirect)
 		return (0);
-	corrected = ft_lstmap(node->redirect, (void *)file_to_fd_mapper, free); // WARN: free is not good enough, redirects will leak
+	corrected = ft_lstmap(node->redirect,
+		(void *)file_to_fd_mapper, (void *)destroy_redirect);
 	if (!corrected)
 		return (perror("minishell"), -1);
 	ft_lstclear(&node->redirect, (void *)free);
@@ -70,35 +71,41 @@ int	prepare_fds(t_astnode *node)
 	return (1);
 }
 
+static void	_map(t_redirect_desc *desc)
+{
+	int				current_fd;
+
+	if (!desc)
+		return ;
+	if (desc->subtype == CLOSE_FD)
+		close(desc->fd_map.to_fd);
+	else if (desc->subtype == REDIR_FD)
+	{
+		current_fd = dup(desc->fd_map.from_fd);
+		dup2(current_fd, desc->fd_map.to_fd);
+		close(current_fd);
+	}
+	else if (desc->file_map.to_fd >= 0)
+	{
+		dup2(desc->file_map.from_fd, desc->file_map.to_fd);
+		close(desc->file_map.from_fd);
+	}
+	else
+	{
+		dup2(desc->file_map.from_fd, STDERR_FILENO);
+		dup2(desc->file_map.from_fd, STDOUT_FILENO);
+		close(desc->file_map.from_fd);
+	}
+}
+
 void	map_fds(t_astnode *node)
 {
 	t_list			*list;
-	t_redirect_desc	*desc;
-	int				current_fd;
 
 	list = node->redirect;
 	while (list)
 	{
-		desc = list->content;
-		if (desc->subtype == CLOSE_FD)
-			close(desc->fd_map.to_fd);
-		else if (desc->subtype == REDIR_FD)
-		{
-			current_fd = dup(desc->fd_map.from_fd);
-			dup2(current_fd, desc->fd_map.to_fd);
-			close(current_fd);
-		}
-		else if (desc->file_map.to_fd >= 0)
-		{
-			dup2(desc->file_map.from_fd, desc->file_map.to_fd);
-			close(desc->file_map.from_fd);
-		}
-		else
-		{
-			dup2(desc->file_map.from_fd, STDERR_FILENO);
-			dup2(desc->file_map.from_fd, STDOUT_FILENO);
-			close(desc->file_map.from_fd);
-		}
+		_map(list->content);
 		list = list->next;
 	}
 }
