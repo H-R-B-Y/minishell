@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/31 11:07:39 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/02 17:51:44 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -465,12 +465,18 @@ int				last_newline_not_end(const char *str);
  */
 char	*get_var(t_minishell *shell, const char *name, int flag);
 
-
 void	clean_shell(t_minishell *shell);
 void	clean_exit_status(t_minishell *shell, int status);
 void	perror_exit(t_minishell *shell, char *message); // TODO: check if correct clean up everything and exit
 void	_free_arr_perror_exit(t_minishell *shell, void **arr, char *message);
 void	_set_returncode(int *to_set, int code);
 
+/**
+ * @brief Join two arrays
+ * @param arr1 Left array
+ * @param arr2 Right array
+ * @returns New allocated array of the joined arrays
+ */
+void	*arrjoin(void **arr1, void **arr2);
 
 #endif

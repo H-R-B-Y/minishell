@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_reader.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 13:43:46 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 15:49:56 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/02 17:52:23 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,9 @@ extern int	g_global_signal;
 
 char	*s_get_envany(t_minishell *shell, const char *name);
 
-// static size_t	_replace_var(struct s_ast_internal *meta,
-// 	const int temp_file,
-// 	const char *line
-// )
-// {
-// 	size_t	i;
-// 	char	*strs[2];
-
-// 	i = 0;
-// 	while (line[i])
-// 		i++;
-// 	strs[0] = ft_substr(line, 0, i); // plus one?
-// 	strs[1] = get_var(meta->shell, strs[0], 0);
-// 	write(temp_file, strs[1], ft_strlen(strs[1]));
-// 	return (free(strs[1]), free(strs[0]), i);
-// }
+/*
+a="abc" b="abc def" c="abc def "
+*/
 
 static int	write_str(struct s_ast_internal *meta,
 	const char *line,
@@ -40,17 +27,19 @@ static int	write_str(struct s_ast_internal *meta,
 )
 {
 	size_t	i;
+	char **tmp;
 
 	i = 0;
 	while ((flags & 2) && line[i] && line[i] == '\t')
 		++i;
-	if (ft_strchr(line, '$'))
+	if (ft_strchr(line, '$') && (flags & 1))
 	{
-		char *tmp = get_var(meta->shell, line, 0);
-		write(temp_file, tmp, ft_strlen(tmp));
+		tmp = expand_and_split(meta->shell, &line[i], 0);
+		write(temp_file, tmp[0], ft_strlen(tmp[0]));
+		ft_arrclear((void *)tmp, free);
 	}
 	else
-		write(temp_file, line, ft_strlen(line));
+		write(temp_file, &line[i], ft_strlen(&line[i]));
 	if (last_newline_not_end(line))
 		write(temp_file, "\n", 1);
 	return (1);

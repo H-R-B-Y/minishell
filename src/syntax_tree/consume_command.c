@@ -6,38 +6,14 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 13:46:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/29 17:18:50 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/02 15:09:40 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static int	_add_redirects(struct s_ast_internal *meta,
-	t_astnode *node,
-	size_t *i,
-	t_token ***new_tokenv
-)
-{
-	if (node->tokens[i[0]]->type == TOK_HEREDOC)
-	{
-		ft_lstadd_back(&node->redirect,
-			ft_lstnew(handle_heredoc(meta, node->tokens[i[0] + 1]->raw)));
-		i[0]++;
-	}
-	else if (ft_strchr("\4\5\3", node->tokens[i[0]]->type))
-	{
-		ft_lstadd_back(&node->redirect,
-			ft_lstnew(handle_redirect(node->tokens[i[0]],
-					node->tokens[i[0] + 1])));
-		i[0]++;
-	}
-	else if (node->tokens[i[0]]->type == TOK_REDIR_FD)
-		ft_lstadd_back(&node->redirect,
-			ft_lstnew(handle_redirectfd(node->tokens[i[0]])));
-	else
-		(*new_tokenv)[i[1]++] = node->tokens[i[0]];
-	return (1);
-}
+int	add_redirect_type(struct s_ast_internal *meta, t_token **arr,
+						t_astnode *node, size_t *inc);
 
 static int	post_consume_words(struct s_ast_internal *meta, t_astnode *node)
 {
@@ -49,8 +25,13 @@ static int	post_consume_words(struct s_ast_internal *meta, t_astnode *node)
 	new_tokenv = ft_calloc(ft_arrlen((void *)node->tokens) + 1, sizeof(void *));
 	while (node->tokens[i[0]])
 	{
-		if (_add_redirects(meta, node, i, &new_tokenv) < 0)
-			return (free(new_tokenv), 0);
+		if (ft_strchr("\3\4\5\6\17", node->tokens[i[0]]->type))
+		{
+			if (add_redirect_type(meta, node->tokens, node, &i[0]) < 0)
+				return (free(new_tokenv), 0);
+		}
+		else
+			new_tokenv[i[1]++] = node->tokens[i[0]];
 		i[0]++;
 	}
 	free(node->tokens);
