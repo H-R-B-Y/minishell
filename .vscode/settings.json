@@ -29,7 +29,7 @@
 		"rlstdc.h": "c",
 		"rltypedefs.h": "c",
 		"readline.h": "c",
-		"get_next_line.h": "c"
+		"ft_printf.h": "c"
 	},
 	"C_Cpp.errorSquiggles": "disabled"
 }
