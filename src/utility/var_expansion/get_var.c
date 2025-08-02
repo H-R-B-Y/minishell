@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 15:52:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 13:08:56 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/02 13:12:14 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ ssize_t	handle_var(t_minishell *shell,
 		if (_case < 0)
 			perror_exit(shell, "minishell:parameter");
 	}
-	if (res && ex->flag & 2 && ex->mode == QUOTE_NONE)
+	if (res && (ex->flag & 2) && ex->mode == QUOTE_NONE)
 	{
 		_case = _handle_word_split(ex, &res);
 		if (_case < 0)
@@ -150,7 +150,7 @@ char	**expand_and_split(t_minishell *shell,
 		if (ex.value[ex.v_i] && ex.value[ex.v_i] == '$'
 			&& (ex.mode == QUOTE_NONE || ex.mode == QUOTE_DOUBLE) && ++ex.v_i)
 			handle_var(shell, &ex);
-		else if (ex.value[ex.v_i] && flag)
+		else if (ex.value[ex.v_i] && (flag & 1))
 			delta_v += handle_char(&ex.value[ex.v_i], &ex.mode);
 		else if (ex.value[ex.v_i])
 			delta_v += 1;
