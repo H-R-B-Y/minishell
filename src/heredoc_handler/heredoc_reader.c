@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 13:43:46 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 13:18:32 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/02 15:47:40 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,9 @@ static int	write_str(struct s_ast_internal *meta,
 		ft_arrclear((void *)tmp, free);
 	}
 	else
-		write(temp_file, &line[i], ft_strlen(line));
-	write(temp_file, "\n", 1);
+		write(temp_file, &line[i], ft_strlen(&line[i]));
+	if (line[ft_strlen(line) - 1] != '\n')
+		write(temp_file, "\n", 1);
 	return (1);
 }
 
