@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 17:46:41 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/28 16:35:36 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/02 17:43:33 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,11 +114,12 @@ char	*directory_part(void)
 
 char	*create_prompt(const t_minishell *shell)
 {
-	char	*prompt;
-	char	*parts[10];
+	char		*prompt;
+	char		*parts[10];
 
+	has_git();
 	parts[0] = status_code_part(shell);
-	parts[1] = directory_part();
+	parts[1] = directory_part(); // dont need to do this everytime 
 	parts[2] = git_branch_part();
 	prompt = str_vec_join((char *[5]){
 			parts[0], parts[1], parts[2], " > ", 0

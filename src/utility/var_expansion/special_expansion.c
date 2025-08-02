@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 12:05:31 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 12:15:56 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/02 17:15:33 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ const struct s_special_var	*get_special(char c)
 		(struct s_special_var){.match="_",.f=special_last_param},
 		(struct s_special_var){.match="?",.f=special_result},
 		(struct s_special_var){.match="$",.f=special_pid},
-		(struct s_special_var){.match="0123456789",.f=special_argv}, // special case for $"" and $''
+		(struct s_special_var){.match="0123456789",.f=special_argv},
 		(struct s_special_var){.match=0,.f=0}
 	};
 

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 11:57:52 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/02 17:19:12 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,15 +70,16 @@ int	free_everything(t_minishell *shell, int code)
 		ft_arrclear((void *)shell->environment,
 			free),
 		restore_signals(shell),
+		rl_clear_history(),
 		code
 	);
 }
-void	*vecjoin(void **vec1, void **vec2);
 
 int	main(int argc, char **argv, char **envp)
 {
 	static t_minishell	shell = {0};
 	t_readline_retcode	rl_code;
+	// extern int history_max_entries;
 
 	(void)argc;
 	(void)argv;
