@@ -3,16 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 17:12:19 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/02/13 16:38:23 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/02 18:54:14 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_printf.h"
 
-int	handle_escape(const char **str, va_list args, unsigned long long *len)
+int	handle_escape(int fd,
+	const char **str,
+	va_list args,
+	unsigned long long *len
+)
 {
 	char	*esc;
 	void	*val;
@@ -32,7 +36,7 @@ int	handle_escape(const char **str, va_list args, unsigned long long *len)
 	generate_output(correct_flags(conversion));
 	if (conversion->type != '%')
 		set_padding(set_prefix(conversion));
-	print_conversion(conversion);
+	print_conversion(fd, conversion);
 	*len += printed_length(conversion);
 	delete_conversion(conversion);
 	return (0);
@@ -50,10 +54,31 @@ int	ft_printf(const char *str, ...)
 		if (*str == '%' && !*(str + 1)
 			&& (ft_putchar_fd('%', 1), ++len) && ++str)
 			continue ;
-		else if (*str == '%' && !handle_escape(&str, args, &len))
+		else if (*str == '%' && !handle_escape(1, &str, args, &len))
 			continue ;
 		else if (++len)
 			ft_putchar_fd(*str, 1);
+		str++;
+	}
+	return (va_end(args), len);
+}
+
+int	ft_fprintf(int fd, const char *str, ...)
+{
+	va_list				args;
+	unsigned long long	len;
+
+	len = 0;
+	va_start(args, str);
+	while (*str)
+	{
+		if (*str == '%' && !*(str + 1)
+			&& (ft_putchar_fd('%', fd), ++len) && ++str)
+			continue ;
+		else if (*str == '%' && !handle_escape(fd, &str, args, &len))
+			continue ;
+		else if (++len)
+			ft_putchar_fd(*str, fd);
 		str++;
 	}
 	return (va_end(args), len);

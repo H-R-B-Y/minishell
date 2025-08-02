@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_command_loop.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 17:24:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 18:35:37 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/02 19:02:30 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
