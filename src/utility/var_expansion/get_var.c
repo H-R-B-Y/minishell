@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 15:52:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 15:26:42 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/02 18:11:46 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ static ssize_t	_handle_word_split(t_expansion *ex,
 		ft_dirtyswap((void *)&ex->out[ex->o_i],
 			ft_strjoin(ex->out[ex->o_i], split[0]), free);
 		new_out = arrjoin((void *)ex->out, (void *)&split[1]);
+		len -= 1;
 	}
 	else
 		new_out = arrjoin((void *)ex->out, (void *)split);
@@ -76,10 +77,10 @@ static ssize_t	_handle_word_split(t_expansion *ex,
 	{
 		new_out = (void *)ft_arradd_back((void *)ex->out, ft_strdup(""));
 		ft_dirtyswap((void *)&ex->out, new_out, free);
-		ex->o_i += len;
+		ex->o_i += len + 1;
 	}
 	else
-		ex->o_i += (len - 1);
+		ex->o_i += len;
 	return (free(split), len);
 }
 
@@ -92,18 +93,18 @@ ssize_t	handle_var(t_minishell *shell,
 
 	_case = is_special(shell, ex, &res);
 	if (_case < 0)
-		return (perror_exit(shell, "minishell:parameter"), -1);
+		return (perror_exit(shell, "parameter"), -1);
 	else if (_case == 0)
 	{
 		_case = is_normal(shell, ex, &res); 
 		if (_case < 0)
-			perror_exit(shell, "minishell:parameter");
+			perror_exit(shell, "parameter");
 	}
 	if (res && (ex->flag & 2) && ex->mode == QUOTE_NONE)
 	{
 		_case = _handle_word_split(ex, &res);
 		if (_case < 0)
-			perror_exit(shell, "minishell:parameter");
+			perror_exit(shell, "parameter");
 	}
 	else
 		ft_dirtyswap((void *)&ex->out[ex->o_i],

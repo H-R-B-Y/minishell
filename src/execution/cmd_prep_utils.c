@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_prep_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 13:37:48 by cquinter          #+#    #+#             */
-/*   Updated: 2025/07/31 11:10:36 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/02 18:00:54 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,14 +85,24 @@ size_t get_cmd_idx(t_astnode *node)
 void	xpnd_param_var(t_minishell *shell, t_astnode *node, char ***argv, size_t *n)
 {
 	size_t	i;
+	size_t	i2;
+	char	**words;
 	
 	if (!argv && !*argv)
 		return ;
 	i = 0;
 	while(i < *n)
 	{
-		if (!ft_dirtyswap((void **)(argv[0] + i), get_var(shell, node->tokens[i][0].raw, 1), free))
+		i2 = 0;
+		words = expand_and_split(shell, node->tokens[i][0].raw, 3);
+		if (!words)
 			_free_arr_perror_exit(shell, (void **)argv, "minishell: expand");
+		while (words[i2])
+		{
+			ft_dirtyswap((void *)argv, ft_arradd_atindex((void **)*argv, words[i2], i + i2), free);
+			i2++;
+		}
+		free(words);
 		i++;
 	}
 }
