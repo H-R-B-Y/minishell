@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 15:52:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 13:12:14 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/02 15:26:42 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,10 @@ static ssize_t	is_normal(t_minishell *shell,
 		&& ft_isalnum(ex->value[ex->v_i + i]))
 		i++;
 	str = ft_substr(&ex->value[ex->v_i], 0, i);
-	*res = s_get_envany(shell, str);
+	if (*str)
+		*res = ft_strdup(s_get_envany(shell, str));
+	else
+		*res = ft_strdup("$");
 	free(str);
 	ex->v_i += i;
 	return (i);
@@ -105,7 +108,7 @@ ssize_t	handle_var(t_minishell *shell,
 	else
 		ft_dirtyswap((void *)&ex->out[ex->o_i],
 			ft_strjoin(ex->out[ex->o_i], (char *[2]){res, ""}[!res]), free);
-	return (_case);
+	return (free(res), _case);
 }
 
 ssize_t	handle_char(const char *value,
@@ -156,6 +159,7 @@ char	**expand_and_split(t_minishell *shell,
 			delta_v += 1;
 		if (!delta_v)
 			continue;
+		// append_difference() need to append the difference and not loose bytes here lol
 		(ft_dirtyswap((void *)&ex.out[ex.o_i], ft_strjoin(ex.out[ex.o_i], ft_substr(ex.value, ex.v_i, delta_v)), free));
 		ex.v_i += delta_v;
 	}

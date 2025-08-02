@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/28 16:24:46 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/02 13:41:57 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ enum e_asterror
 	AST_ERR_SYNTAX,
 	/// @brief Heredoc construction failed
 	AST_ERR_HEREDOC_EXIT,
+	/// @brief Caused when a filename gets a variable expanded in a horrible way
+	AST_ERR_INVALID_REDIRECT,
 	/// @brief FATAL error encountered
 	AST_ERR_FATAL,
 	/// @brief The count of error codes
@@ -306,7 +308,7 @@ t_redirect_desc	*handle_redirectfd(t_token *redirect);
  * @param redirect The token that specifies the redirect
  * @param filename The token that contains the filename
  */
-t_redirect_desc	*handle_redirect(t_token *redirect, t_token *filename);
+t_redirect_desc	*handle_redirect(t_token *redirect, char *filename);
 
 /**
  * @brief Process for handling heredoc 
