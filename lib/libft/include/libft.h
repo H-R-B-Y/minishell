@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:21:04 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/22 15:38:32 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/02 19:01:58 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,6 @@ size_t			ft_strlcat(char *dest, const char *src, size_t size);
  * @warning Array must be null terminated
  */
 size_t			ft_arrlcat(void **dest, void **src, size_t size);
-
 
 /**
  * @brief Get first occurance of a character in a string
@@ -384,7 +383,6 @@ void			ft_putendl_fd(char *s, int fd);
  */
 void			ft_putnbr_fd(int n, int fd);
 
-
 // ██████   ██████  ███    ██ ██    ██ ███████ 
 // ██   ██ ██    ██ ████   ██ ██    ██ ██      
 // ██████  ██    ██ ██ ██  ██ ██    ██ ███████ 
@@ -519,6 +517,14 @@ size_t			ft_arrlen(void **chunks);
 void			ft_arrclear(void **chunks, void (*f)(void *));
 
 /**
+ * @brief ft_arrclear using free by default. 
+ * free all items in an array using free() (including the array ptr)
+ * @param chunks the array of pointers to free
+ * @warning chunks must be an array of heap allocated pointers
+ */
+void			ft_arrfree(void **chunks);
+
+/**
  * @brief convert an array to a list of items
  * @param chunks the array to convert
  * @warning if allocation fails the list will be free'd but not the array
@@ -549,7 +555,7 @@ void			ft_arriter(void **arr, void *(*f)(void *));
  * @param newitem the new item to add
  * @return void** new allocated array containing the newitem
  */
-void	**ft_arradd_back(void **arr, void *newitem);
+void			**ft_arradd_back(void **arr, void *newitem);
 
 /**
  * @brief add a new item to the front of an array
@@ -558,7 +564,7 @@ void	**ft_arradd_back(void **arr, void *newitem);
  * @param newitem the new item to add
  * @return void** new allocated array containing the newitem
  */
-void	**ft_arradd_front(void **arr, void *newitem);
+void			**ft_arradd_front(void **arr, void *newitem);
 
 /**
  * @brief add a new item to the array at a given index
@@ -568,7 +574,7 @@ void	**ft_arradd_front(void **arr, void *newitem);
  * @param index the index to insert at
  * @return void** new allocated array containing the newitem
  */
-void	**ft_arradd_atindex(void **arr, void *newitem, size_t index);
+void			**ft_arradd_atindex(void **arr, void *newitem, size_t index);
 
 /**
  * @brief delete an item in an array at a given index
@@ -578,7 +584,8 @@ void	**ft_arradd_atindex(void **arr, void *newitem, size_t index);
  * @param del function to delete item in arr (optional)
  * @return void** a new allocated array with the item at index removed
  */
-void	**ft_arrdel_atindex(void **arr, size_t index, void (*del)(void *));
+void			**ft_arrdel_atindex(void **arr,
+					size_t index, void (*del)(void *));
 
 /**
  * @brief join the contents of two arrays
@@ -587,7 +594,7 @@ void	**ft_arrdel_atindex(void **arr, size_t index, void (*del)(void *));
  * @param arr2 array two
  * @return void** the new allocated array with the contents of both arrays
  */
-void	**ft_arrjoin(void **arr1, void **arr2);
+void			**ft_arrjoin(void **arr1, void **arr2);
 
 /**
  * @brief swap the value of a with b, free previous contents of a
@@ -599,7 +606,7 @@ void	**ft_arrjoin(void **arr1, void **arr2);
  * @param del function to free the original contents of a (optional)
  * @return returns the new value stored in a
  */
-void	*ft_dirtyswap(void **a, void *b, void (*del)(void *));
+void			*ft_dirtyswap(void **a, void *b, void (*del)(void *));
 
 /**
  * @brief count the occurences of c in str
@@ -608,7 +615,7 @@ void	*ft_dirtyswap(void **a, void *b, void (*del)(void *));
  * @param c character to count
  * @return ssize_t occurences or -1
  */
-ssize_t	ft_strcountchar(const char *str, char c);
+ssize_t			ft_strcountchar(const char *str, char c);
 
 /**
  * @brief Creates a random number based on the seed RANDSEED
@@ -617,10 +624,10 @@ ssize_t	ft_strcountchar(const char *str, char c);
  * @param max the maximum of the random number (inclusive)
  * @return int a new random number in the range
  */
-int	ft_rand(int min, int max);
+int				ft_rand(int min, int max);
 
-char	*ft_strrtrim(const char *s1, const char *set);
+char			*ft_strrtrim(const char *s1, const char *set);
 
-char	*ft_strltrim(const char *s1, const char *set);
+char			*ft_strltrim(const char *s1, const char *set);
 
 #endif

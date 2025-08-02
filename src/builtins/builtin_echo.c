@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:21:44 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/29 11:46:14 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/27 20:50:26 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	builtin_echo(t_minishell *shell, char **argv, char ***envp)
 {
 	int		nlflag;
 	size_t	idx;
-	
+
 	(void)shell;
 	(void)envp;
 	if (!argv[1])

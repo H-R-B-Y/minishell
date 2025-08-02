@@ -1,4 +1,36 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute_command.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/02 18:36:22 by cquinter          #+#    #+#             */
+/*   Updated: 2025/08/02 18:36:23 by cquinter         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
+#include <limits.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+
+void	exec_errno_handling(t_minishell *shell, char *path)
+{
+	struct stat	statbuf;
+
+	ft_memset(&statbuf, 0, sizeof(statbuf));
+	if (errno == ENOENT)
+	{
+		ft_putstr_fd(path, 2);
+		ft_putstr_fd(": command not found\n", 2);
+		clean_exit_status(shell, 127);
+	}
+	else if (errno == EACCES && stat(path, &statbuf) == 0 
+		&& S_ISDIR(statbuf.st_mode))
+		errno = EISDIR;
+	perror_exit(shell, path);
+}
 
 void	get_exec_cmd(t_minishell *shell, t_astnode *node, t_builtincmd *b_in)
 {
@@ -10,19 +42,22 @@ void	get_exec_cmd(t_minishell *shell, t_astnode *node, t_builtincmd *b_in)
 	node->envp = (char **)ft_arrmap((void **)shell->environment,
 		(void *)ft_strdup, free);
 	if (!node->envp)
-		perror_exit(shell, "minishell: ft_arrmap");
+		perror_exit(shell, "ft_arrmap");
 	path = node->cmdv[node->cmd_i];
 	argv = node->cmdv + node->cmd_i;
 	restore_signals(shell);
 	map_fds(node);
+	errno = 0;
 	if (ft_strchr(path, '/'))
 		execve(path, argv, node->envp);
 	else
 		exec_path = get_exec_path(shell, path, node->envp);
-	if (!exec_path)
-		perror_exit(shell, path); // Pending: check if it is working currectly
-	else
+	if (exec_path)
+	{
 		execve(exec_path, argv, node->envp);
+		free(exec_path);
+	}
+	exec_errno_handling(shell, path);
 }
 
 int	exec_raw(t_minishell *shell, t_astnode *node, t_builtincmd cmd)
@@ -48,7 +83,7 @@ int	exec_default(t_minishell *shell, t_astnode *node, t_builtincmd cmd)
 	else if (pid > 0)
 		waitpid(pid, &returncode, 0);
 	else
-		perror_exit(shell, "minishell: exec_cmd fork");
+		perror_exit(shell, "exec_cmd fork");
 	_set_returncode(&shell->return_code, returncode);
 	return (0);
 }
@@ -67,5 +102,5 @@ int	execute_command(t_minishell *shell, t_astnode *node)
 			exec_default(shell, node, _get_builtincmd(node));
 		return (0);
 	}
-	return (set_any_env(shell));
+	return (set_any_env(shell, node->cmdv, node->token_count));
 }

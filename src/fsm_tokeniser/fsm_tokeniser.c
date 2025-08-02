@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:19:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/23 14:19:23 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 18:25:22 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 void	reset_tokeniser(t_tokint *tokeniser)
 {
-	if (tokeniser->current_token)
-		destroy_token(tokeniser->current_token, free);
-	if (tokeniser->previous_line)
-		ft_dirtyswap((void *)&tokeniser->previous_line, 0, free);
+	if (tokeniser->curr_token)
+		destroy_token(tokeniser->curr_token, free);
+	if (tokeniser->prev_line)
+		ft_dirtyswap((void *)&tokeniser->prev_line, 0, free);
 	*tokeniser = (t_tokint){
-		.current_token = 0,
-		.current_type = TOK_NONE,
-		.index_end = 0,
-		.index_start = 0,
+		.curr_token = 0,
+		.curr_type = TOK_NONE,
+		.i_end = 0,
+		.i_start = 0,
 		.quote_mode = QUOTE_NONE,
 	};
 }
@@ -31,56 +31,37 @@ void	reset_fsm(t_fsmdata *fsm)
 {
 	if (fsm->tokens)
 		free_token_list(fsm->tokens, free);
-	if (fsm->str_condition)
-		fsm->str_condition = 0;
-	reset_tokeniser(&fsm->tokeniser_internals);
+	if (fsm->str_cond)
+		fsm->str_cond = 0;
+	reset_tokeniser(&fsm->tok_int);
 	(*fsm) = (t_fsmdata){
 		.state = ST_STRT, .retcode = PARSE_OK, .tokens = 0,
-		.tokeniser_internals = fsm->tokeniser_internals,
-		.paren_count = 0, .str_condition = 0, .debuginfo = fsm->debuginfo
+		.tok_int = fsm->tok_int,
+		.paren_count = 0, .str_cond = 0, .debuginfo = fsm->debuginfo
 	};
 }
 
 const t_fsmtransition	*_fsm_trns(void)
 {
-	static const t_fsmtransition transitions[TRNSCOUNT] = {
-		{ST_STRT, "\12\13", ST_LSSH},
-		{ST_STRT, "\3\4\5", ST_REDR},
-		{ST_STRT, "\6", ST_HDOC},
-		{ST_STRT, "\1\17", ST_WORD},
-		{ST_WORD, "\2\10\11", ST_OPRA},
-		{ST_WORD, "\7\14", ST_SEQ},
-		{ST_WORD, "\15", ST_END},
-		{ST_WORD, "\17", ST_WORD},
-		{ST_WORD, "\3\4\5", ST_REDR},
-		{ST_WORD, "\13", ST_RSSH},
-		{ST_WORD, "\6", ST_HDOC},
-		{ST_WORD, "\1", ST_WORD},
-		{ST_REDR, "\1", ST_WORD},
-		{ST_HDOC, "\1", ST_WORD},
-		{ST_OPRA, "\3\4\5", ST_REDR},
-		{ST_OPRA, "\12", ST_LSSH},
-		{ST_OPRA, "\1", ST_WORD},
-		{ST_OPRA, "\15", ST_CONT},
-		{ST_OPRA, "\6", ST_HDOC},
-		{ST_LSSH, "\1", ST_WORD},
-		{ST_LSSH, "\3\4\5", ST_REDR},
-		{ST_LSSH, "\6", ST_HDOC},
-		{ST_LSSH, "\12", ST_LSSH},
-		{ST_LSSH, "\15", ST_END},
-		{ST_RSSH, "\15", ST_END},
-		{ST_RSSH, "\13", ST_RSSH},
-		{ST_RSSH, "\2\10\11", ST_OPRA},
-		{ST_RSSH, "\7\14", ST_SEQ},
-		{ST_RSSH, "\3\4\5", ST_REDR},
-		{ST_RSSH, "\6", ST_HDOC},
-		{ST_RSSH, "\17", ST_WORD},
-		{ST_SEQ, "\15", ST_END},
-		{ST_SEQ, "\1", ST_WORD},
-		{ST_SEQ, "\3\4\5", ST_REDR},
-		{ST_SEQ, "\6", ST_HDOC},
-		{ST_SEQ, "\13", ST_RSSH},
-		{ST_SEQ, "\12", ST_LSSH},
+	static const t_fsmtransition	transitions[TRNSCOUNT] = {
+	{ST_STRT, "\12\13", ST_LSSH}, {ST_STRT, "\3\4\5", ST_REDR},
+	{ST_STRT, "\6", ST_HDOC}, {ST_STRT, "\1\17", ST_WORD},
+	{ST_WORD, "\2\10\11", ST_OPRA}, {ST_WORD, "\7\14", ST_SEQ},
+	{ST_WORD, "\15", ST_END}, {ST_WORD, "\17", ST_WORD},
+	{ST_WORD, "\3\4\5", ST_REDR}, {ST_WORD, "\13", ST_RSSH},
+	{ST_WORD, "\6", ST_HDOC}, {ST_WORD, "\1", ST_WORD},
+	{ST_REDR, "\1", ST_WORD}, {ST_HDOC, "\1", ST_WORD},
+	{ST_OPRA, "\3\4\5", ST_REDR}, {ST_OPRA, "\12", ST_LSSH},
+	{ST_OPRA, "\1", ST_WORD}, {ST_OPRA, "\15", ST_CONT},
+	{ST_OPRA, "\6", ST_HDOC}, {ST_LSSH, "\1", ST_WORD},
+	{ST_LSSH, "\3\4\5", ST_REDR}, {ST_LSSH, "\6", ST_HDOC},
+	{ST_LSSH, "\12", ST_LSSH}, {ST_LSSH, "\15", ST_END},
+	{ST_RSSH, "\15", ST_END}, {ST_RSSH, "\13", ST_RSSH},
+	{ST_RSSH, "\2\10\11", ST_OPRA}, {ST_RSSH, "\7\14", ST_SEQ},
+	{ST_RSSH, "\3\4\5", ST_REDR}, {ST_RSSH, "\6", ST_HDOC},
+	{ST_RSSH, "\17", ST_WORD}, {ST_SEQ, "\15", ST_END},
+	{ST_SEQ, "\1", ST_WORD}, {ST_SEQ, "\3\4\5", ST_REDR},
+	{ST_SEQ, "\6", ST_HDOC}, {ST_SEQ, "\13", ST_RSSH}, {ST_SEQ, "\12", ST_LSSH}
 	};
 
 	return (transitions);
@@ -110,9 +91,9 @@ t_fsmstate	fsm_check_transition(const t_fsmstate current_state,
 
 t_token	*tokeniser_pop_token(t_tokint *tokeniser)
 {
-	t_token *p;
+	t_token	*p;
 
-	p = tokeniser->current_token;
-	tokeniser->current_token = 0;
+	p = tokeniser->curr_token;
+	tokeniser->curr_token = 0;
 	return (p);
 }

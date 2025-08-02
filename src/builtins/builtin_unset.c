@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_unset.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 15:13:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/30 20:12:12 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/07/27 20:50:14 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 void	unset_any(t_minishell *shell, char *name)
 {
 	ssize_t	in;
-	
+
 	in = s_get_envid(shell, name);
 	if (in >= 0)
 		ft_dirtyswap((void *)&shell->environment,

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 16:31:59 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/07 16:10:28 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 20:08:53 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*rem_quotes(const char *str)
 	output = ft_calloc(ft_strlen(str) + 1, sizeof(char));
 	ft_bzero(i, sizeof(size_t) * 2);
 	mode = QUOTE_NONE;
-	while(str[i[0]])
+	while (str[i[0]])
 	{
 		if (mode == QUOTE_NONE)
 			handle_nonquoted(str, i, output, &mode);

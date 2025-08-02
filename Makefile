@@ -40,7 +40,6 @@ SRCS			:= \
 				$(SRC_DIR)/execution/execute_subshell.c \
 				$(SRC_DIR)/execution/execute_seq.c \
 				$(SRC_DIR)/execution/execute_logical.c \
-				$(SRC_DIR)/execution/exit_handling_utils.c \
 				$(SRC_DIR)/execution/cmd_prep_utils.c \
 				$(SRC_DIR)/execution/glob_local_dir.c \
 				$(SRC_DIR)/execution/prepare_redirects.c \
@@ -64,6 +63,7 @@ SRCS			:= \
 				\
 				$(SRC_DIR)/heredoc_handler/handle_heredoc.c \
 				$(SRC_DIR)/heredoc_handler/handle_redirects.c \
+				$(SRC_DIR)/heredoc_handler/heredoc_reader.c \
 				\
 				$(SRC_DIR)/init_process/init_process.c \
 				$(SRC_DIR)/init_process/restore_signals.c \
@@ -74,6 +74,7 @@ SRCS			:= \
 				$(SRC_DIR)/new_readline_loop/readline_wrapper.c \
 				$(SRC_DIR)/new_readline_loop/splitting_next_lines.c \
 				\
+				$(SRC_DIR)/syntax_tree/add_redirect_types.c \
 				$(SRC_DIR)/syntax_tree/ast_node_init.c \
 				$(SRC_DIR)/syntax_tree/consume_command.c \
 				$(SRC_DIR)/syntax_tree/consume_subshell.c \
@@ -82,12 +83,14 @@ SRCS			:= \
 				$(SRC_DIR)/syntax_tree/syntax_heirarchy.c \
 				$(SRC_DIR)/syntax_tree/syntax_util.c \
 				\
+				$(SRC_DIR)/utility/var_expansion/get_var.c \
+				$(SRC_DIR)/utility/var_expansion/special_expansion.c \
+				$(SRC_DIR)/utility/arrjoin.c \
 				$(SRC_DIR)/utility/get_my_pid.c \
 				$(SRC_DIR)/utility/last_newline_not_end.c \
 				$(SRC_DIR)/utility/operators.c \
 				$(SRC_DIR)/utility/pop_line.c \
-				$(SRC_DIR)/utility/rem_quote2.c \
-				$(SRC_DIR)/utility/remove_quotes.c \
+				$(SRC_DIR)/utility/rem_quotes.c \
 				$(SRC_DIR)/utility/sgetenv.c \
 				$(SRC_DIR)/utility/sgetenvany.c \
 				$(SRC_DIR)/utility/simple_split.c \
@@ -97,6 +100,8 @@ SRCS			:= \
 				$(SRC_DIR)/utility/update_env.c \
 				$(SRC_DIR)/utility/set_n_envp.c \
 				$(SRC_DIR)/utility/set_any_env.c \
+				$(SRC_DIR)/utility/init_pwd.c \
+				$(SRC_DIR)/utility/exit_handling_utils.c \
 				\
 
 

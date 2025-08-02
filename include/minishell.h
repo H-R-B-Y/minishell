@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/22 15:42:10 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/02 17:54:03 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,104 +39,106 @@
 
 # include "./libft.h"
 # include "./v_dbg.h"
-# include "./fsm_tokeniser.h"
 # include "./readline_loop.h"
 # include "./abstract_syntax_tree.h"
 # include "./execution.h"
 # include "./builtin.h"
 
 /**
- * @brief the main struct for storing minishell state
- * @param environment placeholder for when we store environment
- * @param tokens a linked list of tokens created from the lexar
- * @param tokenv a vector array of tokens (null terminated)
- * @param current_tree the current AST tree produced from the tokens
- * @param current_line the current line to add to history
- * @param current_pipeline the current command string we are running
- * @param extra_lines a vector array of extra lines read from readline
+ * @brief redo this comment
  * 
- * @note extra lines should not be populated after readline loop
- * (it should be free'd)
- * @param prompt I thought it would be nice if we allowed the prompt 
- * to be customised so i made it a variable, should probably indicate current
- * directory too.
  */
 typedef struct s_minishell	t_minishell;
 struct s_minishell
 {
-
-	short		interactive_mode;
+	/// @brief Interactive mode flag (stdin is a terminal)
+	short				interactive_mode;
+	/// @brief signal handlers copied from the start of the process
+	/// (so they can be restored)
 	struct sigaction	old_handlers[32];
-	
-	/*
-	this is the environment that will be passed down to any child process
-	at the start of the program we take a copy of the environment varaiables
-	so that we can edit them on the fly.
-	*/
-	char		**environment;
-
-	char		**unassigned_env;
-
-	/*
-	this is another environment variable array, this one however 
-	is only in the context of the current shell, it can be used for variable
-	expansion but cannot be passed to child processes.
-	*/
-	char		**local_env;
-
-	/*
-	tokens list is just for the internal tokenisation process, it probably
-	shouldnt be included as part of the main struct! ~ i can remove this later
-	*/
-	t_list		*tokens;
-
-	/*
-	token vector is part of the main struct solely as a reference for cleaning up
-	all the tokens need to be kept for the entire execution process
-	(well only until they are executed i guess)
-	but if this reference to them here this is all we need to cleanup
-	*/
-	t_token		**tokenv;
-
-	/*
-	current tree, nodes will need to be free'd but their internal tokens
-	do not have to be free'd
-	*/
-	t_astnode	*current_tree;
-
-	pid_t		my_pid;
-	
-	int			return_code;
-
-	/*
-	internal finite state machine data*/
-	t_fsmdata	fsm_data;
-
-	t_readline_data	rldata;
-	/*
-	i think the best way to handle this would be to keep concatinating
-	the readlines until we reach the point where we have a valid AST.
-
-	then append the history item.
-
-	then run the execution tree.
-	*/
-	// this is everything we have read for the current pipeline.
-	char		*current_line;
-	// this is everything we are tokenising and running
-	char		*current_pipeline;
-	// this is every line that we are not currently tokenising
-	char		**extra_lines;
-
-	char		*prompt;
-
+	/// @brief Environment array copied at the start of the process
+	char				**environment;
+	/// @brief Environment variables that have been created but unassigned
+	char				**unassigned_env;
+	/// @brief Shell local variables
+	char				**local_env;
+	/// @brief List of tokens relevant to the current job
+	t_list				*tokens;
+	/// @brief Tokens but as an array, for easier access
+	t_token				**tokenv;
+	/// @brief The execution tree relevant to the current job
+	t_astnode			*current_tree;
+	/// @brief PID of the shell
+	pid_t				my_pid;
+	/// @brief Return code of the previous command / job 
+	int					return_code;
+	/// @brief Internal information relevant to the finite state machine
+	t_fsmdata			fsm_data;
+	/// @brief Internal information relevant to the readline loop
+	t_readline_data		rldata;
+	/// @brief Current line (? do we still need this)
+	char				*ecurrent_line;
+	/// @brief Current pipeline (? do we still need this?)
+	char				*current_pipeline;
+	/// @brief Extra lines from input (? arent these in the rldata now?)
+	char				**extra_lines;
+	/// @brief Current prompt
+	char				*prompt;
+	/// @brief Data relevant for dumping binary data out to a fd
 	struct s_dbg_info	info;
+	/// @brief count of arguments passed to the program at execution
+	int					argc;
+	/// @brief arguments passed to program at execution
+	char				**argv;
+	/// @brief Not sure if this is going to be used,
+	/// but for _ expansion of arguments I was thinking
+	/// that we could set it globally, maybe?
+	char				*last_arg;
+	char				*name;
 };
 
-int		init_process(t_minishell *shell, char **envp);
-int		better_add_history(char *string);
-void	reset_for_command(t_minishell *shell, t_readline_retcode rl_code);
-char	*create_prompt(const t_minishell *shell);
+void	init_pwd(t_minishell *shell, char ***envp);
+/**
+ * @brief Initialise the shell
+ * 
+ * Checks for interactive mode,
+ * Sets up signal handlers
+ * Sets some config for libreadline
+ * 
+ * @param shell Reference to the shell
+ * @param envp the environment passed in at start
+ * @return int 0 is ok, < 0 is an error
+ */
+int				init_process(t_minishell *shell, char **envp);
+
+/**
+ * @brief Adds to readline history but does not duplicate
+ * 
+ * @param string The histeory item that we want to add
+ * @return int status code
+ */
+int		better_add_history(t_minishell *shell, char *string);
+
+/**
+ * @brief Cleanup ready for the next command (or at exit time)
+ * 
+ * This will free anything heap allocated so this doubles as
+ * a safe way to cleanup.
+ * 
+ * @param shell Reference to the shell internals
+ * @param rl_code readline code
+ * (so we dont free anything that might be needed later)
+ */
+void			reset_for_command(t_minishell *shell,
+					t_readline_retcode rl_code);
+
+/**
+ * @brief Creates the prompt with colours and git info
+ * 
+ * @param shell refernce to the shell object
+ * @return char* the prompt! 
+ */
+char			*create_prompt(const t_minishell *shell);
 
 /**
  * @brief print out a token list in columns
@@ -158,7 +160,8 @@ void			print_token_list(const t_list *list);
  * for example "cat", "dog", " and " would produce:
  * cat and dog
  */
-char			*str_join_with_sep(const char *str1, const char *str2, const char *sep);
+char			*str_join_with_sep(const char *str1,
+					const char *str2, const char *sep);
 
 /**
  * @brief join together a null terminated array of strings
@@ -180,10 +183,10 @@ char			*str_vec_join(char **arr);
 char			*_pop_line(char ***str);
 
 // this one doesnt expand vars
-char	*rem_quotes(const char *str);
+char			*rem_quotes(const char *str);
 
 // this one does expand vars. Not handling $'...'
-char	*rmv_quotes_xpnd_var(char *str, t_minishell *shell);
+char			*rmv_quotes_xpnd_var(char *str, t_minishell *shell);
 // they should be renamed but i dont want to mess anything up
 
 /*
@@ -196,10 +199,10 @@ variable expansion.
 The second is the internal variables, these are tracked by the shell but only
 accessible to the shell and not handed to the child processes.
 */
-
-ssize_t			_sgetanon(char **anon, char *name);
-
-ssize_t			_sgetidx(char **anon, char *name);
+// TODO: comment this
+ssize_t			_sgetanon(char **anon, const char *name);
+// TODO: comment this
+ssize_t			_sgetidx(char **anon, const char *name);
 
 /**
  * @brief get an environment variable from the internal tracked environment
@@ -208,7 +211,7 @@ ssize_t			_sgetidx(char **anon, char *name);
  * @param name the name of the variable
  * @return char* the entire variable entry
  */
-char			*s_get_env(t_minishell *shell, char *name);
+char			*s_get_env(t_minishell *shell, const char *name);
 
 /**
  * @brief get the index of a variable in the internal tracked environment
@@ -217,7 +220,7 @@ char			*s_get_env(t_minishell *shell, char *name);
  * @param name the name of the variable
  * @return char* the entire variable entry
  */
-ssize_t			s_get_envid(t_minishell *shell, char *name);
+ssize_t			s_get_envid(t_minishell *shell, const char *name);
 
 /**
  * @brief get an shell local variable from the internal tracked variables
@@ -226,7 +229,7 @@ ssize_t			s_get_envid(t_minishell *shell, char *name);
  * @param name the name of the variable
  * @return char* the entire variable entry
  */
-char			*s_get_interalenv(t_minishell *shell, char *name);
+char			*s_get_interalenv(t_minishell *shell, const char *name);
 
 /**
  * @brief get the index of a shell local variable from the internal tracked vars
@@ -235,7 +238,7 @@ char			*s_get_interalenv(t_minishell *shell, char *name);
  * @param name the name of the variable
  * @return char* the entire variable entry
  */
-ssize_t			s_get_internalenvid(t_minishell *shell, char *name);
+ssize_t			s_get_internalenvid(t_minishell *shell, const char *name);
 
 /**
  * @brief get a env var from either internal or environment
@@ -244,7 +247,7 @@ ssize_t			s_get_internalenvid(t_minishell *shell, char *name);
  * @param name name of var
  * @return char* a string lol
  */
-char	*s_get_envany(t_minishell *shell, char *name);
+char			*s_get_envany(t_minishell *shell, const char *name);
 
 /**
  * @brief get an ENV string from the shell's environment
@@ -253,7 +256,7 @@ char	*s_get_envany(t_minishell *shell, char *name);
  * @param name the name of the environment variable
  * @return char* the env string from the environment
  */
-char 	*s_get_fromthis_env(char **env, char *name);
+char			*s_get_fromthis_env(char **env,  const char *name);
 
 /*
 Things that can be accessed externally in the builtins are
@@ -281,7 +284,7 @@ Things that can be accessed externally in the builtins are
  * @param envp the current environment variables
  * @return int the statuscode
  */
-typedef int					(*t_builtincmd)(t_minishell *, char **, char ***);
+typedef int			(*t_builtincmd)(t_minishell *, char **, char ***);
 
 
 /**
@@ -300,27 +303,50 @@ typedef int					(*t_builtincmd)(t_minishell *, char **, char ***);
  * @param str string to check for a builtin command
  * @return t_builtincmd a function to run as a command
  */
-t_builtincmd _get_builtincmd(t_astnode *node);
+t_builtincmd	_get_builtincmd(t_astnode *node);
 
-int		exec_builtincmd(t_minishell *shell, t_astnode *node, t_builtincmd cmd);
+/**
+ * @brief Execute a bultin command
+ * 
+ * @param shell Reference to the shell
+ * @param node Reference to the ast node that calls this
+ * @param cmd The builtin function ptr
+ * @return int 0?
+ */
+int				exec_builtincmd(t_minishell *shell,
+					t_astnode *node, t_builtincmd cmd);
 
-void	*print_and_ret(void *p);
+/**
+ * @warning Assumes p is a string, for use in arriter
+ * @brief print the string p and return it
+ * 
+ * @param p a string
+ * @return void* same string
+ */
+void			*print_and_ret(void *p);
 
-void	*export_print_and_ret(void *p);
+/**
+ * @warning assumes p is a str (for use in arriter)
+ * @brief print a string with export syntax
+ * 
+ * @param p a string
+ * @return void* the same string
+ */
+void			*export_print_and_ret(void *p);
 
 /**
  * @brief is current directory a git directory
  * 
  * @return int 1 if is git directory
  */
-int		is_git_dir(void);
+int				is_git_dir(void);
 
 /**
  * @brief user has git installed at /usr/bin/git
  * 
  * @return int 1 if user has git
  */
-int		has_git(void);
+int				has_git(void);
 
 /**
  * @brief generic run a git command
@@ -328,21 +354,21 @@ int		has_git(void);
  * @param argv args to pass to git command
  * @return char* output of git command
  */
-char	*run_git_command(const char **argv);
+char			*run_git_command(const char **argv);
 
 /**
  * @brief git work tree is dirty
  * 
  * @return int 1 if the git tree is dirty
  */
-int		is_git_dirty(void);
+int				is_git_dirty(void);
 
 /**
  * @brief Restore signals to what they were before the shell init process
  * 
  * @param shell Pointer to the shell
  */
-void	restore_signals(const t_minishell *shell);
+void			restore_signals(const t_minishell *shell);
 
 /**
  * @brief sets the global signal int to be sig
@@ -351,14 +377,14 @@ void	restore_signals(const t_minishell *shell);
  * @param info info about signal
  * @param context context for signal
  */
-void	default_sig_handle(int sig, siginfo_t *info, void *context);
+void			default_sig_handle(int sig, siginfo_t *info, void *context);
 
 /**
  * @brief Get the my pid
  * 
  * @return pid_t pid or -1 for error
  */
-pid_t	get_my_pid(void);
+pid_t			get_my_pid(void);
 
 /**
  * @brief Get redirects ready before execution
@@ -366,14 +392,14 @@ pid_t	get_my_pid(void);
  * @param node 
  * @return int 
  */
-int	prepare_fds(t_astnode *node);
+int				prepare_fds(t_astnode *node);
 
 /**
  * @brief map fds from fd map
  * 
  * @param node node containing redirect list
  */
-void	map_fds(t_astnode *node);
+void			map_fds(t_astnode *node);
 
 /**
  * @brief unset some signal handlers for execution
@@ -385,7 +411,7 @@ void	map_fds(t_astnode *node);
  * but in order to do that we would need to manage our own process groups
  * and jobs using functions we dont have access too -_-
  */
-void	set_exection_signals(void);
+void			set_exection_signals(void);
 
 /**
  * @brief Set the up signal handlers 
@@ -398,13 +424,29 @@ void	set_exection_signals(void);
  * @param shell the shell 
  * @return int status code -1 on err
  */
-int	setup_signals(t_minishell *shell);
+int				setup_signals(t_minishell *shell);
 
-ssize_t	glob_variable(t_astnode	*node);
+/**
+ * @brief Check node for variables that might need to be globbed
+ * @param node the node to check for globbing
+ */
+ssize_t			glob_variable(t_astnode	*node);
 
-char	**simple_split(const char *str, t_readline_data *data);
+/**
+ * @brief Split on each newline of the string
+ * @param str string to split
+ * @param data the readline loop internals
+ * @returns the split string
+ */
+char			**simple_split(const char *str, t_readline_data *data);
 
-int	free_everything(t_minishell *shell, int code);
+/**
+ * @brief free everything
+ * @param shell reference to the shell
+ * @param code return code to return
+ * @returns code 
+ */
+int				free_everything(t_minishell *shell, int code);
 
 /**
  * @brief check if the string either doesnt contain a newline
@@ -412,6 +454,29 @@ int	free_everything(t_minishell *shell, int code);
  * @note added to remove duplication
  * @param str the string to check
  */
-int	last_newline_not_end(const char *str);
+int				last_newline_not_end(const char *str);
+
+/**
+ * @brief Expand a variable name, this includes all environments
+ * AND special variables
+ * @param shell the shell struct
+ * @param name the name of the variable to expand
+ * @param flag 1 if you want to care about quotes else 0
+ */
+char	**expand_and_split(t_minishell *shell, const char *value, int flag);
+
+void	clean_shell(t_minishell *shell);
+void	clean_exit_status(t_minishell *shell, int status);
+void	perror_exit(t_minishell *shell, char *message); // TODO: check if correct clean up everything and exit
+void	_free_arr_perror_exit(t_minishell *shell, void **arr, char *message);
+void	_set_returncode(int *to_set, int code);
+
+/**
+ * @brief Join two arrays
+ * @param arr1 Left array
+ * @param arr2 Right array
+ * @returns New allocated array of the joined arrays
+ */
+void	*arrjoin(void **arr1, void **arr2);
 
 #endif
