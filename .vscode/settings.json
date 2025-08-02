@@ -24,7 +24,11 @@
 		"functional": "c",
 		"tuple": "c",
 		"utility": "c",
-		"var_expansion.h": "c"
+		"var_expansion.h": "c",
+		"history.h": "c",
+		"rlstdc.h": "c",
+		"rltypedefs.h": "c",
+		"readline.h": "c"
 	},
 	"C_Cpp.errorSquiggles": "disabled"
 }

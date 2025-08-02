@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 17:19:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/28 16:35:24 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/02 17:44:16 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,14 @@ extern char	**environ;
 
 int	has_git(void)
 {
-	if (access("/usr/bin/git", F_OK))
-		return (0);
-	return (1);
+	static int	called = -1;
+	if (called < 0)
+	{
+		called = 1;
+		if (access("/usr/bin/git", F_OK))
+			called = 0;
+	}
+	return (called);
 }
 
 char	*get_return(int data[2], const int ret)
