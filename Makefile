@@ -75,6 +75,7 @@ SRCS			:= \
 				$(SRC_DIR)/new_readline_loop/readline_wrapper.c \
 				$(SRC_DIR)/new_readline_loop/splitting_next_lines.c \
 				\
+				$(SRC_DIR)/syntax_tree/add_redirect_types.c \
 				$(SRC_DIR)/syntax_tree/ast_node_init.c \
 				$(SRC_DIR)/syntax_tree/consume_command.c \
 				$(SRC_DIR)/syntax_tree/consume_subshell.c \

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 16:49:12 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 19:37:11 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/02 13:41:40 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	get_tofd(char *raw, char *sep)
 	return (i);
 }
 
-t_redirect_desc	*handle_redirect(t_token *redirect, t_token *filename)
+t_redirect_desc	*handle_redirect(t_token *redirect, char *filename)
 {
 	t_redirect_desc	*output;
 	int				to_fd;
@@ -85,7 +85,7 @@ t_redirect_desc	*handle_redirect(t_token *redirect, t_token *filename)
 		(0 * (redirect->type == TOK_REDIR_IN))
 		+ (1 * (redirect->type == TOK_REDIR_OUT))
 		+ (2 * (redirect->type == TOK_REDIR_APPEND))],
-		.file_map.filename = ft_strdup(filename->raw), .file_map.to_fd = to_fd,
+		.file_map.filename = ft_strdup(filename), .file_map.to_fd = to_fd,
 	};
 	return (output);
 }
