@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dbg_write_tokens.c                                     :+:      :+:    :+:   */
+/*   write_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 16:56:45 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/29 12:58:59 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/28 16:24:08 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,22 +30,20 @@ int	write_token(struct s_dbg_info *info, t_token *token)
 
 	int_data = DBG_DT_TOKEN;
 	write(info->fd, &int_data, sizeof(int));
-	byte_count = (sizeof(int) * 5) // type, heredoc, redir, quot, vars
-		+ ((ft_strlen(token->raw) + 1) // raw string
+	byte_count = (sizeof(int) * 5)
+		+ ((ft_strlen(token->raw) + 1)
 			* sizeof(char))
-		+ sizeof(void *); // my ID
+		+ sizeof(void *);
 	write(info->fd, &byte_count, sizeof(int));
 	write(info->fd, &token, sizeof(void *));
 	write(info->fd, &token->type, sizeof(int));
 	write(info->fd, token->raw, ft_strlen(token->raw) + 1);
 	write(info->fd, &token->heredoc_delim, sizeof(int));
 	write(info->fd, &token->redirect_file, sizeof(int));
-	write(info->fd, &token->quotes_removed, sizeof(int));
-	write(info->fd, &token->variables_expanded, sizeof(int));
-	printf("wrote %d bytes for token %s\n", byte_count, token->raw);
+	// write(info->fd, &token->quotes_removed, sizeof(int));
+	// write(info->fd, &token->variables_expanded, sizeof(int));
 	return (byte_count + (sizeof(int) * 2));
 }
-
 
 size_t	dbg_write_tokens(struct s_dbg_info *info)
 {

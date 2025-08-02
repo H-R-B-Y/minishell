@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:36:40 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/23 14:27:26 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/29 17:14:33 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,21 @@ Would it be better to have some form of
 lookup to allow us to expand this in more meaningful ways
 not sure -_-
 */
+
+static t_tokentype	_p_redirect_amp(const char *raw_token, int i)
+{
+	while (ft_iswhitespace(raw_token[i]))
+		i++;
+	if (!(ft_isdigit(raw_token[i]) || raw_token[i] == '-'))
+		return (TOK_WORD);
+	i++;
+	if (raw_token[i - 1] != '-')
+		while (ft_isdigit(raw_token[i]))
+			i++;
+	if (!raw_token[i])
+		return (TOK_REDIR_FD);
+	return (TOK_WORD);
+}
 
 t_tokentype	potential_redirect(const char *raw_token)
 {
@@ -32,22 +47,11 @@ t_tokentype	potential_redirect(const char *raw_token)
 	i++;
 	if (raw_token[i] == '>' && !raw_token[i + 1])
 		return (TOK_REDIR_APPEND);
-	if (raw_token[i] == '<' && (!raw_token[i + 1] || (raw_token[i + 1] == '-' && !raw_token[i + 2])))
+	if (raw_token[i] == '<' && (!raw_token[i + 1]
+			|| (raw_token[i + 1] == '-' && !raw_token[i + 2])))
 		return (TOK_HEREDOC);
-	if (raw_token[i] == '&')
-	{
-		i++;
-		while (ft_iswhitespace(raw_token[i]))
-			i++;
-		if (!(ft_isdigit(raw_token[i]) || raw_token[i] == '-'))
-			return (TOK_NONE);
-		i++;
-		if (raw_token[i - 1] != '-')
-			while (ft_isdigit(raw_token[i]))
-				i++;
-		if (!raw_token[i])
-			return (TOK_REDIR_FD);
-	}
+	if (raw_token[i] == '&' && ++i)
+		return (_p_redirect_amp(raw_token, i));
 	return (TOK_WORD);
 }
 
@@ -88,9 +92,9 @@ t_tokentype	bin_token(const char *raw_token)
 
 static int	unfinished_string_check(t_tokint *tokeniser, const char *str)
 {
-	if (tokeniser->quote_mode != QUOTE_NONE || (tokeniser->index_end > 1
-		&& str[tokeniser->index_end - 1] == '\\'
-		&& str[tokeniser->index_end - 2] != '\\'))
+	if (tokeniser->quote_mode != QUOTE_NONE || (tokeniser->i_end > 1
+			&& str[tokeniser->i_end - 1] == '\\'
+			&& str[tokeniser->i_end - 2] != '\\'))
 		return (1);
 	return (0);
 }
@@ -100,26 +104,25 @@ t_tokentype	tokenise_type(t_tokint *tokeniser, const char *str)
 	char	*substring;
 
 	if (unfinished_string_check(tokeniser, str))
-		return ((int[2]){TOK_INCOMPLETE_STRING, TOK_ERR}[!handle_unclosed_quote(tokeniser, str)]);
-	substring = ft_substr(str, tokeniser->index_start,
-			tokeniser->index_end - tokeniser->index_start);
-	tokeniser->current_type = bin_token(substring);
-	tokeniser->current_token = ft_calloc(1, sizeof(t_token));
-	if (!substring || !tokeniser->current_token)
+		return ((int [2]){TOK_INCOMPLETE_STRING, TOK_ERR}
+			[!handle_unclosed_quote(tokeniser, str)]);
+	substring = ft_substr(str, tokeniser->i_start,
+			tokeniser->i_end - tokeniser->i_start);
+	tokeniser->curr_type = bin_token(substring);
+	tokeniser->curr_token = ft_calloc(1, sizeof(t_token));
+	if (!substring || !tokeniser->curr_token)
 		return (TOK_ERR);
-	(*tokeniser->current_token) = (t_token){.heredoc_delim = 0,
-		.raw = substring, .type = tokeniser->current_type,};
-	if (tokeniser->current_type == TOK_WORD && tokeniser->previous_line)
-	{ // what do we do if str vec join fails here
-		if (last_newline_not_end(tokeniser->previous_line))
-			ft_dirtyswap((void *)&tokeniser->current_token->raw,
-				str_vec_join((char *[4]){tokeniser->previous_line, "\n", substring, 0}),
-				free);
-		else
-			ft_dirtyswap((void *)&tokeniser->current_token->raw,
-				str_vec_join((char *[3]){tokeniser->previous_line, substring, 0}),
-				free);
-		ft_dirtyswap((void *)&tokeniser->previous_line, 0, free);
-	}
-	return (tokeniser->current_type);
+	(*tokeniser->curr_token) = (t_token){.heredoc_delim = 0,
+		.raw = substring, .type = tokeniser->curr_type,};
+	if (!(tokeniser->curr_type == TOK_WORD && tokeniser->prev_line))
+		return (tokeniser->curr_type);
+	if (last_newline_not_end(tokeniser->prev_line))
+		ft_dirtyswap((void *)&tokeniser->curr_token->raw, str_vec_join(
+				(char *[4]){tokeniser->prev_line, "\n", substring, 0}), free);
+	else
+		ft_dirtyswap((void *)&tokeniser->curr_token->raw,
+			str_vec_join((char *[3]){tokeniser->prev_line, substring, 0}),
+			free);
+	ft_dirtyswap((void *)&tokeniser->prev_line, 0, free);
+	return (tokeniser->curr_type);
 }

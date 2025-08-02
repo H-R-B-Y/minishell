@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pop_line.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:45:56 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/27 15:38:45 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 20:08:45 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-char *_pop_line(char ***arr)
+char	*_pop_line(char ***arr)
 {
 	char	*str;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_debugger.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 14:46:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/30 16:50:55 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 18:37:09 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int	init_debugger(struct s_dbg_info *info)
 {
-	struct stat buf;
+	struct stat	buf;
 
 	if (!FD_DBG)
 	{
@@ -36,8 +36,9 @@ int	init_debugger(struct s_dbg_info *info)
 	return (0);
 }
 
-struct s_dbg_info *static_debug_info(void)
-{
-	static struct s_dbg_info	info = {0};
-	return (&info);
-}
+// struct s_dbg_info *static_debug_info(void)
+// {
+// 	static struct s_dbg_info	info = {0};
+
+// 	return (&info);
+// }

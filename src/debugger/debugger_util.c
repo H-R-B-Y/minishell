@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   debugger_util.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 12:43:25 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/14 17:06:45 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/27 18:37:05 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../include/v_dbg.h"
 
-void		dbg_add_token_list(struct s_dbg_info *info, t_list *tk)
+void	dbg_add_token_list(struct s_dbg_info *info, t_list *tk)
 {
-	t_list *node;
+	t_list	*node;
 
 	node = tk;
 	while (node)
@@ -25,7 +25,7 @@ void		dbg_add_token_list(struct s_dbg_info *info, t_list *tk)
 	}
 }
 
-void		dbg_add_ast(struct s_dbg_info *info, t_astnode *head)
+void	dbg_add_ast(struct s_dbg_info *info, t_astnode *head)
 {
 	if (!head)
 		return ;

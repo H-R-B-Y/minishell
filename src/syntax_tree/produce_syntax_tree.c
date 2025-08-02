@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   produce_syntax_tree.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 12:20:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/31 17:10:00 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/07/31 11:10:00 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@ int	produce_ast(t_minishell *shell, t_token **tokens, t_astnode **output)
 		return (AST_ERR_SYNTAX);
 	meta.tokens = tokens;
 	meta.consumed = 0;
-	meta.left_node = 0;
 	meta.shell = shell;
-	meta.right_node = 0;
 	meta.rldata = &shell->rldata;
 	meta.error = AST_ERR_NONE;
 	head = ast_parse_seperators(&meta);
 	if (meta.error == AST_ERR_NONE)
 		*output = head;
+	else if (meta.error == AST_ERR_FATAL)
+		perror_exit(shell, "produce_ast");
 	else
 	{
 		*output = 0;

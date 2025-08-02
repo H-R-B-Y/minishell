@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   git_stuff.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 17:19:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/14 16:04:02 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/02 17:44:16 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,17 @@ extern char	**environ;
 
 int	has_git(void)
 {
-	if (access("/usr/bin/git", F_OK))
-		return (0);
-	return (1);
+	static int	called = -1;
+	if (called < 0)
+	{
+		called = 1;
+		if (access("/usr/bin/git", F_OK))
+			called = 0;
+	}
+	return (called);
 }
 
-char *get_return(int data[2], const int ret)
+char	*get_return(int data[2], const int ret)
 {
 	char	*buff[2];
 	int		stat;
@@ -41,18 +46,19 @@ char *get_return(int data[2], const int ret)
 		buff[1] = get_next_line(data[0]);
 		if (!buff[1])
 			break ;
-		ft_dirtyswap((void *)&buff[0], str_vec_join((char *[3]){buff[0], buff[1], 0}), free);
+		ft_dirtyswap((void *)&buff[0],
+			str_vec_join((char *[3]){buff[0], buff[1], 0}), free);
 		free(buff[1]);
 	}
 	return (close(data[0]), buff[0]);
 }
 
-char *run_git_command(const char **argv)
+char	*run_git_command(const char **argv)
 {
 	int		p[2];
 	pid_t	chld;
 	int		ret;
-	
+
 	if (!has_git())
 		return (0);
 	if (pipe(p) == -1)
@@ -74,14 +80,13 @@ char *run_git_command(const char **argv)
 	return (get_return(p, ret));
 }
 
-
 int	is_git_dir(void)
 {
-	static const char *argv[6] = {
+	static const char	*argv[6] = {
 		"git", "-C", ".", "rev-parse", "--is-inside-work-tree", 0
 	};
-	char	*out;
-	int		code;
+	char				*out;
+	int					code;
 
 	code = 0;
 	out = run_git_command((void *)argv);
