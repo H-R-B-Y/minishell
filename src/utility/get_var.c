@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 15:52:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/01 14:30:41 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/01 14:41:42 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,7 @@ ssize_t	handle_var(t_minishell *shell, t_expansion *ex)
 	{
 		// check if it should be split, or just split it
 		split = ft_splitfn(res, ft_iswhitespace); // expand this case to be IFS
-		if (ft_strchr(" \t", res[0]) || !ex->out[0][0]) // this either joins the next word with the last word or assigns the next word to the next slot in the out array
+		if (!ft_strchr(" \t", res[0]) || !ex->out[ex.o_i][0]) // this either joins the next word with the last word or assigns the next word to the next slot in the out array
 		{
 			ft_dirtyswap((void *)&ex->out[ex->o_i], ft_strjoin(ex->out[ex->o_i], split[0]), free);
 			new_out = (void *)vecjoin((void *)ex->out, (void *)&split[1]);
