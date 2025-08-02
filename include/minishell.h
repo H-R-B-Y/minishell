@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/30 14:11:29 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/02 12:02:43 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -463,5 +463,13 @@ int				last_newline_not_end(const char *str);
  * @param flag 1 if you want to care about quotes else 0
  */
 char	**expand_and_split(t_minishell *shell, const char *name, int flag);
+
+/**
+ * @brief Join two arrays
+ * @param arr1 Left array
+ * @param arr2 Right array
+ * @returns New allocated array of the joined arrays
+ */
+void	*arrjoin(void **arr1, void **arr2);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/29 17:13:37 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/02 11:57:52 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int	free_everything(t_minishell *shell, int code)
 		code
 	);
 }
+void	*vecjoin(void **vec1, void **vec2);
 
 int	main(int argc, char **argv, char **envp)
 {
