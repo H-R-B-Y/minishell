@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   add_redirect_types.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 13:25:05 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 15:02:56 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/02 18:38:00 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 // static int	_add_redirects(struct s_ast_internal *meta,
 // 	t_astnode *node,
-// 	size_t *i,
+// 	size_t *i,marvin
 // 	t_token ***new_tokenv
 // )
 // {

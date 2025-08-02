@@ -28,7 +28,8 @@
 		"history.h": "c",
 		"rlstdc.h": "c",
 		"rltypedefs.h": "c",
-		"readline.h": "c"
+		"readline.h": "c",
+		"get_next_line.h": "c"
 	},
 	"C_Cpp.errorSquiggles": "disabled"
 }
