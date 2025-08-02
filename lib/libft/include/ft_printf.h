@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 16:11:55 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/03/25 13:35:20 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/02 18:47:22 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	delete_conversion(t_conv *c);
 size_t	printed_length(t_conv *c);
 
 // Prints the conversion.
-void	print_conversion(t_conv *c);
+void	print_conversion(int fd, t_conv *c);
 
 // conversion_functions.c
 char	*int_to_str(int *v);
@@ -97,10 +97,19 @@ t_conv	*set_prefix(t_conv *c);
 // ft_printf.c
 
 // Handles the escape sequence in the string.
-int		handle_escape(const char **str, va_list args, unsigned long long *len);
+int		handle_escape(int fd, const char **str, va_list args,
+						unsigned long long *len);
 
 // Handles the majority of printing in the string. (calls handle escape on %)
 int		ft_printf(const char *str, ...);
+
+/**
+ * @brief print formatted string to the file descriptor fd
+ * @param fd the fd to print the string too
+ * @param str the string to format
+ * @param vargs arguments to format the string with
+ */
+int	ft_fprintf(int fd, const char *str, ...);
 
 // general_functions.c
 
