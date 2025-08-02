@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 13:43:46 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/31 21:52:09 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/02 15:49:56 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ static int	write_str(struct s_ast_internal *meta,
 	}
 	else
 		write(temp_file, line, ft_strlen(line));
-	write(temp_file, "\n", 1);
+	if (last_newline_not_end(line))
+		write(temp_file, "\n", 1);
 	return (1);
 }
 
@@ -79,6 +80,6 @@ int	_read_heredoc(struct s_ast_internal *meta,
 	}
 	meta->rldata->hdoc = 0;
 	if (status == READ_FATAL)
-		perror_exit(meta->shell, "minishell:heredoc");
+		perror_exit(meta->shell, "heredoc");
 	return (0 - (!(status == READ_OK || status == READ_EOF)));
 }

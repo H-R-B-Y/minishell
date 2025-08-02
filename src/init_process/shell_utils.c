@@ -6,13 +6,14 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 12:01:50 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/31 11:11:02 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/02 15:08:30 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 extern int	g_global_signal;
+
 
 int	better_add_history(t_minishell *shell, char *string)
 {
@@ -29,7 +30,7 @@ int	better_add_history(t_minishell *shell, char *string)
 	i = 0;
 	if (h_len)
 		i= h_len - 1;
-	buff_str = ft_strrtrim(string, "\n"); // remove once current history is updated from tokens
+	buff_str = ft_strrtrim(string, "\n");
 	if (!buff_str)
 		perror_exit(shell, "add history");
 	if (the_history && the_history[i])
