@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:16:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/29 17:18:47 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/02 15:40:53 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,12 @@ void	append_tokenv_to_history_item(t_minishell *shell, t_readline_data *rl_data,
 // 		current = current->next;			
 // 	}
 // }
+
+char *remove_newline(char *str)
+{
+	return (ft_strrtrim(str, "\n"));
+}
+
 
 ssize_t	split_extra_lines(t_readline_data *data, char *str)
 {
