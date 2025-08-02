@@ -74,6 +74,7 @@ SRCS			:= \
 				$(SRC_DIR)/new_readline_loop/readline_wrapper.c \
 				$(SRC_DIR)/new_readline_loop/splitting_next_lines.c \
 				\
+				$(SRC_DIR)/syntax_tree/add_redirect_types.c \
 				$(SRC_DIR)/syntax_tree/ast_node_init.c \
 				$(SRC_DIR)/syntax_tree/consume_command.c \
 				$(SRC_DIR)/syntax_tree/consume_subshell.c \
@@ -82,8 +83,10 @@ SRCS			:= \
 				$(SRC_DIR)/syntax_tree/syntax_heirarchy.c \
 				$(SRC_DIR)/syntax_tree/syntax_util.c \
 				\
+				$(SRC_DIR)/utility/var_expansion/get_var.c \
+				$(SRC_DIR)/utility/var_expansion/special_expansion.c \
+				$(SRC_DIR)/utility/arrjoin.c \
 				$(SRC_DIR)/utility/get_my_pid.c \
-				$(SRC_DIR)/utility/get_var.c \
 				$(SRC_DIR)/utility/last_newline_not_end.c \
 				$(SRC_DIR)/utility/operators.c \
 				$(SRC_DIR)/utility/pop_line.c \

@@ -7,6 +7,7 @@ void	clean_shell(t_minishell *shell)
 	free(shell->prompt);
 	ft_arrclear((void *)shell->environment, free);
 	restore_signals(shell);
+	rl_clear_history();
 }
 
 void	clean_exit_status(t_minishell *shell, int status)

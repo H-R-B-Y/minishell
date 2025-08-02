@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:22:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/29 17:15:28 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/02 15:22:08 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ t_tokretcode	correct_retcode(t_fsmdata *fsm)
 	}
 	if (fsm->state == ST_END)
 		return (state_change(fsm, ST_STRT), set_retcode(fsm, PARSE_OK, 0));
-	return (set_retcode(fsm, PARSE_ERROR, "generic error"));
+	return (set_retcode(fsm, PARSE_ERROR, "syntax error"));
 }
 
 static int	_accept_token(t_fsmdata *fsm, t_fsmstate *next_state)

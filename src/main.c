@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/31 20:47:50 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/02 17:51:50 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int	free_everything(t_minishell *shell, int code)
 		ft_arrclear((void *)shell->environment,
 			free),
 		restore_signals(shell),
+		rl_clear_history(),
 		code
 	);
 }
@@ -78,6 +79,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	static t_minishell	shell = {0};
 	t_readline_retcode	rl_code;
+	// extern int history_max_entries;
 
 	(void)argc;
 	(void)argv;
