@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:16:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/31 21:52:49 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/02 14:53:20 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ ssize_t	append_to_history_item(t_readline_data *data, char **str)
 		else
 			temp = ft_strjoin(data->current_hist_item, *str);
 	}
+	else if (data->fsm_data->paren_count != 0)
+		temp = str_join_with_sep(data->current_hist_item, *str, "; ");
 	else
 		temp = str_join_with_sep(data->current_hist_item, *str, " ");
 	if (!temp)
