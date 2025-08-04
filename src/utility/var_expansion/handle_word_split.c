@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 12:57:26 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/04 14:03:12 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/04 14:25:48 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ ssize_t	_handle_word_split(t_expansion *ex,
 	len = ft_arrlen((void *)split);
 	if (!split)
 		return (-1);
+	if (!*split)
+		return (free(split), 0);
 	len += _pre_space(ex, res, split, &new_out);
 	ft_dirtyswap((void *)&ex->out, new_out, free);
 	len += _post_space(ex, res, split, &new_out);

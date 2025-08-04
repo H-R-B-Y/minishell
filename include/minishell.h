@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 17:54:03 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/04 14:41:26 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 # include <term.h>
 
 # include "./libft.h"
+# include "./ft_printf.h"
 # include "./v_dbg.h"
 # include "./readline_loop.h"
 # include "./abstract_syntax_tree.h"

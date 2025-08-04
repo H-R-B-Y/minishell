@@ -6,11 +6,22 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 13:25:05 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/04 13:34:23 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/04 15:06:32 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+char	**cmdv_prep(t_minishell *shell, t_astnode *node);
+
+static char	**cheeky_expand(t_minishell *shell, t_token *tok)
+{
+	t_astnode	node;
+
+	node = (t_astnode){.tokens = (t_token *[2]){tok, 0}, .token_count = 1, 0};
+	return (cmdv_prep(shell, &node));
+}
+
 
 static t_list	*_redirect(struct s_ast_internal *meta,
 	t_astnode *node,
@@ -20,9 +31,8 @@ static t_list	*_redirect(struct s_ast_internal *meta,
 	char			**expanded_filename;
 	t_redirect_desc	*redr;
 	t_list			*out;
-
-	expanded_filename = expand_and_split(meta->shell,
-		node->tokens[addr + 1]->raw, 3);
+	
+	expanded_filename = cheeky_expand(meta->shell, node->tokens[addr + 1]);
 	if (ft_arrlen((void *)expanded_filename) > 1)
 	{
 		ft_arrclear((void *)expanded_filename, free);

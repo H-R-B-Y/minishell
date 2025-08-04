@@ -1,6 +1,0 @@
-<< EOF cat
-internal heredoc test
-
-this is anther line
-and another
-EOF

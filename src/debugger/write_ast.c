@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 12:34:45 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 18:44:25 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/04 14:45:55 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ static ssize_t	_w_redirect_info(struct s_dbg_info *info,
 	byte_count += write(info->fd, &cont->subtype, sizeof(int));
 	if (cont->subtype == REDIR_FILE)
 	{
-		byte_count += write(info->fd, cont->file_map.filename,
-				ft_strlen(cont->file_map.filename) + 1);
+		byte_count += write(info->fd, cont->file_map.name,
+				ft_strlen(cont->file_map.name) + 1);
 		byte_count += write(info->fd, &cont->file_map.to_fd, sizeof(int));
 	}
 	else
