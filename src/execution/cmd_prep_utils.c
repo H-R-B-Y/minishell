@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 13:37:48 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/04 15:51:13 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/04 17:40:17 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	xpnd_param_var(t_minishell *shell, t_astnode *node, char ***argv, size_t *n
 		return ;
 	i = 0;
 	i2 = 0;
-	while(i + (i2 - 1) < *n)
+	while(i < *n)
 	{
 		i2 = 0;
 		words = expand_and_split(shell, node->tokens[i][0].raw, 3);
