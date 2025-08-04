@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   splitting_next_lines.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:16:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 17:52:32 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/04 14:20:39 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ ssize_t	append_to_history_item(t_readline_data *data, char **str)
 	if (!temp)
 		return (-1);
 	ft_dirtyswap((void *)&data->current_hist_item, temp, free);
-	// better_add_history(shell, data->current_hist_item);
 	return (1);
 }
 

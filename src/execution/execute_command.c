@@ -6,7 +6,7 @@
 /*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:36:22 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/02 18:36:23 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/04 13:53:40 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,7 @@ void	get_exec_cmd(t_minishell *shell, t_astnode *node, t_builtincmd *b_in)
 	else
 		exec_path = get_exec_path(shell, path, node->envp);
 	if (exec_path)
-	{
 		execve(exec_path, argv, node->envp);
-		free(exec_path);
-	}
 	exec_errno_handling(shell, path);
 }
 

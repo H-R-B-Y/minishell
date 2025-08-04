@@ -6,7 +6,7 @@
 /*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/04 12:27:07 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/04 14:15:31 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ struct s_minishell
 	t_fsmdata			fsm_data;
 	/// @brief Internal information relevant to the readline loop
 	t_readline_data		rldata;
+	///	@brief Last history item relevant to better_add_history
+	char				*last_hist_item;
 	/// @brief Current line (? do we still need this)
 	char				*ecurrent_line;
 	/// @brief Current pipeline (? do we still need this?)
@@ -95,6 +97,8 @@ struct s_minishell
 	/// but for _ expansion of arguments I was thinking
 	/// that we could set it globally, maybe?
 	char				*last_arg;
+	/// @brief Tmp History
+	char				**history;
 	char				*name;
 };
 

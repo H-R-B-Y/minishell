@@ -11,7 +11,8 @@
 ## CMD error message handling and exit code when S_ISDIR and Command not found.
 ## cmd_prep = a="cho 123" ; e$a
 ## exit fuctions
-MISSING: handle heredoc history - from next_line??
+## handle heredoc history - from next_line??
+## redirect subshell
+## better_add history updated to use allowed functions only
 redirects in b_ins
-
 catch all malloc fails (look up: ft_calloc)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utility_funcs.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:57:17 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 19:02:20 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/04 13:32:59 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
