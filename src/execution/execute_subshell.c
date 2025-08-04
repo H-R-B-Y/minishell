@@ -6,7 +6,7 @@
 /*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:36:42 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/02 18:36:43 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/04 12:41:37 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,11 @@ int	execute_subshell(t_minishell *shell, t_astnode *node)
 	pid = fork();
 	if (pid == 0)
 	{
-		// Note that subshells can be owners of redirects, 
-		// the node will need to have its redircts mapped BEFORE calling the rest of the
-		// ast? maybe (i have not tested if the subshell redirects get overridden by the
-		// child nodes redirects)
+		if (prepare_fds(node) < 0)
+			clean_exit_status(shell, 2);
+		map_fds(node);
 		execute_ast(shell, node->left_node);
-		exit(free_everything(shell, 0));
+		clean_exit_status(shell, shell->return_code);
 	}
 	else if (pid > 0)
 		waitpid(pid, &status, 0);
