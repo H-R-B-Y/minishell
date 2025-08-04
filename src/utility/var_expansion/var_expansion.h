@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 11:58:25 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 12:14:12 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/04 12:57:50 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,10 @@ struct s_special_var
 };
 
 const struct s_special_var	*get_special(char c);
+
+ssize_t	is_special(t_minishell *shell, t_expansion *ex, char **res);
+ssize_t	is_normal(t_minishell *shell, t_expansion *ex, char **res);
+
+ssize_t	_handle_word_split(t_expansion *ex, char **res);
 
 #endif

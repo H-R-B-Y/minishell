@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 12:20:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/22 17:27:42 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/04 12:26:23 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ t_astnode	*ast_parse_command(struct s_ast_internal *meta)
 		if (!lr[0])
 			meta->error = AST_ERR_FATAL;
 		count = ast_consume_words(meta, lr[0]);
-		if (count < 0)
-			meta->error = AST_ERR_FATAL;
 		meta->consumed += count;
 	}
 	return (lr[0]);

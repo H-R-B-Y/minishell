@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 18:55:40 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/04 12:24:16 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,9 @@ int	create_tree_and_run(t_minishell *shell)
 			setup_signals(shell);
 	}
 	else if (astcode == AST_ERR_SYNTAX)
-		printf("Parse error: Syntax Error\n");
+		ft_fprintf(2, "Parse error: Syntax Error\n");
+	else if (astcode == AST_ERR_INVALID_REDIRECT)
+		ft_fprintf(2, "Parse error: Invalid filename\n");
 	return (astcode);
 }
 
@@ -49,7 +51,7 @@ int	next_command(t_minishell *shell)
 	rl_code = READ_START;
 	rl_code = read_until_complete_command(shell);
 	if (rl_code == READ_BADPARSE)
-		printf("Parse error: %s!\n", shell->fsm_data.str_cond);
+		ft_fprintf(2, "Parse error: %s!\n", shell->fsm_data.str_cond);
 	else if (rl_code == READ_ERROR)
 		return (rl_code);
 	else if (rl_code == READ_EOF)

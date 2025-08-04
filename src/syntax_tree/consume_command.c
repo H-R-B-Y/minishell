@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 13:46:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 15:09:40 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/04 13:53:05 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,22 @@
 
 int	add_redirect_type(struct s_ast_internal *meta, t_token **arr,
 						t_astnode *node, size_t *inc);
+
+static int	_add_redirects(struct s_ast_internal *meta,
+	t_astnode *node,
+	size_t *i,
+	t_token ***new_tokenv
+)
+{
+	while (node->tokens[i[0]]
+		&& ft_strchr("\3\4\5\6\17", node->tokens[i[0]]->type))
+	{
+		if (add_redirect_type(meta, node->tokens, node, &i[0]) < 0)
+				return (free(new_tokenv), 0);
+		i[0]++;
+	}
+	return (1);
+}
 
 static int	post_consume_words(struct s_ast_internal *meta, t_astnode *node)
 {
@@ -23,17 +39,12 @@ static int	post_consume_words(struct s_ast_internal *meta, t_astnode *node)
 	(void)meta;
 	ft_bzero(i, sizeof(size_t) * 2);
 	new_tokenv = ft_calloc(ft_arrlen((void *)node->tokens) + 1, sizeof(void *));
-	while (node->tokens[i[0]])
-	{
-		if (ft_strchr("\3\4\5\6\17", node->tokens[i[0]]->type))
-		{
-			if (add_redirect_type(meta, node->tokens, node, &i[0]) < 0)
-				return (free(new_tokenv), 0);
-		}
-		else
-			new_tokenv[i[1]++] = node->tokens[i[0]];
-		i[0]++;
-	}
+	if (!_add_redirects(meta, node, i, &new_tokenv))
+		return (0);
+	while (node->tokens[i[0]] && !ft_strchr("\3\4\5\6\17", node->tokens[i[0]]->type))
+		new_tokenv[i[1]++] = node->tokens[i[0]++];
+	if (!_add_redirects(meta, node, i, &new_tokenv))
+		return (0);
 	free(node->tokens);
 	node->tokens = new_tokenv;
 	return (1);
