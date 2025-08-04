@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_prep_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 13:37:48 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/02 19:17:18 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/04 15:59:47 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,15 +86,17 @@ void	xpnd_param_var(t_minishell *shell, t_astnode *node, char ***argv, size_t *n
 {
 	size_t	i;
 	size_t	i2;
+	size_t	new_wc;
 	char	**words;
 	
 	if (!argv && !*argv)
 		return ;
 	i = 0;
-	while(i < *n)
+	new_wc = 0;
+	while(i < *n + new_wc)
 	{
 		i2 = 0;
-		words = expand_and_split(shell, node->tokens[i][0].raw, 3);
+		words = expand_and_split(shell, node->tokens[i - new_wc][0].raw, 3);
 		if (!words)
 			_free_arr_perror_exit(shell, (void **)argv, "minishell: expand");
 		while (words[i2])
@@ -103,8 +105,10 @@ void	xpnd_param_var(t_minishell *shell, t_astnode *node, char ***argv, size_t *n
 			i2++;
 		}
 		free(words);
-		i++;
+		i += i2;
+		new_wc += i2 - 1;
 	}
+	*n += new_wc;
 }
 
 void	word_splitting(t_minishell *shell, t_astnode *node, char ***argv, size_t *n)
