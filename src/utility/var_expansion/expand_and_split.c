@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 15:52:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/04 13:13:51 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/04 15:31:24 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ char	**expand_and_split(t_minishell *shell,
 		append_difference(&ex, delta_v);
 		ex.v_i += delta_v;
 	}
-	if (!*ex.out[ex.o_i])
+	if (!*ex.out[ex.o_i] && ex.o_i > 0)
 		ft_dirtyswap((void *)&ex.out, (void *)ft_arrdel_atindex((void *)ex.out, ex.o_i, free), free);
 	return (ex.out);
 }

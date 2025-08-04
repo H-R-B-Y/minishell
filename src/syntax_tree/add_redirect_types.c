@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 13:25:05 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/04 15:06:32 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/04 15:32:12 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static t_list	*_redirect(struct s_ast_internal *meta,
 	t_list			*out;
 	
 	expanded_filename = cheeky_expand(meta->shell, node->tokens[addr + 1]);
-	if (ft_arrlen((void *)expanded_filename) > 1)
+	if (ft_arrlen((void *)expanded_filename) > 1 || !expanded_filename[0][0])
 	{
 		ft_arrclear((void *)expanded_filename, free);
 		meta->error = AST_ERR_INVALID_REDIRECT;
