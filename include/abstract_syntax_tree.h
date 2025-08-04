@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 13:41:57 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/04 14:45:55 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,8 @@ struct s_redirect_desc
 		/// @brief Maps a file to a file descriptor
 		struct s_none2
 		{
-			/// @brief filename of file to map
-			char		*filename;
+			/// @brief name of file to map
+			char		*name;
 			/// @brief fd for opened file
 			int			from_fd;
 			/// @brief fd to map too

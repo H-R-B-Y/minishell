@@ -83,8 +83,10 @@ SRCS			:= \
 				$(SRC_DIR)/syntax_tree/syntax_heirarchy.c \
 				$(SRC_DIR)/syntax_tree/syntax_util.c \
 				\
-				$(SRC_DIR)/utility/var_expansion/get_var.c \
 				$(SRC_DIR)/utility/var_expansion/special_expansion.c \
+				$(SRC_DIR)/utility/var_expansion/var_checks.c \
+				$(SRC_DIR)/utility/var_expansion/expand_and_split.c \
+				$(SRC_DIR)/utility/var_expansion/handle_word_split.c \
 				$(SRC_DIR)/utility/arrjoin.c \
 				$(SRC_DIR)/utility/get_my_pid.c \
 				$(SRC_DIR)/utility/last_newline_not_end.c \

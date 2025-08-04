@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:15:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 21:08:24 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/04 15:06:59 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 // this should be a util function somewhere else!!!!!!!!!!!
 
-int	redrtype_to_oflag(const int redr_type)
+int	t_oflag(const int redr_type)
 {
 	int	flag;
 
@@ -30,44 +30,41 @@ int	redrtype_to_oflag(const int redr_type)
 	return (flag);
 }
 
-// printf("Opened file %s at %d for redirect too %d\n",redr->file_map.filename,
-// 	p->file_map.from_fd, p->file_map.to_fd);
-t_redirect_desc	*file_to_fd_mapper(const t_redirect_desc *redr)
+static int	_file_to_fds(t_list *redrs)
 {
-	t_redirect_desc	*p;
+	t_list			*index;
+	t_redirect_desc	*redr;
 
-	p = ft_calloc(sizeof(t_redirect_desc), 1);
-	if (!p)
-		return (0);
-	if (redr->subtype == REDIR_FD || redr->subtype == CLOSE_FD)
+	index = redrs;
+	while (index)
 	{
-		*p = *redr;
-		return (p);
+		redr = index->content;
+		if (redr->subtype == REDIR_FD || redr->subtype == CLOSE_FD)
+		{
+			index = index->next;
+			continue ;
+		}
+		if (redr->file_map.name == 0x0)
+			return (ft_printf("minishell: :No such file or directory\n"), -1); // handle this in caller
+		redr->file_map.from_fd = open(redr->file_map.name, t_oflag(redr->type));
+		if (redr->file_map.from_fd < 0)
+		{
+			redr->file_map.from_fd = open(redr->file_map.name,
+				t_oflag(redr->type) | O_CREAT, 0755);
+		}
+		if (redr->file_map.from_fd < 0)
+			return (perror("minishell"), -1); // failed to open file
+		index = index->next;
 	}
-	*p = *redr;
-	p->file_map.from_fd = open(redr->file_map.filename, redrtype_to_oflag(redr->type));
-	if (p->file_map.from_fd == -1)
-	{
-		if (errno == ENOENT)
-			p->file_map.from_fd = open(redr->file_map.filename, redrtype_to_oflag(redr->type) | O_CREAT, 0755);
-		if (errno && errno != ENOENT)
-			return (free(p), (void *)0);
-	}
-	return (p);
+	return (1);
 }
 
 int	prepare_fds(t_astnode *node)
 {
-	t_list	*corrected;
-
 	if (!node->redirect)
 		return (0);
-	corrected = ft_lstmap(node->redirect,
-		(void *)file_to_fd_mapper, (void *)destroy_redirect);
-	if (!corrected)
-		return (perror("minishell"), -1);
-	ft_lstclear(&node->redirect, (void *)free);
-	node->redirect = corrected;
+	if (_file_to_fds(node->redirect) < 0)
+		return (-1);
 	return (1);
 }
 

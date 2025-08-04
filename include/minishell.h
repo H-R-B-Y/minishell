@@ -6,7 +6,7 @@
 /*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/04 14:15:31 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/04 15:15:35 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 # include <term.h>
 
 # include "./libft.h"
+# include "./ft_printf.h"
 # include "./v_dbg.h"
 # include "./readline_loop.h"
 # include "./abstract_syntax_tree.h"
@@ -97,8 +98,6 @@ struct s_minishell
 	/// but for _ expansion of arguments I was thinking
 	/// that we could set it globally, maybe?
 	char				*last_arg;
-	/// @brief Tmp History
-	char				**history;
 	char				*name;
 };
 
