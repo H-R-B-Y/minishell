@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:37:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/05 14:25:01 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/05 16:42:05 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,6 @@ int	handle_unclosed_quote(t_tokint *tokeniser, const char *str)
 	if (!tokeniser->prev_line)
 		return (0);
 	return (1);
-}
-
-int	handle_token_type(t_fsmdata *fsm)
-{
-	printf("delete this");
- return (1);
 }
 
 int	handle_subshell_newline(t_fsmdata *fsm)

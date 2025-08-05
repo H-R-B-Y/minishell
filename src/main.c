@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/04 15:09:13 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/05 18:41:09 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,12 @@ int	create_tree_and_run(t_minishell *shell)
 	dbg_add_token_list(&shell->info, shell->tokens);
 	shell->tokenv = (void *)ft_lstarr(shell->tokens);
 	ft_lstclear(&shell->tokens, 0);
-	// append_tokenv_to_history_item(shell, &shell->rldata, shell->tokenv);
 	astcode = produce_ast(shell, shell->tokenv, &shell->current_tree);
 	if (astcode == AST_ERR_NONE)
 	{
 		dbg_add_ast(&shell->info, shell->current_tree);
 		if (shell->interactive_mode)
 			set_exection_signals();
-		
 		execute_ast(shell, shell->current_tree);
 		if (shell->interactive_mode)
 			setup_signals(shell);
@@ -82,7 +80,6 @@ int	main(int argc, char **argv, char **envp)
 {
 	static t_minishell	shell = {0};
 	t_readline_retcode	rl_code;
-	// extern int history_max_entries;
 
 	(void)argc;
 	(void)argv;

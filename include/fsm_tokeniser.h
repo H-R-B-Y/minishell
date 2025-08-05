@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/29 17:09:21 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/05 16:42:00 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -384,18 +384,6 @@ void			handle_operator(t_tokint *tokeniser, const char *str);
  * @return int 0 if error in allocation or 1 if ok
  */
 int				handle_unclosed_quote(t_tokint *tokeniser, const char *str);
-
-/**
- * @brief Utility function for making sure that we keep track of stats
- * 
- * Certain tokens need to trigger certain effects within the parser, 
- * like parenthesis need to be tracked so we dont end up with malformed
- * precendence.
- * 
- * @param fsm the finite state machine struct
- * @return int 1 if we are in a valid state 0 if not
- */
-int				handle_token_type(t_fsmdata *fsm);
 
 /**
  * @brief newlines inside subshells need to be handled differently.
