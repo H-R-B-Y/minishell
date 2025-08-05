@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 12:01:50 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/05 17:01:22 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/05 22:48:59 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,7 @@ void	reset_for_command(t_minishell *shell, t_readline_retcode rl_code)
 	if (shell->rldata.last_line)
 		ft_dirtyswap((void *)&shell->rldata.last_line, (void *)0, free);
 	if (shell->rldata.extra_lines
-		&& (rl_code == READ_NOTHING
-			|| rl_code == READ_EOF
+		&& (rl_code == READ_EOF
 			|| rl_code == READ_START))
 	{
 		ft_arrclear((void **)shell->rldata.extra_lines, free);

@@ -53,7 +53,7 @@ false && echo success
 echo $_                         
 
 true || echo fail              
-echo $_                     
+echo $_      
 
 echo "pipe test" | cat          
 echo $_                 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   splitting_next_lines.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:16:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/05 17:41:45 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/05 22:41:49 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,27 @@
 
 extern int	g_global_signal;
 
-// Why is string being passed in by reference?
-// It should also be const str i think!
-ssize_t	append_to_history_item(t_readline_data *data, char **str)
+ssize_t	append_to_history_item(t_readline_data *data, const char *str)
 {
 	char	*temp;
 
-	if (!*str)
+	if (!str)
 		return (0);
-	if (!data->curr_hst_item)
-		temp = ft_strdup(*str);
+	if (!data->curr_hst_item && str[0] != '\n')
+		temp = ft_strdup(str);
 	else if (data->hdoc
 		|| data->fsm_data->tok_int.curr_type == TOK_INCOMPLETE_STRING)
 	{
 		if (!last_newline_not_end(data->curr_hst_item))
 			*ft_strrchr(data->curr_hst_item, '\n') = '\0';		
-		temp = str_join_with_sep(data->curr_hst_item, *str, "\n");
+		temp = str_join_with_sep(data->curr_hst_item, str, "\n");
 	}
+	else if (str[0] == '\n')
+		temp = str_join_with_sep(data->curr_hst_item, str + 1, NULL);
 	else if (data->fsm_data->paren_count != 0)
-		temp = str_join_with_sep(data->curr_hst_item, *str, "; ");
+		temp = str_join_with_sep(data->curr_hst_item, str, "; ");
 	else
-	{
-		if (data->curr_hst_item[ft_strlen(data->curr_hst_item) - 1] == ' ')
-			temp = str_join_with_sep(data->curr_hst_item, *str,);
-	}
+		temp = str_join_with_sep(data->curr_hst_item, str, " ");
 	if (!temp)
 		return (-1);
 	return (ft_dirtyswap((void *)&data->curr_hst_item, temp, free), 1);
@@ -71,7 +68,7 @@ static int	_pop_extra(t_readline_data *data)
 		return (READ_FATAL);
 	else if (!*data->last_line)
 		return (READ_NOTHING);
-	append_to_history_item(data, &data->last_line);
+	append_to_history_item(data, data->last_line);
 	return (READ_OK);
 }
 
