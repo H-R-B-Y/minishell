@@ -3,16 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   special_expansion.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 12:05:31 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/05 13:37:31 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/05 23:53:12 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./var_expansion.h"
 #include "../../../include/minishell.h"
 
+static ssize_t	special_ansi_c_quotation(t_minishell *shell,
+	const char *value,
+	char **output
+)
+{
+	(void)value;(void)shell;
+	*output = ft_strdup(" ");
+	ft_printf("Note: $\"\": ANSI-C escaped chars not handled (ie. \'\\n\')\n");
+	return (1);
+}
 
 static ssize_t	special_translation(t_minishell *shell,
 	const char *value,
@@ -81,8 +91,9 @@ static ssize_t	special_argv(t_minishell *shell,
 const struct s_special_var	*get_special(char c)
 {
 	int									i;
-	static const struct	s_special_var	cases[6] = {
+	static const struct	s_special_var	cases[7] = {
 		(struct s_special_var){.match="\"",.f=special_translation},
+		(struct s_special_var){.match="\'",.f=special_ansi_c_quotation},
 		(struct s_special_var){.match="_",.f=special_last_param},
 		(struct s_special_var){.match="?",.f=special_result},
 		(struct s_special_var){.match="$",.f=special_pid},
