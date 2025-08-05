@@ -6,7 +6,7 @@
 /*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:57:17 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/04 13:32:59 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/05 14:38:50 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	exec_builtincmd(t_minishell *shell, t_astnode *node, t_builtincmd cmd)
 {
 	if (cmd)
 	{
-		set_n_envp(&node->envp, node->cmdv, node->cmd_i);
+		set_cmd_envp(shell, node, cmd);
 		shell->return_code = cmd(shell,
 			node->cmdv + node->cmd_i, &node->envp);
 		return (0);

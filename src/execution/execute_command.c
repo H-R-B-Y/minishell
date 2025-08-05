@@ -6,7 +6,7 @@
 /*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:36:22 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/04 13:53:40 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/05 16:36:40 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,29 +32,27 @@ void	exec_errno_handling(t_minishell *shell, char *path)
 	perror_exit(shell, path);
 }
 
-void	get_exec_cmd(t_minishell *shell, t_astnode *node, t_builtincmd *b_in)
+void	get_exec_cmd(t_minishell *shell, t_astnode *node, t_builtincmd b_in)
 {
-	char		*path;
+	char		*o_path;
 	char		**argv;
 	char		*exec_path = NULL;
 	
 	(void)b_in;
-	node->envp = (char **)ft_arrmap((void **)shell->environment,
-		(void *)ft_strdup, free);
-	if (!node->envp)
-		perror_exit(shell, "ft_arrmap");
-	path = node->cmdv[node->cmd_i];
+	o_path = node->cmdv[node->cmd_i];
+	node->cmd_path = o_path;
 	argv = node->cmdv + node->cmd_i;
+	set_cmd_envp(shell, node, b_in);
 	restore_signals(shell);
 	map_fds(node);
 	errno = 0;
-	if (ft_strchr(path, '/'))
-		execve(path, argv, node->envp);
-	else
-		exec_path = get_exec_path(shell, path, node->envp);
+	if (!ft_strchr(o_path, '/'))
+		exec_path = get_exec_path(shell, o_path, node->envp);
 	if (exec_path)
-		execve(exec_path, argv, node->envp);
-	exec_errno_handling(shell, path);
+		node->cmd_path = exec_path;
+	_set_var_value(shell, node->cmd_path, "_", &node->envp);
+	execve(node->cmd_path, argv, node->envp);
+	exec_errno_handling(shell, o_path);
 }
 
 int	exec_raw(t_minishell *shell, t_astnode *node, t_builtincmd cmd)
@@ -85,6 +83,18 @@ int	exec_default(t_minishell *shell, t_astnode *node, t_builtincmd cmd)
 	return (0);
 }
 
+void	handle_last_argv(t_minishell *shell, char *last_argv)
+{
+	char	*temp;
+	
+	temp = str_vec_join((const char *[3]){"_=", last_argv, 0});
+	if (!temp)
+		perror_exit(shell, "setting var value");
+	else if (set_any_env(shell, &temp, 1) == -1)
+		free(temp), perror_exit(shell, "setting var value");
+	free(temp);
+}
+
 int	execute_command(t_minishell *shell, t_astnode *node)
 {
 	node->cmdv = cmdv_prep(shell, node); // pending: shorten remove quotes and clean up in case of error
@@ -93,11 +103,13 @@ int	execute_command(t_minishell *shell, t_astnode *node)
 		return (-1);
 	if (node->cmd_i != (size_t)-1)
 	{
+		handle_last_argv(shell, node->cmdv[node->argc - 1]);
 		if (node->from_type == AST_PIPE)
 			exec_raw(shell, node, _get_builtincmd(node));
 		else
 			exec_default(shell, node, _get_builtincmd(node));
 		return (0);
 	}
+	handle_last_argv(shell, "");
 	return (set_any_env(shell, node->cmdv, node->token_count));
 }

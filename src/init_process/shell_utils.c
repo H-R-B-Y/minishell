@@ -6,7 +6,7 @@
 /*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 12:01:50 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/04 14:18:25 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/05 17:01:22 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,11 @@ void	_destroy_token(void *t)
 
 void	reset_for_command(t_minishell *shell, t_readline_retcode rl_code)
 {
-	if (shell->rldata.current_hist_item)
+	if (shell->rldata.curr_hst_item)
 	{
-		better_add_history(shell, shell->rldata.current_hist_item);
-		ft_dirtyswap((void *)&shell->last_hist_item, ft_strdup(shell->rldata.current_hist_item), free);
-		ft_dirtyswap((void *)&shell->rldata.current_hist_item, NULL, free);
+		better_add_history(shell, shell->rldata.curr_hst_item);
+		ft_dirtyswap((void *)&shell->last_hist_item, ft_strdup(shell->rldata.curr_hst_item), free);
+		ft_dirtyswap((void *)&shell->rldata.curr_hst_item, NULL, free);
 	}
 	if (shell->rldata.last_line)
 		ft_dirtyswap((void *)&shell->rldata.last_line, (void *)0, free);

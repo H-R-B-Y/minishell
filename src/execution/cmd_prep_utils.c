@@ -6,7 +6,7 @@
 /*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 13:37:48 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/04 15:59:47 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/05 16:18:04 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,5 +178,6 @@ char	**cmdv_prep(t_minishell *shell, t_astnode *node)
 		xpnsion_f[i].f(shell, node, &argv, &n);
 		i++;
 	}
+	node->argc = n;
 	return (argv);
 }

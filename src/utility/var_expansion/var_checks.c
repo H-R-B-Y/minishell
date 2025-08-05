@@ -3,15 +3,57 @@
 /*                                                        :::      ::::::::   */
 /*   var_checks.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 12:54:55 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/04 12:56:37 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/05 13:05:03 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 #include "./var_expansion.h"
+
+size_t	ft_strcntchrset(const char *str, const char *set)
+{
+	size_t	count;
+	size_t	i;
+
+	if (!str || !set || !*set)
+		return (0);
+	count = 0;	
+	i = 0;
+	while (str[i])
+		count += ft_strcountchar(set, str[i++]);
+	return (count);
+}
+
+char	*mark_quotes(const char *expanded)
+{
+	size_t	qcnt;
+	char	*newstr;
+	size_t	i[2];
+	
+	if (!expanded)
+		return (NULL);
+	ft_bzero(i, sizeof(size_t) * 2);
+	newstr = NULL;
+	qcnt = ft_strcntchrset(expanded, "\\\"\'");
+	if (qcnt)
+	{
+		newstr = ft_calloc(ft_strlen(expanded) + qcnt + 1, sizeof(char));
+		if (!newstr)
+			return (NULL);
+		while (expanded[i[0]])
+		{
+			if (ft_strcountchar("\\\"\'", expanded[i[0]]))
+				newstr[i[1]++] = '\\';
+			newstr[i[1]++] = expanded[i[0]++];
+		}
+	}
+	else
+		newstr = ft_strdup(expanded);
+	return (newstr);
+}
 
 ssize_t	is_special(t_minishell *shell,
 	t_expansion *ex,
@@ -25,6 +67,8 @@ ssize_t	is_special(t_minishell *shell,
 	if (!_case)
 		return (0);
 	ret = _case->f(shell, &ex->value[ex->v_i], res);
+	if(!ft_dirtyswap((void *)res, mark_quotes(*res), free))
+		perror_exit(shell, "parameter");
 	ex->v_i += ret;
 	return (ret);
 }
@@ -47,6 +91,8 @@ ssize_t	is_normal(t_minishell *shell,
 	else
 		*res = ft_strdup("$");
 	free(str);
+	if(!ft_dirtyswap((void *)res, mark_quotes(*res), free))
+		perror_exit(shell, "parameter");
 	ex->v_i += i;
 	return (i);
 }

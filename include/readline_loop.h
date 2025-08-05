@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline_loop.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:07:29 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 19:01:24 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/05 17:00:44 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ struct s_readline_data
 	/// @brief The count of extra lines
 	size_t				extra_line_count;
 	/// @brief The current history item
-	char				*current_hist_item;
+	char				*curr_hst_item;
 	/// @brief The most recent line read from readline/extra_lines
 	char				*last_line;
 	/// @brief Reference to the interactive mode flag in shell struct.

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_binning.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:36:40 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/29 17:14:33 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/05 15:48:59 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,10 +118,11 @@ t_tokentype	tokenise_type(t_tokint *tokeniser, const char *str)
 		return (tokeniser->curr_type);
 	if (last_newline_not_end(tokeniser->prev_line))
 		ft_dirtyswap((void *)&tokeniser->curr_token->raw, str_vec_join(
-				(char *[4]){tokeniser->prev_line, "\n", substring, 0}), free);
+				(const char *[4]){tokeniser->prev_line, "\n", substring, 0}),
+				free);
 	else
 		ft_dirtyswap((void *)&tokeniser->curr_token->raw,
-			str_vec_join((char *[3]){tokeniser->prev_line, substring, 0}),
+			str_vec_join((const char *[3]){tokeniser->prev_line, substring, 0}),
 			free);
 	ft_dirtyswap((void *)&tokeniser->prev_line, 0, free);
 	return (tokeniser->curr_type);

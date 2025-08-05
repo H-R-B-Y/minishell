@@ -12,6 +12,53 @@ echo $?
 false && true || echo FALLBACK
 echo $?
 
+
+echo "First test"               # 1
+echo $_                         # 2: should print "test"
+echo "Second" "value"           # 3
+echo $_                         # 4: should print "value"
+var="hello world"               # 5
+echo $_                         # 6: should still print "value" (var assignments don't update $_)
+ls /tmp > /dev/null             # 7
+echo $_                         # 8: should print "/tmp"
+echo "Final check"              # 9
+echo "Result of \$_ is: $_"     # 10
+(true; echo semicolon)           # 11
+echo $_                          # 12: should print "semicolon"
+
+false && echo success            # 13: echo doesn't run
+echo $_                          # 14: still "false", since `false` was last to run
+
+true || echo fail                # 15: echo doesn't run
+echo $_                          # 16: should print "true"
+
+echo "pipe test" | cat           # 17
+echo $_                          # 18: should print "cat" in Bash
+
+
+echo "First test"
+echo $_               
+echo "Second" "value"           
+echo $_                  
+var="hello world"             
+echo $_                       
+ls /tmp > /dev/null             
+echo $_                         
+echo "Final check"              
+echo "Result of \$_ is: $_"   
+(true; echo semicolon)          
+echo $_                       
+
+false && echo success            
+echo $_                         
+
+true || echo fail              
+echo $_                     
+
+echo "pipe test" | cat          
+echo $_                 
+
+
 #new line management
 echo vamos ;
 env | 
