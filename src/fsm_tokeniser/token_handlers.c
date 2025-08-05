@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:37:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 20:58:35 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/05 14:25:01 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,13 +85,8 @@ int	handle_unclosed_quote(t_tokint *tokeniser, const char *str)
 
 int	handle_token_type(t_fsmdata *fsm)
 {
-	if (fsm->tok_int.curr_type == TOK_LPAREN)
-		fsm->paren_count++;
-	if (fsm->tok_int.curr_type == TOK_RPAREN)
-		fsm->paren_count--;
-	if (fsm->paren_count < 0)
-		return (0);
-	return (1);
+	printf("delete this");
+ return (1);
 }
 
 int	handle_subshell_newline(t_fsmdata *fsm)
