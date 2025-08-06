@@ -15,4 +15,7 @@
 ## redirect subshell
 ## better_add history updated to use allowed functions only
 redirects in b_ins
+catching bash return value after exit
 catch all malloc fails (look up: ft_calloc)
+
+test:  (echo hello; cat adlkjflkajdsf) > outputtestsure

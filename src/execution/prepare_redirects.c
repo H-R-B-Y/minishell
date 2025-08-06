@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prepare_redirects.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:15:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/06 18:49:17 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/06 19:26:59 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ static void	_map(t_redirect_desc *desc)
 	}
 	else if (desc->file_map.to_fd >= 0)
 	{
-		dup2(desc->file_map.from_fd, desc->file_map.q);
+		dup2(desc->file_map.from_fd, desc->file_map.to_fd);
 		close(desc->file_map.from_fd);
 	}
 	else
