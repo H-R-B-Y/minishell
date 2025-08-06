@@ -52,6 +52,7 @@ SRCS			:= \
 				$(SRC_DIR)/debugger/write_states.c \
 				$(SRC_DIR)/debugger/write_tokens.c \
 				\
+				$(SRC_DIR)/fsm_tokeniser/realize_token.c \
 				$(SRC_DIR)/fsm_tokeniser/tokeniser_return.c \
 				$(SRC_DIR)/fsm_tokeniser/string_condition.c \
 				$(SRC_DIR)/fsm_tokeniser/fsm_tokeniser.c \

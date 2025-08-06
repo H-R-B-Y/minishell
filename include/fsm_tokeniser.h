@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/05 16:42:00 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/06 12:54:58 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -354,7 +354,7 @@ t_tokentype		bin_token(const char *raw_token);
  * @param str the string being parsed
  * @return t_tokentype the next tokens type.
  */
-t_tokentype		tokenise_type(t_tokint *tokeniser, const char *str);
+t_tokentype		realize_token(t_tokint *tokeniser, const char *str);
 
 /**
  * @brief Handles operators that may be 1 or 2 characters in length
@@ -504,7 +504,7 @@ int				append_anon_token(t_fsmdata *fsm,
  * @brief Find the next token in the string and return its type
  * 
  * This function skips the start and end indexes to the next token,
- * then hands off the work to the function tokenise_type that uses
+ * then hands off the work to the function realize_token that uses
  * the data to create the next token struct and bin its type.
  * 
  * @param tokeniser the tokeniser struct
