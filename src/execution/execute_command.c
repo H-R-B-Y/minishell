@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:36:22 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/05 23:43:53 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/06 16:50:41 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,17 @@
 void	exec_errno_handling(t_minishell *shell, char *path)
 {
 	struct stat	statbuf;
+	int			st;
 
 	ft_memset(&statbuf, 0, sizeof(statbuf));
+	st = stat(path, &statbuf);
 	if (errno == ENOENT)
 	{
-		ft_putstr_fd(path, 2);
+		ft_fprintf(2, "\'%s\'", path);
 		ft_putstr_fd(": command not found\n", 2);
 		clean_exit_status(shell, 127);
 	}
-	else if (errno == EACCES && stat(path, &statbuf) == 0 
+	else if (errno == EACCES && st == 0
 		&& S_ISDIR(statbuf.st_mode))
 		errno = EISDIR;
 	perror_exit(shell, path);

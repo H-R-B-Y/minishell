@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   var_checks.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 12:54:55 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/05 23:47:24 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/06 17:06:19 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,8 @@ ssize_t	is_special(t_minishell *shell,
 	ret = _case->f(shell, &ex->value[ex->v_i], res);
 	if(!ft_dirtyswap((void *)res, mark_quotes(*res), free))
 		perror_exit(shell, "parameter");
-	if (!ft_strchr("\'\"", ex->value[ex->v_i]))
-		ex->v_i += ret;
-	return (ret);
+	ex->v_i += ret;
+	return (1);
 }
 
 ssize_t	is_normal(t_minishell *shell,

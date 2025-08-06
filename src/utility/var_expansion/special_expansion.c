@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   special_expansion.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 12:05:31 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/05 23:53:12 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/06 17:03:43 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static ssize_t	special_ansi_c_quotation(t_minishell *shell,
 	(void)value;(void)shell;
 	*output = ft_strdup(" ");
 	ft_printf("Note: $\"\": ANSI-C escaped chars not handled (ie. \'\\n\')\n");
-	return (1);
+	return (0);
 }
 
 static ssize_t	special_translation(t_minishell *shell,
@@ -32,7 +32,7 @@ static ssize_t	special_translation(t_minishell *shell,
 	(void)value;(void)shell;
 	*output = ft_strdup(" ");
 	ft_printf("Note: $\"\": locale translation not implemented\n");
-	return (1);
+	return (0);
 }
 
 static ssize_t	special_last_param(t_minishell *shell,
