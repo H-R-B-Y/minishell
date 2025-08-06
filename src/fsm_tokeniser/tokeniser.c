@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:22:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 15:22:08 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/06 17:40:57 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ t_tokretcode	set_retcode(t_fsmdata *fsm,
 
 void	state_change(t_fsmdata *fsm, t_fsmstate next_state)
 {
-	if (fsm->state == ST_HDOC && next_state == ST_WORD)
-		fsm->tok_int.curr_token->heredoc_delim = 1;
-	else if (fsm->state == ST_REDR && next_state == ST_WORD)
-		fsm->tok_int.curr_token->redirect_file = 1;
+	// if (fsm->state == ST_HDOC && next_state == ST_WORD)
+	// 	fsm->tok_int.curr_token->heredoc_delim = 1;
+	// else if (fsm->state == ST_REDR && next_state == ST_WORD)
+	// 	fsm->tok_int.curr_token->redirect_file = 1;
 	if (next_state == ST_END && fsm->paren_count > 0)
 		next_state = ST_CONT;
 	fsm->last_state = fsm->state;

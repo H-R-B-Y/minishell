@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:36:22 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/06 16:50:41 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/06 18:17:33 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,11 +101,15 @@ int	execute_command(t_minishell *shell, t_astnode *node)
 {
 	node->cmdv = cmdv_prep(shell, node); // pending: shorten remove quotes and clean up in case of error
 	glob_variable(node);
-	if (prepare_fds(node) < 0)
-		return (-1);
+
 	if (node->cmd_i != (size_t)-1)
 	{
 		handle_last_argv(shell, node->cmdv[node->argc - 1]);
+		if (prepare_fds(node) < 0)
+		{
+			shell->return_code = 1;
+			return (-1);
+		}
 		if (node->from_type == AST_PIPE)
 			exec_raw(shell, node, _get_builtincmd(node));
 		else
