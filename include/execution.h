@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:02:44 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/05 14:13:12 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/07 17:44:21 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ int		set_any_env(t_minishell *shell, char **argv, size_t n);
  * @param b_in a pointer to b_in. Checked to set envp accordingly
  * @return char* the env string from the environment
  */
-void			set_cmd_envp(t_minishell *shell, t_astnode *node, 
-					t_builtincmd b_in);
+void	set_cmd_envp(t_minishell *shell, t_astnode *node,
+			t_builtincmd b_in);
 
 int		execute_command(t_minishell *shell, t_astnode *node);
 int		execute_pipe(t_minishell *shell, t_astnode *node);

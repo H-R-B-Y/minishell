@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/05 16:00:44 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/07 17:46:18 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ struct s_minishell
 	char				*name;
 };
 
-void	init_pwd(t_minishell *shell, char ***envp);
+void			init_pwd(t_minishell *shell, char ***envp);
 /**
  * @brief Initialise the shell
  * 
@@ -117,7 +117,7 @@ int				init_process(t_minishell *shell, char **envp);
  * @param string The histeory item that we want to add
  * @return int status code
  */
-int		better_add_history(t_minishell *shell, char *string);
+int				better_add_history(t_minishell *shell, char *string);
 
 /**
  * @brief Cleanup ready for the next command (or at exit time)
@@ -256,7 +256,7 @@ char			*s_get_envany(t_minishell *shell, const char *name);
  * @param name the name of the environment variable
  * @return char* the env string from the environment
  */
-char			*s_get_fromthis_env(char **env,  const char *name);
+char			*s_get_fromthis_env(char **env, const char *name);
 
 /**
  * @brief Sets a variable and value to envp
@@ -297,8 +297,7 @@ Things that can be accessed externally in the builtins are
  * @param envp the current environment variables
  * @return int the statuscode
  */
-typedef int			(*t_builtincmd)(t_minishell *, char **, char ***);
-
+typedef int					(*t_builtincmd)(t_minishell *, char **, char ***);
 
 /**
  * @brief Get a builtin command object
@@ -476,13 +475,16 @@ int				last_newline_not_end(const char *str);
  * @param name the name of the variable to expand
  * @param flag 1 if you want to care about quotes else 0
  */
-char	**expand_and_split(t_minishell *shell, const char *value, int flag);
+char			**expand_and_split(t_minishell *shell,
+					const char *value, int flag);
 
-void	clean_shell(t_minishell *shell);
-void	clean_exit_status(t_minishell *shell, int status);
-void	perror_exit(t_minishell *shell, char *message); // TODO: check if correct clean up everything and exit
-void	_free_arr_perror_exit(t_minishell *shell, void **arr, char *message);
-void	_set_returncode(int *to_set, int code);
+void			clean_shell(t_minishell *shell);
+void			clean_exit_status(t_minishell *shell, int status);
+// TODO: check if correct clean up everything and exit
+void			perror_exit(t_minishell *shell, char *message);
+void			_free_arr_perror_exit(t_minishell *shell,
+					void **arr, char *message);
+void			_set_returncode(int *to_set, int code);
 
 /**
  * @brief Join two arrays
@@ -490,6 +492,6 @@ void	_set_returncode(int *to_set, int code);
  * @param arr2 Right array
  * @returns New allocated array of the joined arrays
  */
-void	*arrjoin(void **arr1, void **arr2);
+void			*arrjoin(void **arr1, void **arr2);
 
 #endif

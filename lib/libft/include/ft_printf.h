@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 16:11:55 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 18:47:22 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/07 17:44:00 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ t_conv	*set_prefix(t_conv *c);
 
 // Handles the escape sequence in the string.
 int		handle_escape(int fd, const char **str, va_list args,
-						unsigned long long *len);
+			unsigned long long *len);
 
 // Handles the majority of printing in the string. (calls handle escape on %)
 int		ft_printf(const char *str, ...);
@@ -109,7 +109,7 @@ int		ft_printf(const char *str, ...);
  * @param str the string to format
  * @param vargs arguments to format the string with
  */
-int	ft_fprintf(int fd, const char *str, ...);
+int		ft_fprintf(int fd, const char *str, ...);
 
 // general_functions.c
 

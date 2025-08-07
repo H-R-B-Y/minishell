@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   readline_loop.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:07:29 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/05 22:19:40 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/07 17:43:49 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef READLINE_LOOP_H
 # define READLINE_LOOP_H
@@ -111,7 +110,8 @@ int		read_until_complete_command(t_minishell *shell);
  */
 ssize_t	append_to_history_item(t_readline_data *data, const char *str);
 
-void	append_tokenv_to_history_item(t_minishell *shell, t_readline_data *rl_data, t_token **tokens);
+void	append_tokenv_to_history_item(t_minishell *shell,
+			t_readline_data *rl_data, t_token **tokens);
 
 /**
  * @brief wrapper for readline so we dont echo when not in interactive mode.
