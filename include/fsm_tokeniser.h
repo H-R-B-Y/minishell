@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/06 12:54:58 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/07 17:40:24 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,14 +111,6 @@ struct s_token
 	t_tokentype	type;
 	/// @brief the raw token string
 	char		*raw;
-	/// @brief flag this token as a heredoc deliminator
-	int			heredoc_delim;
-	/// @brief flag this token as a filename for a redirect
-	int			redirect_file;
-	// /// @brief flag if the quotes have been removed
-	// int			quotes_removed;
-	// /// @brief flag if the variables have been expanded
-	// int			variables_expanded;
 };
 
 /**

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:37:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/07 12:35:33 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/07 17:39:13 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ int	handle_unclosed_quote(t_tokint *tokeniser, const char *str)
 			str_vec_join((const char *[2]){temp, 0}), free);
 	else if (last_newline_not_end(tokeniser->prev_line))
 		ft_dirtyswap((void *)&tokeniser->prev_line,
-			str_vec_join((const char *[4]){tokeniser->prev_line, "\n", temp, 0}),
+			str_vec_join((const char *[4])
+			{tokeniser->prev_line, "\n", temp, 0}),
 			free);
 	else
 		ft_dirtyswap((void *)&tokeniser->prev_line,

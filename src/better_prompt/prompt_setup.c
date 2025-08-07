@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt_setup.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 17:46:41 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/05 15:47:26 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/07 17:42:34 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ char	*create_prompt(const t_minishell *shell)
 
 	has_git();
 	parts[0] = status_code_part(shell);
-	parts[1] = directory_part(); // dont need to do this everytime 
+	parts[1] = directory_part();
 	parts[2] = git_branch_part();
 	prompt = str_vec_join((const char *[5]){
 			parts[0], parts[1], parts[2], " > ", 0

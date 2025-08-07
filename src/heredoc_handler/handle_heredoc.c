@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 15:22:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/28 16:25:46 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/07 17:37:52 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 extern int	g_global_signal;
 
 int		_read_heredoc(struct s_ast_internal *meta, const char *delim,
-	const int temp_file, const short flags);
+			const int temp_file, const short flags);
 
 static int	prep_heredoc(struct s_ast_internal *meta,
 	const char *delim,

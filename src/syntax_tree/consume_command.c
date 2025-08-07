@@ -6,14 +6,14 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 13:46:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/04 13:53:05 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/07 17:28:17 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	add_redirect_type(struct s_ast_internal *meta, t_token **arr,
-						t_astnode *node, size_t *inc);
+int	add_redirect_type(struct s_ast_internal *meta,
+		t_token **arr, t_astnode *node, size_t *inc);
 
 static int	_add_redirects(struct s_ast_internal *meta,
 	t_astnode *node,
@@ -25,7 +25,7 @@ static int	_add_redirects(struct s_ast_internal *meta,
 		&& ft_strchr("\3\4\5\6\17", node->tokens[i[0]]->type))
 	{
 		if (add_redirect_type(meta, node->tokens, node, &i[0]) < 0)
-				return (free(new_tokenv), 0);
+			return (free(new_tokenv), 0);
 		i[0]++;
 	}
 	return (1);
@@ -41,7 +41,8 @@ static int	post_consume_words(struct s_ast_internal *meta, t_astnode *node)
 	new_tokenv = ft_calloc(ft_arrlen((void *)node->tokens) + 1, sizeof(void *));
 	if (!_add_redirects(meta, node, i, &new_tokenv))
 		return (0);
-	while (node->tokens[i[0]] && !ft_strchr("\3\4\5\6\17", node->tokens[i[0]]->type))
+	while (node->tokens[i[0]]
+		&& !ft_strchr("\3\4\5\6\17", node->tokens[i[0]]->type))
 		new_tokenv[i[1]++] = node->tokens[i[0]++];
 	if (!_add_redirects(meta, node, i, &new_tokenv))
 		return (0);
@@ -72,7 +73,6 @@ ssize_t	ast_consume_words(struct s_ast_internal *meta, t_astnode *node)
 	}
 	if (!post_consume_words(meta, node))
 		return (-1);
-	// append_tokenv_to_history_item(shell, &shell->rldata, node->tokens);
 	node->token_count = ft_arrlen((void *)node->tokens);
 	return (eaten);
 }

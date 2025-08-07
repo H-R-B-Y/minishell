@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:34:33 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/05 14:56:09 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/07 17:23:53 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	builtin_env(t_minishell *shell, char **argv, char ***envp)
 		sep = ft_strchr(argv[i], '=');
 		if (!sep)
 			return (ft_arrclear((void *)env, free), ft_fprintf(2,
-				"%s: env: Unable to run program\n", shell->name), 1);
+					"%s: env: Unable to run program\n", shell->name), 1);
 		if (set_n_envp(&env, argv + i, 1) == -1)
 			return (ft_arrclear((void *)env, free), 1);
 		i++;

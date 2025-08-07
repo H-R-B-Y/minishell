@@ -6,18 +6,20 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 12:57:26 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/04 14:25:48 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/07 17:29:57 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/minishell.h"
 #include "./var_expansion.h"
 
-void	_expensive_free_that_i_wish_i_didnt_have_to_do(char ***split, char **arr)
+// refactor so that we dont have to do this dumb free
+void	_expensive_free(char ***split, char **arr)
 {
 	size_t	i;
 	size_t	i2;
 	int		flag;
+
 	i = 0;
 	while ((*split)[i])
 	{
@@ -79,6 +81,6 @@ ssize_t	_handle_word_split(t_expansion *ex,
 	ft_dirtyswap((void *)&ex->out, new_out, free);
 	len += _post_space(ex, res, split, &new_out);
 	ex->o_i += len;
-	_expensive_free_that_i_wish_i_didnt_have_to_do(&split, ex->out);
+	_expensive_free(&split, ex->out);
 	return (len);
 }

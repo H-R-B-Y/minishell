@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   init_pwd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:39:57 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/05 15:46:48 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/07 17:35:10 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void init_pwd(t_minishell *shell, char ***envp)
+void	init_pwd(t_minishell *shell, char ***envp)
 {
-	char **pwd;
-	char *dup;
-	
+	char	**pwd;
+	char	*dup;
+
 	pwd = (char **)ft_calloc(3, sizeof(char *));
 	pwd[0] = getcwd(0, 0);
 	if (!pwd[0])

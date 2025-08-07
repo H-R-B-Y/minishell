@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 12:55:44 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/07 12:36:55 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/07 17:41:05 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,29 +23,30 @@ static int	unfinished_string_check(t_tokint *tokeniser, const char *str)
 
 t_tokentype	_create_token(t_tokint *tokeniser, const char *str)
 {
-	char *substring;
+	char	*substring;
 
 	substring = ft_substr(str, tokeniser->i_start,
-		tokeniser->i_end - tokeniser->i_start);
+			tokeniser->i_end - tokeniser->i_start);
 	tokeniser->curr_type = bin_token(substring);
 	tokeniser->curr_token = ft_calloc(1, sizeof(t_token));
 	if (!substring || !tokeniser->curr_token)
 		return (TOK_ERR);
-	(*tokeniser->curr_token) = (t_token){.heredoc_delim = 0,
-		.raw = substring, .type = tokeniser->curr_type,};
+	(*tokeniser->curr_token) = (t_token){.raw = substring,
+		.type = tokeniser->curr_type,};
 	return (tokeniser->curr_type);
 }
 
-int _handle_continuation(t_tokint *tokeniser)
+int	_handle_continuation(t_tokint *tokeniser)
 {
 	char	*new_value;
 
 	if (last_newline_not_end(tokeniser->prev_line))
 		new_value = str_vec_join(
-			(const char *[4]){tokeniser->prev_line, "\n",
+				(const char *[4]){tokeniser->prev_line, "\n",
 				tokeniser->curr_token->raw, 0});
 	else
-		new_value = ft_strjoin(tokeniser->prev_line, tokeniser->curr_token->raw);
+		new_value = ft_strjoin(tokeniser->prev_line,
+				tokeniser->curr_token->raw);
 	if (!new_value)
 		return (-1);
 	ft_dirtyswap((void *)&tokeniser->prev_line, 0, free);

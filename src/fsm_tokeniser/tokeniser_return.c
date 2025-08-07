@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 16:50:19 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/05 16:51:33 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/07 17:39:03 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ t_tokretcode	set_retcode(t_fsmdata *fsm,
 		destroy_token(tokeniser_pop_token(&fsm->tok_int), free);
 	return (code);
 }
-
 
 t_tokretcode	parse_fatal(t_fsmdata *fsm)
 {

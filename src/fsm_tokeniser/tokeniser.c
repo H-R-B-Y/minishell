@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:22:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/07 12:35:43 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/07 17:39:34 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,11 @@
 #include "../../include/v_dbg.h"
 
 t_tokretcode	set_retcode(t_fsmdata *fsm,
-	const t_tokretcode code, char *str_condition);
+					const t_tokretcode code, char *str_condition);
 t_tokretcode	parse_fatal(t_fsmdata *fsm);
 t_tokretcode	parse_continue(t_fsmdata *fsm);
 t_tokretcode	parse_error(t_fsmdata *fsm);
 t_tokretcode	parse_ok(t_fsmdata *fsm);
-
 
 static int	_accept_token(t_fsmdata *fsm)
 {
@@ -36,12 +35,12 @@ static int	_accept_token(t_fsmdata *fsm)
 	return (0);
 }
 
+// if (fsm->state == ST_HDOC && next_state == ST_WORD)
+// 	fsm->tok_int.curr_token->heredoc_delim = 1;
+// else if (fsm->state == ST_REDR && next_state == ST_WORD)
+// 	fsm->tok_int.curr_token->redirect_file = 1;
 void	state_change(t_fsmdata *fsm, t_fsmstate next_state)
 {
-	// if (fsm->state == ST_HDOC && next_state == ST_WORD)
-	// 	fsm->tok_int.curr_token->heredoc_delim = 1;
-	// else if (fsm->state == ST_REDR && next_state == ST_WORD)
-	// 	fsm->tok_int.curr_token->redirect_file = 1;
 	if (next_state == ST_END && fsm->paren_count > 0)
 		next_state = ST_CONT;
 	fsm->last_state = fsm->state;

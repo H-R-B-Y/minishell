@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 16:49:12 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/06 17:50:34 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/07 17:02:01 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,10 @@ t_redirect_desc	*handle_redirectfd(t_token *redirect)
 	sep = ft_strchr(redirect->raw, '>');
 	if (!sep)
 		sep = ft_strchr(redirect->raw, '<');
-	extract_tofromfds(redirect->raw, sep, fds);
+	if (ft_isdigit(redirect->raw[0]))
+		extract_tofromfds(redirect->raw, sep, fds);
+	else
+		fds[0] = ((0 * (*sep == '<')) + (1 * (*sep == '>')));
 	if (redirect->raw[ft_strlen(redirect->raw) - 1] != '-')
 		(*output) = (t_redirect_desc){
 			.type = REDIRECT_FD, .fd_map.from_fd = fds[1],

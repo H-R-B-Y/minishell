@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   shell_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 12:01:50 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/05 22:48:59 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/07 17:37:28 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 extern int	g_global_signal;
-
 
 int	better_add_history(t_minishell *shell, char *string)
 {
@@ -27,7 +26,7 @@ int	better_add_history(t_minishell *shell, char *string)
 	if (shell->last_hist_item)
 	{
 		if (!ft_strncmp(shell->last_hist_item, buff_str,
-			ft_strlen(shell->last_hist_item) + 1))
+				ft_strlen(shell->last_hist_item) + 1))
 			return (free(buff_str), 0);
 	}
 	add_history(buff_str);
@@ -45,7 +44,8 @@ void	reset_for_command(t_minishell *shell, t_readline_retcode rl_code)
 	if (shell->rldata.curr_hst_item)
 	{
 		better_add_history(shell, shell->rldata.curr_hst_item);
-		ft_dirtyswap((void *)&shell->last_hist_item, ft_strdup(shell->rldata.curr_hst_item), free);
+		ft_dirtyswap((void *)&shell->last_hist_item,
+			ft_strdup(shell->rldata.curr_hst_item), free);
 		ft_dirtyswap((void *)&shell->rldata.curr_hst_item, NULL, free);
 	}
 	if (shell->rldata.last_line)

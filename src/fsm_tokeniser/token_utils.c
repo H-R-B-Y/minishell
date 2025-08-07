@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:36:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/29 17:14:45 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/07 17:41:16 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void	destroy_token(t_token *token, void (*del_raw)(void *))
 	if (token->raw && del_raw)
 		del_raw(token->raw);
 	free(token);
-	// printf("freed token %p\n", token);
 }
 
 void	free_token_list(t_list *list, void (*del_raw)(void *))
@@ -71,7 +70,7 @@ int	append_anon_token(t_fsmdata *fsm, const t_tokentype type, const char *str)
 	tok = malloc(sizeof(t_token));
 	if (!tok)
 		return (0);
-	*tok = (t_token){.heredoc_delim = 0, .raw = (void *)str, .type = type};
+	*tok = (t_token){.raw = (void *)str, .type = type};
 	ft_lstadd_back(&fsm->tokens, ft_lstnew(tok));
 	return (1);
 }

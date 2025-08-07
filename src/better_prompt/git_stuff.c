@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   git_stuff.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 17:19:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/05 15:43:30 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/07 17:42:27 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ extern char	**environ;
 int	has_git(void)
 {
 	static int	called = -1;
+
 	if (called < 0)
 	{
 		called = 1;

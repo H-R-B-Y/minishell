@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 13:25:05 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/05 10:16:45 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/07 17:27:56 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ static char	**cheeky_expand(t_minishell *shell, t_token *tok)
 	return (cmdv_prep(shell, &node));
 }
 
-
 static t_list	*_redirect(struct s_ast_internal *meta,
 	t_token **arr,
 	size_t addr
@@ -31,7 +30,7 @@ static t_list	*_redirect(struct s_ast_internal *meta,
 	char			**expanded_filename;
 	t_redirect_desc	*redr;
 	t_list			*out;
-	
+
 	expanded_filename = cheeky_expand(meta->shell, arr[addr + 1]);
 	if (ft_arrlen((void *)expanded_filename) > 1 || !expanded_filename[0][0])
 	{
@@ -107,7 +106,7 @@ int	add_redirect_type(struct s_ast_internal *meta,
 		inc[0]++;
 	}
 	if (!new_node || !new_node->content)
-		return (0); // can assume errors are signaled before this point
+		return (0);
 	ft_lstadd_back(&node->redirect, new_node);
 	return (1);
 }

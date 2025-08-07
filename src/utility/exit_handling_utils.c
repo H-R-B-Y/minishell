@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_handling_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:39:51 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/05 16:18:27 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/07 17:34:55 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ void	clean_exit_status(t_minishell *shell, int status)
 	exit(status);
 }
 
-// TODO: test. ALso, maybe make a exit_message genral function to print and exit, success and failure
+// TODO: test. ALso, maybe make a exit_message genral
+// function to print and exit, success and failure
 void	perror_exit(t_minishell *shell, char *message)
 {
 	ft_fprintf(2, "%s: ", shell->name);
@@ -41,7 +42,7 @@ void	perror_exit(t_minishell *shell, char *message)
 		clean_exit_status(shell, EXIT_FAILURE);
 }
 
-void _free_arr_perror_exit(t_minishell *shell, void **arr, char *message)
+void	_free_arr_perror_exit(t_minishell *shell, void **arr, char *message)
 {
 	ft_arrclear((void **)arr, free);
 	perror_exit(shell, message);

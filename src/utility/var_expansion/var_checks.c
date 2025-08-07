@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 12:54:55 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/06 17:06:19 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/07 17:34:35 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ size_t	ft_strcntchrset(const char *str, const char *set)
 
 	if (!str || !set || !*set)
 		return (0);
-	count = 0;	
+	count = 0;
 	i = 0;
 	while (str[i])
 		count += ft_strcountchar(set, str[i++]);
@@ -32,7 +32,7 @@ char	*mark_quotes(const char *expanded)
 	size_t	qcnt;
 	char	*newstr;
 	size_t	i[2];
-	
+
 	if (!expanded)
 		return (NULL);
 	ft_bzero(i, sizeof(size_t) * 2);
@@ -67,7 +67,7 @@ ssize_t	is_special(t_minishell *shell,
 	if (!_case)
 		return (0);
 	ret = _case->f(shell, &ex->value[ex->v_i], res);
-	if(!ft_dirtyswap((void *)res, mark_quotes(*res), free))
+	if (!ft_dirtyswap((void *)res, mark_quotes(*res), free))
 		perror_exit(shell, "parameter");
 	ex->v_i += ret;
 	return (1);
@@ -91,7 +91,7 @@ ssize_t	is_normal(t_minishell *shell,
 	else
 		*res = ft_strdup("$");
 	free(str);
-	if(!ft_dirtyswap((void *)res, mark_quotes(*res), free))
+	if (!ft_dirtyswap((void *)res, mark_quotes(*res), free))
 		perror_exit(shell, "parameter");
 	ex->v_i += i;
 	return (i);

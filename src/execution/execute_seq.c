@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_seq.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:36:38 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/02 18:36:41 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/07 17:41:49 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

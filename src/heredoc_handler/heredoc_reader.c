@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 13:43:46 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 17:52:23 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/07 17:37:57 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	write_str(struct s_ast_internal *meta,
 )
 {
 	size_t	i;
-	char **tmp;
+	char	**tmp;
 
 	i = 0;
 	while ((flags & 2) && line[i] && line[i] == '\t')

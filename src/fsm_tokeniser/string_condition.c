@@ -6,14 +6,14 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 16:46:17 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/05 17:27:57 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/07 17:38:45 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/fsm_tokeniser.h"
 #include "../../include/v_dbg.h"
 
-static char *_continue_condition(const t_fsmdata *fsm,
+static char	*_continue_condition(const t_fsmdata *fsm,
 	const t_tokretcode code
 )
 {

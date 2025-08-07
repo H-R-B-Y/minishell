@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   splitting_next_lines.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:16:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/05 22:41:49 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/07 17:36:43 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ ssize_t	append_to_history_item(t_readline_data *data, const char *str)
 		|| data->fsm_data->tok_int.curr_type == TOK_INCOMPLETE_STRING)
 	{
 		if (!last_newline_not_end(data->curr_hst_item))
-			*ft_strrchr(data->curr_hst_item, '\n') = '\0';		
+			*ft_strrchr(data->curr_hst_item, '\n') = '\0';
 		temp = str_join_with_sep(data->curr_hst_item, str, "\n");
 	}
 	else if (str[0] == '\n')
@@ -40,11 +40,10 @@ ssize_t	append_to_history_item(t_readline_data *data, const char *str)
 	return (ft_dirtyswap((void *)&data->curr_hst_item, temp, free), 1);
 }
 
-char *remove_newline(char *str)
+char	*remove_newline(char *str)
 {
 	return (ft_strrtrim(str, "\n"));
 }
-
 
 ssize_t	split_extra_lines(t_readline_data *data, char *str)
 {
