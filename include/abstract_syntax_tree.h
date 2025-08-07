@@ -6,7 +6,7 @@
 /*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/06 20:34:29 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/07 17:50:24 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ struct s_redirect_desc
 	t_redirect_type			type;
 	/// @brief The subtype of the redirect
 	enum e_redirect_subtype	subtype;
+	/// @brief Set of fds to restore
+	int						*restore_fd;
 	union
 	{
 		/// @brief Maps a file descriptor 

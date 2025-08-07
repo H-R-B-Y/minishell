@@ -6,7 +6,7 @@
 /*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:15:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/06 19:26:59 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/07 17:52:45 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,60 @@ static void	_map(t_redirect_desc *desc)
 	}
 }
 
+void	prep_rd_restore(t_redirect_desc *desc)
+{
+	int	temp_fd[2];
+	
+	ft_memset(temp_fd, -1, size_t(temp_fd) * 2);
+	if (!desc)
+		return ;
+	if (desc->subtype == REDIR_FD || desc->subtype == CLOSE_FD)
+		temp_fd[0] = dup(desc->fd_map.to_fd);
+	else if (desc->file_map.to_fd >= 0)
+		temp_fd[0] = dup(desc->file_map.to_fd);
+	else
+	{
+		temp_fd[1] = dup(STDERR_FILENO);
+		temp_fd[0] = dup(STDOUT_FILENO);
+	}
+	desc->restore_fd = temp_fd;
+}
+
+void	rd_restore(t_redirect_desc *desc)
+{
+	int	restore_fd[2];
+	int	i;
+	
+	restore_fd = desc->to_restore;
+	if (!desc || restore_fd[0] == -1)
+		return ;
+	if (desc->subtype == REDIR_FD || desc->subtype == CLOSE_FD)
+		dup2(restore_fd[0], desc->fd_map.to_fd);
+	else if (desc->file_map.to_fd >= 0)
+		dup2(restore_fd[0], desc->file_map.to_fd);
+	else
+	{
+		dup2(restore_fd[1], STDERR_FILENO);
+		dup2(restore_fd[0], STDOUT_FILENO);
+	}
+	i = 0;
+	while (rd_restore[i] >= 0)
+		close(rd_restore[i++]);
+}
+
+void	restore_fds(t_astnode *node)
+{
+	t_list			*list;
+
+	list = node->redirect;
+	while (list)
+	{
+		prep_rd_restore(list->content);
+		_map(list->content);
+		list = list->next;
+	}
+}
+
 void	map_fds(t_astnode *node)
 {
 	t_list			*list;
@@ -105,6 +159,7 @@ void	map_fds(t_astnode *node)
 	list = node->redirect;
 	while (list)
 	{
+		prep_rd_restore(list->content);
 		_map(list->content);
 		list = list->next;
 	}

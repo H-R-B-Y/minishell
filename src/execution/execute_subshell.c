@@ -6,7 +6,7 @@
 /*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:36:42 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/04 12:41:37 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/07 15:48:43 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	execute_subshell(t_minishell *shell, t_astnode *node)
 	pid = fork();
 	if (pid == 0)
 	{
-		if (prepare_fds(node) < 0)
+		if (prepare_fds(node->left_node) < 0)
 			clean_exit_status(shell, 2);
 		map_fds(node);
 		execute_ast(shell, node->left_node);
