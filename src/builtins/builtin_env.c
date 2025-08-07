@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:34:33 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 20:50:23 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/05 14:56:09 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,18 @@ int	builtin_env(t_minishell *shell, char **argv, char ***envp)
 	if (!env)
 		return (perror("minishell: builtin_env"), 1);
 	if (set_n_envp(&env, *envp, ft_arrlen((void *)(*envp))) == -1)
-		return (ft_dirtyswap((void *)&env, NULL, free), 1);
+		return (ft_arrclear((void *)env, free), 1);
 	i = 1;
 	while (argv[i])
 	{
 		sep = ft_strchr(argv[i], '=');
 		if (!sep)
-			return (ft_dirtyswap((void *)&env, NULL, free),
-				ft_putstr_fd("minishell: env: Unable to run program\n", 2), 1);
+			return (ft_arrclear((void *)env, free), ft_fprintf(2,
+				"%s: env: Unable to run program\n", shell->name), 1);
 		if (set_n_envp(&env, argv + i, 1) == -1)
-			return (ft_dirtyswap((void *)&env, NULL, free), 1);
+			return (ft_arrclear((void *)env, free), 1);
 		i++;
 	}
 	ft_arriter((void *)env, print_and_ret);
-	return (0);
+	return (ft_arrclear((void *)env, free), 0);
 }

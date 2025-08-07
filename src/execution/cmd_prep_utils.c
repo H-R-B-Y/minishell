@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 13:37:48 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/04 17:40:17 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/07 12:35:00 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,16 +86,17 @@ void	xpnd_param_var(t_minishell *shell, t_astnode *node, char ***argv, size_t *n
 {
 	size_t	i;
 	size_t	i2;
+	size_t	new_wc;
 	char	**words;
 	
 	if (!argv && !*argv)
 		return ;
 	i = 0;
-	i2 = 0;
-	while(i < *n)
+	new_wc = 0;
+	while(i < *n + new_wc)
 	{
 		i2 = 0;
-		words = expand_and_split(shell, node->tokens[i][0].raw, 3);
+		words = expand_and_split(shell, node->tokens[i - new_wc][0].raw, 3);
 		if (!words)
 			_free_arr_perror_exit(shell, (void **)argv, "minishell: expand");
 		while (words[i2])
@@ -104,24 +105,10 @@ void	xpnd_param_var(t_minishell *shell, t_astnode *node, char ***argv, size_t *n
 			i2++;
 		}
 		free(words);
-		i++;
+		i += i2;
+		new_wc += i2 - 1;
 	}
-}
-
-void	word_splitting(t_minishell *shell, t_astnode *node, char ***argv, size_t *n)
-{
-	size_t	i;
-	
-	(void)node;
-	if (!argv)
-		return ;
-	i = 0;
-	while(i < *n)
-	{
-		if (!ft_dirtyswap((void **)(argv[0] + i), rem_quotes(argv[0][i]), free))
-			_free_arr_perror_exit(shell, (void **)argv, "minishell: expand");
-		i++;
-	}
+	*n += new_wc;
 }
 
 void	quote_removal(t_minishell *shell, t_astnode *node, char ***argv, size_t *n)
@@ -149,7 +136,6 @@ static t_shell_expansion_fnc	*set_expansion_fncs(void)
 {
 	static t_shell_expansion_fnc shell_expansion_fnc[3] = {
 		(t_shell_expansion_fnc){.f=xpnd_param_var},
-		// (shell_expansion_fnc){.f= word_splitting},
 		(t_shell_expansion_fnc){.f= quote_removal},
 		(t_shell_expansion_fnc){.f= 0},	
 	};
@@ -175,5 +161,6 @@ char	**cmdv_prep(t_minishell *shell, t_astnode *node)
 		xpnsion_f[i].f(shell, node, &argv, &n);
 		i++;
 	}
+	node->argc = n;
 	return (argv);
 }

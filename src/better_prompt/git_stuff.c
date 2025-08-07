@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   git_stuff.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 17:19:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 17:44:16 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/05 15:43:30 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*get_return(int data[2], const int ret)
 		if (!buff[1])
 			break ;
 		ft_dirtyswap((void *)&buff[0],
-			str_vec_join((char *[3]){buff[0], buff[1], 0}), free);
+			str_vec_join((const char *[3]){buff[0], buff[1], 0}), free);
 		free(buff[1]);
 	}
 	return (close(data[0]), buff[0]);

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 12:55:44 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/06 13:13:16 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/07 12:36:55 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int _handle_continuation(t_tokint *tokeniser)
 
 	if (last_newline_not_end(tokeniser->prev_line))
 		new_value = str_vec_join(
-			(char *[4]){tokeniser->prev_line, "\n",
+			(const char *[4]){tokeniser->prev_line, "\n",
 				tokeniser->curr_token->raw, 0});
 	else
 		new_value = ft_strjoin(tokeniser->prev_line, tokeniser->curr_token->raw);

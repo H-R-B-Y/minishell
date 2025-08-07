@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:31:30 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 19:02:04 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/05 15:46:48 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,14 @@ static void update_pwd(t_minishell *shell, char **envp)
 	if (!pwd[0])
 		perror_exit(shell, "cd");
 	if (s_get_fromthis_env(envp, "PWD"))
-		pwd[1] = str_vec_join((char *[3]){"OLDPWD=", s_get_fromthis_env(envp, "PWD"), 0});
+		pwd[1] = str_vec_join((const char *[3]){"OLDPWD=", s_get_fromthis_env(envp, "PWD"), 0});
 	else if (s_get_envany(shell, "PWD"))
-		pwd[1] = str_vec_join((char *[3]){"OLDPWD=", s_get_envany(shell, "PWD"), 0});
+		pwd[1] = str_vec_join((const char *[3]){"OLDPWD=", s_get_envany(shell, "PWD"), 0});
 	else
 		pwd[1] = ft_strdup("OLDPWD");
 	if (!pwd[1])
 		_free_arr_perror_exit(shell, (void **)pwd, "minishell: cd:");
-	pwd[2] = str_vec_join((char *[3]){"PWD=", pwd[0], 0});
+	pwd[2] = str_vec_join((const char *[3]){"PWD=", pwd[0], 0});
 	if (!pwd[2])
 		_free_arr_perror_exit(shell, (void **)pwd, "minishell: cd:");
 	_set_pwd_env(shell, pwd);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/04 14:41:26 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/05 16:00:44 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@
 # include "./abstract_syntax_tree.h"
 # include "./execution.h"
 # include "./builtin.h"
+# include "./ft_printf.h"
 
 /**
  * @brief redo this comment
@@ -77,6 +78,8 @@ struct s_minishell
 	t_fsmdata			fsm_data;
 	/// @brief Internal information relevant to the readline loop
 	t_readline_data		rldata;
+	///	@brief Last history item relevant to better_add_history
+	char				*last_hist_item;
 	/// @brief Current line (? do we still need this)
 	char				*ecurrent_line;
 	/// @brief Current pipeline (? do we still need this?)
@@ -91,10 +94,6 @@ struct s_minishell
 	int					argc;
 	/// @brief arguments passed to program at execution
 	char				**argv;
-	/// @brief Not sure if this is going to be used,
-	/// but for _ expansion of arguments I was thinking
-	/// that we could set it globally, maybe?
-	char				*last_arg;
 	char				*name;
 };
 
@@ -170,7 +169,7 @@ char			*str_join_with_sep(const char *str1,
  * @param arr a null terminated array of strings
  * @return char* joined string
  */
-char			*str_vec_join(char **arr);
+char			*str_vec_join(const char **arr);
 /**
  * @brief pop a line out of the extra lines array
  * 
@@ -258,6 +257,19 @@ char			*s_get_envany(t_minishell *shell, const char *name);
  * @return char* the env string from the environment
  */
 char			*s_get_fromthis_env(char **env,  const char *name);
+
+/**
+ * @brief Sets a variable and value to envp
+ * 
+ * @param shell the shell struct
+ * @param value the value of var
+ * @param var	the variable to set with value separated by '='
+ * @param envp	a pointer to the environment to set the variable to
+ * @return char* the env string from the environment
+ */
+void			_set_var_value(t_minishell *shell,
+					const char *value,
+					const char *var, char ***envp);
 
 /*
 Things that can be accessed externally in the builtins are

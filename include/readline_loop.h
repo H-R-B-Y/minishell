@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline_loop.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:07:29 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 19:01:24 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/05 22:19:40 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ struct s_readline_data
 	/// @brief The count of extra lines
 	size_t				extra_line_count;
 	/// @brief The current history item
-	char				*current_hist_item;
+	char				*curr_hst_item;
 	/// @brief The most recent line read from readline/extra_lines
 	char				*last_line;
 	/// @brief Reference to the interactive mode flag in shell struct.
@@ -109,7 +109,7 @@ int		read_until_complete_command(t_minishell *shell);
  * @param str pointer to the string to append to the history item
  * @return ssize_t 
  */
-ssize_t	append_to_history_item(t_readline_data *data, char **str);
+ssize_t	append_to_history_item(t_readline_data *data, const char *str);
 
 void	append_tokenv_to_history_item(t_minishell *shell, t_readline_data *rl_data, t_token **tokens);
 

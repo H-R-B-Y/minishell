@@ -6,20 +6,48 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 12:05:31 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 17:15:33 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/06 17:03:43 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./var_expansion.h"
 #include "../../../include/minishell.h"
 
-static ssize_t	special_last_param(t_minishell *shell,
+static ssize_t	special_ansi_c_quotation(t_minishell *shell,
 	const char *value,
 	char **output
 )
 {
 	(void)value;(void)shell;
-	*output = ft_strdup("NOT IMPLEMENTED");
+	*output = ft_strdup(" ");
+	ft_printf("Note: $\"\": ANSI-C escaped chars not handled (ie. \'\\n\')\n");
+	return (0);
+}
+
+static ssize_t	special_translation(t_minishell *shell,
+	const char *value,
+	char **output
+)
+{
+	(void)value;(void)shell;
+	*output = ft_strdup(" ");
+	ft_printf("Note: $\"\": locale translation not implemented\n");
+	return (0);
+}
+
+static ssize_t	special_last_param(t_minishell *shell,
+	const char *value,
+	char **output
+)
+{
+	char	*to_xpnd;
+	
+	(void)value;(void)shell;
+	to_xpnd = s_get_envany(shell, "_");
+	if (!to_xpnd)
+		*output = ft_strdup("_");
+	else
+		*output = ft_strdup(to_xpnd);
 	return (1);
 }
 
@@ -63,7 +91,9 @@ static ssize_t	special_argv(t_minishell *shell,
 const struct s_special_var	*get_special(char c)
 {
 	int									i;
-	static const struct	s_special_var	cases[5] = {
+	static const struct	s_special_var	cases[7] = {
+		(struct s_special_var){.match="\"",.f=special_translation},
+		(struct s_special_var){.match="\'",.f=special_ansi_c_quotation},
 		(struct s_special_var){.match="_",.f=special_last_param},
 		(struct s_special_var){.match="?",.f=special_result},
 		(struct s_special_var){.match="$",.f=special_pid},

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sgetenvany.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:06:15 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/29 17:20:01 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/05 15:46:48 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ ssize_t	_sgetanon(char **anon, const char *name)
 	if (!anon)
 		return (-1);
 	i = 0;
-	temp = str_vec_join((char *[3]){(void *)name, "=", 0});
+	temp = str_vec_join((const char *[3]){(void *)name, "=", 0});
 	len = ft_strlen(temp);
 	while (1)
 	{

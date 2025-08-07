@@ -6,7 +6,7 @@
 /*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:39:51 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/02 18:39:52 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/05 16:18:27 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	clean_shell(t_minishell *shell)
 	ft_arrclear((void *)shell->environment, free);
 	restore_signals(shell);
 	rl_clear_history();
+	if (shell->last_hist_item)
+		free(shell->last_hist_item);
 }
 
 void	clean_exit_status(t_minishell *shell, int status)
@@ -31,8 +33,7 @@ void	clean_exit_status(t_minishell *shell, int status)
 // TODO: test. ALso, maybe make a exit_message genral function to print and exit, success and failure
 void	perror_exit(t_minishell *shell, char *message)
 {
-	ft_putstr_fd(shell->name, 2);
-	ft_putstr_fd(": ", 2);
+	ft_fprintf(2, "%s: ", shell->name);
 	perror(message);
 	if (errno == EISDIR)
 		clean_exit_status(shell, 126);

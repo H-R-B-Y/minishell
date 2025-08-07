@@ -1,36 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_subshell.c                                 :+:      :+:    :+:   */
+/*   set_cmd_envp.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/02 18:36:42 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/04 12:41:37 by cquinter         ###   ########.fr       */
+/*   Created: 2025/08/05 13:59:58 by cquinter          #+#    #+#             */
+/*   Updated: 2025/08/05 15:06:50 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../../include/minishell.h"
 
-int	execute_subshell(t_minishell *shell, t_astnode *node)
+void	set_cmd_envp(t_minishell *shell, t_astnode *node, t_builtincmd b_in)
 {
-	pid_t pid;
-	int status;
-
-	pid = fork();
-	if (pid == 0)
+	if (b_in)
 	{
-		if (prepare_fds(node) < 0)
-			clean_exit_status(shell, 2);
-		map_fds(node);
-		execute_ast(shell, node->left_node);
-		clean_exit_status(shell, shell->return_code);
+		if (set_n_envp(&node->envp, node->cmdv, node->cmd_i) == -1)
+			perror_exit(shell, "setting b_in cmd envp");
 	}
-	else if (pid > 0)
-		waitpid(pid, &status, 0);
 	else
-		perror_exit(shell, "subshell");
-	_set_returncode(&shell->return_code, status);
-	return (shell->return_code);
+	{
+		node->envp = (char **)ft_arrmap((void **)shell->environment,
+			(void *)ft_strdup, free);
+		if (!node->envp)
+			perror_exit(shell, "ft_arrmap");
+		if (set_n_envp(&node->envp, node->cmdv, node->cmd_i) == -1)
+			perror_exit(shell, "setting cmd envp");
+	}
 }

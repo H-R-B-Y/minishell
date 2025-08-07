@@ -98,6 +98,8 @@ SRCS			:= \
 				$(SRC_DIR)/utility/rem_quotes.c \
 				$(SRC_DIR)/utility/sgetenv.c \
 				$(SRC_DIR)/utility/sgetenvany.c \
+				$(SRC_DIR)/utility/set_cmd_envp.c \
+				$(SRC_DIR)/utility/set_var_value.c \
 				$(SRC_DIR)/utility/simple_split.c \
 				$(SRC_DIR)/utility/ssetenv.c \
 				$(SRC_DIR)/utility/str_join_with_sep.c \

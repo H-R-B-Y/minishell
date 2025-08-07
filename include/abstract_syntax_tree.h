@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   abstract_syntax_tree.h                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/04 14:45:55 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/05 16:02:16 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,12 +185,16 @@ struct	s_astnode
 	char		**cmdv;
 	/// @brief The index of the actual command path in cmdv
 	size_t		cmd_i;
+	/// @brief	Command path passed to execve
+	char		*cmd_path;
 	/// @brief List of redirect descriptors
 	t_list		*redirect;
 	/// @brief The environment array
 	char		**envp;
 	/// @brief IDK 
 	size_t		genv_l; // to delete???
+	/// @brief Argument count
+	int			argc;
 	/// @brief Return code from waitpid
 	int			return_value;
 	/// @brief Actual number that the process returned

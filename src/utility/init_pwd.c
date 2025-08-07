@@ -6,7 +6,7 @@
 /*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:39:57 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/02 18:39:58 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/05 15:46:48 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void init_pwd(t_minishell *shell, char ***envp)
 	pwd[0] = getcwd(0, 0);
 	if (!pwd[0])
 		perror_exit(shell, "cd");
-	pwd[1] = str_vec_join((char *[3]){"PWD=", pwd[0], 0});
+	pwd[1] = str_vec_join((const char *[3]){"PWD=", pwd[0], 0});
 	if (!pwd[1])
 	{
 		ft_arrclear((void **)pwd, free);
