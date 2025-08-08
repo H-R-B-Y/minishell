@@ -6,13 +6,14 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 11:48:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/07 17:37:00 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/08 12:38:35 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 void	sig_int_handle_interactive(int sig, siginfo_t *info, void *context);
+ssize_t	get_ulimitn(void);
 
 static int	event(void)
 {
@@ -80,5 +81,8 @@ int	init_process(t_minishell *shell, char **envp)
 	shell->fsm_data.debuginfo = &shell->info;
 	reset_for_command(shell, READ_START);
 	shell->rldata.interactive_mode = &shell->interactive_mode;
+	shell->ulimit_n = get_ulimitn();
+	if (shell->ulimit_n <= 0)
+		return (-4);
 	return (0);
 }
