@@ -6,7 +6,7 @@
 /*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:38:10 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/04 12:29:39 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/06 17:24:55 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	builtin_exit(t_minishell *shell, char **argv, char ***envp)
 
 	(void)envp;
 	printf("exit\n");
+	status = shell->return_code;
 	argc = ft_arrlen((void **)argv);
 	if (argc > 1 && !is_alldigit(argv[1]))
 	{
@@ -46,7 +47,5 @@ int	builtin_exit(t_minishell *shell, char **argv, char ***envp)
 	else if (argc == 2)
 		status = ft_atoi(argv[1]);
 	clean_shell(shell);
-	if (argc > 1)
-		exit(status);
-	exit(0);
+	exit(status);
 }

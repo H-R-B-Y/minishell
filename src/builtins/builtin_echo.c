@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:21:44 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 20:50:26 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/06 20:32:35 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

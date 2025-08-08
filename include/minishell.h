@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/08 13:01:38 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/08 17:03:09 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -399,6 +399,9 @@ void			default_sig_handle(int sig, siginfo_t *info, void *context);
  * @return pid_t pid or -1 for error
  */
 pid_t			get_my_pid(void);
+
+void			prep_rd_restore(t_redirect_desc *desc);
+void			rd_restore(t_redirect_desc *desc);
 
 /**
  * @brief Get redirects ready before execution
