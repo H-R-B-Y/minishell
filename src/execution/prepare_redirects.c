@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:15:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/07 12:36:03 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/08 13:04:42 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,24 @@ int	t_oflag(const int redr_type)
 	return (flag);
 }
 
-static int	_file_to_fds(t_list *redrs)
+static int	_file_to_fds(t_minishell *shell, t_redirect_desc *redr)
+{
+	if (redr->file_map.to_fd >= shell->ulimit_n)
+		return (ft_fprintf(2, "minishell: %d: Bad file descriptor\n", redr->file_map.to_fd), -1);
+	if (redr->file_map.name == 0x0)
+		return (ft_fprintf(2, "minishell: :No such file or directory\n"), -1); // handle this in caller
+	redr->file_map.from_fd = open(redr->file_map.name, t_oflag(redr->type));
+	if (redr->file_map.from_fd < 0)
+	{
+		redr->file_map.from_fd = open(redr->file_map.name,
+			t_oflag(redr->type) | O_CREAT, 0755);
+	}
+	if (redr->file_map.from_fd < 0)
+		return (perror("minishell"), -1); // failed to open file
+	return (1);
+}
+
+static int	_validate_file_to_fds(t_minishell *shell, t_list *redrs)
 {
 	t_list			*index;
 	t_redirect_desc	*redr;
@@ -41,29 +58,28 @@ static int	_file_to_fds(t_list *redrs)
 		redr = index->content;
 		if (redr->subtype == REDIR_FD || redr->subtype == CLOSE_FD)
 		{
+			// We wont know if a file desc points to anything until we go to map it
+			// so we can only check if any of these are greater than the ulimit
+			if (redr->fd_map.from_fd >= shell->ulimit_n)
+				return (ft_fprintf(2, "minishell: %d: Bad file descriptor\n", redr->fd_map.from_fd), -1);
+			if (redr->fd_map.to_fd >= shell->ulimit_n)
+				return (ft_fprintf(2, "minishell: %d: Bad file descriptor\n", redr->fd_map.to_fd), -1);
 			index = index->next;
 			continue ;
 		}
-		if (redr->file_map.name == 0x0)
-			return (ft_fprintf(2, "minishell: :No such file or directory\n"), -1); // handle this in caller
-		redr->file_map.from_fd = open(redr->file_map.name, t_oflag(redr->type));
-		if (redr->file_map.from_fd < 0)
-		{
-			redr->file_map.from_fd = open(redr->file_map.name,
-				t_oflag(redr->type) | O_CREAT, 0755);
-		}
-		if (redr->file_map.from_fd < 0)
-			return (perror("minishell"), -1); // failed to open file
+		else if (_file_to_fds(shell, redr) < 0)
+			return (-1);
 		index = index->next;
 	}
 	return (1);
 }
 
-int	prepare_fds(t_astnode *node)
+
+int	prepare_fds(t_minishell *shell, t_astnode *node)
 {
 	if (!node->redirect)
 		return (0);
-	if (_file_to_fds(node->redirect) < 0)
+	if (_validate_file_to_fds(shell, node->redirect) < 0)
 	{
 		node->return_code = 1;
 		return (-1);
@@ -71,17 +87,22 @@ int	prepare_fds(t_astnode *node)
 	return (1);
 }
 
-static void	_map(t_redirect_desc *desc)
+static int	_map(t_redirect_desc *desc)
 {
 	int				current_fd;
 
 	if (!desc)
-		return ;
+		return (0);
 	if (desc->subtype == CLOSE_FD)
 		close(desc->fd_map.to_fd);
 	else if (desc->subtype == REDIR_FD)
 	{
 		current_fd = dup(desc->fd_map.from_fd);
+		if (current_fd < 0)
+		{
+			perror("minishell:filedesc mapping");
+			return (-1);
+		}
 		dup2(current_fd, desc->fd_map.to_fd);
 		close(current_fd);
 	}
@@ -96,16 +117,19 @@ static void	_map(t_redirect_desc *desc)
 		dup2(desc->file_map.from_fd, STDOUT_FILENO);
 		close(desc->file_map.from_fd);
 	}
+	return (0);
 }
 
-void	map_fds(t_astnode *node)
+int	map_fds(t_astnode *node)
 {
 	t_list			*list;
 
 	list = node->redirect;
 	while (list)
 	{
-		_map(list->content);
+		if (_map(list->content) < 0)
+			return (-1);
 		list = list->next;
 	}
+	return (1);
 }

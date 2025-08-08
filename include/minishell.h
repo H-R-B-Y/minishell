@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/07 17:46:18 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/08 13:01:38 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,8 @@ struct s_minishell
 	/// @brief arguments passed to program at execution
 	char				**argv;
 	char				*name;
+	/// @brief limit for max file descriptors
+	ssize_t				ulimit_n;
 };
 
 void			init_pwd(t_minishell *shell, char ***envp);
@@ -120,7 +122,7 @@ int				init_process(t_minishell *shell, char **envp);
 int				better_add_history(t_minishell *shell, char *string);
 
 /**
- * @brief Cleanup ready for the next command (or at exit time)
+ * @brief Cleanup ready for the next command (or at ~ time)
  * 
  * This will free anything heap allocated so this doubles as
  * a safe way to cleanup.
@@ -306,7 +308,7 @@ typedef int					(*t_builtincmd)(t_minishell *, char **, char ***);
  * ```
  * - echo
  * - env
- * - exit
+ * - ~
  * - export
  * - pwd
  * - unset
@@ -404,14 +406,14 @@ pid_t			get_my_pid(void);
  * @param node 
  * @return int 
  */
-int				prepare_fds(t_astnode *node);
+int				prepare_fds(t_minishell *shell, t_astnode *node);
 
 /**
  * @brief map fds from fd map
  * 
  * @param node node containing redirect list
  */
-void			map_fds(t_astnode *node);
+int			map_fds(t_astnode *node);
 
 /**
  * @brief unset some signal handlers for execution
@@ -480,7 +482,7 @@ char			**expand_and_split(t_minishell *shell,
 
 void			clean_shell(t_minishell *shell);
 void			clean_exit_status(t_minishell *shell, int status);
-// TODO: check if correct clean up everything and exit
+// TODO: check if correct clean up everything and ~
 void			perror_exit(t_minishell *shell, char *message);
 void			_free_arr_perror_exit(t_minishell *shell,
 					void **arr, char *message);

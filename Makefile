@@ -69,6 +69,7 @@ SRCS			:= \
 				$(SRC_DIR)/heredoc_handler/heredoc_reader.c \
 				\
 				$(SRC_DIR)/init_process/init_process.c \
+				$(SRC_DIR)/init_process/parse_limits.c \
 				$(SRC_DIR)/init_process/restore_signals.c \
 				$(SRC_DIR)/init_process/shell_utils.c \
 				$(SRC_DIR)/init_process/signal_handlers.c \

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:36:22 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/06 18:17:33 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/08 13:03:22 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ void	get_exec_cmd(t_minishell *shell, t_astnode *node, t_builtincmd b_in)
 	argv = node->cmdv + node->cmd_i;
 	set_cmd_envp(shell, node, b_in);
 	restore_signals(shell);
-	map_fds(node);
+	if (map_fds(node) < 0)
+		clean_exit_status(shell, 1);
 	errno = 0;
 	if (!ft_strchr(o_path, '/'))
 		exec_path = get_exec_path(shell, o_path, node->envp);
@@ -105,7 +106,7 @@ int	execute_command(t_minishell *shell, t_astnode *node)
 	if (node->cmd_i != (size_t)-1)
 	{
 		handle_last_argv(shell, node->cmdv[node->argc - 1]);
-		if (prepare_fds(node) < 0)
+		if (prepare_fds(shell, node) < 0)
 		{
 			shell->return_code = 1;
 			return (-1);
