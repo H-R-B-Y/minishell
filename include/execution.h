@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:02:44 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/07 17:44:21 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/09 21:49:54 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,18 @@
 
 char	*get_exec_path(t_minishell *shell, char *cmd, char **envp);
 char	**cmdv_prep(t_minishell *shell, t_astnode *node);
+
+typedef struct s_restore_rds
+{
+	int	subtype;
+	int	to_fd;
+	int	*dupped1;
+	int	*dupped2;
+}	t_restore_rds;
+
+int		prep_rd_restore(t_redirect_desc *desc, t_list **rd_restore);
+int		rd_fd_restore(t_restore_rds *info);
+void	rd_list_restore(t_list *info_lst);
 
 int		update_env(char ***envp,
 			char *dup, char *name, ssize_t (*f)(char **, const char *));

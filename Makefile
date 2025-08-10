@@ -43,6 +43,7 @@ SRCS			:= \
 				$(SRC_DIR)/execution/cmd_prep_utils.c \
 				$(SRC_DIR)/execution/glob_local_dir.c \
 				$(SRC_DIR)/execution/prepare_redirects.c \
+				$(SRC_DIR)/execution/prepare_redirect_restore.c \
 				\
 				$(SRC_DIR)/debugger/adding_items.c \
 				$(SRC_DIR)/debugger/debugger_util.c \

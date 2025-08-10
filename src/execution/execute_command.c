@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:36:22 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/08 17:03:15 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/09 21:44:37 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ int	execute_command(t_minishell *shell, t_astnode *node)
 {
 	node->cmdv = cmdv_prep(shell, node); // pending: shorten remove quotes and clean up in case of error
 	glob_variable(node);
-
 	if (node->cmd_i != (size_t)-1)
 	{
 		handle_last_argv(shell, node->cmdv[node->argc - 1]);

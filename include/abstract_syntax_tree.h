@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   abstract_syntax_tree.h                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/08 17:02:30 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/09 20:48:02 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,6 +191,8 @@ struct	s_astnode
 	char		*cmd_path;
 	/// @brief List of redirect descriptors
 	t_list		*redirect;
+	/// @brief FD info to restore after redirections
+	t_list		*rd_rstr_info;
 	/// @brief The environment array
 	char		**envp;
 	/// @brief Argument count
