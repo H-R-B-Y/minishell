@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:07:29 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/07 17:43:49 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/13 15:50:22 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ enum e_readline_retcode
 	READ_NOTHING,
 	/// @brief Input was closed
 	READ_EOF,
-	/// @brief An error was encountered in reading or tokenisation
-	READ_ERROR,
 	/// @brief Parsing failed
 	READ_BADPARSE,
 	/// @brief Fatal error do not continue
@@ -56,6 +54,8 @@ struct s_readline_data
 	t_fsmdata			*fsm_data;
 	/// @brief Heredoc flag. Used to append to history
 	int					hdoc;
+	/// @brief Number of lines read, only relevant for non-interactive errors
+	unsigned long int	lines_read;
 };
 
 /**

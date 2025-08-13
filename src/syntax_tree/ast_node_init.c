@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 12:20:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/04 14:45:55 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/13 17:29:01 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,7 @@ void	destroy_ast_node(t_astnode *node)
 	close_fds_needed(node->redirect);
 	if (node->redirect)
 		ft_lstclear(&node->redirect, (void *)destroy_redirect);
+	if (node->rd_rstr_info)
+		ft_lstclear(&node->rd_rstr_info, free);
 	free(node);
 }

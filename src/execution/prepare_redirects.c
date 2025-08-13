@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prepare_redirects.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:15:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/09 21:56:55 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/13 17:40:16 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	_file_to_fds(t_minishell *shell, t_redirect_desc *redr)
 	if (redr->file_map.from_fd < 0)
 	{
 		redr->file_map.from_fd = open(redr->file_map.name,
-			t_oflag(redr->type) | O_CREAT, 0755);
+			t_oflag(redr->type) | O_CREAT, 0644);
 	}
 	if (redr->file_map.from_fd < 0)
 		return (perror("minishell"), -1); // failed to open file
@@ -131,7 +131,7 @@ int	map_fds(t_astnode *node)
 	{
 		if (prep_rd_restore(list->content, &rd_restore_info) == -1 ||
 			_map(list->content) < 0)
-			return (rd_list_restore(rd_restore_info), -1);
+			return (ft_lstclear(&rd_restore_info, free), perror("something went wrong here"), rd_list_restore(rd_restore_info), -1);
 		list = list->next;
 	}
 	node->rd_rstr_info = rd_restore_info;

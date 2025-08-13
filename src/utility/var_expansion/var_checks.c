@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/04 12:54:55 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/07 17:34:35 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/13 17:25:16 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ ssize_t	is_normal(t_minishell *shell,
 	else
 		*res = ft_strdup("$");
 	free(str);
-	if (!ft_dirtyswap((void *)res, mark_quotes(*res), free))
+	if (*res && !ft_dirtyswap((void *)res, mark_quotes(*res), free))
 		perror_exit(shell, "parameter");
 	ex->v_i += i;
 	return (i);

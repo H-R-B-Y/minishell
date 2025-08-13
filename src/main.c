@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/07 12:34:22 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/13 15:52:07 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,12 @@ extern int	g_global_signal;
 
 int	create_tree_and_run(t_minishell *shell)
 {
-	t_asterror	astcode;
-
 	shell->tokens = fsm_pop_list(&shell->fsm_data);
 	dbg_add_token_list(&shell->info, shell->tokens);
 	shell->tokenv = (void *)ft_lstarr(shell->tokens);
 	ft_lstclear(&shell->tokens, 0);
-	astcode = produce_ast(shell, shell->tokenv, &shell->current_tree);
-	if (astcode == AST_ERR_NONE)
+	shell->astcode = produce_ast(shell, shell->tokenv, &shell->current_tree);
+	if (shell->astcode == AST_ERR_NONE)
 	{
 		dbg_add_ast(&shell->info, shell->current_tree);
 		if (shell->interactive_mode)
@@ -33,33 +31,29 @@ int	create_tree_and_run(t_minishell *shell)
 		if (shell->interactive_mode)
 			setup_signals(shell);
 	}
-	else if (astcode == AST_ERR_SYNTAX)
+	else if (shell->astcode == AST_ERR_SYNTAX)
 		ft_fprintf(2, "Parse error: Syntax Error\n");
-	else if (astcode == AST_ERR_INVALID_REDIRECT)
+	else if (shell->astcode == AST_ERR_INVALID_REDIRECT)
 		ft_fprintf(2, "Parse error: ambiguous redirect\n");
-	return (astcode);
+	return (shell->astcode);
 }
 
 // This shouldn't have used a loop, idk what i was thinking,
 // we already have a loop in the main function that will do this for us
 int	next_command(t_minishell *shell)
 {
-	t_readline_retcode	rl_code;
-
-	rl_code = READ_START;
-	rl_code = read_until_complete_command(shell);
-	if (rl_code == READ_BADPARSE)
+	shell->rlcode = READ_START;
+	shell->rlcode = read_until_complete_command(shell);
+	if (shell->rlcode == READ_BADPARSE)
 		ft_fprintf(2, "Parse error: %s!\n", shell->fsm_data.str_cond);
-	else if (rl_code == READ_ERROR)
-		return (rl_code);
-	else if (rl_code == READ_EOF)
-		return (rl_code);
-	else if (rl_code == READ_OK
+	else if (shell->rlcode == READ_EOF)
+		return (shell->rlcode);
+	else if (shell->rlcode == READ_OK
 		&& create_tree_and_run(shell) == AST_ERR_FATAL)
 		return (READ_FATAL);
-	else if (rl_code == READ_FATAL)
+	else if (shell->rlcode == READ_FATAL)
 		perror_exit(shell, "readline_loop");
-	return (rl_code);
+	return (shell->rlcode);
 }
 
 int	free_everything(t_minishell *shell, int code)
@@ -76,14 +70,35 @@ int	free_everything(t_minishell *shell, int code)
 	);
 }
 
+// looks like bash sets the return code to 2 in this case
+// not sure if i should do the same? 
+int	break_case(t_minishell *shell)
+{
+	if (shell->interactive_mode)
+	{
+		if (shell->rlcode == READ_EOF)
+			return (1);
+	}
+	else if (!shell->interactive_mode)
+	{
+		if (shell->rlcode == READ_BADPARSE)
+			return (ft_printf("minishell: line %d: Bad Parse\n",
+				shell->rldata.lines_read), 1);
+		if (shell->astcode == AST_ERR_SYNTAX)
+			return (ft_printf("minishell: line %d: Bad Parse\n",
+				shell->rldata.lines_read), 1);
+	}
+	return (0);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	static t_minishell	shell = {0};
-	t_readline_retcode	rl_code;
 
 	(void)argc;
 	(void)argv;
-	init_process(&shell, envp);
+	if (init_process(&shell, envp) < 0)
+		return (0);
 	shell.argc = argc;
 	shell.argv = argv;
 	if (shell.interactive_mode)
@@ -91,12 +106,12 @@ int	main(int argc, char **argv, char **envp)
 			get_my_pid(), ft_rand(0, 100));
 	while (1)
 	{
-		rl_code = next_command(&shell);
-		if (rl_code == READ_EOF)
+		next_command(&shell);
+		if (break_case(&shell))
 			break ;
 		(dbg_write_states(&shell.info), dbg_write_tokens(&shell.info));
 		(dbg_write_nodes(&shell.info), dbg_write_end(&shell.info));
-		reset_for_command(&shell, rl_code);
+		reset_for_command(&shell, shell.rlcode);
 	}
 	return (free_everything(&shell, 0));
 }

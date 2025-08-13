@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 12:01:50 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/07 17:37:28 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/13 15:26:32 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	better_add_history(t_minishell *shell, char *string)
 {
 	char		*buff_str;
 
+	if (!shell->interactive_mode)
+		return (1);
 	if (!string || !*string || *string == ' ')
 		return (1);
 	buff_str = ft_strrtrim(string, "\n");

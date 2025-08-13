@@ -9,7 +9,7 @@ static void _close_rstore_fds(t_restore_rds *info)
 }
 int	init_rd_rstr_info(t_restore_rds **info, t_redirect_desc *desc)
 {
-	*info = ft_calloc(1, sizeof(info));
+	*info = ft_calloc(1, sizeof(t_restore_rds));
 	if (!*info)
 		return (-1);
 	ft_memset(*info, -1, sizeof(t_restore_rds));
@@ -35,15 +35,15 @@ int	prep_rd_restore(t_redirect_desc *desc, t_list **rd_restore)
 		info->subtype = 12;
 		info->dupped2 = dup(STDERR_FILENO);
 		if (info->dupped2 == -1)
-			return (-1);
+			return (free(info), -1);
 		info->to_fd = STDOUT_FILENO;
 	}
 	info->dupped1 = dup(info->to_fd);
 	if (info->dupped1 == -1 && errno != EBADF)
-		return (_close_rstore_fds(info), -1);
+		return (_close_rstore_fds(info), free(info), -1);
 	new_rd = ft_lstnew(info);
 	if (!new_rd)
-		return (_close_rstore_fds(info), -1);
+		return (_close_rstore_fds(info), free(info), -1);
 	return (ft_lstadd_front(rd_restore, new_rd), 0);
 }
 
