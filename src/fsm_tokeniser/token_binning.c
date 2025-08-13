@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:36:40 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/07 12:35:13 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/13 16:31:51 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static t_tokentype	_p_redirect_amp(const char *raw_token, int i)
 	while (ft_iswhitespace(raw_token[i]))
 		i++;
 	if (!(ft_isdigit(raw_token[i]) || raw_token[i] == '-'))
-		return (TOK_WORD);
+		return (TOK_REDIR_OUT);
 	i++;
 	if (raw_token[i - 1] != '-')
 		while (ft_isdigit(raw_token[i]))
