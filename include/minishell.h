@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/09 21:51:31 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/13 15:30:34 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,10 @@ struct s_minishell
 	char				*name;
 	/// @brief limit for max file descriptors
 	ssize_t				ulimit_n;
+	/// @brief readline code returned from readline loop last call
+	t_readline_retcode	rlcode;
+	/// @brief code returned from last call to ast constructor
+	t_asterror			astcode;
 };
 
 void			init_pwd(t_minishell *shell, char ***envp);

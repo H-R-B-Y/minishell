@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utility_funcs.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:57:17 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/09 21:47:05 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/13 13:09:04 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,11 @@ int	exec_builtincmd(t_minishell *shell, t_astnode *node, t_builtincmd cmd)
 {
 	if (cmd)
 	{
-		map_fds(node);
+		if (map_fds(node) < 0)
+		{
+			shell->return_code = 1;
+			return (-1);
+		}
 		set_cmd_envp(shell, node, cmd);
 		shell->return_code = cmd(shell,
 			node->cmdv + node->cmd_i, &node->envp);

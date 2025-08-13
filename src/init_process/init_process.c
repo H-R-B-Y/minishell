@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 11:48:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/08 12:38:35 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/13 15:25:24 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	sig_int_handle_interactive(int sig, siginfo_t *info, void *context);
 ssize_t	get_ulimitn(void);
+int		check_stdfds(void);
 
 static int	event(void)
 {
@@ -69,13 +70,15 @@ int	init_process(t_minishell *shell, char **envp)
 			(void *)envp, (void *)ft_strdup, free);
 	if (!shell->environment)
 		return (-1);
+	if (check_stdfds() < 0)
+		return (-2);
 	init_pwd(shell, &shell->environment);
 	shell->interactive_mode = isatty(STDIN_FILENO);
 	if (!setup_signals(shell))
-		return (-2);
+		return (-3);
 	shell->my_pid = get_my_pid();
 	if (shell->my_pid == -1)
-		return (-3);
+		return (-4);
 	if (!init_debugger(&shell->info))
 		printf("debugger not enabled: %s\n", strerror(errno));
 	shell->fsm_data.debuginfo = &shell->info;
@@ -83,6 +86,6 @@ int	init_process(t_minishell *shell, char **envp)
 	shell->rldata.interactive_mode = &shell->interactive_mode;
 	shell->ulimit_n = get_ulimitn();
 	if (shell->ulimit_n <= 0)
-		return (-4);
+		return (-5);
 	return (0);
 }

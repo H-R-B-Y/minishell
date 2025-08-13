@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 17:24:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 19:02:30 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/13 15:58:25 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ static int	_tokenise_loop(t_minishell *shell,
 	while (*code == PARSE_CONT)
 	{
 		*rl_code = read_with_temp_prompt(shell, shell->fsm_data.str_cond);
+		if (*rl_code == READ_EOF
+			&& shell->fsm_data.tok_int.curr_type == TOK_INCOMPLETE_STRING)
+			*rl_code = READ_BADPARSE;
 		if (*rl_code != READ_OK)
 			return (-1);
 		*code = tokenise(&shell->fsm_data, shell->rldata.last_line);
