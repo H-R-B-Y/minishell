@@ -6,21 +6,21 @@
 /*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:31:30 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/05 15:46:48 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/13 12:43:08 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../include/builtin.h"
 
-static void _set_pwd_env(t_minishell *shell, char **pwd)
+static void	_set_pwd_env(t_minishell *shell, char **pwd)
 {
 	ssize_t	idx;
 	char	*dup;
 
 	if (!ft_strchr(pwd[1], '='))
 	{
-		idx =_sgetanon(shell->environment, "OLDPWD");
+		idx = _sgetanon(shell->environment, "OLDPWD");
 		builtin_unset(shell, pwd, NULL);
 		if (idx >= 0)
 		{
@@ -35,18 +35,20 @@ static void _set_pwd_env(t_minishell *shell, char **pwd)
 		set_any_env(shell, pwd + 1, 2);
 }
 
-static void update_pwd(t_minishell *shell, char **envp)
+static void	update_pwd(t_minishell *shell, char **envp)
 {
 	char	**pwd;
-	
+
 	pwd = (char **)ft_calloc(4, sizeof(char *));
 	pwd[0] = getcwd(0, 0);
 	if (!pwd[0])
 		perror_exit(shell, "cd");
 	if (s_get_fromthis_env(envp, "PWD"))
-		pwd[1] = str_vec_join((const char *[3]){"OLDPWD=", s_get_fromthis_env(envp, "PWD"), 0});
+		pwd[1] = str_vec_join((const char *[3]){"OLDPWD=",
+				s_get_fromthis_env(envp, "PWD"), 0});
 	else if (s_get_envany(shell, "PWD"))
-		pwd[1] = str_vec_join((const char *[3]){"OLDPWD=", s_get_envany(shell, "PWD"), 0});
+		pwd[1] = str_vec_join((const char *[3]){"OLDPWD=",
+				s_get_envany(shell, "PWD"), 0});
 	else
 		pwd[1] = ft_strdup("OLDPWD");
 	if (!pwd[1])
@@ -67,7 +69,8 @@ int	builtin_cd(t_minishell *shell, char **argv, char ***envp)
 	if (!argv)
 		return (errno = EINVAL, perror("builtin_cd"), 1);
 	if (argv[1] && argv[2])
-		return (ft_putstr_fd("minishell: builtin_cd: too many arguments\n", 2), 1);
+		return (ft_putstr_fd("minishell: builtin_cd: too many arguments\n", 2),
+			1);
 	if (!argv[1])
 	{
 		tmp = s_get_envany(shell, "HOME");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:44:33 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/28 16:32:11 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/13 12:49:11 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 
 void	export_no_sep(t_minishell *shell, char *item, char *name, char ***envp)
 {
-	ssize_t	in;
-	char 	*dup;
-	
-	in = _sgetanon(shell->local_env, name);
-	if (in >= 0)
+	ssize_t	i;
+	char	*dup;
+
+	i = _sgetanon(shell->local_env, name);
+	if (i >= 0)
 		ft_dirtyswap((void *)&shell->environment,
-			ft_arradd_back((void *)shell->environment, ft_strdup(shell->local_env[in])),
-			free);
+			ft_arradd_back((void *)shell->environment,
+				ft_strdup(shell->local_env[i])), free);
 	if (_sgetanon((*envp), name) >= 0)
 	{
 		dup = ft_strdup((*envp)[_sgetanon((*envp), name)]);
@@ -30,7 +30,7 @@ void	export_no_sep(t_minishell *shell, char *item, char *name, char ***envp)
 			return ;
 		update_env(&shell->environment, dup, name, _sgetanon);
 		ft_dirtyswap((void *)envp, ft_arrdel_atindex((void *)(*envp),
-		 	_sgetanon((*envp), name), free), free);
+				_sgetanon((*envp), name), free), free);
 	}
 	else if (_sgetanon(shell->environment, name) < 0)
 	{
@@ -41,22 +41,22 @@ void	export_no_sep(t_minishell *shell, char *item, char *name, char ***envp)
 	}
 }
 
-void	export_with_sep(t_minishell *shell, char *item, char *name, char ***envp)
+void	exprt_with_sep(t_minishell *shell, char *item, char *name, char ***envp)
 {
 	ssize_t	in;
 	char	*dup;
-	
+
 	in = _sgetidx(shell->unassigned_env, name);
 	if (in >= 0)
-		ft_dirtyswap((void *)&shell->unassigned_env, 
+		ft_dirtyswap((void *)&shell->unassigned_env,
 			ft_arrdel_atindex((void *)shell->unassigned_env, in, free),
 			free);
 	if (_sgetanon((*envp), name) >= 0)
 		ft_dirtyswap((void *)envp, ft_arrdel_atindex((void *)(*envp),
-		 	_sgetanon((*envp), name), free), free);
+				_sgetanon((*envp), name), free), free);
 	dup = ft_strdup(item);
-	if (dup == NULL) // Perror??
-		return ;
+	if (dup == NULL)
+		perror_exit(shell, "export with sep: ft_strdup");
 	update_env(&shell->environment, dup, name, _sgetanon);
 }
 
@@ -83,12 +83,12 @@ int	builtin_export(t_minishell *shell, char **argv, char ***envp)
 			name = ft_strdup(argv[i]);
 		else
 			name = ft_strndup(argv[i], sep - argv[i]);
-		(void (*[2])(t_minishell *, char *, char * , char ***)){export_no_sep, export_with_sep}
-			[!!sep](shell, argv[i++], name, envp);
+		(void (*[2])(t_minishell *, char *, char *, char ***)){export_no_sep,
+			exprt_with_sep}[!!sep](shell, argv[i++], name, envp);
 		if (s_get_internalenvid(shell, name) >= 0)
 			ft_dirtyswap((void *)&shell->local_env,
-				ft_arrdel_atindex((void *)shell->local_env, 
-				s_get_internalenvid(shell, name), free), free);
+				ft_arrdel_atindex((void *)shell->local_env,
+					s_get_internalenvid(shell, name), free), free);
 		if (name)
 			free(name);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utility_funcs.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:57:17 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/09 21:47:05 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/13 12:50:15 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ static const struct s_buitinmapping	*mapped_builtins(void)
 	return (builtinmap);
 }
 
-t_builtincmd _get_builtincmd(t_astnode *node)
+t_builtincmd	_get_builtincmd(t_astnode *node)
 {
 	const struct s_buitinmapping	*fncmap;
 	size_t							i;
-	
+
 	fncmap = mapped_builtins();
 	i = 0;
 	while (i < BLTINCOUNT)
@@ -51,16 +51,11 @@ int	exec_builtincmd(t_minishell *shell, t_astnode *node, t_builtincmd cmd)
 		map_fds(node);
 		set_cmd_envp(shell, node, cmd);
 		shell->return_code = cmd(shell,
-			node->cmdv + node->cmd_i, &node->envp);
+				node->cmdv + node->cmd_i, &node->envp);
 		rd_list_restore(node->rd_rstr_info);
 		return (0);
 	}
 	return (0);
-}
-
-void	free_strvec(void *a)
-{
-	ft_arrclear(a, free);
 }
 
 void	*print_and_ret(void *p)

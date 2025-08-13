@@ -6,7 +6,7 @@
 /*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:38:10 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/06 17:24:55 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/13 12:50:36 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 static int	is_alldigit(char *str)
 {
-	if(!str)
+	if (!str)
 		return (0);
 	while (*str)
 	{
@@ -28,7 +28,7 @@ static int	is_alldigit(char *str)
 
 int	builtin_exit(t_minishell *shell, char **argv, char ***envp)
 {
-	int	status;
+	int		status;
 	size_t	argc;
 
 	(void)envp;
@@ -42,7 +42,7 @@ int	builtin_exit(t_minishell *shell, char **argv, char ***envp)
 			shell->name, argv[1]);
 	}
 	else if (argc > 2)
-		return (ft_fprintf(2, "%s: exit: too many arguments\n", shell->name), 
+		return (ft_fprintf(2, "%s: exit: too many arguments\n", shell->name),
 			EXIT_FAILURE);
 	else if (argc == 2)
 		status = ft_atoi(argv[1]);
