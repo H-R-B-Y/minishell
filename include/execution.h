@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:02:44 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/09 21:49:54 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/10 18:35:18 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ typedef struct s_restore_rds
 {
 	int	subtype;
 	int	to_fd;
-	int	*dupped1;
-	int	*dupped2;
+	int	dupped1;
+	int	dupped2;
 }	t_restore_rds;
 
 int		prep_rd_restore(t_redirect_desc *desc, t_list **rd_restore);

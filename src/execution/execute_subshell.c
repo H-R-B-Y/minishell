@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_subshell.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:36:42 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/08 17:03:43 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/10 18:41:19 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

@@ -15,7 +15,10 @@ int	prep_rd_restore(t_redirect_desc *desc, t_list **rd_restore)
 	
 	if (!desc)
 		return (1);
-	ft_memset(info, 0, size_t(info));
+	info = ft_calloc(1, sizeof(info));
+	if (!info)
+		return (-1);
+	ft_memset(info, -1, sizeof(t_restore_rds));
 	info->subtype = desc->subtype;
 	if (desc->subtype == REDIR_FD || desc->subtype == CLOSE_FD)
 		info->to_fd = desc->fd_map.to_fd;
@@ -43,7 +46,7 @@ int	rd_fd_restore(t_restore_rds *info)
 	if (!info)
 		return (0);
 	if (info->subtype == 12 && dup2(info->dupped2, STDERR_FILENO) == -1)
-		return (ft_fprintf(2, "minishell: %d", STDERR_FILENO));
+			return (ft_fprintf(2, "minishell: %d", STDERR_FILENO));
 	if (dup2(info->dupped1, info->to_fd) == -1)
 		return (ft_fprintf(2, "minishell: %d", info->to_fd));
 	_close_rstore_fds(info);
@@ -54,10 +57,10 @@ void	rd_list_restore(t_list *info_lst)
 {
 	t_list			*list;
 
-	list = info;
+	list = info_lst;
 	while (list)
 	{
-		if (rd_fd_restore(list->content));
+		if (rd_fd_restore(list->content))
 			perror(NULL);
 		list = list->next;
 	}
