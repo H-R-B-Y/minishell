@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:02:44 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/14 00:16:34 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/14 17:44:45 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@
 // TODO: Comment this header
 
 char	*get_exec_path(t_minishell *shell, char *cmd, char **envp);
+void	xpnd_param_var(t_minishell *shell, t_astnode *node,
+			char ***argv, size_t *n);
+void	filename_expansion(t_minishell *shell, t_astnode *node,
+			char ***argv, size_t *n);
+void	quote_removal(t_minishell *shell, t_astnode *node,
+			char ***argv, size_t *n);
 char	**cmdv_prep(t_minishell *shell, t_astnode *node);
 
 typedef struct s_restore_rds

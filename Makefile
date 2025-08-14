@@ -41,6 +41,7 @@ SRCS			:= \
 				$(SRC_DIR)/execution/execute_seq.c \
 				$(SRC_DIR)/execution/execute_logical.c \
 				$(SRC_DIR)/execution/cmd_prep_utils.c \
+				$(SRC_DIR)/execution/cmd_prep_expansion.c \
 				$(SRC_DIR)/execution/glob_local_dir.c \
 				$(SRC_DIR)/execution/rd_map_fds.c \
 				$(SRC_DIR)/execution/rd_prep_fds.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   glob_local_dir.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 15:13:15 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/14 16:30:59 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 18:22:19 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,20 @@ static ssize_t	local_dir_glob(char ***p)
 		return (-1);
 	cwd = getcwd(0, 0);
 	dir = opendir(cwd);
+	free(cwd);
 	if (!dir)
 		return (-1);
 	*p = ft_calloc(1, sizeof(char *));
 	entry = readdir(dir);
-	entry = readdir(dir);
-	entry = readdir(dir);
+	while (entry && entry->d_name[0] == '.')
+		entry = readdir(dir);
 	while (entry)
 	{
-		ft_dirtyswap((void *)p, ft_arradd_back((void *)*p, ft_strdup(entry->d_name)), free);
+		ft_dirtyswap((void *)p, ft_arradd_back((void *)*p,
+				ft_strdup(entry->d_name)), free);
 		entry = readdir(dir);
 	}
+	closedir(dir);
 	return (ft_arrlen((void *)*p));
 }
 
