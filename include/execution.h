@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:02:44 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/14 18:50:11 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 18:55:17 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,36 @@
  */
 char	*get_exec_path(t_minishell *shell, char *cmd, char **envp);
 
+/**
+ * @brief Expand parameters from tokens in the cmdv and split into the argv
+ * 
+ * @param shell Pointer to the shell object
+ * @param node The current node
+ * @param argv Pointer to the argument list produced as a result of expansion
+ * @param n Count of args
+ */
 void	xpnd_param_var(t_minishell *shell, t_astnode *node,
 			char ***argv, size_t *n);
+
+/**
+ * @brief Expand wildcards from the argv and splits into words
+ * 
+ * @param shell Pointer to the shell object
+ * @param node The current node
+ * @param argv Pointer to the argument list produced as a result of expansion
+ * @param n Count of args
+ */
 void	filename_expansion(t_minishell *shell, t_astnode *node,
 			char ***argv, size_t *n);
+
+/**
+ * @brief Remove quotes and backslashes from the values in argv
+ * 
+ * @param shell Pointer to the shell object
+ * @param node The current node
+ * @param argv Pointer to the argument list produced as a result of expansion
+ * @param n Count of args
+ */
 void	quote_removal(t_minishell *shell, t_astnode *node,
 			char ***argv, size_t *n);
 
