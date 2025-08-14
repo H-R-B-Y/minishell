@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:02:44 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/14 18:18:54 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 18:34:51 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 # include "./abstract_syntax_tree.h"
 # include "./builtin.h"
 # include <unistd.h>
-
-// TODO: Comment this header
 
 /**
  * @brief Get the executable path for a given command

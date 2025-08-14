@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/14 17:50:25 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 18:41:54 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,14 +146,6 @@ void			reset_for_command(t_minishell *shell,
  */
 char			*create_prompt(const t_minishell *shell);
 
-/**
- * @brief print out a token list in columns
- * @param list the list of tokens to print
- * 
- * TODO: this should probably be moved to the input tokens header.
- */
-void			print_token_list(const t_list *list);
-
 // Utility functions:
 // Some of these may be useful in libft?
 
@@ -205,9 +197,23 @@ variable expansion.
 The second is the internal variables, these are tracked by the shell but only
 accessible to the shell and not handed to the child processes.
 */
-// TODO: comment this
+
+/**
+ * @brief Get the value of the item name from the array anon
+ * 
+ * @param anon the array to search in
+ * @param name the name to search
+ * @return ssize_t 
+ */
 ssize_t			_sgetanon(char **anon, const char *name);
-// TODO: comment this
+
+/**
+ * @brief Get the index of name in an anonymous array of variables
+ * 
+ * @param anon array of variables
+ * @param name Name to search
+ * @return ssize_t index in the array or -1
+ */
 ssize_t			_sgetidx(char **anon, const char *name);
 
 /**
@@ -458,13 +464,14 @@ ssize_t			glob_variable(t_astnode	*node);
  */
 char			**simple_split(const char *str, t_readline_data *data);
 
-/**
- * @brief free everything
- * @param shell reference to the shell
- * @param code return code to return
- * @returns code 
- */
-int				free_everything(t_minishell *shell, int code);
+// (Redundant) use clean_exit_status()
+// /**
+//  * @brief free everything
+//  * @param shell reference to the shell
+//  * @param code return code to return
+//  * @returns code 
+//  */
+// int				free_everything(t_minishell *shell, int code);
 
 /**
  * @brief check if the string either doesnt contain a newline
@@ -499,7 +506,6 @@ void			clean_shell(t_minishell *shell);
  */
 void			clean_exit_status(t_minishell *shell, int status);
 
-// TODO: check if correct clean up everything and ~
 /**
  * @brief Call perror and with message and then exit the shell cleanly
  * 

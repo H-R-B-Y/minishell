@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/07 17:40:24 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 18:35:31 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -567,5 +567,11 @@ t_tokretcode	tokenise(t_fsmdata *fsm, const char *str);
  * @param str the string currently being tokenised
  */
 void			skip_token_str(t_tokint *tokeniser, const char *str);
+
+/**
+ * @brief print out a token list in columns
+ * @param list the list of tokens to print
+ */
+void			print_token_list(const t_list *list);
 
 #endif

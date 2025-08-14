@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipe.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:36:35 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/02 18:36:36 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/14 18:44:25 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	_write_pipe(t_minishell *shell, t_astnode *node, int *fd)
 	close(fd[0]);
 	node->from_type = AST_PIPE;
 	execute_ast(shell, node);
-	exit(free_everything(shell, 0));
+	clean_exit_status(shell, 0);
 }
 
 void	_read_pipe(t_minishell *shell, t_astnode *node, int *fd)
@@ -32,7 +32,7 @@ void	_read_pipe(t_minishell *shell, t_astnode *node, int *fd)
 	close(fd[0]);
 	node->from_type = AST_PIPE;
 	execute_ast(shell, node);
-	exit(free_everything(shell, 0));
+	clean_exit_status(shell, 0);
 }
 
 int	execute_pipe(t_minishell *shell, t_astnode *node)

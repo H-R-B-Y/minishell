@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/14 18:27:08 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 18:34:46 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,7 +247,7 @@ struct s_ast_internal
 /**
  * @brief produce an abstract syntax tree
  * @param tokens vector array of tokens used to construct the tree
- * @param count count of tokens in the array (TODO:i dont think we need this)
+ * @param count count of tokens in the array
  * @returns head node of the tree
  */
 int				produce_ast(t_minishell *shell,

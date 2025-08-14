@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/13 15:52:07 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 18:45:15 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ int	create_tree_and_run(t_minishell *shell)
 	return (shell->astcode);
 }
 
-// This shouldn't have used a loop, idk what i was thinking,
-// we already have a loop in the main function that will do this for us
 int	next_command(t_minishell *shell)
 {
 	shell->rlcode = READ_START;
@@ -56,22 +54,6 @@ int	next_command(t_minishell *shell)
 	return (shell->rlcode);
 }
 
-int	free_everything(t_minishell *shell, int code)
-{
-	return (
-		reset_for_command(shell, READ_NOTHING),
-		fflush(stdout),
-		free(shell->prompt),
-		ft_arrclear((void *)shell->environment,
-			free),
-		restore_signals(shell),
-		rl_clear_history(),
-		code
-	);
-}
-
-// looks like bash sets the return code to 2 in this case
-// not sure if i should do the same? 
 int	break_case(t_minishell *shell)
 {
 	if (shell->interactive_mode)
@@ -81,12 +63,12 @@ int	break_case(t_minishell *shell)
 	}
 	else if (!shell->interactive_mode)
 	{
-		if (shell->rlcode == READ_BADPARSE)
-			return (ft_printf("minishell: line %d: Bad Parse\n",
-				shell->rldata.lines_read), 1);
-		if (shell->astcode == AST_ERR_SYNTAX)
-			return (ft_printf("minishell: line %d: Bad Parse\n",
-				shell->rldata.lines_read), 1);
+		if (shell->rlcode == READ_BADPARSE || shell->astcode == AST_ERR_SYNTAX)
+		{
+			ft_printf("minishell: line %d: Bad Parse\n",
+				shell->rldata.lines_read);
+			clean_exit_status(shell, 2);
+		}
 	}
 	return (0);
 }
@@ -113,5 +95,5 @@ int	main(int argc, char **argv, char **envp)
 		(dbg_write_nodes(&shell.info), dbg_write_end(&shell.info));
 		reset_for_command(&shell, shell.rlcode);
 	}
-	return (free_everything(&shell, 0));
+	clean_exit_status(&shell, 0);
 }
