@@ -1,6 +1,6 @@
 NAME			:= minishell
 CC 				:= gcc
-CFLAGS			:= -Wextra -Wall -Werror -g3 -O0 #-fsanitize=address
+CFLAGS			:= -Wextra -Wall -Werror -g3 -O0 -DFD_DBG=3 #-fsanitize=address
 #CFLAGS			:= 
 
 ifdef debug
@@ -24,8 +24,8 @@ SRCS			:= \
 				$(SRC_DIR)/better_prompt/git_stuff.c \
 				$(SRC_DIR)/better_prompt/prompt_setup.c \
 				\
-				$(SRC_DIR)/builtins/builtin_cd.c \
 				$(SRC_DIR)/builtins/builtin_.c \
+				$(SRC_DIR)/builtins/builtin_cd.c \
 				$(SRC_DIR)/builtins/builtin_echo.c \
 				$(SRC_DIR)/builtins/builtin_env.c \
 				$(SRC_DIR)/builtins/builtin_exit.c \
@@ -34,15 +34,21 @@ SRCS			:= \
 				$(SRC_DIR)/builtins/builtin_unset.c \
 				$(SRC_DIR)/builtins/utility_funcs.c \
 				\
-				$(SRC_DIR)/execution/execution.c \
-				$(SRC_DIR)/execution/execute_command.c \
-				$(SRC_DIR)/execution/execute_pipe.c \
-				$(SRC_DIR)/execution/execute_subshell.c \
-				$(SRC_DIR)/execution/execute_seq.c \
-				$(SRC_DIR)/execution/execute_logical.c \
 				$(SRC_DIR)/execution/cmd_prep_utils.c \
+				$(SRC_DIR)/execution/execute_command.c \
+				$(SRC_DIR)/execution/execute_logical.c \
+				$(SRC_DIR)/execution/execute_pipe.c \
+				$(SRC_DIR)/execution/execute_seq.c \
+				$(SRC_DIR)/execution/execute_subshell.c \
+				$(SRC_DIR)/execution/execution.c \
+				$(SRC_DIR)/execution/cmd_prep_expansion.c \
 				$(SRC_DIR)/execution/glob_local_dir.c \
-				$(SRC_DIR)/execution/prepare_redirects.c \
+				$(SRC_DIR)/execution/rd_map_fds.c \
+				$(SRC_DIR)/execution/rd_prep_fds.c \
+				$(SRC_DIR)/execution/rd_list_restore.c \
+				$(SRC_DIR)/execution/rd_utils.c \
+				$(SRC_DIR)/execution/path_prep_utils.c \
+				$(SRC_DIR)/execution/get_exec_cmd.c \
 				\
 				$(SRC_DIR)/debugger/adding_items.c \
 				$(SRC_DIR)/debugger/debugger_util.c \
@@ -52,6 +58,9 @@ SRCS			:= \
 				$(SRC_DIR)/debugger/write_states.c \
 				$(SRC_DIR)/debugger/write_tokens.c \
 				\
+				$(SRC_DIR)/fsm_tokeniser/realize_token.c \
+				$(SRC_DIR)/fsm_tokeniser/tokeniser_return.c \
+				$(SRC_DIR)/fsm_tokeniser/string_condition.c \
 				$(SRC_DIR)/fsm_tokeniser/fsm_tokeniser.c \
 				$(SRC_DIR)/fsm_tokeniser/fsm_utils.c \
 				$(SRC_DIR)/fsm_tokeniser/token_binning.c \
@@ -65,7 +74,9 @@ SRCS			:= \
 				$(SRC_DIR)/heredoc_handler/handle_redirects.c \
 				$(SRC_DIR)/heredoc_handler/heredoc_reader.c \
 				\
+				$(SRC_DIR)/init_process/check_openfds.c \
 				$(SRC_DIR)/init_process/init_process.c \
+				$(SRC_DIR)/init_process/parse_limits.c \
 				$(SRC_DIR)/init_process/restore_signals.c \
 				$(SRC_DIR)/init_process/shell_utils.c \
 				$(SRC_DIR)/init_process/signal_handlers.c \
@@ -83,8 +94,12 @@ SRCS			:= \
 				$(SRC_DIR)/syntax_tree/syntax_heirarchy.c \
 				$(SRC_DIR)/syntax_tree/syntax_util.c \
 				\
-				$(SRC_DIR)/utility/var_expansion/get_var.c \
 				$(SRC_DIR)/utility/var_expansion/special_expansion.c \
+				$(SRC_DIR)/utility/var_expansion/var_checks.c \
+				$(SRC_DIR)/utility/var_expansion/expand_and_split.c \
+				$(SRC_DIR)/utility/var_expansion/handle_word_split.c \
+				$(SRC_DIR)/utility/var_expansion/special_expansion_utils.c \
+				$(SRC_DIR)/utility/var_expansion/special_expansion_utils2.c \
 				$(SRC_DIR)/utility/arrjoin.c \
 				$(SRC_DIR)/utility/get_my_pid.c \
 				$(SRC_DIR)/utility/last_newline_not_end.c \
@@ -93,6 +108,8 @@ SRCS			:= \
 				$(SRC_DIR)/utility/rem_quotes.c \
 				$(SRC_DIR)/utility/sgetenv.c \
 				$(SRC_DIR)/utility/sgetenvany.c \
+				$(SRC_DIR)/utility/set_cmd_envp.c \
+				$(SRC_DIR)/utility/set_var_value.c \
 				$(SRC_DIR)/utility/simple_split.c \
 				$(SRC_DIR)/utility/ssetenv.c \
 				$(SRC_DIR)/utility/str_join_with_sep.c \

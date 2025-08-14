@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:42:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 19:44:02 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/06 12:54:58 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,5 @@ t_tokentype	next_token_type(t_tokint *tokeniser, const char *str)
 		handle_operator(tokeniser, str);
 	else
 		skip_token_str(tokeniser, str);
-	return (tokenise_type(tokeniser, str));
+	return (realize_token(tokeniser, str));
 }

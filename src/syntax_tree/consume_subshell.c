@@ -6,14 +6,14 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 13:46:33 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 15:02:43 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/07 17:28:42 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 int	add_redirect_type(struct s_ast_internal *meta, t_token **arr,
-						t_astnode *node, size_t *inc);
+		t_astnode *node, size_t *inc);
 
 void	ast_subcommand_redirects(struct s_ast_internal *meta,
 	t_astnode *node
@@ -22,7 +22,7 @@ void	ast_subcommand_redirects(struct s_ast_internal *meta,
 	while (_continue_parsing(meta)
 		&& ft_strchr("\3\4\5\6\17", meta->tokens[meta->consumed]->type))
 	{
-		if (add_redirect_type(meta, node->tokens, node, &meta->consumed) < 0)
+		if (add_redirect_type(meta, meta->tokens, node, &meta->consumed) < 0)
 			return ;
 		meta->consumed++;
 	}

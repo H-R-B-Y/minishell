@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:53:54 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/07 15:47:51 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 18:56:45 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	**ft_arradd_atindex(void **arr, void *newitem, size_t index)
 		return (0);
 	ft_memmove(output, arr, index * sizeof(void *));
 	output[index] = newitem;
-	ft_memmove(output + index + 1, arr + index, ((len - index) + 1) * sizeof(void *));
+	ft_memmove(output + index + 1, arr + index,
+		((len - index) + 1) * sizeof(void *));
 	return (output);
 }

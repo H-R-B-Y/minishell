@@ -1,0 +1,13 @@
+1. 
+The command prep func loop that expands / splits / globs has
+non commutative properties.
+Specifically the expand arguments section, as it acts on the arguments in the
+node instead of working on the arguments in the array passed as a parameter
+
+2.
+The return code of each node is not stored in the node, but is instead
+stored in the shell. This isn't an issue right now, but it could be an issue
+when we are working on future concurrency in job control.
+
+
+3.

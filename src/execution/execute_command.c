@@ -3,62 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:36:22 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/02 18:36:23 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/14 18:51:24 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <limits.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-
-void	exec_errno_handling(t_minishell *shell, char *path)
-{
-	struct stat	statbuf;
-
-	ft_memset(&statbuf, 0, sizeof(statbuf));
-	if (errno == ENOENT)
-	{
-		ft_putstr_fd(path, 2);
-		ft_putstr_fd(": command not found\n", 2);
-		clean_exit_status(shell, 127);
-	}
-	else if (errno == EACCES && stat(path, &statbuf) == 0 
-		&& S_ISDIR(statbuf.st_mode))
-		errno = EISDIR;
-	perror_exit(shell, path);
-}
-
-void	get_exec_cmd(t_minishell *shell, t_astnode *node, t_builtincmd *b_in)
-{
-	char		*path;
-	char		**argv;
-	char		*exec_path = NULL;
-	
-	(void)b_in;
-	node->envp = (char **)ft_arrmap((void **)shell->environment,
-		(void *)ft_strdup, free);
-	if (!node->envp)
-		perror_exit(shell, "ft_arrmap");
-	path = node->cmdv[node->cmd_i];
-	argv = node->cmdv + node->cmd_i;
-	restore_signals(shell);
-	map_fds(node);
-	errno = 0;
-	if (ft_strchr(path, '/'))
-		execve(path, argv, node->envp);
-	else
-		exec_path = get_exec_path(shell, path, node->envp);
-	if (exec_path)
-	{
-		execve(exec_path, argv, node->envp);
-		free(exec_path);
-	}
-	exec_errno_handling(shell, path);
-}
 
 int	exec_raw(t_minishell *shell, t_astnode *node, t_builtincmd cmd)
 {
@@ -75,7 +27,7 @@ int	exec_default(t_minishell *shell, t_astnode *node, t_builtincmd cmd)
 	int		returncode;
 
 	if (cmd)
-		return(exec_builtincmd(shell, node, cmd));
+		return (exec_builtincmd(shell, node, cmd));
 	pid = fork();
 	returncode = -1;
 	if (pid == 0)
@@ -88,19 +40,38 @@ int	exec_default(t_minishell *shell, t_astnode *node, t_builtincmd cmd)
 	return (0);
 }
 
+void	handle_last_argv(t_minishell *shell, char *last_argv)
+{
+	char	*temp;
+
+	temp = str_vec_join((const char *[3]){"_=", last_argv, 0});
+	if (!temp)
+		perror_exit(shell, "setting var value");
+	else if (set_any_env(shell, &temp, 1) == -1)
+	{
+		free(temp);
+		perror_exit(shell, "setting var value");
+	}
+	free(temp);
+}
+
 int	execute_command(t_minishell *shell, t_astnode *node)
 {
-	node->cmdv = cmdv_prep(shell, node); // pending: shorten remove quotes and clean up in case of error
-	glob_variable(node);
-	if (prepare_fds(node) < 0)
-		return (-1);
+	node->cmdv = cmdv_prep(shell, node);
 	if (node->cmd_i != (size_t)-1)
 	{
+		handle_last_argv(shell, node->cmdv[node->argc - 1]);
+		if (prepare_fds(shell, node) < 0)
+		{
+			shell->return_code = 1;
+			return (-1);
+		}
 		if (node->from_type == AST_PIPE)
 			exec_raw(shell, node, _get_builtincmd(node));
 		else
 			exec_default(shell, node, _get_builtincmd(node));
 		return (0);
 	}
+	handle_last_argv(shell, "");
 	return (set_any_env(shell, node->cmdv, node->token_count));
 }

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 13:41:57 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 18:48:43 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ struct s_redirect_desc
 	t_redirect_type			type;
 	/// @brief The subtype of the redirect
 	enum e_redirect_subtype	subtype;
+	/// @brief Set of fds to restore
+	int						current_fd;
 	union
 	{
 		/// @brief Maps a file descriptor 
@@ -105,8 +107,8 @@ struct s_redirect_desc
 		/// @brief Maps a file to a file descriptor
 		struct s_none2
 		{
-			/// @brief filename of file to map
-			char		*filename;
+			/// @brief name of file to map
+			char		*name;
 			/// @brief fd for opened file
 			int			from_fd;
 			/// @brief fd to map too
@@ -115,6 +117,12 @@ struct s_redirect_desc
 	};
 };
 
+/**
+ * @brief Destroy a redirect object
+ * 
+ * @param n Pointer to the object to destory
+ * @warning n pointer will be free'd
+ */
 void			destroy_redirect(t_redirect_desc *n);
 
 /**
@@ -185,12 +193,16 @@ struct	s_astnode
 	char		**cmdv;
 	/// @brief The index of the actual command path in cmdv
 	size_t		cmd_i;
+	/// @brief	Command path passed to execve
+	char		*cmd_path;
 	/// @brief List of redirect descriptors
 	t_list		*redirect;
+	/// @brief FD info to restore after redirections
+	t_list		*rd_rstr_info;
 	/// @brief The environment array
 	char		**envp;
-	/// @brief IDK 
-	size_t		genv_l; // to delete???
+	/// @brief Argument count
+	int			argc;
 	/// @brief Return code from waitpid
 	int			return_value;
 	/// @brief Actual number that the process returned
@@ -235,7 +247,7 @@ struct s_ast_internal
 /**
  * @brief produce an abstract syntax tree
  * @param tokens vector array of tokens used to construct the tree
- * @param count count of tokens in the array (TODO:i dont think we need this)
+ * @param count count of tokens in the array
  * @returns head node of the tree
  */
 int				produce_ast(t_minishell *shell,
@@ -288,7 +300,8 @@ t_astnode		*ast_parse_subcommand(struct s_ast_internal *meta);
  * @param meta the metadata struct containing info about the tree
  * @param node the ??? too tired cannot remember
  */
-ssize_t			ast_consume_words(struct s_ast_internal *meta, t_astnode *node);
+ssize_t			ast_consume_words(struct s_ast_internal *meta,
+					t_astnode *node);
 
 /**
  * @brief print the ast

@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipe.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:36:35 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/02 18:36:36 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/14 18:51:27 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../include/minishell.h"
 
@@ -21,7 +20,7 @@ void	_write_pipe(t_minishell *shell, t_astnode *node, int *fd)
 	close(fd[0]);
 	node->from_type = AST_PIPE;
 	execute_ast(shell, node);
-	exit(free_everything(shell, 0));
+	clean_exit_status(shell, 0);
 }
 
 void	_read_pipe(t_minishell *shell, t_astnode *node, int *fd)
@@ -32,7 +31,7 @@ void	_read_pipe(t_minishell *shell, t_astnode *node, int *fd)
 	close(fd[0]);
 	node->from_type = AST_PIPE;
 	execute_ast(shell, node);
-	exit(free_everything(shell, 0));
+	clean_exit_status(shell, 0);
 }
 
 int	execute_pipe(t_minishell *shell, t_astnode *node)
@@ -55,7 +54,7 @@ int	execute_pipe(t_minishell *shell, t_astnode *node)
 		perror_exit(shell, "pipe fork");
 	if (pid_r == 0)
 		_read_pipe(shell, node->right_node, fd);
-	close(fd[0]);	
+	close(fd[0]);
 	close(fd[1]);
 	waitpid(pid_w, NULL, 0);
 	waitpid(pid_r, &returncode, 0);

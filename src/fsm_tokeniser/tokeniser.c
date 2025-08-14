@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 13:22:43 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 15:22:08 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/07 17:39:34 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,33 @@
 #include "../../include/v_dbg.h"
 
 t_tokretcode	set_retcode(t_fsmdata *fsm,
-	const t_tokretcode code, char *str_condition)
+					const t_tokretcode code, char *str_condition);
+t_tokretcode	parse_fatal(t_fsmdata *fsm);
+t_tokretcode	parse_continue(t_fsmdata *fsm);
+t_tokretcode	parse_error(t_fsmdata *fsm);
+t_tokretcode	parse_ok(t_fsmdata *fsm);
+
+static int	_accept_token(t_fsmdata *fsm)
 {
-	fsm->retcode = code;
-	if (code == PARSE_CONT)
+	t_list	*token;
+
+	if (fsm->state != ST_END && fsm->state != ST_WRNG
+		&& fsm->state != ST_CONT)
 	{
-		fsm->tok_int.i_end = 0;
-		fsm->tok_int.i_start = 0;
+		token = ft_lstnew(tokeniser_pop_token(&fsm->tok_int));
+		if (!token)
+			return (-1);
+		ft_lstadd_back(&(fsm->tokens), token);
 	}
-	if (fsm->str_cond)
-		fsm->str_cond = 0;
-	fsm->str_cond = str_condition;
-	return (code);
+	return (0);
 }
 
+// if (fsm->state == ST_HDOC && next_state == ST_WORD)
+// 	fsm->tok_int.curr_token->heredoc_delim = 1;
+// else if (fsm->state == ST_REDR && next_state == ST_WORD)
+// 	fsm->tok_int.curr_token->redirect_file = 1;
 void	state_change(t_fsmdata *fsm, t_fsmstate next_state)
 {
-	if (fsm->state == ST_HDOC && next_state == ST_WORD)
-		fsm->tok_int.curr_token->heredoc_delim = 1;
-	else if (fsm->state == ST_REDR && next_state == ST_WORD)
-		fsm->tok_int.curr_token->redirect_file = 1;
 	if (next_state == ST_END && fsm->paren_count > 0)
 		next_state = ST_CONT;
 	fsm->last_state = fsm->state;
@@ -44,53 +51,36 @@ void	state_change(t_fsmdata *fsm, t_fsmstate next_state)
 t_tokretcode	correct_retcode(t_fsmdata *fsm)
 {
 	if (fsm->paren_count < 0)
-		return (set_retcode(fsm, PARSE_ERROR,
-				"parenthesis dont make sense"));
+		return (parse_error(fsm));
 	if (fsm->state == ST_CONT)
 	{
 		state_change(fsm, fsm->last_state);
-		set_retcode(fsm, PARSE_CONT, 0);
-		if (fsm->tok_int.curr_type == TOK_INCOMPLETE_STRING)
-			fsm->str_cond = "incomplete string";
-		else if (fsm->state == ST_OPRA)
-			fsm->str_cond = "operation not finished";
-		else if (fsm->paren_count > 0)
-		{
-			fsm->str_cond = "unclosed parenthesis";
-			if (handle_subshell_newline(fsm) < 0)
-				return (PARSE_FATAL);
-		}
-		return (PARSE_CONT);
+		if (fsm->paren_count > 0 && handle_subshell_newline(fsm) < 0)
+			return (parse_fatal(fsm));
+		return (parse_continue(fsm));
 	}
 	if (fsm->state == ST_END)
-		return (state_change(fsm, ST_STRT), set_retcode(fsm, PARSE_OK, 0));
-	return (set_retcode(fsm, PARSE_ERROR, "syntax error"));
+		return (state_change(fsm, ST_STRT), parse_ok(fsm));
+	return (parse_error(fsm));
 }
 
-static int	_accept_token(t_fsmdata *fsm, t_fsmstate *next_state)
+t_fsmstate	get_next_state(t_fsmdata *fsm)
 {
-	t_list	*token;
+	t_fsmstate	next_state;
 
-	if (!handle_token_type(fsm))
-		*next_state = ST_WRNG;
-	state_change(fsm, *next_state);
-	if (*next_state != ST_END && *next_state != ST_WRNG
-		&& *next_state != ST_CONT)
-	{
-		token = ft_lstnew(tokeniser_pop_token(&fsm->tok_int));
-		if (!token)
-			return (-1);
-		ft_lstadd_back(&(fsm->tokens), token);
-	}
-	else
-		destroy_token(tokeniser_pop_token(&fsm->tok_int), free);
-	return (0);
+	next_state = fsm_check_transition(fsm->state, fsm->tok_int.curr_type);
+	if (fsm->tok_int.curr_type == TOK_LPAREN)
+		fsm->paren_count++;
+	if (fsm->tok_int.curr_type == TOK_RPAREN)
+		fsm->paren_count--;
+	if (fsm->paren_count < 0)
+		next_state = ST_WRNG;
+	state_change(fsm, next_state);
+	return (next_state);
 }
 
 t_tokretcode	tokenise(t_fsmdata *fsm, const char *str)
 {
-	t_fsmstate	next_state;
-
 	if (fsm->retcode == PARSE_ERROR)
 		reset_fsm(fsm);
 	if (!str)
@@ -103,10 +93,10 @@ t_tokretcode	tokenise(t_fsmdata *fsm, const char *str)
 		if (fsm->tok_int.curr_type == TOK_EOF && fsm->state == ST_STRT)
 			return (set_retcode(fsm, PARSE_NOTHING, 0));
 		if (fsm->tok_int.curr_type == TOK_ERR)
-			return (set_retcode(fsm, PARSE_FATAL, "UNRECOVERABLE"));
-		next_state = fsm_check_transition(fsm->state, fsm->tok_int.curr_type);
-		if (_accept_token(fsm, &next_state) < 0)
-			return (set_retcode(fsm, PARSE_FATAL, "UNRECOVERABLE"));
+			return (parse_fatal(fsm));
+		get_next_state(fsm);
+		if (_accept_token(fsm) < 0)
+			return (parse_fatal(fsm));
 	}
 	return (correct_retcode(fsm));
 }

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:55:48 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/28 16:37:32 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/07 17:29:15 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*s_get_env(t_minishell *shell, const char *name)
  * @param name the name of the variable 
  * @return ssize_t the index in the array or -1
  */
-ssize_t	s_get_envid(t_minishell *shell,const char *name)
+ssize_t	s_get_envid(t_minishell *shell, const char *name)
 {
 	return (_sgetanon(shell->environment, name));
 }

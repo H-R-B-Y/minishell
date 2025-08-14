@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strchr_idx.c                                    :+:      :+:    :+:   */
+/*   ft_strchr_i.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/01 16:18:42 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/02 18:35:09 by cquinter         ###   ########.fr       */
+/*   Created: 2025/08/14 18:38:19 by cquinter          #+#    #+#             */
+/*   Updated: 2025/08/14 18:38:35 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/libft.h"
 
-size_t	ft_strchr_idx(const char *s, int c)
+size_t	ft_strchr_i(const char *s, int c)
 {
 	size_t	i;
 

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   str_vec_join.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 17:18:06 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/28 16:35:02 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/05 15:41:49 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-char	*str_vec_join(char **arr)
+char	*str_vec_join(const char **arr)
 {
 	size_t	size;
 	size_t	index;

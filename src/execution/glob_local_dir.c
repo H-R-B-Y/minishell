@@ -6,11 +6,13 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 15:13:15 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/26 16:54:42 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 18:51:45 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+char	*mark_quotes(const char *expanded);
 
 static ssize_t	local_dir_glob(char ***p)
 {
@@ -22,46 +24,44 @@ static ssize_t	local_dir_glob(char ***p)
 		return (-1);
 	cwd = getcwd(0, 0);
 	dir = opendir(cwd);
+	free(cwd);
 	if (!dir)
 		return (-1);
 	*p = ft_calloc(1, sizeof(char *));
 	entry = readdir(dir);
-	entry = readdir(dir);
-	entry = readdir(dir);
+	while (entry && entry->d_name[0] == '.')
+		entry = readdir(dir);
 	while (entry)
 	{
-		ft_dirtyswap((void *)p, ft_arradd_back((void *)*p, ft_strdup(entry->d_name)), free);
+		ft_dirtyswap((void *)p, ft_arradd_back((void *)*p,
+				ft_strdup(entry->d_name)), free);
 		entry = readdir(dir);
 	}
+	closedir(dir);
 	return (ft_arrlen((void *)*p));
 }
 
-ssize_t	glob_variable(t_astnode	*node)
+char	**glob_word(t_minishell *shell, char *str)
 {
 	ssize_t	i;
 	ssize_t	count;
-	char	**temp[2];
-	char	**output;
-	ssize_t	i2;
+	char	**words;
+	char	*temp;
 
+	if (!shell || !str)
+		return (0);
+	if (str[0] != '*' || str[1] != '\0')
+		return (0);
+	count = local_dir_glob(&words);
 	i = 0;
-	output = ft_calloc(1, sizeof(char *));
-	while (node->cmdv[i])
+	while (i < count)
 	{
-		if (ft_strcmp(node->cmdv[i], "*"))
-		{
-			ft_dirtyswap((void *)&output, ft_arradd_back((void *)output, node->cmdv[i]), free);
-			i++;
-			continue;
-		}
-		count = local_dir_glob(&temp[1]);
-		if (count < 0 && ++i)
-			continue ;
-		i2 = 0;
-		while (i2 < count)
-			ft_dirtyswap((void *)&output, ft_arradd_back((void *)output, temp[1][i2++]), free);
+		temp = mark_quotes(words[i]);
+		if (temp)
+			ft_dirtyswap((void *)&words[i], temp, free);
 		i++;
 	}
-	ft_dirtyswap((void *)&node->cmdv, output, free);
-	return (ft_arrlen((void *)node->cmdv));
+	if (count < 0)
+		return (0);
+	return (words);
 }

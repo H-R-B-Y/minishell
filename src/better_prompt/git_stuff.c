@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 17:19:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 17:44:16 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/07 17:42:27 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ extern char	**environ;
 int	has_git(void)
 {
 	static int	called = -1;
+
 	if (called < 0)
 	{
 		called = 1;
@@ -47,7 +48,7 @@ char	*get_return(int data[2], const int ret)
 		if (!buff[1])
 			break ;
 		ft_dirtyswap((void *)&buff[0],
-			str_vec_join((char *[3]){buff[0], buff[1], 0}), free);
+			str_vec_join((const char *[3]){buff[0], buff[1], 0}), free);
 		free(buff[1]);
 	}
 	return (close(data[0]), buff[0]);

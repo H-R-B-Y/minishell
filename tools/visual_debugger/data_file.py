@@ -48,15 +48,11 @@ class shell_token():
 	"TOK_REDIR_FD":"Redirect fd",
 	"TOK_COUNT":"INVALID TYPE",
 	}
-	def __init__(self, token_id, token_type_id, raw_string, hered, redir, quot, vars):
+	def __init__(self, token_id, token_type_id, raw_string):
 		self.id = token_id
 		self._type = list(shell_token.real_types.keys())[token_type_id]
 		self._type_str = shell_token.real_types[self._type]
 		self.raw = raw_string
-		self.hered = hered
-		self.redir = redir
-		self.quot = quot
-		self.vars = quot
 
 	def __repr__(self):
 		return self._type
@@ -221,18 +217,18 @@ class shell_dump():
 				break
 			string_data += raw_byte
 		string_data = string_data.decode()
-		token_heredoc_raw = self.filedes.read(4)
-		token_redr_raw = self.filedes.read(4)
-		token_quotes_removed_raw = self.filedes.read(4)
-		token_variables_raw = self.filedes.read(4)
+		# token_heredoc_raw = self.filedes.read(4)
+		# token_redr_raw = self.filedes.read(4)
+		# token_quotes_removed_raw = self.filedes.read(4)
+		# token_variables_raw = self.filedes.read(4)
 		return shell_token(
 			token_id=int.from_bytes(token_id_raw, 'little'),
-				token_type_id=int.from_bytes(token_type_raw, 'little'),
+			token_type_id=int.from_bytes(token_type_raw, 'little'),
 			raw_string=string_data,
-			redir=int.from_bytes(token_redr_raw, 'little'),
-			hered=int.from_bytes(token_heredoc_raw, 'little'),
-			quot=int.from_bytes(token_quotes_removed_raw, 'little'),
-			vars=int.from_bytes(token_variables_raw, 'little')
+			# redir=int.from_bytes(token_redr_raw, 'little'),
+			# hered=int.from_bytes(token_heredoc_raw, 'little'),
+			# quot=int.from_bytes(token_quotes_removed_raw, 'little'),
+			# vars=int.from_bytes(token_variables_raw, 'little')
 		)
 
 	def _read_str(self):
@@ -264,7 +260,7 @@ class shell_dump():
 			tokens.append(tok_ptr)
 		self.filedes.read(8)  # Skip NULL terminator
 
-		ret_code = int.from_bytes(self.filedes.read(4), 'little')
+		ret_code = int.from_bytes(self.filedes.read(2), 'little')
 		cmdv = []
 		cmdv_count = int.from_bytes(self.filedes.read(4), 'little')
 		for _ in range(cmdv_count):
@@ -300,7 +296,7 @@ class shell_dump():
 
 
 def main():
-	path = "test"
+	path = "testfile"
 	x = shell_dump(path = path)
 	x._read()
 	print(x.commands)

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 16:49:12 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 13:41:40 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/13 16:42:30 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ void	extract_tofromfds(char *raw, char *sep, int *out)
 	o[1] = sep[1];
 	sep[0] = '\0';
 	sep[1] = '\0';
-	out[0] = ft_atoi(raw);
+	if (ft_isdigit(*raw))
+		out[0] = ft_atoi(raw);
+	else
+		out[0] = ((0 * (o[0] == '<')) + (1 * (o[0] == '>')));
 	out[1] = ft_atoi(&sep[2]);
 	sep[0] = o[0];
 	sep[1] = o[1];
@@ -74,9 +77,9 @@ t_redirect_desc	*handle_redirect(t_token *redirect, char *filename)
 	sep = ft_strchr(redirect->raw, '>');
 	if (!sep)
 		sep = ft_strchr(redirect->raw, '<');
-	if (sep == redirect->raw)
+	if (sep == redirect->raw && redirect->raw[1] != '&')
 		to_fd = (int [2]){0, 1}[(redirect->type != TOK_REDIR_IN)];
-	else if (*redirect->raw == '&')
+	else if (*redirect->raw == '&' || redirect->raw[1] == '&')
 		to_fd = -1;
 	else
 		to_fd = get_tofd(redirect->raw, sep);
@@ -85,7 +88,7 @@ t_redirect_desc	*handle_redirect(t_token *redirect, char *filename)
 		(0 * (redirect->type == TOK_REDIR_IN))
 		+ (1 * (redirect->type == TOK_REDIR_OUT))
 		+ (2 * (redirect->type == TOK_REDIR_APPEND))],
-		.file_map.filename = ft_strdup(filename), .file_map.to_fd = to_fd,
+		.file_map.name = ft_strdup(filename), .file_map.to_fd = to_fd,
 	};
 	return (output);
 }

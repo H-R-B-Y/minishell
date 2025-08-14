@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/29 17:09:21 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 18:35:31 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,14 +111,6 @@ struct s_token
 	t_tokentype	type;
 	/// @brief the raw token string
 	char		*raw;
-	/// @brief flag this token as a heredoc deliminator
-	int			heredoc_delim;
-	/// @brief flag this token as a filename for a redirect
-	int			redirect_file;
-	// /// @brief flag if the quotes have been removed
-	// int			quotes_removed;
-	// /// @brief flag if the variables have been expanded
-	// int			variables_expanded;
 };
 
 /**
@@ -354,7 +346,7 @@ t_tokentype		bin_token(const char *raw_token);
  * @param str the string being parsed
  * @return t_tokentype the next tokens type.
  */
-t_tokentype		tokenise_type(t_tokint *tokeniser, const char *str);
+t_tokentype		realize_token(t_tokint *tokeniser, const char *str);
 
 /**
  * @brief Handles operators that may be 1 or 2 characters in length
@@ -384,18 +376,6 @@ void			handle_operator(t_tokint *tokeniser, const char *str);
  * @return int 0 if error in allocation or 1 if ok
  */
 int				handle_unclosed_quote(t_tokint *tokeniser, const char *str);
-
-/**
- * @brief Utility function for making sure that we keep track of stats
- * 
- * Certain tokens need to trigger certain effects within the parser, 
- * like parenthesis need to be tracked so we dont end up with malformed
- * precendence.
- * 
- * @param fsm the finite state machine struct
- * @return int 1 if we are in a valid state 0 if not
- */
-int				handle_token_type(t_fsmdata *fsm);
 
 /**
  * @brief newlines inside subshells need to be handled differently.
@@ -516,7 +496,7 @@ int				append_anon_token(t_fsmdata *fsm,
  * @brief Find the next token in the string and return its type
  * 
  * This function skips the start and end indexes to the next token,
- * then hands off the work to the function tokenise_type that uses
+ * then hands off the work to the function realize_token that uses
  * the data to create the next token struct and bin its type.
  * 
  * @param tokeniser the tokeniser struct
@@ -587,5 +567,11 @@ t_tokretcode	tokenise(t_fsmdata *fsm, const char *str);
  * @param str the string currently being tokenised
  */
 void			skip_token_str(t_tokint *tokeniser, const char *str);
+
+/**
+ * @brief print out a token list in columns
+ * @param list the list of tokens to print
+ */
+void			print_token_list(const t_list *list);
 
 #endif

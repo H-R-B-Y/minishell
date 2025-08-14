@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 17:37:48 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/02 18:35:21 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/14 18:56:53 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

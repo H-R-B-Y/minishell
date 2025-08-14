@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 17:37:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 20:58:35 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/13 16:30:18 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ void	handle_potential_redirect(t_tokint *tokeniser, const char *str)
 	else if (str[tokeniser->i_end] == '&')
 	{
 		tokeniser->i_end++;
-		while (ft_iswhitespace(str[tokeniser->i_end]))
-			tokeniser->i_end++;
 		if (ft_isdigit(str[tokeniser->i_end]))
 			while (str[tokeniser->i_end]
 				&& (ft_isdigit(str[tokeniser->i_end])))
@@ -68,28 +66,18 @@ int	handle_unclosed_quote(t_tokint *tokeniser, const char *str)
 		return (0);
 	if (!tokeniser->prev_line)
 		ft_dirtyswap((void *)&tokeniser->prev_line,
-			str_vec_join((char *[2]){temp, 0}), free);
+			str_vec_join((const char *[2]){temp, 0}), free);
 	else if (last_newline_not_end(tokeniser->prev_line))
 		ft_dirtyswap((void *)&tokeniser->prev_line,
-			str_vec_join((char *[4]){tokeniser->prev_line, "\n", temp, 0}),
+			str_vec_join((const char *[4])
+			{tokeniser->prev_line, "\n", temp, 0}),
 			free);
 	else
 		ft_dirtyswap((void *)&tokeniser->prev_line,
-			str_vec_join((char *[3]){tokeniser->prev_line, temp, 0}),
+			str_vec_join((const char *[3]){tokeniser->prev_line, temp, 0}),
 			free);
 	free(temp);
 	if (!tokeniser->prev_line)
-		return (0);
-	return (1);
-}
-
-int	handle_token_type(t_fsmdata *fsm)
-{
-	if (fsm->tok_int.curr_type == TOK_LPAREN)
-		fsm->paren_count++;
-	if (fsm->tok_int.curr_type == TOK_RPAREN)
-		fsm->paren_count--;
-	if (fsm->paren_count < 0)
 		return (0);
 	return (1);
 }

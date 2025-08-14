@@ -6,13 +6,13 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/22 14:29:37 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/22 15:26:46 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 18:56:51 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/libft.h"
 
-static int	_xorshift()
+static int	_xorshift(void)
 {
 	static int	seed = RANDSEED;
 

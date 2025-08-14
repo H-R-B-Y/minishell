@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 17:54:03 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 18:50:14 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,13 @@
 # include <term.h>
 
 # include "./libft.h"
-# include "./v_dbg.h"
+# include "./ft_printf.h"
 # include "./readline_loop.h"
 # include "./abstract_syntax_tree.h"
 # include "./execution.h"
 # include "./builtin.h"
+# include "./ft_printf.h"
+# include "./v_dbg.h"
 
 /**
  * @brief redo this comment
@@ -76,6 +78,8 @@ struct s_minishell
 	t_fsmdata			fsm_data;
 	/// @brief Internal information relevant to the readline loop
 	t_readline_data		rldata;
+	///	@brief Last history item relevant to better_add_history
+	char				*last_hist_item;
 	/// @brief Current line (? do we still need this)
 	char				*ecurrent_line;
 	/// @brief Current pipeline (? do we still need this?)
@@ -90,14 +94,16 @@ struct s_minishell
 	int					argc;
 	/// @brief arguments passed to program at execution
 	char				**argv;
-	/// @brief Not sure if this is going to be used,
-	/// but for _ expansion of arguments I was thinking
-	/// that we could set it globally, maybe?
-	char				*last_arg;
 	char				*name;
+	/// @brief limit for max file descriptors
+	ssize_t				ulimit_n;
+	/// @brief readline code returned from readline loop last call
+	t_readline_retcode	rlcode;
+	/// @brief code returned from last call to ast constructor
+	t_asterror			astcode;
 };
 
-void	init_pwd(t_minishell *shell, char ***envp);
+void			init_pwd(t_minishell *shell, char ***envp);
 /**
  * @brief Initialise the shell
  * 
@@ -117,10 +123,10 @@ int				init_process(t_minishell *shell, char **envp);
  * @param string The histeory item that we want to add
  * @return int status code
  */
-int		better_add_history(t_minishell *shell, char *string);
+int				better_add_history(t_minishell *shell, char *string);
 
 /**
- * @brief Cleanup ready for the next command (or at exit time)
+ * @brief Cleanup ready for the next command (or at ~ time)
  * 
  * This will free anything heap allocated so this doubles as
  * a safe way to cleanup.
@@ -139,14 +145,6 @@ void			reset_for_command(t_minishell *shell,
  * @return char* the prompt! 
  */
 char			*create_prompt(const t_minishell *shell);
-
-/**
- * @brief print out a token list in columns
- * @param list the list of tokens to print
- * 
- * TODO: this should probably be moved to the input tokens header.
- */
-void			print_token_list(const t_list *list);
 
 // Utility functions:
 // Some of these may be useful in libft?
@@ -169,7 +167,7 @@ char			*str_join_with_sep(const char *str1,
  * @param arr a null terminated array of strings
  * @return char* joined string
  */
-char			*str_vec_join(char **arr);
+char			*str_vec_join(const char **arr);
 /**
  * @brief pop a line out of the extra lines array
  * 
@@ -199,9 +197,23 @@ variable expansion.
 The second is the internal variables, these are tracked by the shell but only
 accessible to the shell and not handed to the child processes.
 */
-// TODO: comment this
+
+/**
+ * @brief Get the value of the item name from the array anon
+ * 
+ * @param anon the array to search in
+ * @param name the name to search
+ * @return ssize_t 
+ */
 ssize_t			_sgetanon(char **anon, const char *name);
-// TODO: comment this
+
+/**
+ * @brief Get the index of name in an anonymous array of variables
+ * 
+ * @param anon array of variables
+ * @param name Name to search
+ * @return ssize_t index in the array or -1
+ */
 ssize_t			_sgetidx(char **anon, const char *name);
 
 /**
@@ -256,7 +268,20 @@ char			*s_get_envany(t_minishell *shell, const char *name);
  * @param name the name of the environment variable
  * @return char* the env string from the environment
  */
-char			*s_get_fromthis_env(char **env,  const char *name);
+char			*s_get_fromthis_env(char **env, const char *name);
+
+/**
+ * @brief Sets a variable and value to envp
+ * 
+ * @param shell the shell struct
+ * @param value the value of var
+ * @param var	the variable to set with value separated by '='
+ * @param envp	a pointer to the environment to set the variable to
+ * @return char* the env string from the environment
+ */
+void			_set_var_value(t_minishell *shell,
+					const char *value,
+					const char *var, char ***envp);
 
 /*
 Things that can be accessed externally in the builtins are
@@ -284,8 +309,7 @@ Things that can be accessed externally in the builtins are
  * @param envp the current environment variables
  * @return int the statuscode
  */
-typedef int			(*t_builtincmd)(t_minishell *, char **, char ***);
-
+typedef int					(*t_builtincmd)(t_minishell *, char **, char ***);
 
 /**
  * @brief Get a builtin command object
@@ -294,7 +318,7 @@ typedef int			(*t_builtincmd)(t_minishell *, char **, char ***);
  * ```
  * - echo
  * - env
- * - exit
+ * - ~
  * - export
  * - pwd
  * - unset
@@ -392,14 +416,14 @@ pid_t			get_my_pid(void);
  * @param node 
  * @return int 
  */
-int				prepare_fds(t_astnode *node);
+int				prepare_fds(t_minishell *shell, t_astnode *node);
 
 /**
  * @brief map fds from fd map
  * 
  * @param node node containing redirect list
  */
-void			map_fds(t_astnode *node);
+int				map_fds(t_astnode *node);
 
 /**
  * @brief unset some signal handlers for execution
@@ -440,13 +464,14 @@ ssize_t			glob_variable(t_astnode	*node);
  */
 char			**simple_split(const char *str, t_readline_data *data);
 
-/**
- * @brief free everything
- * @param shell reference to the shell
- * @param code return code to return
- * @returns code 
- */
-int				free_everything(t_minishell *shell, int code);
+// (Redundant) use clean_exit_status()
+// /**
+//  * @brief free everything
+//  * @param shell reference to the shell
+//  * @param code return code to return
+//  * @returns code 
+//  */
+// int				free_everything(t_minishell *shell, int code);
 
 /**
  * @brief check if the string either doesnt contain a newline
@@ -463,13 +488,49 @@ int				last_newline_not_end(const char *str);
  * @param name the name of the variable to expand
  * @param flag 1 if you want to care about quotes else 0
  */
-char	**expand_and_split(t_minishell *shell, const char *value, int flag);
+char			**expand_and_split(t_minishell *shell,
+					const char *value, int flag);
 
-void	clean_shell(t_minishell *shell);
-void	clean_exit_status(t_minishell *shell, int status);
-void	perror_exit(t_minishell *shell, char *message); // TODO: check if correct clean up everything and exit
-void	_free_arr_perror_exit(t_minishell *shell, void **arr, char *message);
-void	_set_returncode(int *to_set, int code);
+/**
+ * @brief Cleanup the shell
+ * 
+ * @param shell Pointer to the shell object
+ */
+void			clean_shell(t_minishell *shell);
+
+/**
+ * @brief Cleanup the shell then exit with status
+ * 
+ * @param shell Pointer to the shell object
+ * @param status status code to pass to exit
+ */
+void			clean_exit_status(t_minishell *shell, int status);
+
+/**
+ * @brief Call perror and with message and then exit the shell cleanly
+ * 
+ * @param shell pointer to the shell object
+ * @param message message to pass to perror
+ */
+void			perror_exit(t_minishell *shell, char *message);
+
+/**
+ * @brief Free an array then perror exit
+ * 
+ * @param shell Pointer to the shell
+ * @param arr array to free (using arrclear)
+ * @param message message to hand to perror
+ */
+void			_free_arr_perror_exit(t_minishell *shell,
+					void **arr, char *message);
+
+/**
+ * @brief Set the return code variable using macros to determine the exit status
+ * 
+ * @param to_set Pointer to value to set
+ * @param code The return code from a process
+ */
+void			_set_returncode(int *to_set, int code);
 
 /**
  * @brief Join two arrays
@@ -477,6 +538,6 @@ void	_set_returncode(int *to_set, int code);
  * @param arr2 Right array
  * @returns New allocated array of the joined arrays
  */
-void	*arrjoin(void **arr1, void **arr2);
+void			*arrjoin(void **arr1, void **arr2);
 
 #endif

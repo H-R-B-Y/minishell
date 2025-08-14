@@ -6,10 +6,9 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:07:29 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 19:01:24 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 18:28:37 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef READLINE_LOOP_H
 # define READLINE_LOOP_H
@@ -30,8 +29,6 @@ enum e_readline_retcode
 	READ_NOTHING,
 	/// @brief Input was closed
 	READ_EOF,
-	/// @brief An error was encountered in reading or tokenisation
-	READ_ERROR,
 	/// @brief Parsing failed
 	READ_BADPARSE,
 	/// @brief Fatal error do not continue
@@ -48,7 +45,7 @@ struct s_readline_data
 	/// @brief The count of extra lines
 	size_t				extra_line_count;
 	/// @brief The current history item
-	char				*current_hist_item;
+	char				*curr_hst_item;
 	/// @brief The most recent line read from readline/extra_lines
 	char				*last_line;
 	/// @brief Reference to the interactive mode flag in shell struct.
@@ -57,6 +54,8 @@ struct s_readline_data
 	t_fsmdata			*fsm_data;
 	/// @brief Heredoc flag. Used to append to history
 	int					hdoc;
+	/// @brief Number of lines read, only relevant for non-interactive errors
+	unsigned long int	lines_read;
 };
 
 /**
@@ -109,9 +108,7 @@ int		read_until_complete_command(t_minishell *shell);
  * @param str pointer to the string to append to the history item
  * @return ssize_t 
  */
-ssize_t	append_to_history_item(t_readline_data *data, char **str);
-
-void	append_tokenv_to_history_item(t_minishell *shell, t_readline_data *rl_data, t_token **tokens);
+ssize_t	append_to_history_item(t_readline_data *data, const char *str);
 
 /**
  * @brief wrapper for readline so we dont echo when not in interactive mode.

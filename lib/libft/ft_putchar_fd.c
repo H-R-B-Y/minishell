@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 13:15:30 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/05/23 14:50:12 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/04 15:52:08 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	ft_putchar_fd(char c, int fd)
 {
 	ssize_t	w;
+
 	w = write(fd, &c, 1);
 	(void)w;
 }

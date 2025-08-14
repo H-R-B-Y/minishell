@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 17:46:41 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 17:43:33 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/07 17:42:34 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*make_colour_string(short r, short g, short b)
 		parts[6] = ft_strdup("0");
 	parts[6] = "m\002";
 	parts[7] = 0;
-	parts[8] = str_vec_join(parts);
+	parts[8] = str_vec_join((const char **)parts);
 	free(parts[1]);
 	free(parts[3]);
 	free(parts[5]);
@@ -62,7 +62,7 @@ char	*status_code_part(const t_minishell *shell)
 	parts[3] = " - ";
 	parts[4] = "\001\033[0m\002";
 	parts[5] = 0;
-	parts[6] = str_vec_join(parts);
+	parts[6] = str_vec_join((const char **)parts);
 	free(parts[2]);
 	return (parts[6]);
 }
@@ -86,7 +86,7 @@ char	*git_branch_part(void)
 	parts[3] = "\001\033[0m\002";
 	parts[4] = ")";
 	parts[5] = 0;
-	parts[6] = str_vec_join(parts);
+	parts[6] = str_vec_join((const char **)parts);
 	free(parts[2]);
 	return (parts[6]);
 }
@@ -107,7 +107,7 @@ char	*directory_part(void)
 	}
 	if (dir[1] != dir[0])
 		dir[1] -= 1;
-	output = str_vec_join((char *[]){" ", dir[1], " ", 0});
+	output = str_vec_join((const char *[]){" ", dir[1], " ", 0});
 	free(dir[0]);
 	return (output);
 }
@@ -119,9 +119,9 @@ char	*create_prompt(const t_minishell *shell)
 
 	has_git();
 	parts[0] = status_code_part(shell);
-	parts[1] = directory_part(); // dont need to do this everytime 
+	parts[1] = directory_part();
 	parts[2] = git_branch_part();
-	prompt = str_vec_join((char *[5]){
+	prompt = str_vec_join((const char *[5]){
 			parts[0], parts[1], parts[2], " > ", 0
 		});
 	free(parts[0]);

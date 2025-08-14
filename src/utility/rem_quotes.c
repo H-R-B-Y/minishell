@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rem_quote2.c                                       :+:      :+:    :+:   */
+/*   rem_quotes.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 16:31:59 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/27 20:08:53 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 18:39:26 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ static void	handle_nonquoted(const char *str,
 		output[i[1]++] = str[i[0]++];
 }
 
-// TODO: Rename this and the other remove quotes function to be more explicit
 char	*rem_quotes(const char *str)
 {
 	size_t			i[2];

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   str_join_with_sep.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:44:38 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/14 16:10:53 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/05 17:15:50 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*str_join_with_sep(const char *str1, const char *str2, const char *sep)
 	char	*out;
 	size_t	lengths[3];
 
-	if (!str1 || !str2 || !sep)
+	if (!str1 || !str2)
 		return ((void *)0);
 	lengths[0] = ft_strlen(str1);
 	lengths[1] = ft_strlen(str2);
