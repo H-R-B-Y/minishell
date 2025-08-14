@@ -6,18 +6,18 @@
 /*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 16:37:45 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/02 18:34:56 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/14 18:37:52 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/libft.h"
 
-size_t ft_arrlcat(void **dest, void **src, size_t size)
+size_t	ft_arrlcat(void **dest, void **src, size_t size)
 {
 	size_t	idx;
 	size_t	dl;
 	size_t	sl;
-	
+
 	if (!dest)
 		return (0);
 	dl = 0;
@@ -33,10 +33,7 @@ size_t ft_arrlcat(void **dest, void **src, size_t size)
 	{
 		dest[idx + dl] = ft_strdup(src[idx]);
 		if (!dest[idx])
-		{
-			ft_arrclear(dest, free);
-			return (0);
-		}
+			return (ft_arrclear(dest, free), 0);
 		idx++;
 	}
 	dest[idx + dl] = NULL;

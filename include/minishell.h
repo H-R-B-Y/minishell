@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/14 18:41:54 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 18:50:14 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -423,7 +423,7 @@ int				prepare_fds(t_minishell *shell, t_astnode *node);
  * 
  * @param node node containing redirect list
  */
-int			map_fds(t_astnode *node);
+int				map_fds(t_astnode *node);
 
 /**
  * @brief unset some signal handlers for execution

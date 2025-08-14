@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_arrjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:06:20 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/26 15:05:50 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 00:41:53 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	**ft_arrjoin(void **arr1, void **arr2)
 	lengths[0] = ft_arrlen(arr1);
 	lengths[1] = ft_arrlen(arr2);
 	output = calloc(lengths[0] + lengths[1] + 1, sizeof(void *));
-	ft_memmove(output, arr1,(lengths[0]) * sizeof(void *));
+	ft_memmove(output, arr1, (lengths[0]) * sizeof(void *));
 	ft_memmove(output + lengths[0], arr2, (lengths[1]) * sizeof(void *));
 	return (output);
 }

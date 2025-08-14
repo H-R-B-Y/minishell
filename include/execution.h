@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:02:44 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/14 18:34:51 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 18:50:11 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,13 @@
  * @return char* Allocated execution path
  */
 char	*get_exec_path(t_minishell *shell, char *cmd, char **envp);
+
+void	xpnd_param_var(t_minishell *shell, t_astnode *node,
+			char ***argv, size_t *n);
+void	filename_expansion(t_minishell *shell, t_astnode *node,
+			char ***argv, size_t *n);
+void	quote_removal(t_minishell *shell, t_astnode *node,
+			char ***argv, size_t *n);
 
 /**
  * @brief Prepare the arguements for a command
@@ -51,19 +58,20 @@ typedef struct s_restore_rds
 	int	dupped2;
 }	t_restore_rds;
 
+typedef struct s_shell_expansion_fnc
+{
+	void	(*f)(t_minishell *shell, t_astnode *node, char ***argv, size_t *n);
+}	t_shell_expansion_fnc;
+
+int		t_oflag(const int redr_type);
+void	_close_rstore_fds(t_restore_rds *info);
+int		init_rd_rstr_info(t_restore_rds **info, t_redirect_desc *desc);
+
 /**
  * @brief Prepare the filedescriptor restoration point for builtins
  * 
  * @param desc The redirect descriptor to create a restore point from
  * @param rd_restore the list of restore points
- * @return int ???
- */
-int		prep_rd_restore(t_redirect_desc *desc, t_list **rd_restore);
-
-/**
- * @brief Restore filedescriptors from a given restore point
- * 
- * @param info The restore point
  * @return int ???
  */
 int		rd_fd_restore(t_restore_rds *info);
@@ -109,6 +117,8 @@ int		set_any_env(t_minishell *shell, char **argv, size_t n);
  */
 void	set_cmd_envp(t_minishell *shell, t_astnode *node,
 			t_builtincmd b_in);
+
+void	get_exec_cmd(t_minishell *shell, t_astnode *node, t_builtincmd b_in);
 
 /**
  * @brief Execute a command node

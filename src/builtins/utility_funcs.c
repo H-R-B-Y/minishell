@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   utility_funcs.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/08/13 17:18:47 by hbreeze          ###   ########.fr       */
+/*   Created: 2025/08/14 00:41:01 by cquinter          #+#    #+#             */
+/*   Updated: 2025/08/14 00:41:02 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../include/builtin.h"
 #include "../../include/minishell.h"

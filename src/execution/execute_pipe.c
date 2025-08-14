@@ -6,10 +6,9 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:36:35 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/14 18:44:25 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 18:51:27 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../include/minishell.h"
 
@@ -55,7 +54,7 @@ int	execute_pipe(t_minishell *shell, t_astnode *node)
 		perror_exit(shell, "pipe fork");
 	if (pid_r == 0)
 		_read_pipe(shell, node->right_node, fd);
-	close(fd[0]);	
+	close(fd[0]);
 	close(fd[1]);
 	waitpid(pid_w, NULL, 0);
 	waitpid(pid_r, &returncode, 0);
