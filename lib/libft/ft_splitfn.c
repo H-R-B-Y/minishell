@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_splitfn.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 18:11:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/14 00:52:31 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/14 16:48:53 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,13 @@ static size_t	wordlenfn(const char *str, int (*delim)(int c))
 	return (index - str);
 }
 
+void	skip_delim(char const **s, int (*delim)(int c), int *word_started)
+{
+	*word_started = 1;
+	while(delim(**s))
+		*s += 1;
+}
+
 char	**ft_splitfn(char const *s, int (*delim)(int c))
 {
 	size_t			word_index;
@@ -69,9 +76,7 @@ char	**ft_splitfn(char const *s, int (*delim)(int c))
 	{
 		if (delim(*s))
 		{
-			word_started = 1;
-			while (delim(*s))
-				s++;
+			skip_delim(&s, delim, &word_started);
 			continue ;
 		}
 		else if (!delim(*s) && word_started && word_started--)

@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_prep_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 13:37:48 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/13 23:53:41 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/14 16:30:18 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+char	**glob_word(t_minishell *shell, char *str);
 
 size_t	get_cmd_idx(t_astnode *node)
 {
@@ -68,6 +70,41 @@ void	xpnd_param_var(t_minishell *shell, t_astnode *node,
 	*n += new_wc;
 }
 
+void	filename_expansion(t_minishell *shell, t_astnode *node, char ***argv, size_t *n)
+{
+	size_t	i;
+	size_t	i2;
+	size_t	new_wc;
+	char	**words;
+
+	(void)node;
+	if (!argv || !*argv)
+		return ;
+	i = 0;
+	new_wc = 0;
+	while (i < *n + new_wc)
+	{
+		i2 = 0;
+		words = glob_word(shell, (*argv)[i]);
+		if (!words && ++i)
+			continue ;
+		ft_dirtyswap((void *)&((*argv)[i]), words[i2++], free);
+		while (i2 < ft_arrlen((void *)words))
+		{
+			ft_dirtyswap(
+				(void *)argv,
+				ft_arradd_atindex((void **)*argv, words[i2], i + i2),
+				free
+			);
+			i2++;
+		}
+		free(words);
+		i += i2;
+		new_wc += i2 - 1;
+	}
+	*n += new_wc;
+}
+
 void	quote_removal(t_minishell *shell, t_astnode *node,
 	char ***argv, size_t *n)
 {
@@ -87,8 +124,9 @@ void	quote_removal(t_minishell *shell, t_astnode *node,
 
 static t_shell_expansion_fnc	*set_expansion_fncs(void)
 {
-	static t_shell_expansion_fnc	shell_expansion_fnc[3] = {
+	static t_shell_expansion_fnc	shell_expansion_fnc[4] = {
 		(t_shell_expansion_fnc){.f = xpnd_param_var},
+		(t_shell_expansion_fnc){.f = filename_expansion},
 		(t_shell_expansion_fnc){.f = quote_removal},
 		(t_shell_expansion_fnc){.f = 0},	
 	};

@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   glob_local_dir.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 15:13:15 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/14 00:32:39 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/14 16:30:59 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+char	*mark_quotes(const char *expanded);
 
 static ssize_t	local_dir_glob(char ***p)
 {
@@ -36,32 +38,27 @@ static ssize_t	local_dir_glob(char ***p)
 	return (ft_arrlen((void *)*p));
 }
 
-ssize_t	glob_variable(t_astnode	*node)
+char	**glob_word(t_minishell *shell, char *str)
 {
 	ssize_t	i;
 	ssize_t	count;
-	char	**temp[2];
-	char	**output;
-	ssize_t	i2;
+	char	**words;
+	char	*temp;
 
+	if (!shell || !str)
+		return (0);
+	if (str[0] != '*' || str[1] != '\0')
+		return (0);
+	count = local_dir_glob(&words);
 	i = 0;
-	output = ft_calloc(1, sizeof(char *));
-	while (node->cmdv[i])
+	while (i < count)
 	{
-		if (ft_strcmp(node->cmdv[i], "*"))
-		{
-			ft_dirtyswap((void *)&output, ft_arradd_back((void *)output, node->cmdv[i]), free);
-			i++;
-			continue;
-		}
-		count = local_dir_glob(&temp[1]);
-		if (count < 0 && ++i)
-			continue ;
-		i2 = 0;
-		while (i2 < count)
-			ft_dirtyswap((void *)&output, ft_arradd_back((void *)output, temp[1][i2++]), free);
+		temp = mark_quotes(words[i]);
+		if (temp)
+			ft_dirtyswap((void *)&words[i], temp, free);
 		i++;
 	}
-	ft_dirtyswap((void *)&node->cmdv, output, free);
-	return (ft_arrlen((void *)node->cmdv));
+	if (count < 0)
+		return (0);
+	return (words);
 }

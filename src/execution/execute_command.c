@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_command.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:36:22 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/14 00:00:37 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/14 16:31:14 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ void	handle_last_argv(t_minishell *shell, char *last_argv)
 int	execute_command(t_minishell *shell, t_astnode *node)
 {
 	node->cmdv = cmdv_prep(shell, node);
-	glob_variable(node);
 	if (node->cmd_i != (size_t)-1)
 	{
 		handle_last_argv(shell, node->cmdv[node->argc - 1]);
