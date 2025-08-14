@@ -3,28 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:21:44 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/14 00:32:57 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/14 18:42:03 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../include/builtin.h"
-
 #include <sys/time.h>
 #include <unistd.h>
-
-// static int	output_writable(void)
-// {
-// 	struct stat	s;
-
-// 	ft_bzero(s, sizeof(struct stat));
-// 	if (fstat(STDOUT_FILENO, &s) < 0)
-// 		return (-1);
-// 	return (0);
-// }
 
 int	builtin_echo(t_minishell *shell, char **argv, char ***envp)
 {
