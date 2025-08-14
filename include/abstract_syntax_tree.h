@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/13 17:44:24 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 18:27:08 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,12 @@ struct s_redirect_desc
 	};
 };
 
+/**
+ * @brief Destroy a redirect object
+ * 
+ * @param n Pointer to the object to destory
+ * @warning n pointer will be free'd
+ */
 void			destroy_redirect(t_redirect_desc *n);
 
 /**

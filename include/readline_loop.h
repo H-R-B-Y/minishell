@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:07:29 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/13 15:50:22 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 18:28:37 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,9 +109,6 @@ int		read_until_complete_command(t_minishell *shell);
  * @return ssize_t 
  */
 ssize_t	append_to_history_item(t_readline_data *data, const char *str);
-
-void	append_tokenv_to_history_item(t_minishell *shell,
-			t_readline_data *rl_data, t_token **tokens);
 
 /**
  * @brief wrapper for readline so we dont echo when not in interactive mode.

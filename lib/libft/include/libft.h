@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:21:04 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 19:01:58 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 17:58:01 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -438,7 +438,22 @@ int				ft_lstsize(t_list *lst);
  */
 t_list			*ft_lstlast(t_list *lst);
 
+/**
+ * @brief Pop a node from the list lst
+ * 
+ * @param lst Pointer to the head of the list to pop from 
+ * @return t_list* node popped from the list
+ */
 t_list			*ft_lstpop_back(t_list **lst);
+
+/**
+ * @brief Pop a node from the front of a list
+ * 
+ * The head of the list will be incremented to the next value
+ * 
+ * @param lst Pointer to the head of the list to pop from 
+ * @return t_list* The node popped from the list
+ */
 t_list			*ft_lstpop_front(t_list **lst);
 
 // Deletion
@@ -482,6 +497,13 @@ t_list			*ft_lstmap(t_list *lst, void *(*f)(void *),
  */
 t_list			*ft_lstget(t_list *lst, size_t index);
 
+/**
+ * @brief Convert a linked list into an array
+ * 
+ * @param lst The list to convert to an array
+ * @return void** allocated array of values from the list
+ * @warning Heap allocation of the array pointer
+ */
 void			**ft_lstarr(t_list *lst);
 
 /**
@@ -620,14 +642,33 @@ ssize_t			ft_strcountchar(const char *str, char c);
 /**
  * @brief Creates a random number based on the seed RANDSEED
  * 
+ * Note that the seed is set at compile time so all runs will have the same
+ * base seed, meaning this is essentially useless.
+ * 
  * @param min the minimum of the random number (inclusive)
  * @param max the maximum of the random number (inclusive)
  * @return int a new random number in the range
  */
 int				ft_rand(int min, int max);
 
+/**
+ * @brief Right trim characters in the set from the string s1
+ * 
+ * @param s1 string to trim
+ * @param set set of characters to trim from the string
+ * @return char* an allocated trimmed copy of s1
+ * @warning Heap allocation needs to be free'd
+ */
 char			*ft_strrtrim(const char *s1, const char *set);
 
+/**
+ * @brief Left trim characters in the set from the string s1
+ * 
+ * @param s1 The string to trim
+ * @param set The set of characters to trim from the string
+ * @return char* an allocated trimmed copy of s1
+ * @warning Heap allocation needs to be free'd
+ */
 char			*ft_strltrim(const char *s1, const char *set);
 
 #endif

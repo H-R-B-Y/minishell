@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/13 15:30:34 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 17:50:25 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,12 @@
 
 # include "./libft.h"
 # include "./ft_printf.h"
-# include "./v_dbg.h"
 # include "./readline_loop.h"
 # include "./abstract_syntax_tree.h"
 # include "./execution.h"
 # include "./builtin.h"
 # include "./ft_printf.h"
+# include "./v_dbg.h"
 
 /**
  * @brief redo this comment
@@ -484,12 +484,46 @@ int				last_newline_not_end(const char *str);
 char			**expand_and_split(t_minishell *shell,
 					const char *value, int flag);
 
+/**
+ * @brief Cleanup the shell
+ * 
+ * @param shell Pointer to the shell object
+ */
 void			clean_shell(t_minishell *shell);
+
+/**
+ * @brief Cleanup the shell then exit with status
+ * 
+ * @param shell Pointer to the shell object
+ * @param status status code to pass to exit
+ */
 void			clean_exit_status(t_minishell *shell, int status);
+
 // TODO: check if correct clean up everything and ~
+/**
+ * @brief Call perror and with message and then exit the shell cleanly
+ * 
+ * @param shell pointer to the shell object
+ * @param message message to pass to perror
+ */
 void			perror_exit(t_minishell *shell, char *message);
+
+/**
+ * @brief Free an array then perror exit
+ * 
+ * @param shell Pointer to the shell
+ * @param arr array to free (using arrclear)
+ * @param message message to hand to perror
+ */
 void			_free_arr_perror_exit(t_minishell *shell,
 					void **arr, char *message);
+
+/**
+ * @brief Set the return code variable using macros to determine the exit status
+ * 
+ * @param to_set Pointer to value to set
+ * @param code The return code from a process
+ */
 void			_set_returncode(int *to_set, int code);
 
 /**
