@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 11:48:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/13 15:25:24 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 13:26:44 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	init_process(t_minishell *shell, char **envp)
 	shell->my_pid = get_my_pid();
 	if (shell->my_pid == -1)
 		return (-4);
-	if (!init_debugger(&shell->info))
+	if (init_debugger(&shell->info) < 0)
 		printf("debugger not enabled: %s\n", strerror(errno));
 	shell->fsm_data.debuginfo = &shell->info;
 	reset_for_command(shell, READ_START);

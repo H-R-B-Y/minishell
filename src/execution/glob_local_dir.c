@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 15:13:15 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/26 16:54:42 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 12:26:18 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,31 @@ ssize_t	glob_variable(t_astnode	*node)
 	}
 	ft_dirtyswap((void *)&node->cmdv, output, free);
 	return (ft_arrlen((void *)node->cmdv));
+}
+
+char	*mark_quotes(const char *expanded);
+
+char	**glob_word(t_minishell *shell, char *str)
+{
+	ssize_t	i;
+	ssize_t	count;
+	char	**words;
+	char	*temp;
+
+	if (!shell || !str)
+		return (0);
+	if (str[0] != '*' || str[1] != '\0')
+		return (0);
+	count = local_dir_glob(&words);
+	i = 0;
+	while (i < count)
+	{
+		temp = mark_quotes(words[i]);
+		if (temp)
+			ft_dirtyswap((void *)&words[i], temp, free);
+		i++;
+	}
+	if (count < 0)
+		return (0);
+	return (words);
 }
