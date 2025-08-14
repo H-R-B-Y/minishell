@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:36:22 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/13 17:45:12 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 12:22:49 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	handle_last_argv(t_minishell *shell, char *last_argv)
 int	execute_command(t_minishell *shell, t_astnode *node)
 {
 	node->cmdv = cmdv_prep(shell, node); // pending: shorten remove quotes and clean up in case of error
-	glob_variable(node);
+	// glob_variable(node);
 	if (node->cmd_i != (size_t)-1)
 	{
 		handle_last_argv(shell, node->cmdv[node->argc - 1]);

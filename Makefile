@@ -1,6 +1,6 @@
 NAME			:= minishell
 CC 				:= gcc
-CFLAGS			:= -Wextra -Wall -Werror -g3 -O0 #-fsanitize=address
+CFLAGS			:= -Wextra -Wall -Werror -g3 -O0 -DFD_DBG=3 #-fsanitize=address
 #CFLAGS			:= 
 
 ifdef debug
@@ -24,8 +24,8 @@ SRCS			:= \
 				$(SRC_DIR)/better_prompt/git_stuff.c \
 				$(SRC_DIR)/better_prompt/prompt_setup.c \
 				\
-				$(SRC_DIR)/builtins/builtin_cd.c \
 				$(SRC_DIR)/builtins/builtin_.c \
+				$(SRC_DIR)/builtins/builtin_cd.c \
 				$(SRC_DIR)/builtins/builtin_echo.c \
 				$(SRC_DIR)/builtins/builtin_env.c \
 				$(SRC_DIR)/builtins/builtin_exit.c \
@@ -34,16 +34,16 @@ SRCS			:= \
 				$(SRC_DIR)/builtins/builtin_unset.c \
 				$(SRC_DIR)/builtins/utility_funcs.c \
 				\
-				$(SRC_DIR)/execution/execution.c \
-				$(SRC_DIR)/execution/execute_command.c \
-				$(SRC_DIR)/execution/execute_pipe.c \
-				$(SRC_DIR)/execution/execute_subshell.c \
-				$(SRC_DIR)/execution/execute_seq.c \
-				$(SRC_DIR)/execution/execute_logical.c \
 				$(SRC_DIR)/execution/cmd_prep_utils.c \
+				$(SRC_DIR)/execution/execute_command.c \
+				$(SRC_DIR)/execution/execute_logical.c \
+				$(SRC_DIR)/execution/execute_pipe.c \
+				$(SRC_DIR)/execution/execute_seq.c \
+				$(SRC_DIR)/execution/execute_subshell.c \
+				$(SRC_DIR)/execution/execution.c \
 				$(SRC_DIR)/execution/glob_local_dir.c \
-				$(SRC_DIR)/execution/prepare_redirects.c \
 				$(SRC_DIR)/execution/prepare_redirect_restore.c \
+				$(SRC_DIR)/execution/prepare_redirects.c \
 				\
 				$(SRC_DIR)/debugger/adding_items.c \
 				$(SRC_DIR)/debugger/debugger_util.c \

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 12:34:45 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/04 14:45:55 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 13:46:55 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ size_t	write_cmdv(struct s_dbg_info *info, t_astnode *node)
 	{
 		bytes_count += write(info->fd, node->cmdv[int_data],
 				ft_strlen(node->cmdv[int_data]));
+		write(info->fd, "\0", 1);
 		int_data++;
 	}
 	return (bytes_count);

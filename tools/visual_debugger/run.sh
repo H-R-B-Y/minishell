@@ -1,13 +1,13 @@
 #! /usr/bin/bash
 
-# pipe=`mktemp -u`
-# mkfifo $pipe
+pipe=`mktemp -u`
+mkfifo $pipe
 p=`pwd`
 cd ../..
-# make re debug=1
+make re debug=1
 cd $p
 source venv/bin/activate
-# python main.py < "$pipe" 2>&1 >/dev/null &
-# exec ../../minishell 3> "$pipe"
+python main.py < "$pipe" 2>&1 >/dev/null &
+../../minishell 3> "$pipe"
 
-python main.py < <(../../minishell)
+# python main.py < <(../../minishell)
