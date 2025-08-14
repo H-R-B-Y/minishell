@@ -634,7 +634,7 @@ class visual_debugger(tk.Tk):
 
 
 
-root = visual_debugger(open("testfile", "rb"))
+root = visual_debugger()
 
 
 
