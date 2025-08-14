@@ -1,4 +1,4 @@
-import copy
+import copy, sys
 import tkinter as tk
 import data_file
 from threading import Thread
@@ -237,7 +237,7 @@ class fsm_diagram ():
 		self.redraw()
 
 	def walk_state_path(self):
-		if self.__state_path_index < len(self.state_path):
+		if self.__state_path_index < len(self.state_path) - 1:
 			self.state_path_index = self.state_path_index + 1
 		return
 	
@@ -435,9 +435,6 @@ class	node_details(tk.PanedWindow):
 		self.detail_window.grid_rowconfigure(5, weight=1)
 		self.detail_window.grid_columnconfigure(0, weight=1)
 
-
-
-
 	@property
 	def current_node(self):
 		return self._current_node
@@ -608,7 +605,7 @@ class visual_debugger(tk.Tk):
 	def __init__(self, filedes=None):
 		super().__init__()
 		super().title("Minishell visual debugger")
-		self.bind("<Destroy>", lambda event, *a, **b: (self._data_thread.join() and exit(0)) if event.widget == self else 0)
+		self.bind("<Destroy>", lambda event, *a, **b: (self._data_thread.join() and sys.exit(0)) if event.widget == self else 0)
 
 		self.current_file = "None"
 		self.data = data_file.shell_dump(filedes=filedes)
@@ -637,9 +634,7 @@ class visual_debugger(tk.Tk):
 
 
 
-
-
-root = visual_debugger()
+root = visual_debugger(open("testfile", "rb"))
 
 
 
