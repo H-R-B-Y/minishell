@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:02:44 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/10 18:35:18 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/14 00:16:34 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,14 @@ typedef struct s_restore_rds
 	int	dupped2;
 }	t_restore_rds;
 
-int		prep_rd_restore(t_redirect_desc *desc, t_list **rd_restore);
+typedef struct s_shell_expansion_fnc
+{
+	void	(*f)(t_minishell *shell, t_astnode *node, char ***argv, size_t *n);
+}	t_shell_expansion_fnc;
+
+int		t_oflag(const int redr_type);
+void	_close_rstore_fds(t_restore_rds *info);
+int		init_rd_rstr_info(t_restore_rds **info, t_redirect_desc *desc);
 int		rd_fd_restore(t_restore_rds *info);
 void	rd_list_restore(t_list *info_lst);
 
@@ -50,6 +57,8 @@ int		set_any_env(t_minishell *shell, char **argv, size_t n);
  */
 void	set_cmd_envp(t_minishell *shell, t_astnode *node,
 			t_builtincmd b_in);
+
+void	get_exec_cmd(t_minishell *shell, t_astnode *node, t_builtincmd b_in);
 
 int		execute_command(t_minishell *shell, t_astnode *node);
 int		execute_pipe(t_minishell *shell, t_astnode *node);

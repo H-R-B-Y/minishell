@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/13 15:30:34 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 00:57:29 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -417,7 +417,7 @@ int				prepare_fds(t_minishell *shell, t_astnode *node);
  * 
  * @param node node containing redirect list
  */
-int			map_fds(t_astnode *node);
+int				map_fds(t_astnode *node);
 
 /**
  * @brief unset some signal handlers for execution

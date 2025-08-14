@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipe.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:36:35 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/02 18:36:36 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/14 00:25:24 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../include/minishell.h"
 
@@ -55,7 +54,7 @@ int	execute_pipe(t_minishell *shell, t_astnode *node)
 		perror_exit(shell, "pipe fork");
 	if (pid_r == 0)
 		_read_pipe(shell, node->right_node, fd);
-	close(fd[0]);	
+	close(fd[0]);
 	close(fd[1]);
 	waitpid(pid_w, NULL, 0);
 	waitpid(pid_r, &returncode, 0);

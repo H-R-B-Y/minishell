@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:21:44 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/13 15:17:42 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 00:32:57 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,3 @@ int	builtin_echo(t_minishell *shell, char **argv, char ***envp)
 	printf("%s", (char *[2]){"\n", ""}[nlflag]);
 	return (0);
 }
-

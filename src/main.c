@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/13 15:52:07 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 00:32:33 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,10 @@ int	break_case(t_minishell *shell)
 	{
 		if (shell->rlcode == READ_BADPARSE)
 			return (ft_printf("minishell: line %d: Bad Parse\n",
-				shell->rldata.lines_read), 1);
+					shell->rldata.lines_read), 1);
 		if (shell->astcode == AST_ERR_SYNTAX)
 			return (ft_printf("minishell: line %d: Bad Parse\n",
-				shell->rldata.lines_read), 1);
+					shell->rldata.lines_read), 1);
 	}
 	return (0);
 }

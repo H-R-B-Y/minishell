@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   abstract_syntax_tree.h                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/13 17:44:24 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 00:30:58 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ struct s_redirect_desc
 	/// @brief The subtype of the redirect
 	enum e_redirect_subtype	subtype;
 	/// @brief Set of fds to restore
-	int						*restore_fd;
+	int						current_fd;
 	union
 	{
 		/// @brief Maps a file descriptor 

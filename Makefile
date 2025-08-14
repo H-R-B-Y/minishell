@@ -42,8 +42,12 @@ SRCS			:= \
 				$(SRC_DIR)/execution/execute_logical.c \
 				$(SRC_DIR)/execution/cmd_prep_utils.c \
 				$(SRC_DIR)/execution/glob_local_dir.c \
-				$(SRC_DIR)/execution/prepare_redirects.c \
-				$(SRC_DIR)/execution/prepare_redirect_restore.c \
+				$(SRC_DIR)/execution/rd_map_fds.c \
+				$(SRC_DIR)/execution/rd_prep_fds.c \
+				$(SRC_DIR)/execution/rd_list_restore.c \
+				$(SRC_DIR)/execution/rd_utils.c \
+				$(SRC_DIR)/execution/path_prep_utils.c \
+				$(SRC_DIR)/execution/get_exec_cmd.c \
 				\
 				$(SRC_DIR)/debugger/adding_items.c \
 				$(SRC_DIR)/debugger/debugger_util.c \
@@ -93,6 +97,8 @@ SRCS			:= \
 				$(SRC_DIR)/utility/var_expansion/var_checks.c \
 				$(SRC_DIR)/utility/var_expansion/expand_and_split.c \
 				$(SRC_DIR)/utility/var_expansion/handle_word_split.c \
+				$(SRC_DIR)/utility/var_expansion/special_expansion_utils.c \
+				$(SRC_DIR)/utility/var_expansion/special_expansion_utils2.c \
 				$(SRC_DIR)/utility/arrjoin.c \
 				$(SRC_DIR)/utility/get_my_pid.c \
 				$(SRC_DIR)/utility/last_newline_not_end.c \

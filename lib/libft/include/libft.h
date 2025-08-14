@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:21:04 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/02 19:01:58 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/13 23:52:13 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ char			*ft_strchr(const char *str, int c);
  * @return Index the first occurance of c in str or -1 if c is not in str
  * @warning String must be null terminated
  */
-size_t			ft_strchr_idx(const char *s, int c);
+size_t			ft_strchr_i(const char *s, int c);
 
 /**
  * @brief Get last occurace of a character in a string

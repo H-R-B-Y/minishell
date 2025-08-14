@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parse_limits.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 12:14:22 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/13 14:00:27 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/13 22:11:28 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 #include "../../include/get_next_line.h"
+
 /*
 Max locked memory         2054737920           2054737920           bytes     
 Max address space         unlimited            unlimited            bytes     
@@ -30,20 +31,19 @@ static ssize_t	_get_ulimit_line(char *str)
 	while (ft_iswhitespace(str[i]))
 		i++;
 	if (!ft_strncmp("unlimited", &str[i], 9))
-		return (1048576); // Just use some arbitrary limit
+		return (1048576);
 	i2 = 0;
 	while (ft_isdigit(str[i + i2]))
 		i2++;
 	str[i + i2] = '\0';
 	out = ft_atoi(&str[i]);
-	if (out < 0) // overflow in atoi will be negative, so just do something safe
+	if (out < 0)
 		return (1024);
 	return (out);
 }
 
 ssize_t	get_ulimitn(void)
 {
-	// Open the file
 	int		fd;
 	char	*line;
 	ssize_t	output;

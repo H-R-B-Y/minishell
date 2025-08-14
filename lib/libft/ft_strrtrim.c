@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrtrim.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 13:26:17 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/07/08 13:21:05 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 00:47:56 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*ft_strrtrim(const char *s1, const char *set)
 		end++;
 	while (*(--end))
 		if (*end && !ft_strchr(set, *end))
-			break;
+			break ;
 	size = (end - s1) + 1;
 	return (ft_substr(s1, 0, size));
 }
