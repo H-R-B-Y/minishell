@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 15:52:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/07 17:32:07 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/18 18:42:47 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char	**expand_and_split(t_minishell *shell,
 	ex = (t_expansion){.mode = QUOTE_NONE, .out = ft_calloc(2, sizeof(char *)),
 		.o_i = 0, .value = value, .v_i = 0, .flag = flag};
 	ex.out[ex.o_i] = ft_strdup("");
-	while (ex.value[ex.v_i])
+	while (ex.v_i < ft_strlen(ex.value))
 	{
 		delta_v = 0;
 		if (ex.value[ex.v_i] && ex.value[ex.v_i] == '$'

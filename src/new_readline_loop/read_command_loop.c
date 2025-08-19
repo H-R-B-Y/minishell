@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 17:24:13 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/13 15:58:25 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 20:30:36 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ static int	_tokenise_loop(t_minishell *shell,
 	t_readline_retcode *rl_code
 )
 {
-	shell->rldata.fsm_data = &shell->fsm_data;
 	*code = tokenise(&shell->fsm_data, shell->rldata.last_line);
 	while (*code == PARSE_CONT)
 	{

@@ -6,17 +6,37 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 12:55:44 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/07 17:41:05 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/18 18:49:53 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+static int	isescaped(const char *str, size_t i_end)
+{
+	size_t	count;
+
+	count = 0;
+	if (str[i_end] == '\n')
+		i_end--;
+	while (i_end > 1 && str[i_end] == '\\')
+	{
+		i_end--;
+		count++;
+	}
+	if (count % 2)
+		return (1);
+	return (0);
+}
+
 static int	unfinished_string_check(t_tokint *tokeniser, const char *str)
 {
-	if (tokeniser->quote_mode != QUOTE_NONE || (tokeniser->i_end > 1
-			&& str[tokeniser->i_end - 1] == '\\'
-			&& str[tokeniser->i_end - 2] != '\\'))
+	if (tokeniser->quote_mode != QUOTE_NONE
+		|| (tokeniser->i_end > 1
+			&& (str[tokeniser->i_end - 1] == '\\'
+				|| (str[tokeniser->i_end - 2 == '\\']
+					&& str[tokeniser->i_end - 1] == '\n'))
+			&& isescaped(str, tokeniser->i_end - 1)))
 		return (1);
 	return (0);
 }

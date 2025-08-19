@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:36:22 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/14 18:51:24 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 21:34:45 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,6 @@ int	execute_command(t_minishell *shell, t_astnode *node)
 		return (0);
 	}
 	handle_last_argv(shell, "");
+	shell->return_code = 0;
 	return (set_any_env(shell, node->cmdv, node->token_count));
 }

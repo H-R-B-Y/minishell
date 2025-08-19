@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/02 12:20:39 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/13 17:29:01 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 19:15:16 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_astnode	*create_ast_node(t_astype type,
 {
 	t_astnode	*me;
 
-	me = calloc(1, sizeof(t_astnode));
+	me = ft_calloc(1, sizeof(t_astnode));
 	if (!me)
 		return (NULL);
 	me->type = type;

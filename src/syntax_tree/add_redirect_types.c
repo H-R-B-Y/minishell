@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 13:25:05 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/07 17:27:56 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 19:42:15 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,15 @@ static t_list	*_heredoc(struct s_ast_internal *meta,
 
 	redr = handle_heredoc(meta, arr[addr + 1]->raw);
 	out = ft_lstnew(redr);
-	if (!out || !redr)
+	if ((!out || !redr) && meta->error != AST_ERR_HEREDOC_EXIT)
 		meta->error = AST_ERR_FATAL;
 	if (!out)
 		destroy_redirect(redr);
+	if (!redr)
+	{
+		free(out);
+		out = 0;
+	}
 	return (out);
 }
 

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 13:43:46 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/07 17:37:57 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/19 18:27:14 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,6 @@
 extern int	g_global_signal;
 
 char	*s_get_envany(t_minishell *shell, const char *name);
-
-/*
-a="abc" b="abc def" c="abc def "
-*/
 
 static int	write_str(struct s_ast_internal *meta,
 	const char *line,

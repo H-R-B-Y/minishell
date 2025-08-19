@@ -1,7 +1,6 @@
 NAME			:= minishell
 CC 				:= gcc
-CFLAGS			:= -Wextra -Wall -Werror -g3 -O0 -DFD_DBG=3 #-fsanitize=address
-#CFLAGS			:= 
+CFLAGS			:= -Wextra -Wall -Werror -g3 -O0
 
 ifdef debug
 CFLAGS += -DFD_DBG=3

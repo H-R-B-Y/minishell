@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 16:31:59 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/14 18:39:26 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/18 18:41:58 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ static void	handle_nonquoted(const char *str,
 		*mode = QUOTE_SINGLE;
 	else if (str[i[0]] == '"' && ++i[0])
 		*mode = QUOTE_DOUBLE;
+	else if (str[i[0]] == '\\' && str[i[0] + 1] == '\n' && ++i[0])
+		i[0]++;
 	else if (str[i[0]] == '\\' && ++i[0])
 		output[i[1]++] = str[i[0]++];
 	else
@@ -49,7 +51,7 @@ char	*rem_quotes(const char *str)
 	output = ft_calloc(ft_strlen(str) + 1, sizeof(char));
 	ft_bzero(i, sizeof(size_t) * 2);
 	mode = QUOTE_NONE;
-	while (str[i[0]])
+	while (i[0] < ft_strlen(str))
 	{
 		if (mode == QUOTE_NONE)
 			handle_nonquoted(str, i, output, &mode);

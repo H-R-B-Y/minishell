@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 00:14:36 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/14 18:56:55 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/18 19:25:51 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	_file_to_fds(t_minishell *shell, t_redirect_desc *redr)
 	if (redr->file_map.name == 0x0)
 		return (ft_fprintf(2, "minishell: : No such file or directory\n"), -1);
 	redr->file_map.from_fd = open(redr->file_map.name, t_oflag(redr->type));
-	if (redr->file_map.from_fd < 0)
+	if (redr->file_map.from_fd < 0 && t_oflag(redr->type) & O_WRONLY)
 	{
 		redr->file_map.from_fd = open(redr->file_map.name,
 				t_oflag(redr->type) | O_CREAT, 0644);
