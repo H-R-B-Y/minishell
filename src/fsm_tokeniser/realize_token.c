@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 12:55:44 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/18 18:49:53 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/19 21:30:21 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,15 @@
 static int	isescaped(const char *str, size_t i_end)
 {
 	size_t	count;
+	ssize_t	idx;
 
 	count = 0;
+	idx = i_end;
 	if (str[i_end] == '\n')
-		i_end--;
-	while (i_end > 1 && str[i_end] == '\\')
+		idx--;
+	while (idx >= 0 && str[idx] == '\\')
 	{
-		i_end--;
+		idx--;
 		count++;
 	}
 	if (count % 2)
@@ -32,9 +34,9 @@ static int	isescaped(const char *str, size_t i_end)
 static int	unfinished_string_check(t_tokint *tokeniser, const char *str)
 {
 	if (tokeniser->quote_mode != QUOTE_NONE
-		|| (tokeniser->i_end > 1
+		|| (tokeniser->i_end > 0
 			&& (str[tokeniser->i_end - 1] == '\\'
-				|| (str[tokeniser->i_end - 2 == '\\']
+				|| (tokeniser->i_end > 1 && str[tokeniser->i_end - 2 == '\\']
 					&& str[tokeniser->i_end - 1] == '\n'))
 			&& isescaped(str, tokeniser->i_end - 1)))
 		return (1);
@@ -71,6 +73,11 @@ int	_handle_continuation(t_tokint *tokeniser)
 		return (-1);
 	ft_dirtyswap((void *)&tokeniser->prev_line, 0, free);
 	ft_dirtyswap((void *)&tokeniser->curr_token->raw, new_value, free);
+	if (tokeniser->curr_token->type != TOK_WORD)
+	{
+		tokeniser->curr_token->type = TOK_WORD;
+		tokeniser->curr_type = TOK_WORD;
+	}
 	return (1);
 }
 
@@ -81,7 +88,7 @@ t_tokentype	realize_token(t_tokint *tokeniser, const char *str)
 			[!handle_unclosed_quote(tokeniser, str)]);
 	if (_create_token(tokeniser, str) == TOK_ERR)
 		return (TOK_ERR);
-	if (!(tokeniser->curr_type == TOK_WORD && tokeniser->prev_line))
+	if (!(tokeniser->prev_line))
 		return (tokeniser->curr_type);
 	if (_handle_continuation(tokeniser) < 0)
 		return (TOK_ERR);
