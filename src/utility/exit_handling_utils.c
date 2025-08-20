@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_handling_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:39:51 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/07 17:34:55 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/20 16:44:13 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,18 @@ void	clean_shell(t_minishell *shell)
 {
 	reset_for_command(shell, READ_NOTHING);
 	fflush(stdout);
-	free(shell->prompt);
-	ft_arrclear((void *)shell->environment, free);
-	restore_signals(shell);
-	rl_clear_history();
+	if (shell->prompt)
+		free(shell->prompt);
+	if (shell->environment)
+		ft_arrclear((void *)shell->environment, free);
+	if (shell->unassigned_env)
+		ft_arrclear((void *)shell->unassigned_env, free);
+	if (shell->local_env)
+		ft_arrclear((void *)shell->local_env, free);
 	if (shell->last_hist_item)
 		free(shell->last_hist_item);
+	restore_signals(shell);
+	rl_clear_history();
 }
 
 void	clean_exit_status(t_minishell *shell, int status)

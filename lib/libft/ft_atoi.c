@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 20:40:30 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/19 16:03:59 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/20 17:08:31 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,7 @@ static int	ov_underflow(int num, char c, int sign)
 	pointed to by nptr to int.  The be‐
 	havior is the same as strtol (takes only one sign and checks
 	for isspace)
-	this atoi is checking for over and underflows, as well as for tthe
-	presence of any nondigit c after the sign
+	this atoi is checking for over and underflows
 	Returns converte value or 0 on error*/
 int	ft_atoi(const char *nptr)
 {
@@ -85,7 +84,5 @@ int	ft_atoi(const char *nptr)
 		num = (*a_num - 48) + num * 10;
 		a_num++;
 	}
-	if (*a_num)
-		return (0);
 	return (num * sign);
 }
