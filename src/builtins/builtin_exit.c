@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 13:38:10 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/18 18:02:00 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/24 16:38:01 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	builtin_exit(t_minishell *shell, char **argv, char ***envp)
 		return (ft_fprintf(2, "%s: exit: too many arguments\n", shell->name),
 			EXIT_FAILURE);
 	else if (argc == 2)
-		status = ft_atoi(argv[1]);
+		status = ft_atoi_unsafe(argv[1]);
 	clean_shell(shell);
 	exit(status);
 }

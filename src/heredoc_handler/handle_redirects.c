@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 16:49:12 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/13 16:42:30 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/24 16:37:55 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ void	extract_tofromfds(char *raw, char *sep, int *out)
 	sep[0] = '\0';
 	sep[1] = '\0';
 	if (ft_isdigit(*raw))
-		out[0] = ft_atoi(raw);
+		out[0] = ft_atoi_unsafe(raw);
 	else
 		out[0] = ((0 * (o[0] == '<')) + (1 * (o[0] == '>')));
-	out[1] = ft_atoi(&sep[2]);
+	out[1] = ft_atoi_unsafe(&sep[2]);
 	sep[0] = o[0];
 	sep[1] = o[1];
 	return ;
@@ -60,7 +60,8 @@ int	get_tofd(char *raw, char *sep)
 	char	o;
 
 	o = *sep;
-	i = ft_atoi(raw);
+	// *sep = '\0';
+	i = ft_atoi_unsafe(raw);
 	*sep = o;
 	return (i);
 }

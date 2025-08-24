@@ -63,7 +63,7 @@ $(NAME):	$(OBJ)
 bonus:		$(BOBJ)
 			@$(AR) $(NAME) $(BOBJ)
 
-print:		$(OBj) $(PRNTOBJ)
+print:		$(OBJ) $(PRNTOBJ)
 			@$(AR) $(NAME) $(OBJ) $(PRNTOBJ)
 
 get_next_line:	$(OBJ) $(GNLOBJ)

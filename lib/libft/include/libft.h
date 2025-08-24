@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:21:04 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/14 18:50:21 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/24 16:37:19 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -322,11 +322,20 @@ void			*ft_calloc(size_t nmemb, size_t size);
 // Ascii <-> Int functions
 
 /**
+ * @brief Convert a string to an integer checking for overflow
+ * @note Overflow and underflow are returned as 0
+ * @param nptr String to convert
+ * @return Integer representation of the string or 0 if error
+ */
+int				ft_atoi(const char *nptr);
+
+/**
  * @brief Convert a string to an integer
+ * @note Does not account for overflow/underflow
  * @param nptr String to convert
  * @return Integer representation of the string or 0
  */
-int				ft_atoi(const char *nptr);
+int				ft_atoi_unsafe(const char *nptr);
 
 /**
  * @brief Convert an integer to a string

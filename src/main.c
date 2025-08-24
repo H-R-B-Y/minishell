@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/18 20:06:46 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/24 16:33:32 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	main(int argc, char **argv, char **envp)
 	shell.argc = argc;
 	shell.argv = argv;
 	if (shell.interactive_mode)
-		printf("Started with pid: %d\n", get_my_pid());
+		printf("Started with pid: %d, %ld\n", get_my_pid(), shell.ulimit_n);
 	while (1)
 	{
 		next_command(&shell);
