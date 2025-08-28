@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 13:22:37 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/02/13 16:37:06 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/24 18:42:04 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ void	ft_putnbr_fd(int n, int fd)
 
 	if (n == -2147483648)
 	{
-		write(fd, "-2", 2);
+		(void)!write(fd, "-2", 2);
 		ft_putnbr_fd(147483648, fd);
 		return ;
 	}
 	if (n < 0)
 	{
-		write(fd, "-", 1);
+		(void)!write(fd, "-", 1);
 		n = n * -1;
 	}
 	overflow = n / 10;
@@ -35,5 +35,5 @@ void	ft_putnbr_fd(int n, int fd)
 		ft_putnbr_fd(overflow, fd);
 	}
 	outputchar = '0' + (n % 10);
-	write(fd, &outputchar, 1);
+	(void)!write(fd, &outputchar, 1);
 }

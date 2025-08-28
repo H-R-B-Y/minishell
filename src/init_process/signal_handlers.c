@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 14:55:51 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/19 17:19:32 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/24 18:40:42 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,5 @@ void	default_sig_handle(int sig, siginfo_t *info, void *context)
 	(void)context;
 	g_global_signal = sig;
 	if (sig == SIGQUIT)
-		write(2, "Quit\n", 6);
+		(void)!write(2, "Quit\n", 6);
 }

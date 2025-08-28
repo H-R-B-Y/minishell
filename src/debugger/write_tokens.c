@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 16:56:45 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/07 17:42:02 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/24 18:40:23 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,21 +29,21 @@ int	write_token(struct s_dbg_info *info, t_token *token)
 	int	int_data;
 
 	int_data = DBG_DT_TOKEN;
-	write(info->fd, &int_data, sizeof(int));
+	(void)!write(info->fd, &int_data, sizeof(int));
 	byte_count = (sizeof(int) * 5)
 		+ ((ft_strlen(token->raw) + 1)
 			* sizeof(char))
 		+ sizeof(void *);
-	write(info->fd, &byte_count, sizeof(int));
-	write(info->fd, &token, sizeof(void *));
-	write(info->fd, &token->type, sizeof(int));
-	write(info->fd, token->raw, ft_strlen(token->raw) + 1);
+	(void)!write(info->fd, &byte_count, sizeof(int));
+	(void)!write(info->fd, &token, sizeof(void *));
+	(void)!write(info->fd, &token->type, sizeof(int));
+	(void)!write(info->fd, token->raw, ft_strlen(token->raw) + 1);
 	return (byte_count + (sizeof(int) * 2));
 }
-// write(info->fd, &token->heredoc_delim, sizeof(int));
-// write(info->fd, &token->redirect_file, sizeof(int));
-// write(info->fd, &token->quotes_removed, sizeof(int));
-// write(info->fd, &token->variables_expanded, sizeof(int));
+// (void)!write(info->fd, &token->heredoc_delim, sizeof(int));
+// (void)!write(info->fd, &token->redirect_file, sizeof(int));
+// (void)!write(info->fd, &token->quotes_removed, sizeof(int));
+// (void)!write(info->fd, &token->variables_expanded, sizeof(int));
 
 size_t	dbg_write_tokens(struct s_dbg_info *info)
 {
