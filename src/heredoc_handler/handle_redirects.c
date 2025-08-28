@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 16:49:12 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/24 16:37:55 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/24 17:12:08 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ int	get_tofd(char *raw, char *sep)
 	char	o;
 
 	o = *sep;
-	// *sep = '\0';
 	i = ft_atoi_unsafe(raw);
 	*sep = o;
 	return (i);

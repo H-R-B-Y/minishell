@@ -101,6 +101,7 @@ eof
 
 grep nomatch /dev/null | cat && echo PIPE
 echo $?
+
 (cd /; false) || echo PARENT
 echo $?
 
