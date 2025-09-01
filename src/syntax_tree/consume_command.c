@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 13:46:07 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/18 18:11:02 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/24 18:41:13 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	_add_redirects(struct s_ast_internal *meta,
 		&& ft_strchr("\3\4\5\6\17", node->tokens[i[0]]->type))
 	{
 		if (add_redirect_type(meta, node->tokens, node, &i[0]) < 0)
-			return (free(new_tokenv), 0);
+			return (free(*new_tokenv), 0);
 		i[0]++;
 	}
 	return (1);

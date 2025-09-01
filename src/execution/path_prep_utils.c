@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_prep_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 00:20:32 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/14 22:00:20 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/24 18:32:25 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	set_path_and_cmd(char ***path, char **dash_cmd, char *cmd, char **envp)
 
 	*path = NULL;
 	*dash_cmd = NULL;
+	if (!cmd || !*cmd)
+		return (0);
 	pathvar = s_get_fromthis_env(envp, "PATH");
 	if (!pathvar)
 		return (0);

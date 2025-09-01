@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_handling_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 18:39:51 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/20 16:44:13 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/24 20:03:59 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	clean_shell(t_minishell *shell)
 {
-	reset_for_command(shell, READ_NOTHING);
+	reset_for_command(shell, READ_START);
 	fflush(stdout);
 	if (shell->prompt)
 		free(shell->prompt);

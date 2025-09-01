@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 12:14:22 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/24 16:37:43 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/24 18:15:15 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ ssize_t	get_ulimitn(void)
 	ssize_t	output;
 	short	done;
 
+	output = 0;
 	fd = open("/proc/self/limits", O_RDONLY);
 	if (fd < 0)
 		return (perror("minishell: initialisation"), 0);

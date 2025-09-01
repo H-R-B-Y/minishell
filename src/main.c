@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/24 16:33:32 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/24 18:19:46 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	main(int argc, char **argv, char **envp)
 	shell.argc = argc;
 	shell.argv = argv;
 	if (shell.interactive_mode)
-		printf("Started with pid: %d, %ld\n", get_my_pid(), shell.ulimit_n);
+		printf("Started with pid: %d\n", get_my_pid());
 	while (1)
 	{
 		next_command(&shell);

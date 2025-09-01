@@ -1,6 +1,6 @@
 NAME			:= minishell
 CC 				:= gcc
-CFLAGS			:= -Wextra -Wall -Werror -g3 -O0
+CFLAGS			:= -Wextra -Wall -Werror -Ofast
 
 ifdef debug
 CFLAGS += -DFD_DBG=3
