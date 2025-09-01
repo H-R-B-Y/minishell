@@ -6,12 +6,11 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 15:22:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/18 16:42:09 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/01 12:26:44 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include "../../include/get_next_line.h"
 
 char	*readline_wrapper(t_readline_data *data, const char *prompt)
 {

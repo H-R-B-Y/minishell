@@ -6,13 +6,13 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/14 18:48:43 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/01 12:26:28 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ABSTRACT_SYNTAX_TREE_H
 # define ABSTRACT_SYNTAX_TREE_H
-
+# define FT_INCLUDE_ALL
 # include "libft.h"
 # include "./fsm_tokeniser.h"
 

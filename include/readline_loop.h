@@ -6,13 +6,14 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:07:29 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/14 18:28:37 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/01 12:26:12 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef READLINE_LOOP_H
 # define READLINE_LOOP_H
 
+# define FT_INCLUDE_ALL
 # include "libft.h"
 
 typedef struct s_fsmdata		t_fsmdata;

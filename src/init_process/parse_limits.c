@@ -6,12 +6,11 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 12:14:22 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/24 18:15:15 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/01 12:26:38 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include "../../include/get_next_line.h"
 
 /*
 Max locked memory         2054737920           2054737920           bytes     

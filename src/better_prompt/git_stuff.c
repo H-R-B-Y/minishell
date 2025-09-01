@@ -6,12 +6,11 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 17:19:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/07 17:42:27 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/01 12:25:15 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include "../../include/get_next_line.h"
 
 extern char	**environ;
 

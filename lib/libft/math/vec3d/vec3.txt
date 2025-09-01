@@ -1,0 +1,17 @@
+src/vec3d/vec3_add.c
+src/vec3d/vec3_angle.c
+src/vec3d/vec3_clamp.c
+src/vec3d/vec3_distance.c
+src/vec3d/vec3_div_scalar.c
+src/vec3d/vec3_div.c
+src/vec3d/vec3_dot_product.c
+src/vec3d/vec3_lerp.c
+src/vec3d/vec3_magnitude.c
+src/vec3d/vec3_mult_scalar.c
+src/vec3d/vec3_mult.c
+src/vec3d/vec3_normalise.c
+src/vec3d/vec3_perpendicular.c
+src/vec3d/vec3_project.c
+src/vec3d/vec3_reflect.c
+src/vec3d/vec3_rotate.c
+src/vec3d/vec3_sub.c
