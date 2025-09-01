@@ -6,11 +6,13 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 00:20:32 by cquinter          #+#    #+#             */
-/*   Updated: 2025/09/01 12:14:01 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/01 12:19:23 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+/// NOTE: I think this is actually an older version, I need to push again next time im at 42
 
 int	set_path_and_cmd(char ***path, char **dash_cmd, char *cmd, char **envp)
 {
