@@ -18,6 +18,8 @@ NAME			:= libft.a
 # Build all submodules and merge into final library
 all: $(NAME)
 
+lib: $(NAME)
+
 # Build each submodule (ensures dependencies are built first)
 $(SUBMODULES):
 	+$(MAKE) -C $@ LIBDIR=$(abspath $(LIBDIR)) INCDIR=$(abspath $(INCDIR)) CFLAGS="$(CFLAGS)"
