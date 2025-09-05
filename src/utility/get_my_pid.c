@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_my_pid.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 13:18:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/24 19:36:42 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/05 13:50:53 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ pid_t	get_my_pid(void)
 	current[1] = getcwd(0, 0);
 	last_slash = ft_strrchr(current[1], '/');
 	current[2] = ft_strdup(last_slash + 1);
-	output = ft_atoi_unsafe(current[2]);
+	output = ft_atoi(current[2]);
 	(void)!chdir(current[0]);
 	free(current[0]);
 	(free(current[1]), free(current[2]));

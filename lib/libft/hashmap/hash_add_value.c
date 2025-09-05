@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "hash_map.h"
+#include "ft_hashmap.h"
 
 // TODO: Make some list functions so we dont have to do these loops here
 // Just like add back and maybe iter or something

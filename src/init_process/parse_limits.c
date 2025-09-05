@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_limits.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 12:14:22 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/09/01 12:26:38 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/05 13:50:53 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static ssize_t	_get_ulimit_line(char *str)
 	while (ft_isdigit(str[i + i2]))
 		i2++;
 	str[i + i2] = '\0';
-	out = ft_atoi_unsafe(&str[i]);
+	out = ft_atoi(&str[i]);
 	if (out < 0)
 		return (1024);
 	return (out);

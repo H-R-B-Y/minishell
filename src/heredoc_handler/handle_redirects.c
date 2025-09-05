@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redirects.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 16:49:12 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/24 17:11:50 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/05 13:50:53 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ void	extract_tofromfds(char *raw, char *sep, int *out)
 	sep[0] = '\0';
 	sep[1] = '\0';
 	if (ft_isdigit(*raw))
-		out[0] = ft_atoi_unsafe(raw);
+		out[0] = ft_atoi(raw);
 	else
 		out[0] = ((0 * (o[0] == '<')) + (1 * (o[0] == '>')));
-	out[1] = ft_atoi_unsafe(&sep[2]);
+	out[1] = ft_atoi(&sep[2]);
 	sep[0] = o[0];
 	sep[1] = o[1];
 	return ;
@@ -60,7 +60,7 @@ int	get_tofd(char *raw, char *sep)
 	char	o;
 
 	o = *sep;
-	i = ft_atoi_unsafe(raw);
+	i = ft_atoi(raw);
 	*sep = o;
 	return (i);
 }

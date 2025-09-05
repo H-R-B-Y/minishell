@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   hash_get_value.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 11:55:23 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/28 13:08:43 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/05 13:46:52 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "hash_map.h"
+#include "ft_hashmap.h"
 
 void		*pair_get_value(t_hashmap *hashmap,
 	t_hashpair *head,
