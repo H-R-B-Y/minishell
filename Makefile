@@ -1,7 +1,6 @@
 NAME			:= minishell
 CC 				:= gcc
-CFLAGS			:= -Wextra -Wall -Werror -g3 -O0 -DFD_DBG=3 #-fsanitize=address
-#CFLAGS			:= 
+CFLAGS			:= -Wextra -Wall -Werror -Ofast
 
 ifdef debug
 CFLAGS += -DFD_DBG=3
@@ -11,7 +10,7 @@ MAKEFLAGS		+= --no-print-directory
 
 LIBFLAGS		:= -lreadline -lhistory
 
-HEADERS			:= -Iinclude
+HEADERS			:= -Iinclude -I./lib/libft/include
 
 LIB_DIR			:= ./lib
 
@@ -139,7 +138,7 @@ $(NAME): $(MAIN) $(OBJS) $(LIBFT) ./include/minishell.h
 		@printf "   /)  /)\n"
 		@printf " ପ(˶•-•˶)ଓ \033[38;2;250;0;150m♡\033[0m\n"
 		@echo -n "  /づ  づ ˚₊‧꒰$(NAME) ::\033[38;2;150;0;150m Wait\033[0m  ꒱ ‧₊˚⭒"
-		@$(CC) $(CFLAGS) $(MAIN) $(OBJS) $(LIBFT) $(LIBFLAGS) -o $(NAME)
+		@$(CC) $(CFLAGS) $(HEADERS) $(MAIN) $(OBJS) $(LIBFT) $(LIBFLAGS) -o $(NAME)
 		@printf "\b\b\b\b\b\b\b\b\b\b\b\b\b\033[38;2;50;200;0mDone\033[0m  ꒱ ‧₊˚⭒"
 		@printf "\n"
 
@@ -147,7 +146,7 @@ $(NAME): $(MAIN) $(OBJS) $(LIBFT) ./include/minishell.h
 # 	@$(CC) $(CFLAGS) src/testing.c $(OBJS) $(LIBFT) $(LIBFLAGS) -o $(NAME)
 
 $(LIBFT):
-		@$(MAKE) --directory $(LIBFT_DIR) all CFLAGS="$(CFLAGS)" CC=$(CC)
+		@$(MAKE) --directory $(LIBFT_DIR) mem string conv ctype io rand string array list lib CFLAGS="$(CFLAGS)" CC=$(CC)
 
 %.o: %.c
 		@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)

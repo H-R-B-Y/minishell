@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 17:46:41 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/07 17:42:34 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/14 19:25:19 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ char	*git_branch_part(void)
 		{"git", "-C", ".", "rev-parse", "--abbrev-ref", "HEAD", 0});
 	if (ft_strchr(parts[2], '\n'))
 		*(ft_strchr(parts[2], '\n')) = '\0';
+	if (!parts[2])
+		parts[2] = ft_strdup("master");
 	parts[3] = "\001\033[0m\002";
 	parts[4] = ")";
 	parts[5] = 0;

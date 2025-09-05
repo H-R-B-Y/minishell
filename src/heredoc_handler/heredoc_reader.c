@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 13:43:46 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/07 17:37:57 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/24 19:27:28 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,6 @@
 extern int	g_global_signal;
 
 char	*s_get_envany(t_minishell *shell, const char *name);
-
-/*
-a="abc" b="abc def" c="abc def "
-*/
 
 static int	write_str(struct s_ast_internal *meta,
 	const char *line,
@@ -35,14 +31,24 @@ static int	write_str(struct s_ast_internal *meta,
 	if (ft_strchr(line, '$') && (flags & 1))
 	{
 		tmp = expand_and_split(meta->shell, &line[i], 0);
-		write(temp_file, tmp[0], ft_strlen(tmp[0]));
+		(void)!write(temp_file, tmp[0], ft_strlen(tmp[0]));
 		ft_arrclear((void *)tmp, free);
 	}
 	else
-		write(temp_file, &line[i], ft_strlen(&line[i]));
+		(void)!write(temp_file, &line[i], ft_strlen(&line[i]));
 	if (last_newline_not_end(line))
-		write(temp_file, "\n", 1);
+		(void)!write(temp_file, "\n", 1);
 	return (1);
+}
+
+int	compare_newline(const char *delim, char *temp)
+{
+	ssize_t	sz;
+
+	sz = ft_strcmp(delim, temp);
+	if (!sz || sz == -10)
+		return (1);
+	return (0);
 }
 
 int	_read_heredoc(struct s_ast_internal *meta,
@@ -61,7 +67,7 @@ int	_read_heredoc(struct s_ast_internal *meta,
 		if (g_global_signal != 0)
 			return (-1);
 		temp = meta->rldata->last_line;
-		if (!ft_strcmp(delim, temp))
+		if (compare_newline(delim, temp))
 			break ;
 		if (status == READ_OK)
 			write_str(meta, temp, temp_file, flags);

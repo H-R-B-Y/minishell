@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_var_value.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 15:34:30 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/07 17:35:59 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/24 17:16:02 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

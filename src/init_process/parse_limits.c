@@ -6,12 +6,11 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/08 12:14:22 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/14 18:56:58 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/01 12:26:38 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include "../../include/get_next_line.h"
 
 /*
 Max locked memory         2054737920           2054737920           bytes     
@@ -36,7 +35,7 @@ static ssize_t	_get_ulimit_line(char *str)
 	while (ft_isdigit(str[i + i2]))
 		i2++;
 	str[i + i2] = '\0';
-	out = ft_atoi(&str[i]);
+	out = ft_atoi_unsafe(&str[i]);
 	if (out < 0)
 		return (1024);
 	return (out);
@@ -49,6 +48,7 @@ ssize_t	get_ulimitn(void)
 	ssize_t	output;
 	short	done;
 
+	output = 0;
 	fd = open("/proc/self/limits", O_RDONLY);
 	if (fd < 0)
 		return (perror("minishell: initialisation"), 0);

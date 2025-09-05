@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 11:48:34 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/14 13:26:44 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/08/19 15:42:38 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	sig_int_handle_interactive(int sig, siginfo_t *info, void *context);
 ssize_t	get_ulimitn(void);
 int		check_stdfds(void);
+void	init_xvars(t_minishell *shell, char ***envp);
 
 static int	event(void)
 {
@@ -72,19 +73,19 @@ int	init_process(t_minishell *shell, char **envp)
 		return (-1);
 	if (check_stdfds() < 0)
 		return (-2);
-	init_pwd(shell, &shell->environment);
+	init_xvars(shell, &shell->environment);
 	shell->interactive_mode = isatty(STDIN_FILENO);
 	if (!setup_signals(shell))
 		return (-3);
 	shell->my_pid = get_my_pid();
 	if (shell->my_pid == -1)
 		return (-4);
-	if (init_debugger(&shell->info) < 0)
-		printf("debugger not enabled: %s\n", strerror(errno));
+	init_debugger(&shell->info);
 	shell->fsm_data.debuginfo = &shell->info;
 	reset_for_command(shell, READ_START);
 	shell->rldata.interactive_mode = &shell->interactive_mode;
 	shell->ulimit_n = get_ulimitn();
+	shell->rldata.fsm_data = &shell->fsm_data;
 	if (shell->ulimit_n <= 0)
 		return (-5);
 	return (0);

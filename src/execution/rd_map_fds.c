@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rd_map_fds.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 15:15:35 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/14 18:40:43 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/24 16:51:18 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,13 @@ static int	_map(t_redirect_desc *desc)
 		dup2(desc->current_fd, desc->fd_map.to_fd);
 		close(desc->current_fd);
 	}
-	else if (desc->file_map.to_fd >= 0)
+	else if (desc->file_map.to_fd >= 0
+		&& desc->file_map.from_fd != desc->file_map.to_fd)
 	{
 		dup2(desc->file_map.from_fd, desc->file_map.to_fd);
 		close(desc->file_map.from_fd);
 	}
-	else
+	else if (desc->file_map.to_fd == -1)
 	{
 		dup2(desc->file_map.from_fd, STDERR_FILENO);
 		dup2(desc->file_map.from_fd, STDOUT_FILENO);

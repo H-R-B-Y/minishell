@@ -6,11 +6,12 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/02 11:59:55 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/04 14:23:11 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/01 12:27:10 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/libft.h"
+#define FT_INCLUDE_ALL
+#include "libft.h"
 
 // NOTE: add to libft 
 void	*arrjoin(void **vec1, void **vec2)

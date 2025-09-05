@@ -1,114 +1,51 @@
-NAME		= libft.a
-HEADER		= libft.h
+# Where built archives should end up
+LIBDIR			:= lib
+INCDIR			:= ./include
 
-CC			= gcc
-CFLAGS		= -g3 -O0
-AR			= ar rc
-SEED		= $(shell bash -c 'echo $$RANDOM')
+CFLAGS			:= -Wall -Wextra -Werror -std=c99
 
-RANDFLAG	+= -DRANDSEED=$(SEED)
 
-# Mandatory functions
-SRC			= ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c \
-			ft_isascii.c ft_isdigit.c ft_isprint.c ft_itoa.c ft_memchr.c \
-			ft_memcmp.c ft_memcpy.c ft_memset.c ft_putchar_fd.c ft_putendl_fd.c \
-			ft_putnbr_fd.c ft_putstr_fd.c ft_split.c ft_strchr.c ft_strdup.c \
-			ft_striteri.c ft_strjoin.c ft_strlcat.c ft_strlcpy.c ft_strlen.c \
-			ft_strmapi.c ft_strncmp.c ft_strnstr.c ft_strrchr.c ft_strtrim.c \
-			ft_substr.c ft_tolower.c ft_toupper.c ft_memmove.c ft_strcmp.c
-# Extra functions
-SRC			+= ft_iswhitespace.c ft_splitquoted.c ft_splitfn.c ft_atof.c ft_arrlen.c \
-			ft_arrclear.c ft_arrfree.c ft_arrlist.c ft_arrmap.c ft_lstarr.c ft_arriter.c \
-			ft_arradd_back.c ft_arradd_front.c ft_arradd_atindex.c ft_arrdel_atindex.c \
-			ft_arrjoin.c ft_dirtyswap.c ft_arrlcat.c ft_strndup.c ft_strchr_i.c \
-			ft_strcountchar.c ft_rand.c ft_strrtrim.c ft_strltrim.c
+SUBMODULES		:= mem conv ctype list array io rand string cdll math hashmap mpmc_ringbuff
 
-# Bonus functions
-BSRC		= ft_lstnew_bonus.c ft_lstadd_front_bonus.c ft_lstsize_bonus.c ft_lstlast_bonus.c \
-			ft_lstadd_back_bonus.c ft_lstdelone_bonus.c ft_lstclear_bonus.c ft_lstiter_bonus.c \
-			ft_lstmap_bonus.c ft_lstget_bonus.c ft_lstpop.c
-# Extra bonus functions
-BSRC		+= ft_lstiter_param_bonus.c
+# Work out how to conditionally add modules that are not in the list of submodles
+# for things like gnu source threading with atomics 
 
-# get next line
-GNLDIR		= ft_gnl
-GNLSRC		= $(GNLDIR)/get_next_line.c \
-			$(GNLDIR)/get_next_line_utils.c
+# Final merged library
+NAME			:= libft.a
 
-# printf
-PRNTDIR		= ft_printf
-PRNTSRC		+= $(PRNTDIR)/bitflags.c \
-			$(PRNTDIR)/conv_factory.c \
-			$(PRNTDIR)/conversion_functions.c \
-			$(PRNTDIR)/prefix_padding.c \
-			$(PRNTDIR)/ft_printf.c \
-			$(PRNTDIR)/general_functions.c \
-			$(PRNTDIR)/escape_parsing.c \
-			$(PRNTDIR)/precision.c \
-			$(PRNTDIR)/generators.c
+.PHONY: all $(SUBMODULES) clean fclean re
 
-OBJ			= $(SRC:.c=.o)
-BOBJ		= $(BSRC:.c=.o)
-GNLOBJ		= $(GNLSRC:.c=.o)
-PRNTOBJ		= $(PRNTSRC:.c=.o)
+# Build all submodules and merge into final library
+all: $(NAME)
 
-all:		pre $(NAME) bonus print get_next_line post
+lib: $(NAME)
 
-$(NAME):	$(OBJ)
-			@$(AR) $(NAME) $(OBJ)
+# Build each submodule (ensures dependencies are built first)
+$(SUBMODULES):
+	+$(MAKE) -C $@ LIBDIR=$(abspath $(LIBDIR)) INCDIR=$(abspath $(INCDIR)) CFLAGS="$(CFLAGS)"
 
-.c.o:
-			@$(CC) $(CFLAGS) $(RANDFLAG) -o $@ -c $< $(HEADERS)
 
-bonus:		$(BOBJ)
-			@$(AR) $(NAME) $(BOBJ)
-
-print:		$(OBj) $(PRNTOBJ)
-			@$(AR) $(NAME) $(OBJ) $(PRNTOBJ)
-
-get_next_line:	$(OBJ) $(GNLOBJ)
-			@$(AR) $(NAME) $(GNLOBJ)
+# Merge all submodule archives into one
+$(NAME): $(SUBMODULES)
+	@mkdir -p $(LIBDIR)
+	@rm -f $@
+	@for mod in $(SUBMODULES); do \
+		ar x $(LIBDIR)/libft$${mod#mem}.a 2>/dev/null || ar x $(LIBDIR)/libft$${mod}.a; \
+	 done
+	$(AR) rcs $@ *.o
+	@rm -f *.o
 
 clean:
-			@rm -f $(OBJ) $(BOBJ) $(PRNTOBJ) $(GNLOBJ)
-
-fclean:		pre clean post
-			@rm -f libft.a libft.so
-
-re:			fclean all
-
-.PHONY:		all clean fclean re bonus print get_next_line pre post
-
-pre:
-	@echo
-	@echo "   /)  /)",
-	@echo " ପ(˶•-•˶)ଓ ♡",
-	@echo -n "  /づ  づ ˚₊‧꒰$(NAME) :: $(MAKECMDGOALS) :: Wait  ꒱ ‧₊˚⭒"
-
-post:
-	@echo "\b\b\b\b\b\b\b\b\b\b\b\b\bDone  ꒱ ‧₊˚⭒"
-	@echo 
-
-# For portable object files
-so:
-			@$(CC) -nostartfiles -fPIC $(CFLAGS) -c $(SRC) $(BSRC) $(GNLSRC) $(PRNTSRC)
-			@gcc -nostartfiles -shared -o libft.so $(OBJ) $(BOBJ) $(GNLOBJ) $(PRNTOBJ)
+	for mod in $(SUBMODULES); do \
+		$(MAKE) -C $$mod clean; \
+	done
 
 
-# To include this as a library in your project,
-# copy libft to lib folder copy includes to includes folder
-# and add the following to your Makefile:
+fclean: clean
+	for mod in $(SUBMODULES); do \
+		$(MAKE) -C $$mod fclean LIBDIR=$(abspath $(LIBDIR)); \
+	done
+	rm -f $(NAME)
+	rm -rf $(LIBDIR)
 
-# static vars:
-# LIBFT_DIR		:= $(abspath $(LIB_DIR)/libft)
-# LIBFT			:= $(LIBFT_DIR)/libft.a
-
-# Recipe:
-# $(LIBFT):
-# 		$(MAKE) --directory $(LIBFT_DIR) all CFLAGS="$(CFLAGS)"
-
-# for clean:
-# $(MAKE) --directory $(LIBFT_DIR) clean
-
-# for fclean:
-# $(MAKE) --directory $(LIBFT_DIR) fclean
+re: fclean all

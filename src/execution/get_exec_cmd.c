@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_exec_cmd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 23:57:53 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/14 18:40:17 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/24 19:29:31 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,23 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-void	exec_errno_handling(t_minishell *shell, char *path)
+void	exec_errno_handling(t_minishell *shell, char *path, char **env,
+	char *path_to_free)
 {
+	char		*env_path;
 	struct stat	statbuf;
 	int			st;
 
+	if (path_to_free)
+		free(path_to_free);
+	env_path = s_get_fromthis_env(env, "PATH");
 	ft_memset(&statbuf, 0, sizeof(statbuf));
 	st = stat(path, &statbuf);
-	if (errno == ENOENT)
+	if (errno == ENOENT && !ft_strchr(path, '/') && ((env_path && *env_path)))
 	{
-		ft_fprintf(2, "\'%s\'", path);
+		ft_putchar_fd('\'', 2);
+		ft_putstr_fd(path, 2);
+		ft_putchar_fd('\'', 2);
 		ft_putstr_fd(": command not found\n", 2);
 		clean_exit_status(shell, 127);
 	}
@@ -40,7 +47,6 @@ void	get_exec_cmd(t_minishell *shell, t_astnode *node, t_builtincmd b_in)
 	char	**argv;
 	char	*exec_path;
 
-	(void)b_in;
 	o_path = node->cmdv[node->cmd_i];
 	node->cmd_path = o_path;
 	argv = node->cmdv + node->cmd_i;
@@ -49,11 +55,16 @@ void	get_exec_cmd(t_minishell *shell, t_astnode *node, t_builtincmd b_in)
 	if (map_fds(node) < 0)
 		clean_exit_status(shell, 1);
 	errno = 0;
+	exec_path = 0;
 	if (!ft_strchr(o_path, '/'))
 		exec_path = get_exec_path(shell, o_path, node->envp);
 	if (exec_path)
+	{
 		node->cmd_path = exec_path;
+		errno = 0;
+	}
 	_set_var_value(shell, node->cmd_path, "_", &node->envp);
-	execve(node->cmd_path, argv, node->envp);
-	exec_errno_handling(shell, o_path);
+	if (errno != 2)
+		execve(node->cmd_path, argv, node->envp);
+	exec_errno_handling(shell, o_path, node->envp, exec_path);
 }

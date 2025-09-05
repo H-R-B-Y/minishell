@@ -1,0 +1,17 @@
+src/vec2d/vec2_add.c
+src/vec2d/vec2_angle.c
+src/vec2d/vec2_clamp.c
+src/vec2d/vec2_distance.c
+src/vec2d/vec2_div_scalar.c
+src/vec2d/vec2_div.c
+src/vec2d/vec2_dot_product.c
+src/vec2d/vec2_lerp.c
+src/vec2d/vec2_magnitude.c
+src/vec2d/vec2_mult_scalar.c
+src/vec2d/vec2_mult.c
+src/vec2d/vec2_normalise.c
+src/vec2d/vec2_perpendicular.c
+src/vec2d/vec2_project.c
+src/vec2d/vec2_reflect.c
+src/vec2d/vec2_rotate.c
+src/vec2d/vec2_sub.c

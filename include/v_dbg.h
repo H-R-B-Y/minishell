@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 14:40:33 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/14 17:46:52 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/01 12:26:15 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #  define FD_DBG 0
 # endif
 
+# define FT_INCLUDE_ALL
 # include "libft.h"
 
 /**

@@ -3,20 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   path_prep_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/14 00:20:32 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/14 18:40:32 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/09/01 12:19:23 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+/// NOTE: I think this is actually an older version, I need to push again next time im at 42
+
 int	set_path_and_cmd(char ***path, char **dash_cmd, char *cmd, char **envp)
 {
+	char	*pathvar;
+
 	*path = NULL;
 	*dash_cmd = NULL;
-	*path = ft_split(s_get_fromthis_env(envp, "PATH"), ':');
+	if (!cmd || !*cmd)
+		return (0);
+	pathvar = s_get_fromthis_env(envp, "PATH");
+	if (!pathvar)
+		return (0);
+	*path = ft_split(pathvar, ':');
 	if (!*path)
 		return (1);
 	*dash_cmd = ft_strjoin("/", cmd);
@@ -31,14 +40,14 @@ int	set_path_and_cmd(char ***path, char **dash_cmd, char *cmd, char **envp)
 char	*get_exec_path(t_minishell *shell, char *cmd, char **envp)
 {
 	char	**path;
-	char	*exec_path;
+	char	*exec_path = 0;
 	char	*dash_cmd;
 	int		i;
 
 	if (set_path_and_cmd(&path, &dash_cmd, cmd, envp))
 		perror_exit(shell, "unable to set cmd");
 	i = 0;
-	while (path[i])
+	while (path && path[i])
 	{
 		exec_path = ft_strjoin(path[i], dash_cmd);
 		if (!exec_path)
@@ -52,7 +61,7 @@ char	*get_exec_path(t_minishell *shell, char *cmd, char **envp)
 		free(exec_path);
 		i++;
 	}
-	if (!path[i])
+	if (!path || !path[i])
 		return (free(dash_cmd), ft_arrclear((void **)path, free), NULL);
 	return (free(dash_cmd), ft_arrclear((void **)path, free), exec_path);
 }

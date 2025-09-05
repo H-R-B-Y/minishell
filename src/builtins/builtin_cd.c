@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 11:31:30 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/13 12:43:08 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/24 18:55:56 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,16 @@ int	builtin_cd(t_minishell *shell, char **argv, char ***envp)
 	if (!argv[1])
 	{
 		tmp = s_get_envany(shell, "HOME");
+		if (!tmp)
+			return (ft_fprintf(2, "minishell: builtin_cd: HOME not set\n"), 1);
 		tmp = ft_strdup(tmp);
 		if (!tmp)
 			return (perror("minishell: builtin_cd"), 1);
-		chdir(tmp);
+		(void)!chdir(tmp);
 		free(tmp);
 	}
-	else
-	{
-		if (chdir(argv[1]) == -1)
-			return (perror("minishell: builtin_cd"), 1);
-	}
+	else if (chdir(argv[1]) == -1)
+		return (perror("minishell: builtin_cd"), 1);
 	update_pwd(shell, *envp);
 	return (0);
 }
