@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 13:37:48 by cquinter          #+#    #+#             */
-/*   Updated: 2025/09/05 22:40:59 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/09/05 23:08:12 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,18 +76,16 @@ void *expansion_thread(void *arg)
 
 char	**cmdv_prep(t_minishell *shell, t_astnode *node)
 {
-	t_xpnd_info				thread[NPROCESSORS];	
+	t_xpnd_info				thread[NPROCESSORS];	// TODO update cc to define NPROCESSORS - delete variable bellow
 	char					**argv;
 	size_t					j;
-	size_t					ncreated;
 	size_t					nprocessors;
 	size_t					ntoken;
-	// size_t					ret_wordc;
 	size_t					outw_i;
 	size_t					xpnded_tkn_c;
 	size_t					to_xpnd_tkn_c;
 
-	// checks and set variables
+
 	if (!node)
 		return (NULL);
 	memset(thread, 0, NPROCESSORS * sizeof(t_xpnd_info));
@@ -96,13 +94,14 @@ char	**cmdv_prep(t_minishell *shell, t_astnode *node)
 	xpnded_tkn_c = 0;
 	to_xpnd_tkn_c = 0;
 	nprocessors = sysconf(_SC_NPROCESSORS_ONLN);
+	
 	j = 0;
 	while(j < nprocessors && to_xpnd_tkn_c < ntoken)
 	{
 		thread[j].shell = shell;
 		thread[j].tknxthread = ntoken / nprocessors;
 		if (!thread[j].tknxthread)
-			thread[j].tknxthread = ntoken % nprocessors; // TODO add this at some point
+			thread[j].tknxthread = ntoken % nprocessors;
 		thread[j].token = node->tokens + j;
 		to_xpnd_tkn_c += thread[j].tknxthread;
 		if (pthread_create(&thread[j].t_id, NULL, expansion_thread, thread + j) == -1)
@@ -113,18 +112,16 @@ char	**cmdv_prep(t_minishell *shell, t_astnode *node)
 		}
 		j++;
 	}
-	ncreated = j;
-	j = 0;
-	while (j < ncreated)
+	
+	while (j)
 	{
-		pthread_join(thread[j].t_id, NULL);
-		xpnded_tkn_c += thread[j++].tknxthread;
+		pthread_join(thread[--j].t_id, NULL);
+		xpnded_tkn_c += thread[j].tknxthread;
 	}
 	
 	argv = ft_calloc(xpnded_tkn_c + 1, sizeof(char *));
 	if (!argv)
 		perror_exit(shell, "at cmdv_prep");
-	j = 0;
 	while (j < ntoken && thread[j].xpnded_words)
 	{
 		outw_i = 0;
