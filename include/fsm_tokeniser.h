@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fsm_tokeniser.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/09/01 12:25:47 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/05 14:50:00 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,21 +89,6 @@ enum e_tokentype
  * @param redirect_file this token is a filename for a redirect
  * @param quotes_removed if the quotes in the raw string have been removed
  * @param variables_expanded This token has had its variables expanded
- * 
- * @note
- * There is some funky things that need to happen with word tokens
- * in preprocessing, like a redirect file can be an expanded variable
- * but a heredoc deliminator cannot be.
- * 
- * Also variables can be expanded in double quotes but not single 
- * quotes, so when we do preprocessing we need to make sure of this.
- * 
- * Also there is the case of: 
- * let var=abc
- * 
- *  "'$var'" this should be result in 'abc'
- *  '"$var"' this should result in "$var"
- * 
  */
 typedef struct s_token			t_token;
 struct s_token

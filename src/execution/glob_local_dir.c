@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   glob_local_dir.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/26 15:13:15 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/14 20:51:05 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/05 16:38:59 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static ssize_t	local_dir_glob(char ***p)
 	return (closedir(dir), ft_arrlen((void *)*p));
 }
 
-char	**glob_word(t_minishell *shell, char *str)
+char	**glob_word(t_minishell *shell, char *str) // TODO: shell for error handling?
 {
 	ssize_t	i;
 	ssize_t	count;

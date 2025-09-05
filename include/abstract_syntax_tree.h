@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   abstract_syntax_tree.h                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/09/01 12:26:28 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/05 15:48:03 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,6 +203,8 @@ struct	s_astnode
 	char		**envp;
 	/// @brief Argument count
 	int			argc;
+	/// @brief sysconf(_SC_ARG_MAX)
+	int			argc_max;
 	/// @brief Return code from waitpid
 	int			return_value;
 	/// @brief Actual number that the process returned
