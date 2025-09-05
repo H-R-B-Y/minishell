@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_prep_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 13:37:48 by cquinter          #+#    #+#             */
-/*   Updated: 2025/09/05 16:56:11 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/09/05 22:40:59 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,81 +42,97 @@ size_t	get_cmd_idx(t_astnode *node)
 
 static t_shell_expansion_fnc	*set_expansion_fncs(void)
 {
-	static t_shell_expansion_fnc	shell_expansion_fnc[4] = {
+	static t_shell_expansion_fnc	shell_expansion_fnc[2] = {
 		(t_shell_expansion_fnc){.f = xpnd_param_var},
-		(t_shell_expansion_fnc){.f = filename_expansion},
-		(t_shell_expansion_fnc){.f = quote_removal},
+		// (t_shell_expansion_fnc){.f = filename_expansion},
+		// (t_shell_expansion_fnc){.f = quote_removal},
 		(t_shell_expansion_fnc){.f = 0},	
 	};
 
 	return (shell_expansion_fnc);
 }
 
-char **expansion_thread(t_token *token)
+void *expansion_thread(void *arg)
 {
 	t_shell_expansion_fnc	*xpnsion_f;
-		
+	size_t	i;
+	t_xpnd_info	*info;
+
+	if (!arg)
+		return (NULL);
+	info = (t_xpnd_info *)arg;
 	xpnsion_f = set_expansion_fncs();
+	i = 0;
 	while (xpnsion_f[i].f)
 	{
-		xpnsion_f[i].f(shell, node, &argv, &n);
+		xpnsion_f[i].f(info);
 		i++;
 	}
+	return (NULL);
 }
 
 
-#define	NPROCESSORS 20
-#define INTERNAL_MAX 40
-#include <limits.h>
+
 
 char	**cmdv_prep(t_minishell *shell, t_astnode *node)
 {
-	pthread_t	*thread[NPROCESSORS];	
-	char					**argv[_POSIX_ARG_MAX];
-	size_t					max_thread;
-	size_t					i;
+	t_xpnd_info				thread[NPROCESSORS];	
+	char					**argv;
 	size_t					j;
-	ssize_t					arg_max;
 	size_t					ncreated;
+	size_t					nprocessors;
 	size_t					ntoken;
-	char					**ret_words;
+	// size_t					ret_wordc;
+	size_t					outw_i;
+	size_t					xpnded_tkn_c;
+	size_t					to_xpnd_tkn_c;
 
 	// checks and set variables
 	if (!node)
 		return (NULL);
+	memset(thread, 0, NPROCESSORS * sizeof(t_xpnd_info));
 	node->cmd_i = get_cmd_idx(node);
 	ntoken = node->token_count;
-	arg_max = _POSIX_ARG_MAX - ft_arrlen(shell->environment)
-	argv = (char *[_POSIX_ARG_MAX])
-	if (!argv)
-		return (NULL);
-	
-	// // cores = sysconf(_SC_NPROCESSORS_ONLN);
-	// if (ntoken > NPROCESSORS)
-	// 	max_thread = ntoken / NPROCESSORS;
-	// else
-	// 	max_thread = ntoken;
-	// create threads
-	i = 0;
-	while (i < ntoken)
+	xpnded_tkn_c = 0;
+	to_xpnd_tkn_c = 0;
+	nprocessors = sysconf(_SC_NPROCESSORS_ONLN);
+	j = 0;
+	while(j < nprocessors && to_xpnd_tkn_c < ntoken)
 	{
-		j = 0;
-		while(j < NPROCESSORS && i + j < node->token_count)
-			pthread_create(thread[j++], NULL, expansion_thread, node->tokens[0][i]); // TODO set new token vars to 
-		ncreated = j;
-		j = 0;
-		while (j < ncreated)
+		thread[j].shell = shell;
+		thread[j].tknxthread = ntoken / nprocessors;
+		if (!thread[j].tknxthread)
+			thread[j].tknxthread = ntoken % nprocessors; // TODO add this at some point
+		thread[j].token = node->tokens + j;
+		to_xpnd_tkn_c += thread[j].tknxthread;
+		if (pthread_create(&thread[j].t_id, NULL, expansion_thread, thread + j) == -1)
 		{
-			pthread_join(thread[j++], ret_words); // TODO handle rets
-			if (!ret_words)
-			{
-				dprintf(2, "thread ret NULL\n");
-				continue;
-			}
-			while (*ret_words)
-				argv[i++] = (*ret_words)++;
+			dprintf(2, "Error: did not create all threads\n");
+			j++;
+			break ;
 		}
+		j++;
 	}
-	node->argc += 
-	return (argv);
+	ncreated = j;
+	j = 0;
+	while (j < ncreated)
+	{
+		pthread_join(thread[j].t_id, NULL);
+		xpnded_tkn_c += thread[j++].tknxthread;
+	}
+	
+	argv = ft_calloc(xpnded_tkn_c + 1, sizeof(char *));
+	if (!argv)
+		perror_exit(shell, "at cmdv_prep");
+	j = 0;
+	while (j < ntoken && thread[j].xpnded_words)
+	{
+		outw_i = 0;
+		while (thread[j].xpnded_words && thread[j].xpnded_words[outw_i])
+			*argv++ = thread[j].xpnded_words[outw_i++];
+		free(thread[j].xpnded_words);
+		j++;
+	}
+	node->argc = xpnded_tkn_c;
+	return (argv - xpnded_tkn_c);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:02:44 by cquinter          #+#    #+#             */
-/*   Updated: 2025/08/14 18:55:17 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/05 21:11:21 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,21 @@
 # include "./abstract_syntax_tree.h"
 # include "./builtin.h"
 # include <unistd.h>
+
+
+#define	NPROCESSORS 20
+#define INTERNAL_MAX 40
+#include <limits.h>
+
+typedef struct s_xpnd_info
+{
+	pthread_t	t_id;
+	t_minishell	*shell;
+	size_t		tknxthread;
+	t_token		**token;
+	char		**xpnded_words;
+
+}	t_xpnd_info;
 
 /**
  * @brief Get the executable path for a given command
@@ -35,8 +50,7 @@ char	*get_exec_path(t_minishell *shell, char *cmd, char **envp);
  * @param argv Pointer to the argument list produced as a result of expansion
  * @param n Count of args
  */
-void	xpnd_param_var(t_minishell *shell, t_astnode *node,
-			char ***argv, size_t *n);
+void	xpnd_param_var(t_xpnd_info *info);
 
 /**
  * @brief Expand wildcards from the argv and splits into words
@@ -86,7 +100,7 @@ typedef struct s_restore_rds
 
 typedef struct s_shell_expansion_fnc
 {
-	void	(*f)(t_minishell *shell, t_astnode *node, char ***argv, size_t *n);
+	void	(*f)(t_xpnd_info *info);
 }	t_shell_expansion_fnc;
 
 int		t_oflag(const int redr_type);

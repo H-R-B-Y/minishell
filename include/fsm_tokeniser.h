@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fsm_tokeniser.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/09/05 14:50:00 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/09/05 20:09:58 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ struct s_token
 	t_tokentype	type;
 	/// @brief the raw token string
 	char		*raw;
+	/// @brief expanded words
+	char		**words;
 };
 
 /**
