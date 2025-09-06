@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "hash_map.h"
+#include "ft_hashmap.h"
 
 t_hashmap	hm_create(t_hashfnc hashfnc, t_hashcmp hashcmp)
 {

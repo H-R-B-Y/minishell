@@ -1,6 +1,6 @@
 # Where built archives should end up
 LIBDIR			:= lib
-INCDIR			:= ./include
+INCDIR			:= include
 
 CFLAGS			:= -Wall -Wextra -Werror -std=c99
 
@@ -17,8 +17,6 @@ NAME			:= libft.a
 
 # Build all submodules and merge into final library
 all: $(NAME)
-
-lib: $(NAME)
 
 # Build each submodule (ensures dependencies are built first)
 $(SUBMODULES):
