@@ -146,7 +146,7 @@ $(NAME): $(MAIN) $(OBJS) $(LIBFT) ./include/minishell.h
 # 	@$(CC) $(CFLAGS) src/testing.c $(OBJS) $(LIBFT) $(LIBFLAGS) -o $(NAME)
 
 $(LIBFT):
-		@$(MAKE) --directory $(LIBFT_DIR) mem string conv ctype io rand string array list lib CFLAGS="$(CFLAGS)" CC=$(CC)
+		@$(MAKE) --directory $(LIBFT_DIR) SUBMODULES="mem string conv ctype io rand string array list" CFLAGS="$(CFLAGS)" CC=$(CC)
 
 %.o: %.c
 		@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
