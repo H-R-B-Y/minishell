@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 13:37:48 by cquinter          #+#    #+#             */
-/*   Updated: 2025/09/05 23:08:12 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/09/07 23:20:01 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ size_t	get_cmd_idx(t_astnode *node)
 
 static t_shell_expansion_fnc	*set_expansion_fncs(void)
 {
-	static t_shell_expansion_fnc	shell_expansion_fnc[2] = {
+	static t_shell_expansion_fnc	shell_expansion_fnc[4] = {
 		(t_shell_expansion_fnc){.f = xpnd_param_var},
-		// (t_shell_expansion_fnc){.f = filename_expansion},
-		// (t_shell_expansion_fnc){.f = quote_removal},
+		(t_shell_expansion_fnc){.f = filename_expansion},
+		(t_shell_expansion_fnc){.f = quote_removal},
 		(t_shell_expansion_fnc){.f = 0},	
 	};
 
@@ -57,6 +57,8 @@ void *expansion_thread(void *arg)
 	t_shell_expansion_fnc	*xpnsion_f;
 	size_t	i;
 	t_xpnd_info	*info;
+	size_t	outw_i;
+	t_token crr_token;
 
 	if (!arg)
 		return (NULL);
@@ -68,6 +70,20 @@ void *expansion_thread(void *arg)
 		xpnsion_f[i].f(info);
 		i++;
 	}
+	i = 0;
+	info->xpnded_words = ft_calloc(info->new_wc + 1, sizeof(char *));
+	if (!info->xpnded_words)
+		return (info->status++, NULL);
+	while (i < info->tknxthread)
+	{
+		outw_i = 0;
+		crr_token = info->token[i][0];
+		while (crr_token.words && crr_token.words[outw_i])
+			*info->xpnded_words++ = crr_token.words[outw_i++];
+		free(crr_token.words);
+		i++;
+	}
+	info->xpnded_words -= info->new_wc;
 	return (NULL);
 }
 
@@ -79,11 +95,10 @@ char	**cmdv_prep(t_minishell *shell, t_astnode *node)
 	t_xpnd_info				thread[NPROCESSORS];	// TODO update cc to define NPROCESSORS - delete variable bellow
 	char					**argv;
 	size_t					j;
-	size_t					nprocessors;
 	size_t					ntoken;
 	size_t					outw_i;
-	size_t					xpnded_tkn_c;
 	size_t					to_xpnd_tkn_c;
+	size_t					new_wc;
 
 
 	if (!node)
@@ -91,19 +106,20 @@ char	**cmdv_prep(t_minishell *shell, t_astnode *node)
 	memset(thread, 0, NPROCESSORS * sizeof(t_xpnd_info));
 	node->cmd_i = get_cmd_idx(node);
 	ntoken = node->token_count;
-	xpnded_tkn_c = 0;
-	to_xpnd_tkn_c = 0;
-	nprocessors = sysconf(_SC_NPROCESSORS_ONLN);
-	
+	new_wc = 0;
+	to_xpnd_tkn_c = ntoken / NPROCESSORS;
+		if (!to_xpnd_tkn_c)
+			to_xpnd_tkn_c = ntoken % NPROCESSORS;
+
+	// thread[j].tknxthread = ntoken / nprocessors; TODOake re
+		// 	if (!thread[j].tknxthread)
+	// 		thread[j].tknxthread = ntoken % nprocessors;
 	j = 0;
-	while(j < nprocessors && to_xpnd_tkn_c < ntoken)
+	while(j < NPROCESSORS && j * to_xpnd_tkn_c < ntoken)
 	{
 		thread[j].shell = shell;
-		thread[j].tknxthread = ntoken / nprocessors;
-		if (!thread[j].tknxthread)
-			thread[j].tknxthread = ntoken % nprocessors;
+		thread[j].tknxthread = to_xpnd_tkn_c;
 		thread[j].token = node->tokens + j;
-		to_xpnd_tkn_c += thread[j].tknxthread;
 		if (pthread_create(&thread[j].t_id, NULL, expansion_thread, thread + j) == -1)
 		{
 			dprintf(2, "Error: did not create all threads\n");
@@ -116,13 +132,13 @@ char	**cmdv_prep(t_minishell *shell, t_astnode *node)
 	while (j)
 	{
 		pthread_join(thread[--j].t_id, NULL);
-		xpnded_tkn_c += thread[j].tknxthread;
+		new_wc += thread[j].new_wc;
 	}
 	
-	argv = ft_calloc(xpnded_tkn_c + 1, sizeof(char *));
+	argv = ft_calloc(new_wc + 1, sizeof(char *));
 	if (!argv)
 		perror_exit(shell, "at cmdv_prep");
-	while (j < ntoken && thread[j].xpnded_words)
+	while (j < ntoken)
 	{
 		outw_i = 0;
 		while (thread[j].xpnded_words && thread[j].xpnded_words[outw_i])
@@ -130,6 +146,6 @@ char	**cmdv_prep(t_minishell *shell, t_astnode *node)
 		free(thread[j].xpnded_words);
 		j++;
 	}
-	node->argc = xpnded_tkn_c;
-	return (argv - xpnded_tkn_c);
+	node->argc = new_wc;
+	return (argv - new_wc);
 }

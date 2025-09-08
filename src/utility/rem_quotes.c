@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rem_quotes.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 16:31:59 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/18 18:41:58 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/07 21:56:41 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,29 @@ char	*rem_quotes(const char *str)
 			output[i[1]++] = str[i[0]++];
 	}
 	return (output);
+}
+
+void rem_quotes_in_place(char *str)
+{
+	size_t			i[2];
+	char			*output;
+	t_quote_mode	mode;
+
+	output = str;
+	ft_bzero(i, sizeof(size_t) * 2);
+	mode = QUOTE_NONE;
+	while (i[0] < ft_strlen(str))
+	{
+		if (mode == QUOTE_NONE)
+			handle_nonquoted(str, i, output, &mode);
+		else if (mode == QUOTE_DOUBLE && str[i[0]] == '"' && ++i[0])
+			mode = QUOTE_NONE;
+		else if (mode == QUOTE_SINGLE && str[i[0]] == '\'' && ++i[0])
+			mode = QUOTE_NONE;
+		else if (str[i[0]] == '\\')
+			quoted_backslash(str, i, output, mode);
+		else
+			output[i[1]++] = str[i[0]++];
+	}
+	output[i[1]] = '\0';
 }

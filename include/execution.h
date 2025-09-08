@@ -6,7 +6,7 @@
 /*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:02:44 by cquinter          #+#    #+#             */
-/*   Updated: 2025/09/05 21:11:21 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/09/07 23:14:37 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <unistd.h>
 
 
-#define	NPROCESSORS 20
+#define	NPROCESSORS 8
 #define INTERNAL_MAX 40
 #include <limits.h>
 
@@ -28,6 +28,8 @@ typedef struct s_xpnd_info
 	t_minishell	*shell;
 	size_t		tknxthread;
 	t_token		**token;
+	size_t		new_wc;
+	int			status;
 	char		**xpnded_words;
 
 }	t_xpnd_info;
@@ -45,34 +47,23 @@ char	*get_exec_path(t_minishell *shell, char *cmd, char **envp);
 /**
  * @brief Expand parameters from tokens in the cmdv and split into the argv
  * 
- * @param shell Pointer to the shell object
- * @param node The current node
- * @param argv Pointer to the argument list produced as a result of expansion
- * @param n Count of args
+ * @param info t_xpnd_info thread struct
  */
 void	xpnd_param_var(t_xpnd_info *info);
 
 /**
  * @brief Expand wildcards from the argv and splits into words
  * 
- * @param shell Pointer to the shell object
- * @param node The current node
- * @param argv Pointer to the argument list produced as a result of expansion
- * @param n Count of args
+ * @param info t_xpnd_info thread struct
  */
-void	filename_expansion(t_minishell *shell, t_astnode *node,
-			char ***argv, size_t *n);
+void	filename_expansion(t_xpnd_info *info);
 
 /**
  * @brief Remove quotes and backslashes from the values in argv
  * 
- * @param shell Pointer to the shell object
- * @param node The current node
- * @param argv Pointer to the argument list produced as a result of expansion
- * @param n Count of args
+ * @param info t_xpnd_info thread struct
  */
-void	quote_removal(t_minishell *shell, t_astnode *node,
-			char ***argv, size_t *n);
+void	quote_removal(t_xpnd_info *info);
 
 /**
  * @brief Prepare the arguements for a command

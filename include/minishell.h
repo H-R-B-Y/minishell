@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:44:08 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/09/05 15:28:26 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/09/07 21:39:50 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,9 @@ char			*_pop_line(char ***str);
 
 // this one doesnt expand vars
 char			*rem_quotes(const char *str);
+
+// this one doesnt expand vars. doesn't allocate new str
+void			rem_quotes_in_place(char *str);
 
 // this one does expand vars. Not handling $'...'
 char			*rmv_quotes_xpnd_var(char *str, t_minishell *shell);
