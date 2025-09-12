@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_prep_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 13:37:48 by cquinter          #+#    #+#             */
-/*   Updated: 2025/09/07 23:20:01 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/09/12 18:15:29 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,10 @@ char	**cmdv_prep(t_minishell *shell, t_astnode *node)
 	size_t					ntoken;
 	size_t					outw_i;
 	size_t					to_xpnd_tkn_c;
+	size_t					left_to_xpnd_tkn_c;
+	size_t					tkn_done_c;
 	size_t					new_wc;
+	size_t					created;
 
 
 	if (!node)
@@ -108,18 +111,20 @@ char	**cmdv_prep(t_minishell *shell, t_astnode *node)
 	ntoken = node->token_count;
 	new_wc = 0;
 	to_xpnd_tkn_c = ntoken / NPROCESSORS;
-		if (!to_xpnd_tkn_c)
-			to_xpnd_tkn_c = ntoken % NPROCESSORS;
-
-	// thread[j].tknxthread = ntoken / nprocessors; TODOake re
-		// 	if (!thread[j].tknxthread)
-	// 		thread[j].tknxthread = ntoken % nprocessors;
+	left_to_xpnd_tkn_c = ntoken % NPROCESSORS;
 	j = 0;
-	while(j < NPROCESSORS && j * to_xpnd_tkn_c < ntoken)
+	tkn_done_c = 0;
+	while(j < NPROCESSORS && tkn_done_c < ntoken)
 	{
 		thread[j].shell = shell;
+		thread[j].token = node->tokens + tkn_done_c;
 		thread[j].tknxthread = to_xpnd_tkn_c;
-		thread[j].token = node->tokens + j;
+		if (left_to_xpnd_tkn_c)
+		{
+			thread[j].tknxthread += 1;
+			left_to_xpnd_tkn_c--;
+		}
+		tkn_done_c += thread[j].tknxthread;
 		if (pthread_create(&thread[j].t_id, NULL, expansion_thread, thread + j) == -1)
 		{
 			dprintf(2, "Error: did not create all threads\n");
@@ -128,7 +133,7 @@ char	**cmdv_prep(t_minishell *shell, t_astnode *node)
 		}
 		j++;
 	}
-	
+	created = j;
 	while (j)
 	{
 		pthread_join(thread[--j].t_id, NULL);
@@ -138,7 +143,7 @@ char	**cmdv_prep(t_minishell *shell, t_astnode *node)
 	argv = ft_calloc(new_wc + 1, sizeof(char *));
 	if (!argv)
 		perror_exit(shell, "at cmdv_prep");
-	while (j < ntoken)
+	while (j < created)
 	{
 		outw_i = 0;
 		while (thread[j].xpnded_words && thread[j].xpnded_words[outw_i])
