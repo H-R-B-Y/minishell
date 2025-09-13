@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 19:20:00 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/26 10:46:18 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/03 08:49:23 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,5 +72,5 @@ void	print_conversion(int fd, t_conv *c)
 {
 	ft_putstr_fd(c->prefix, fd);
 	ft_putstr_fd(c->output, fd);
-	write(fd, "\0", 1 * (c->type == 'c' && *((char *)c->value) == '\0'));
+	(void)!write(fd, "\0", 1 * (c->type == 'c' && *((char *)c->value) == '\0'));
 }

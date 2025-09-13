@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 14:47:42 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/09/01 11:56:31 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/07 14:50:25 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,23 @@
 # include "ft_mem.h"
 # include "defined.h"
 
-# ifndef MPMC_RINGBUFF_SZ
-#  define MPMC_RINGBUFF_SZ 1024
-# endif
+// # ifndef MPMC_RINGBUFF_SZ
+// #  define MPMC_RINGBUFF_SZ 1024
+// # endif
 
 typedef struct s_mpmc_ringbuff	t_mpmc_ringbuff;
 struct s_mpmc_ringbuff
 {
-	void	*content[MPMC_RINGBUFF_SZ];
-	vu32	head;
-	vu32	tail;
-	vu32	size;
+	/// @brief Array of contents
+	void	**content;
+	/// @brief Metadata for the ring buffer (dont change these manually)
+	t_u32	capacity;
+	/// @brief Head index
+	t_vu32	head;
+	/// @brief Tail index
+	t_vu32	tail;
+	/// @brief current size
+	t_vu32	size;
 };
 
 /**
@@ -40,7 +46,7 @@ struct s_mpmc_ringbuff
  * 
  * @return t_mpmc_ringbuff 
  */
-t_mpmc_ringbuff	mpmc_rb_create(void);
+t_mpmc_ringbuff	mpmc_rb_create(t_vu32);
 
 /**
  * @brief Destory a ring buffer
@@ -55,6 +61,6 @@ void			mpmc_rb_destroy(t_mpmc_ringbuff *ringbuff);
 int				mpmc_rb_push(t_mpmc_ringbuff *ringbuff, void *content);
 int				mpmc_rb_pop(t_mpmc_ringbuff *ringbuff, void **content);
 
-u64				mpmc_rb_size(t_mpmc_ringbuff *s_mpmc_ringbuff);
+t_u64				mpmc_rb_size(t_mpmc_ringbuff *s_mpmc_ringbuff);
 
 #endif

@@ -2,3 +2,7 @@
 *.a
 *.o
 *.out
+venv
+__pycache__
+venv/
+__pycache__/

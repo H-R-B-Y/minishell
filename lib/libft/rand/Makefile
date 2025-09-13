@@ -1,7 +1,7 @@
 NAME			:= libftrand.a
 
 SRC				:= \
-				./ft_rand.c
+				./ft_rand.c ./ft_rand2.c
 
 
 OBJDIR			:= obj
