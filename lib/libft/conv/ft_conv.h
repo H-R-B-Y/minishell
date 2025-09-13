@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_conv.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/26 10:15:55 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/09/05 13:52:11 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/09/01 12:09:49 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,6 @@
 # define FT_CONV_H
 # include <stdlib.h>
 # include "ft_ctype.h"
-
-/**
- * @brief Convert a string to an integer checking for boundaries
- * @param nptr String to convert
- * @return Integer representation of the string or 0
- */
-int				ft_atoi_safe(const char *nptr);
 
 /**
  * @brief Convert a string to an integer
@@ -51,6 +44,6 @@ char			*ft_itoa(int n);
  * @param nptr String representation of the number
  * @return int Int representation of the number
  */
-int				ft_atoi(const char *nptr);
+int				ft_atoi_unsafe(const char *nptr);
 
 #endif

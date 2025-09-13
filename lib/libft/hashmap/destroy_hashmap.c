@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   destroy_hashmap.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 11:33:45 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/09/05 13:47:02 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/09/07 14:48:19 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,17 @@ void		hm_destroy_pairlist(t_hashpair **pair)
 
 int			hm_destroy(t_hashmap *hashmap)
 {
-	ssize_t	idx;
+	size_t	idx;
 
 	if (!hashmap)
 		return (RETURN_ERROR);
 	idx = 0;
-	while (idx < MAXHASH)
+	while (idx < hashmap->max_hashes)
 	{
 		if (hashmap->pairs[idx])
 			hm_destroy_pairlist(&hashmap->pairs[idx]);
 		idx++;
 	}
+	free(hashmap->pairs);
 	return (RETURN_OK);
 }

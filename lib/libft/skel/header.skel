@@ -1,0 +1,9 @@
+
+#ifndef FT_{{module_name|upper}}_H
+# define FT_{{module_name|upper}}_H
+
+{% for dep in deps %}# include "ft_{{dep}}.h"
+{% endfor %}
+
+
+#endif

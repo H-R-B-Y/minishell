@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi_safe.c                                          :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 20:40:30 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/09/01 12:27:28 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/02 14:06:26 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static int	ov_underflow(int num, char c, int sign)
 	this atoi is checking for over and underflows, as well as for tthe
 	presence of any nondigit c after the sign
 	Returns converte value or 0 on error*/
-int	ft_atoi_safe(const char *nptr)
+int	ft_atoi(const char *nptr)
 {
 	int				num;
 	char			*a_num;
@@ -90,7 +90,7 @@ int	ft_atoi_safe(const char *nptr)
 	return (num * sign);
 }
 
-int	ft_atoi(const char *nptr)
+int	ft_atoi_unsafe(const char *nptr)
 {
 	long	output;
 	int		sign;

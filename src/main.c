@@ -6,13 +6,15 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 18:47:53 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/09/01 12:28:31 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/13 14:15:47 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
 extern int	g_global_signal;
+// TODO: Thread pool for cmdv prep
+// int			timer_fd;
 
 int	create_tree_and_run(t_minishell *shell)
 {
@@ -86,6 +88,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	if (init_process(&shell, envp) < 0)
 		return (0);
+	// timer_fd = open("timer_fd", O_CREAT | O_WRONLY | O_TRUNC, 0777);
 	shell.argc = argc;
 	shell.argv = argv;
 	if (shell.interactive_mode)
@@ -99,5 +102,6 @@ int	main(int argc, char **argv, char **envp)
 			break ;
 		reset_for_command(&shell, shell.rlcode);
 	}
+	// close(timer_fd);
 	clean_exit_status(&shell, shell.return_code);
 }

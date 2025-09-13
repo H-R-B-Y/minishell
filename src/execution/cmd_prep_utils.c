@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_prep_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 13:37:48 by cquinter          #+#    #+#             */
-/*   Updated: 2025/09/13 12:23:47 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/09/13 14:15:10 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+#include <stdio.h>
+// extern int			timer_fd;
 
 size_t	get_cmd_idx(t_astnode *node)
 {
@@ -103,7 +105,7 @@ char	**cmdv_prep(t_minishell *shell, t_astnode *node)
 	size_t					new_wc;
 	size_t					created;
 
-
+	// ssize_t	mytimer = start_timer();
 	if (!node)
 		return (NULL);
 	memset(thread, 0, NPROCESSORS * sizeof(t_xpnd_info));
@@ -133,6 +135,8 @@ char	**cmdv_prep(t_minishell *shell, t_astnode *node)
 		}
 		j++;
 	}
+	// t_mstime t = end_timer(mytimer);
+	// dprintf(timer_fd, "Time to start threads: %lu\n", t);
 	created = j;
 	while (j)
 	{
@@ -151,5 +155,7 @@ char	**cmdv_prep(t_minishell *shell, t_astnode *node)
 		j++;
 	}
 	node->argc = new_wc;
+	// t = end_timer(mytimer);
+	// dprintf(timer_fd, "Time to prep cmdv: %lu\n", t);
 	return (argv - new_wc);
 }

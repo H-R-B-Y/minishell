@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 16:11:55 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/09/05 13:44:31 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/26 12:11:47 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ void	delete_conversion(t_conv *c);
 // Returns the length of the printed string.
 size_t	printed_length(t_conv *c);
 
-// Prints the conversion. Returns printed length
-int	print_conversion(int fd, t_conv *c);
+// Prints the conversion.
+void	print_conversion(int fd, t_conv *c);
 
 // conversion_functions.c
 char	*int_to_str(int *v);

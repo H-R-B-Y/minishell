@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 17:12:19 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/09/05 13:44:47 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/08/26 10:46:18 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ int	handle_escape(int fd,
 	generate_output(correct_flags(conversion));
 	if (conversion->type != '%')
 		set_padding(set_prefix(conversion));
-	*len += print_conversion(fd, conversion);
+	print_conversion(fd, conversion);
+	*len += printed_length(conversion);
 	delete_conversion(conversion);
 	return (0);
 }

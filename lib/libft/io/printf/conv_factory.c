@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   conv_factory.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 19:20:00 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/09/05 13:45:01 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/09/03 08:49:23 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ size_t	printed_length(t_conv *c)
 	);
 }
 
-int	print_conversion(int fd, t_conv *c)
+void	print_conversion(int fd, t_conv *c)
 {
 	ft_putstr_fd(c->prefix, fd);
 	ft_putstr_fd(c->output, fd);
-	return (write(fd, "\0", 1 * (c->type == 'c' && *((char *)c->value) == '\0')));
+	(void)!write(fd, "\0", 1 * (c->type == 'c' && *((char *)c->value) == '\0'));
 }

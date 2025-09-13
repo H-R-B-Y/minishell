@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 20:13:01 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/27 10:57:30 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/07 14:38:46 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,5 +171,13 @@ t_vec3		vec3_rotate(t_vec3 vec, t_vec3 axis, MYFLOAT angle);
  * @return The difference of the two vectors.
  */
 t_vec3		vec3_sub(t_vec3 vec1, t_vec3 vec2);
+
+/**
+ * @brief Calculate the cross product of two 3D vectors.
+ * @param a The first vector.
+ * @param b The second vector.
+ * @return The cross product of the two vectors.
+ */
+t_vec3		vec3_cross(t_vec3 a, t_vec3 b);
 
 #endif

@@ -50,7 +50,7 @@ int			hm_add_value(t_hashmap *hashmap, void *key, void *value)
 
 	if (!hashmap || !key)
 		return (RETURN_ERROR);
-	hash = hashmap->hash_key(key) % MAXHASH;
+	hash = hashmap->hash_key(key) % hashmap->max_hashes;
 	if (!hashmap->pairs[hash])
 	{
 		hashmap->pairs[hash] = CALLOC(1, sizeof(t_hashpair));

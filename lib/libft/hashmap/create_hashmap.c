@@ -12,13 +12,14 @@
 
 #include "ft_hashmap.h"
 
-t_hashmap	hm_create(t_hashfnc hashfnc, t_hashcmp hashcmp)
+t_hashmap	hm_create(t_hashfnc hashfnc, t_hashcmp hashcmp, size_t max_hashes)
 {
 	return (
 		(t_hashmap){
 			.hash_cmp = hashcmp,
 			.hash_key = hashfnc,
-			.pairs = {0}
+			.pairs = ft_calloc(max_hashes, sizeof(t_hashpair *)),
+			.max_hashes = max_hashes
 		}
 	);
 }
