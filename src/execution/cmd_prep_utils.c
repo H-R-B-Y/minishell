@@ -6,14 +6,11 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 13:37:48 by cquinter          #+#    #+#             */
-/*   Updated: 2025/09/13 13:50:42 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/13 14:17:32 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <stdio.h>
-
-extern int			timer_fd;
 
 size_t	get_cmd_idx(t_astnode *node)
 {
@@ -62,7 +59,6 @@ char	**cmdv_prep(t_minishell *shell, t_astnode *node)
 	size_t					n;
 	size_t					i;
 
-	ssize_t	thistimer = start_timer();
 	n = node->token_count;
 	argv = ft_calloc(n + 1, sizeof(char **));
 	if (!argv)
@@ -76,7 +72,5 @@ char	**cmdv_prep(t_minishell *shell, t_astnode *node)
 		i++;
 	}
 	node->argc = n;
-	t_mstime endtime = end_timer(thistimer);
-	dprintf(timer_fd, "Time to prep cmdv: %lu\n", endtime);
 	return (argv);
 }
