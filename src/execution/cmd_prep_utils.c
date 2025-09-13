@@ -6,7 +6,7 @@
 /*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 13:37:48 by cquinter          #+#    #+#             */
-/*   Updated: 2025/09/12 18:15:29 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/09/13 12:23:47 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,6 @@ char	**cmdv_prep(t_minishell *shell, t_astnode *node)
 		pthread_join(thread[--j].t_id, NULL);
 		new_wc += thread[j].new_wc;
 	}
-	
 	argv = ft_calloc(new_wc + 1, sizeof(char *));
 	if (!argv)
 		perror_exit(shell, "at cmdv_prep");

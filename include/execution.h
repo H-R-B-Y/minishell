@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cquinter <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cquinter <cquinter@student.42london.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 17:02:44 by cquinter          #+#    #+#             */
-/*   Updated: 2025/09/07 23:14:37 by cquinter         ###   ########.fr       */
+/*   Updated: 2025/09/13 11:47:37 by cquinter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@
 # include "./builtin.h"
 # include <unistd.h>
 
+#ifndef NPROCESSORS
+# define	NPROCESSORS 8
+#endif
 
-#define	NPROCESSORS 8
-#define INTERNAL_MAX 40
 #include <limits.h>
 
 typedef struct s_xpnd_info

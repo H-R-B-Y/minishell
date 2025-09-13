@@ -10,7 +10,7 @@ MAKEFLAGS		+= --no-print-directory
 
 LIBFLAGS		:= -lreadline -lhistory
 
-HEADERS			:= -Iinclude -I./lib/libft/include
+HEADERS			:= -D NPROCESSORS=$(shell nproc) -Iinclude -I./lib/libft/include
 
 LIB_DIR			:= ./lib
 
