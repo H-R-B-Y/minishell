@@ -6,11 +6,11 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 11:55:23 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/28 13:08:43 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/07 14:47:43 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "hash_map.h"
+#include "ft_hashmap.h"
 
 void		*pair_get_value(t_hashmap *hashmap,
 	t_hashpair *head,
@@ -37,6 +37,6 @@ void		*hm_get_value(t_hashmap *hashmap, const void *key)
 
 	if (!hashmap || !key)
 		return (0);
-	hash = hashmap->hash_key(key) % MAXHASH;
+	hash = hashmap->hash_key(key) % hashmap->max_hashes;
 	return (pair_get_value(hashmap, hashmap->pairs[hash], key));
 }

@@ -6,18 +6,18 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 20:23:14 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/27 10:07:54 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/07 14:49:46 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_math.h"
 
-u32	colour_rgba(u8 red,
-	u8 green,
-	u8 blue,
-	u8 alpha)
+t_u32	colour_rgba(t_u8 red,
+	t_u8 green,
+	t_u8 blue,
+	t_u8 alpha)
 {
-	u32	out;
+	t_u32	out;
 
 	out = 0;
 	out += (red << 24);
@@ -27,27 +27,27 @@ u32	colour_rgba(u8 red,
 	return (out);
 }
 
-u32	lerp_colour(u32 from, u32 too, float t)
+t_u32	lerp_colour(t_u32 from, t_u32 too, float t)
 {
-	u8	r;
-	u8	g;
-	u8	b;
-	u8	a;
+	t_u8	r;
+	t_u8	g;
+	t_u8	b;
+	t_u8	a;
 
-	r = (u8)lerp((float)rgba_get_red(from),
+	r = (t_u8)lerp((float)rgba_get_red(from),
 			(float)rgba_get_red(too), t);
-	g = (u8)lerp((float)rgba_get_green(from),
+	g = (t_u8)lerp((float)rgba_get_green(from),
 			(float)rgba_get_green(too), t);
-	b = (u8)lerp((float)rgba_get_blue(from),
+	b = (t_u8)lerp((float)rgba_get_blue(from),
 			(float)rgba_get_blue(too), t);
-	a = (u8)lerp((float)rgba_get_alph(from),
+	a = (t_u8)lerp((float)rgba_get_alph(from),
 			(float)rgba_get_alph(too), t);
 	return (colour_rgba(r, g, b, a));
 }
 
-u32	parse_rgba_str(const char *rgba)
+t_u32	parse_rgba_str(const char *rgba)
 {
-	u32	result;
+	t_u32	result;
 	int			i;
 	char		c;
 

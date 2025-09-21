@@ -1,6 +1,8 @@
-NAME			:= libft.a
+NAME			:= libft{{module_name}}.a
 
 SRC				:= \
+{% for file in files%}{% if file.endswith('.c') %}				{{file}} \
+{%endif%}{% endfor %}				\
 
 
 
@@ -8,7 +10,7 @@ OBJDIR			:= obj
 OBJ				:= $(addprefix $(OBJDIR)/, $(notdir $(SRC:.c=.o)))
 
 # module dependencies
-DEPS			:= 
+DEPS			:= {%for dep in deps %}{{dep}} {%endfor%}
 
 CC				:= gcc
 AR				:= ar rcs

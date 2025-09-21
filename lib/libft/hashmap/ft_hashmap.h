@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 11:06:09 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/08/28 13:09:18 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/07 14:48:09 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 
 # include <sys/types.h>
 
-# ifndef MAXHASH
-#  define MAXHASH 1024
-# endif
+// # ifndef MAXHASH
+// #  define MAXHASH 1024
+// # endif
 
 # include "defined.h"
 # include "ft_mem.h"
@@ -66,7 +66,9 @@ void	hm_destroy_pairlist(t_hashpair **pair);
 struct s_hashmap
 {
 	/// @brief Array of pair lists
-	t_hashpair		*pairs[MAXHASH];
+	t_hashpair		**pairs;
+	/// @brief Size of the pair list
+	size_t			max_hashes;
 	/// @brief Function to hash keys
 	t_hashfnc		hash_key;
 	/// @brief Function to compare key hashes
@@ -78,9 +80,10 @@ struct s_hashmap
  * 
  * @param hashfnc hashing function
  * @param hashcmp hash comparison funciton
+ * @param max_hashes maximum number of hash slots
  * @return t_hashmap new object with initial values set
  */
-t_hashmap	hm_create(t_hashfnc hashfnc, t_hashcmp hashcmp);
+t_hashmap	hm_create(t_hashfnc hashfnc, t_hashcmp hashcmp, size_t max_hashes);
 
 /**
  * @brief Destroy a hashmap object
