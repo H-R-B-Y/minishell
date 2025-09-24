@@ -1,6 +1,6 @@
 # Minishell
 
-a mini bash replicate (sort of).
+a mini bash replica (sort of).
 
 # Compilation
 
