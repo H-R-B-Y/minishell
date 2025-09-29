@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 14:40:33 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/09/01 12:26:15 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/29 11:35:41 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,18 @@ enum	e_datatype
 	DBG_DT_DONE,
 	/// @brief Count of states
 	DBG_DT_COUNT,
+};
+
+static const char *g_dbg_datatype_str[DBG_DT_COUNT]
+__attribute__((unused)) =
+{
+	[DBG_DT_NONE] = "NONE",
+	[DBG_DT_STATE] = "STATE",
+	[DBG_DT_TOKEN_INFO] = "TOKEN_INFO",
+	[DBG_DT_TOKEN] = "TOKEN",
+	[DBG_DT_NODES] = "NODES",
+	[DBG_DT_REDR] = "REDR",
+	[DBG_DT_DONE] = "DONE",
 };
 
 /**

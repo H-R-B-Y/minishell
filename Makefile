@@ -146,7 +146,7 @@ $(NAME): $(MAIN) $(OBJS) $(LIBFT) ./include/minishell.h
 # 	@$(CC) $(CFLAGS) src/testing.c $(OBJS) $(LIBFT) $(LIBFLAGS) -o $(NAME)
 
 $(LIBFT):
-		@$(MAKE) --directory $(LIBFT_DIR) SUBMODULES="mem string conv ctype io rand string array list timer" CFLAGS="$(CFLAGS)" CC=$(CC)
+		@$(MAKE) --directory $(LIBFT_DIR) SUBMODULES="mem string conv ctype io rand array list" CFLAGS="$(CFLAGS)" CC=$(CC)
 
 %.o: %.c
 		@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
@@ -155,7 +155,6 @@ $(LIBFT):
 	@ld -r -b binary -o $@ $<
 
 clean:
-		@$(MAKE) --directory $(LIBFT_DIR) fclean 
 		@rm -rf $(OBJS)
 		@find . -name '*.gcda' -delete
 		@find . -name '*.gcno' -delete

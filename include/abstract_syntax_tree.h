@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 10:42:16 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/09/01 12:26:28 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/29 11:36:59 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,16 @@ enum e_asterror
 	AST_ERR_COUNT,
 };
 
+static const char *g_asterror_str[AST_ERR_COUNT]
+__attribute__((unused)) =
+{
+	[AST_ERR_NONE] = "No error",
+	[AST_ERR_SYNTAX] = "Syntax error",
+	[AST_ERR_HEREDOC_EXIT] = "Heredoc construction failed",
+	[AST_ERR_INVALID_REDIRECT] = "Invalid redirect",
+	[AST_ERR_FATAL] = "Fatal error",
+};
+
 /**
  * @brief I created this because i think we might need it, not because we do
  * 
@@ -58,6 +68,16 @@ enum e_redir_type
 	REDIRECT_TYPE_COUNT,
 };
 
+static const char *g_redir_type_str[REDIRECT_TYPE_COUNT]
+__attribute__((unused)) =
+{
+	[REDIRECT_IN] = "IN",
+	[REDIRECT_OUT] = "OUT",
+	[REDIRECT_OUT_A] = "OUT_A",
+	[REDIRECT_HD] = "HD",
+	[REDIRECT_FD] = "FD",
+};
+
 enum	e_redirect_subtype
 {
 	/// @brief Redirect is for a file
@@ -68,6 +88,13 @@ enum	e_redirect_subtype
 	CLOSE_FD,
 	/// @brief Count of redirect subtypes
 	REDIR_SUBTYPE_COUNT,
+};
+static const char *g_redir_subtype_str[REDIR_SUBTYPE_COUNT]
+__attribute__((unused)) =
+{
+	[REDIR_FILE] = "FILE",
+	[REDIR_FD] = "FD",
+	[CLOSE_FD] = "CLOSE",
 };
 
 // Need some information about what we are redirecting
@@ -156,6 +183,18 @@ enum e_asttype
 	AST_SUBSHELL,
 	/// @brief Count of AST types
 	AST_TYPE_COUNT
+};
+
+static const char *g_astype_str[AST_TYPE_COUNT]
+__attribute__((unused)) =
+{
+	[AST_NONE] = "NONE",
+	[AST_COMMAND] = "COMMAND",
+	[AST_AND] = "AND",
+	[AST_OR] = "OR",
+	[AST_SEQ] = "SEQ",
+	[AST_PIPE] = "PIPE",
+	[AST_SUBSHELL] = "SUBSHELL",
 };
 
 /**
