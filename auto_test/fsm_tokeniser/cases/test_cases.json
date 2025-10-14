@@ -1,0 +1,821 @@
+{
+    "schema": {
+        "test": {
+            "type": "string",
+            "description": "The input string to be tokenised.",
+            "body": "List of input strings to be tokenised.",
+            "golden_sample": "The desired output tokens from the tokeniser. (can be regenerated with --make-golden-sample)"
+        }
+    },
+    "cases": [
+        {
+            "type": "test",
+            "description": "Basic test with simple tokens.",
+            "body": [
+                "echo hello world"
+            ],
+            "golden_sample": "Input: \"echo hello world\"\nOK: (null)\nToken count: 3\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"WORD\",\"raw\":\"world\"}"
+        },
+        {
+            "type": "string",
+            "body": "echo \"hello world\"",
+            "golden_sample": "Input: \"echo \\\"hello world\\\"\"\nOK: (null)\nToken count: 2\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"\\\"hello world\\\"\"}"
+        },
+        {
+            "type": "string",
+            "body": "echo 'hello world'",
+            "golden_sample": "Input: \"echo 'hello world'\"\nOK: (null)\nToken count: 2\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"'hello world'\"}"
+        },
+        {
+            "type": "string",
+            "body": "echo \"hello 'world'\"",
+            "golden_sample": "Input: \"echo \\\"hello 'world'\\\"\"\nOK: (null)\nToken count: 2\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"\\\"hello 'world'\\\"\"}"
+        },
+        {
+            "type": "string",
+            "body": "echo 'hello \"world\"'",
+            "golden_sample": "Input: \"echo 'hello \\\"world\\\"'\"\nOK: (null)\nToken count: 2\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"'hello \\\"world\\\"'\"}"
+        },
+        {
+            "type": "string",
+            "body": "echo \"hello \\\"world\\\"\"",
+            "golden_sample": "Input: \"echo \\\"hello \\\\\\\"world\\\\\\\"\\\"\"\nOK: (null)\nToken count: 2\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"\\\"hello \\\\\\\"world\\\\\\\"\\\"\"}"
+        },
+        {
+            "type": "string",
+            "body": "echo hello\\ world",
+            "golden_sample": "Input: \"echo hello\\\\ world\"\nOK: (null)\nToken count: 2\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\\\\ world\"}"
+        },
+        {
+            "type": "string",
+            "body": "echo \"hello\\ world\"",
+            "golden_sample": "Input: \"echo \\\"hello\\\\ world\\\"\"\nOK: (null)\nToken count: 2\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"\\\"hello\\\\ world\\\"\"}"
+        },
+        {
+            "type": "string",
+            "body": "echo 'hello\\ world'",
+            "golden_sample": "Input: \"echo 'hello\\\\ world'\"\nOK: (null)\nToken count: 2\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"'hello\\\\ world'\"}"
+        },
+        {
+            "type": "redirect",
+            "body": "> file echo hello",
+            "golden_sample": "Input: \"> file echo hello\"\nOK: (null)\nToken count: 4\n{\"type\":\"OUT\",\"raw\":\">\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}"
+        },
+        {
+            "type": "redirect",
+            "body": "echo hello >> file",
+            "golden_sample": "Input: \"echo hello >> file\"\nOK: (null)\nToken count: 4\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"APPEND\",\"raw\":\">>\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}"
+        },
+        {
+            "type": "redirect",
+            "body": ">> file echo hello",
+            "golden_sample": "Input: \">> file echo hello\"\nOK: (null)\nToken count: 4\n{\"type\":\"APPEND\",\"raw\":\">>\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}"
+        },
+        {
+            "type": "redirect",
+            "body": "echo hello 2> file",
+            "golden_sample": "Input: \"echo hello 2> file\"\nOK: (null)\nToken count: 4\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"OUT\",\"raw\":\"2>\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}"
+        },
+        {
+            "type": "redirect",
+            "body": "2> file echo hello",
+            "golden_sample": "Input: \"2> file echo hello\"\nOK: (null)\nToken count: 4\n{\"type\":\"OUT\",\"raw\":\"2>\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}"
+        },
+        {
+            "type": "redirect",
+            "body": "echo hello 2>> file",
+            "golden_sample": "Input: \"echo hello 2>> file\"\nOK: (null)\nToken count: 4\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"APPEND\",\"raw\":\"2>>\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}"
+        },
+        {
+            "type": "redirect",
+            "body": "2>> file echo hello",
+            "golden_sample": "Input: \"2>> file echo hello\"\nOK: (null)\nToken count: 4\n{\"type\":\"APPEND\",\"raw\":\"2>>\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}"
+        },
+        {
+            "type": "redirect",
+            "body": "echo hello 2>&1",
+            "golden_sample": "Input: \"echo hello 2>&1\"\nOK: (null)\nToken count: 3\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"FD\",\"raw\":\"2>&1\"}"
+        },
+        {
+            "type": "redirect",
+            "body": "2>&1 echo hello",
+            "golden_sample": "Input: \"2>&1 echo hello\"\nOK: (null)\nToken count: 3\n{\"type\":\"FD\",\"raw\":\"2>&1\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}"
+        },
+        {
+            "type": "redirect",
+            "body": "< file < file2 echo hello",
+            "golden_sample": "Input: \"< file < file2 echo hello\"\nOK: (null)\nToken count: 6\n{\"type\":\"IN\",\"raw\":\"<\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}\n{\"type\":\"IN\",\"raw\":\"<\"}\n{\"type\":\"WORD\",\"raw\":\"file2\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}"
+        },
+        {
+            "type": "redirect",
+            "body": "echo hello < file < file2",
+            "golden_sample": "Input: \"echo hello < file < file2\"\nOK: (null)\nToken count: 6\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"IN\",\"raw\":\"<\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}\n{\"type\":\"IN\",\"raw\":\"<\"}\n{\"type\":\"WORD\",\"raw\":\"file2\"}"
+        },
+        {
+            "type": "redirect",
+            "body": "echo hello > file2 < file",
+            "golden_sample": "Input: \"echo hello > file2 < file\"\nOK: (null)\nToken count: 6\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"OUT\",\"raw\":\">\"}\n{\"type\":\"WORD\",\"raw\":\"file2\"}\n{\"type\":\"IN\",\"raw\":\"<\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}"
+        },
+        {
+            "type": "redirect",
+            "body": "echo hello < file > file2",
+            "golden_sample": "Input: \"echo hello < file > file2\"\nOK: (null)\nToken count: 6\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"IN\",\"raw\":\"<\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}\n{\"type\":\"OUT\",\"raw\":\">\"}\n{\"type\":\"WORD\",\"raw\":\"file2\"}"
+        },
+        {
+            "type": "redirect",
+            "body": "echo hello >> file2 < file",
+            "golden_sample": "Input: \"echo hello >> file2 < file\"\nOK: (null)\nToken count: 6\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"APPEND\",\"raw\":\">>\"}\n{\"type\":\"WORD\",\"raw\":\"file2\"}\n{\"type\":\"IN\",\"raw\":\"<\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}"
+        },
+        {
+            "type": "redirect",
+            "body": "echo hello < file >> file2",
+            "golden_sample": "Input: \"echo hello < file >> file2\"\nOK: (null)\nToken count: 6\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"IN\",\"raw\":\"<\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}\n{\"type\":\"APPEND\",\"raw\":\">>\"}\n{\"type\":\"WORD\",\"raw\":\"file2\"}"
+        },
+        {
+            "type": "redirect",
+            "body": "echo hello 2> file2 < file",
+            "golden_sample": "Input: \"echo hello 2> file2 < file\"\nOK: (null)\nToken count: 6\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"OUT\",\"raw\":\"2>\"}\n{\"type\":\"WORD\",\"raw\":\"file2\"}\n{\"type\":\"IN\",\"raw\":\"<\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}"
+        },
+        {
+            "type": "redirect",
+            "body": "echo hello < file 2> file2",
+            "golden_sample": "Input: \"echo hello < file 2> file2\"\nOK: (null)\nToken count: 6\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"IN\",\"raw\":\"<\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}\n{\"type\":\"OUT\",\"raw\":\"2>\"}\n{\"type\":\"WORD\",\"raw\":\"file2\"}"
+        },
+        {
+            "type": "redirect",
+            "body": "< < file echo hello",
+            "golden_sample": "Input: \"< < file echo hello\"\nERROR: unexpected redirection"
+        },
+        {
+            "type": "redirect",
+            "body": "echo hello > > file",
+            "golden_sample": "Input: \"echo hello > > file\"\nERROR: unexpected redirection"
+        },
+        {
+            "type": "redirect",
+            "body": "echo hello >> >> file ",
+            "golden_sample": "Input: \"echo hello >> >> file \"\nERROR: unexpected redirection"
+        },
+        {
+            "type": "redirect",
+            "body": ">> >> file echo hello",
+            "golden_sample": "Input: \">> >> file echo hello\"\nERROR: unexpected redirection"
+        },
+        {
+            "type": "redirect",
+            "body": "echo hello 2> 2> file",
+            "golden_sample": "Input: \"echo hello 2> 2> file\"\nERROR: unexpected redirection"
+        },
+        {
+            "type": "redirect",
+            "body": "2> 2> file echo hello",
+            "golden_sample": "Input: \"2> 2> file echo hello\"\nERROR: unexpected redirection"
+        },
+        {
+            "type": "redirect",
+            "body": "echo hello 2>> 2>> file",
+            "golden_sample": "Input: \"echo hello 2>> 2>> file\"\nERROR: unexpected redirection"
+        },
+        {
+            "type": "redirect",
+            "body": "2>> 2>> file echo hello",
+            "golden_sample": "Input: \"2>> 2>> file echo hello\"\nERROR: unexpected redirection"
+        },
+        {
+            "type": "redirect",
+            "body": "echo hello 2>&1 2>&1",
+            "golden_sample": "Input: \"echo hello 2>&1 2>&1\"\nOK: (null)\nToken count: 4\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"FD\",\"raw\":\"2>&1\"}\n{\"type\":\"FD\",\"raw\":\"2>&1\"}"
+        },
+        {
+            "type": "redirect",
+            "body": "2>&1 2>&1 echo hello",
+            "golden_sample": "Input: \"2>&1 2>&1 echo hello\"\nOK: (null)\nToken count: 4\n{\"type\":\"FD\",\"raw\":\"2>&1\"}\n{\"type\":\"FD\",\"raw\":\"2>&1\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}"
+        },
+        {
+            "type": "redirect",
+            "body": "echo > file world",
+            "golden_sample": "Input: \"echo > file world\"\nOK: (null)\nToken count: 4\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"OUT\",\"raw\":\">\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}\n{\"type\":\"WORD\",\"raw\":\"world\"}"
+        },
+        {
+            "type": "redirect",
+            "body": "echo < file world",
+            "golden_sample": "Input: \"echo < file world\"\nOK: (null)\nToken count: 4\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"IN\",\"raw\":\"<\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}\n{\"type\":\"WORD\",\"raw\":\"world\"}"
+        },
+        {
+            "type": "redirect",
+            "body": "echo >> file world",
+            "golden_sample": "Input: \"echo >> file world\"\nOK: (null)\nToken count: 4\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"APPEND\",\"raw\":\">>\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}\n{\"type\":\"WORD\",\"raw\":\"world\"}"
+        },
+        {
+            "type": "redirect",
+            "body": "echo 2> file world",
+            "golden_sample": "Input: \"echo 2> file world\"\nOK: (null)\nToken count: 4\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"OUT\",\"raw\":\"2>\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}\n{\"type\":\"WORD\",\"raw\":\"world\"}"
+        },
+        {
+            "type": "redirect",
+            "body": "echo 2>> file world",
+            "golden_sample": "Input: \"echo 2>> file world\"\nOK: (null)\nToken count: 4\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"APPEND\",\"raw\":\"2>>\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}\n{\"type\":\"WORD\",\"raw\":\"world\"}"
+        },
+        {
+            "type": "redirect",
+            "body": "echo 2>&1 world",
+            "golden_sample": "Input: \"echo 2>&1 world\"\nOK: (null)\nToken count: 3\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"FD\",\"raw\":\"2>&1\"}\n{\"type\":\"WORD\",\"raw\":\"world\"}"
+        },
+        {
+            "type": "redirect",
+            "body": "echo < file > file2 world",
+            "golden_sample": "Input: \"echo < file > file2 world\"\nOK: (null)\nToken count: 6\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"IN\",\"raw\":\"<\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}\n{\"type\":\"OUT\",\"raw\":\">\"}\n{\"type\":\"WORD\",\"raw\":\"file2\"}\n{\"type\":\"WORD\",\"raw\":\"world\"}"
+        },
+        {
+            "type": "redirect",
+            "body": "echo < file >> file2 world",
+            "golden_sample": "Input: \"echo < file >> file2 world\"\nOK: (null)\nToken count: 6\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"IN\",\"raw\":\"<\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}\n{\"type\":\"APPEND\",\"raw\":\">>\"}\n{\"type\":\"WORD\",\"raw\":\"file2\"}\n{\"type\":\"WORD\",\"raw\":\"world\"}"
+        },
+        {
+            "type": "redirect",
+            "body": "echo < file 2> file2 world",
+            "golden_sample": "Input: \"echo < file 2> file2 world\"\nOK: (null)\nToken count: 6\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"IN\",\"raw\":\"<\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}\n{\"type\":\"OUT\",\"raw\":\"2>\"}\n{\"type\":\"WORD\",\"raw\":\"file2\"}\n{\"type\":\"WORD\",\"raw\":\"world\"}"
+        },
+        {
+            "type": "parenthesis",
+            "body": "(echo hello)",
+            "golden_sample": "Input: \"(echo hello)\"\nOK: (null)\nToken count: 4\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}"
+        },
+        {
+            "type": "parenthesis",
+            "body": "((echo hello))",
+            "golden_sample": "Input: \"((echo hello))\"\nOK: (null)\nToken count: 6\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}"
+        },
+        {
+            "type": "parenthesis",
+            "body": "(echo hello | wc)",
+            "golden_sample": "Input: \"(echo hello | wc)\"\nOK: (null)\nToken count: 6\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"WORD\",\"raw\":\"wc\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}"
+        },
+        {
+            "type": "parenthesis",
+            "body": "(echo hello) && (echo world)",
+            "golden_sample": "Input: \"(echo hello) && (echo world)\"\nOK: (null)\nToken count: 9\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"AND\",\"raw\":\"&&\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"world\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}"
+        },
+        {
+            "type": "parenthesis",
+            "body": "((echo hello) && (echo world))",
+            "golden_sample": "Input: \"((echo hello) && (echo world))\"\nOK: (null)\nToken count: 11\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"AND\",\"raw\":\"&&\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"world\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}"
+        },
+        {
+            "type": "parenthesis",
+            "body": "()",
+            "golden_sample": "Input: \"()\"\nERROR: unexpected token"
+        },
+        {
+            "type": "parenthesis",
+            "body": "(())",
+            "golden_sample": "Input: \"(())\"\nERROR: unexpected token"
+        },
+        {
+            "type": "parenthesis",
+            "body": "((()))",
+            "golden_sample": "Input: \"((()))\"\nERROR: unexpected token"
+        },
+        {
+            "type": "parenthesis",
+            "body": "(()())",
+            "golden_sample": "Input: \"(()())\"\nERROR: unexpected token"
+        },
+        {
+            "type": "parenthesis",
+            "body": "((echo hello) && (echo world | (cat | wc))) && (echo done)",
+            "golden_sample": "Input: \"((echo hello) && (echo world | (cat | wc))) && (echo done)\"\nOK: (null)\nToken count: 22\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"AND\",\"raw\":\"&&\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"world\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"cat\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"WORD\",\"raw\":\"wc\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"AND\",\"raw\":\"&&\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"done\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}"
+        },
+        {
+            "type": "parenthesis",
+            "body": "((echo hello) && (echo world | (cat | wc))) && ((echo done) | (echo finished))",
+            "golden_sample": "Input: \"((echo hello) && (echo world | (cat | wc))) && ((echo done) | (echo finished))\"\nOK: (null)\nToken count: 29\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"AND\",\"raw\":\"&&\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"world\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"cat\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"WORD\",\"raw\":\"wc\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"AND\",\"raw\":\"&&\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"done\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"finished\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}"
+        },
+        {
+            "type": "parenthesis",
+            "body": "(echo) | (wc)",
+            "golden_sample": "Input: \"(echo) | (wc)\"\nOK: (null)\nToken count: 7\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"wc\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}"
+        },
+        {
+            "type": "parenthesis",
+            "body": "wc | (echo)",
+            "golden_sample": "Input: \"wc | (echo)\"\nOK: (null)\nToken count: 5\n{\"type\":\"WORD\",\"raw\":\"wc\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}"
+        },
+        {
+            "type": "parenthesis",
+            "body": "(echo hello | wc) | (cat)",
+            "golden_sample": "Input: \"(echo hello | wc) | (cat)\"\nOK: (null)\nToken count: 10\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"WORD\",\"raw\":\"wc\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"cat\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}"
+        },
+        {
+            "type": "parenthesis",
+            "body": "(echo (hello))",
+            "golden_sample": "Input: \"(echo (hello))\"\nERROR: unexpected token"
+        },
+        {
+            "type": "parenthesis",
+            "body": "(echo \"hello (world)\")",
+            "golden_sample": "Input: \"(echo \\\"hello (world)\\\")\"\nOK: (null)\nToken count: 4\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"\\\"hello (world)\\\"\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}"
+        },
+        {
+            "type": "parenthesis",
+            "body": "(echo 'hello (world)')",
+            "golden_sample": "Input: \"(echo 'hello (world)')\"\nOK: (null)\nToken count: 4\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"'hello (world)'\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}"
+        },
+        {
+            "type": "parenthesis",
+            "body": "(echo hello) (wc)",
+            "golden_sample": "Input: \"(echo hello) (wc)\"\nERROR: unexpected token"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello | wc",
+            "golden_sample": "Input: \"echo hello | wc\"\nOK: (null)\nToken count: 4\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"WORD\",\"raw\":\"wc\"}"
+        },
+        {
+            "type": "operator",
+            "body": "wc | echo hello",
+            "golden_sample": "Input: \"wc | echo hello\"\nOK: (null)\nToken count: 4\n{\"type\":\"WORD\",\"raw\":\"wc\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello || wc",
+            "golden_sample": "Input: \"echo hello || wc\"\nOK: (null)\nToken count: 4\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"OR\",\"raw\":\"||\"}\n{\"type\":\"WORD\",\"raw\":\"wc\"}"
+        },
+        {
+            "type": "operator",
+            "body": "wc || echo hello",
+            "golden_sample": "Input: \"wc || echo hello\"\nOK: (null)\nToken count: 4\n{\"type\":\"WORD\",\"raw\":\"wc\"}\n{\"type\":\"OR\",\"raw\":\"||\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello && wc",
+            "golden_sample": "Input: \"echo hello && wc\"\nOK: (null)\nToken count: 4\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"AND\",\"raw\":\"&&\"}\n{\"type\":\"WORD\",\"raw\":\"wc\"}"
+        },
+        {
+            "type": "operator",
+            "body": "wc && echo hello",
+            "golden_sample": "Input: \"wc && echo hello\"\nOK: (null)\nToken count: 4\n{\"type\":\"WORD\",\"raw\":\"wc\"}\n{\"type\":\"AND\",\"raw\":\"&&\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello | wc | cat",
+            "golden_sample": "Input: \"echo hello | wc | cat\"\nOK: (null)\nToken count: 6\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"WORD\",\"raw\":\"wc\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"WORD\",\"raw\":\"cat\"}"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello && wc || cat",
+            "golden_sample": "Input: \"echo hello && wc || cat\"\nOK: (null)\nToken count: 6\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"AND\",\"raw\":\"&&\"}\n{\"type\":\"WORD\",\"raw\":\"wc\"}\n{\"type\":\"OR\",\"raw\":\"||\"}\n{\"type\":\"WORD\",\"raw\":\"cat\"}"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello || wc && cat",
+            "golden_sample": "Input: \"echo hello || wc && cat\"\nOK: (null)\nToken count: 6\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"OR\",\"raw\":\"||\"}\n{\"type\":\"WORD\",\"raw\":\"wc\"}\n{\"type\":\"AND\",\"raw\":\"&&\"}\n{\"type\":\"WORD\",\"raw\":\"cat\"}"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello | wc && cat",
+            "golden_sample": "Input: \"echo hello | wc && cat\"\nOK: (null)\nToken count: 6\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"WORD\",\"raw\":\"wc\"}\n{\"type\":\"AND\",\"raw\":\"&&\"}\n{\"type\":\"WORD\",\"raw\":\"cat\"}"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello | wc || cat",
+            "golden_sample": "Input: \"echo hello | wc || cat\"\nOK: (null)\nToken count: 6\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"WORD\",\"raw\":\"wc\"}\n{\"type\":\"OR\",\"raw\":\"||\"}\n{\"type\":\"WORD\",\"raw\":\"cat\"}"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello && wc | cat",
+            "golden_sample": "Input: \"echo hello && wc | cat\"\nOK: (null)\nToken count: 6\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"AND\",\"raw\":\"&&\"}\n{\"type\":\"WORD\",\"raw\":\"wc\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"WORD\",\"raw\":\"cat\"}"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello || wc | cat",
+            "golden_sample": "Input: \"echo hello || wc | cat\"\nOK: (null)\nToken count: 6\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"OR\",\"raw\":\"||\"}\n{\"type\":\"WORD\",\"raw\":\"wc\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"WORD\",\"raw\":\"cat\"}"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello | | wc ",
+            "golden_sample": "Input: \"echo hello | | wc \"\nERROR: unexpected pipe"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello & & wc",
+            "golden_sample": "Input: \"echo hello & & wc\"\nERROR: unexpected token"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello |& wc",
+            "golden_sample": "Input: \"echo hello |& wc\"\nERROR: unexpected token"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello &&& wc",
+            "golden_sample": "Input: \"echo hello &&& wc\"\nERROR: unexpected token"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello ||| wc",
+            "golden_sample": "Input: \"echo hello ||| wc\"\nERROR: unexpected pipe"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello | wc &&& cat",
+            "golden_sample": "Input: \"echo hello | wc &&& cat\"\nERROR: unexpected token"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello | wc ||| cat",
+            "golden_sample": "Input: \"echo hello | wc ||| cat\"\nERROR: unexpected pipe"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello && || cat",
+            "golden_sample": "Input: \"echo hello && || cat\"\nERROR: unexpected token"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello | && cat",
+            "golden_sample": "Input: \"echo hello | && cat\"\nERROR: unexpected token"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello | || cat",
+            "golden_sample": "Input: \"echo hello | || cat\"\nERROR: unexpected token"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello && | cat",
+            "golden_sample": "Input: \"echo hello && | cat\"\nERROR: unexpected pipe"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello || | cat",
+            "golden_sample": "Input: \"echo hello || | cat\"\nERROR: unexpected pipe"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello &&& | cat",
+            "golden_sample": "Input: \"echo hello &&& | cat\"\nERROR: unexpected token"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello ||| | cat",
+            "golden_sample": "Input: \"echo hello ||| | cat\"\nERROR: unexpected pipe"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello |& | wc",
+            "golden_sample": "Input: \"echo hello |& | wc\"\nERROR: unexpected token"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello |&& wc",
+            "golden_sample": "Input: \"echo hello |&& wc\"\nERROR: unexpected token"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello ||| wc",
+            "golden_sample": "Input: \"echo hello ||| wc\"\nERROR: unexpected pipe"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello &&& wc",
+            "golden_sample": "Input: \"echo hello &&& wc\"\nERROR: unexpected token"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello | wc |& cat",
+            "golden_sample": "Input: \"echo hello | wc |& cat\"\nERROR: unexpected token"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello | wc |&| cat",
+            "golden_sample": "Input: \"echo hello | wc |&| cat\"\nERROR: unexpected token"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello | wc |&& cat",
+            "golden_sample": "Input: \"echo hello | wc |&& cat\"\nERROR: unexpected token"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello | wc ||| cat",
+            "golden_sample": "Input: \"echo hello | wc ||| cat\"\nERROR: unexpected pipe"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello | wc &&& cat",
+            "golden_sample": "Input: \"echo hello | wc &&& cat\"\nERROR: unexpected token"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello | wc &&&| cat",
+            "golden_sample": "Input: \"echo hello | wc &&&| cat\"\nERROR: unexpected token"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello | wc ||| | cat",
+            "golden_sample": "Input: \"echo hello | wc ||| | cat\"\nERROR: unexpected pipe"
+        },
+        {
+            "type": "operator",
+            "body": "echo hello | wc | | cat",
+            "golden_sample": "Input: \"echo hello | wc | | cat\"\nERROR: unexpected pipe"
+        },
+        {
+            "type": "heredoc",
+            "body": "cat << EOF",
+            "golden_sample": "Input: \"cat << EOF\"\nOK: (null)\nToken count: 3\n{\"type\":\"WORD\",\"raw\":\"cat\"}\n{\"type\":\"HEREDOC\",\"raw\":\"<<\"}\n{\"type\":\"WORD\",\"raw\":\"EOF\"}"
+        },
+        {
+            "type": "heredoc",
+            "body": "<< EOF cat",
+            "golden_sample": "Input: \"<< EOF cat\"\nOK: (null)\nToken count: 3\n{\"type\":\"HEREDOC\",\"raw\":\"<<\"}\n{\"type\":\"WORD\",\"raw\":\"EOF\"}\n{\"type\":\"WORD\",\"raw\":\"cat\"}"
+        },
+        {
+            "type": "heredoc",
+            "body": "cat << 'EOF'",
+            "golden_sample": "Input: \"cat << 'EOF'\"\nOK: (null)\nToken count: 3\n{\"type\":\"WORD\",\"raw\":\"cat\"}\n{\"type\":\"HEREDOC\",\"raw\":\"<<\"}\n{\"type\":\"WORD\",\"raw\":\"'EOF'\"}"
+        },
+        {
+            "type": "heredoc",
+            "body": "cat << \"EOF\"",
+            "golden_sample": "Input: \"cat << \\\"EOF\\\"\"\nOK: (null)\nToken count: 3\n{\"type\":\"WORD\",\"raw\":\"cat\"}\n{\"type\":\"HEREDOC\",\"raw\":\"<<\"}\n{\"type\":\"WORD\",\"raw\":\"\\\"EOF\\\"\"}"
+        },
+        {
+            "type": "heredoc",
+            "body": "cat << EOF cat << EOF",
+            "golden_sample": "Input: \"cat << EOF cat << EOF\"\nOK: (null)\nToken count: 6\n{\"type\":\"WORD\",\"raw\":\"cat\"}\n{\"type\":\"HEREDOC\",\"raw\":\"<<\"}\n{\"type\":\"WORD\",\"raw\":\"EOF\"}\n{\"type\":\"WORD\",\"raw\":\"cat\"}\n{\"type\":\"HEREDOC\",\"raw\":\"<<\"}\n{\"type\":\"WORD\",\"raw\":\"EOF\"}"
+        },
+        {
+            "type": "heredoc",
+            "body": "<< EOF << EOF << EOF cat > file",
+            "golden_sample": "Input: \"<< EOF << EOF << EOF cat > file\"\nOK: (null)\nToken count: 9\n{\"type\":\"HEREDOC\",\"raw\":\"<<\"}\n{\"type\":\"WORD\",\"raw\":\"EOF\"}\n{\"type\":\"HEREDOC\",\"raw\":\"<<\"}\n{\"type\":\"WORD\",\"raw\":\"EOF\"}\n{\"type\":\"HEREDOC\",\"raw\":\"<<\"}\n{\"type\":\"WORD\",\"raw\":\"EOF\"}\n{\"type\":\"WORD\",\"raw\":\"cat\"}\n{\"type\":\"OUT\",\"raw\":\">\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}"
+        },
+        {
+            "type": "heredoc",
+            "body": "< file << eof cat ",
+            "golden_sample": "Input: \"< file << eof cat \"\nOK: (null)\nToken count: 5\n{\"type\":\"IN\",\"raw\":\"<\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}\n{\"type\":\"HEREDOC\",\"raw\":\"<<\"}\n{\"type\":\"WORD\",\"raw\":\"eof\"}\n{\"type\":\"WORD\",\"raw\":\"cat\"}"
+        },
+        {
+            "type": "heredoc",
+            "body": "cat << eof < file",
+            "golden_sample": "Input: \"cat << eof < file\"\nOK: (null)\nToken count: 5\n{\"type\":\"WORD\",\"raw\":\"cat\"}\n{\"type\":\"HEREDOC\",\"raw\":\"<<\"}\n{\"type\":\"WORD\",\"raw\":\"eof\"}\n{\"type\":\"IN\",\"raw\":\"<\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}"
+        },
+        {
+            "type": "heredoc",
+            "body": "cat << eof > file",
+            "golden_sample": "Input: \"cat << eof > file\"\nOK: (null)\nToken count: 5\n{\"type\":\"WORD\",\"raw\":\"cat\"}\n{\"type\":\"HEREDOC\",\"raw\":\"<<\"}\n{\"type\":\"WORD\",\"raw\":\"eof\"}\n{\"type\":\"OUT\",\"raw\":\">\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}"
+        },
+        {
+            "type": "heredoc",
+            "body": "cat << eof >> file file",
+            "golden_sample": "Input: \"cat << eof >> file file\"\nOK: (null)\nToken count: 6\n{\"type\":\"WORD\",\"raw\":\"cat\"}\n{\"type\":\"HEREDOC\",\"raw\":\"<<\"}\n{\"type\":\"WORD\",\"raw\":\"eof\"}\n{\"type\":\"APPEND\",\"raw\":\">>\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}"
+        },
+        {
+            "type": "heredoc",
+            "body": "cat << eof 2> file",
+            "golden_sample": "Input: \"cat << eof 2> file\"\nOK: (null)\nToken count: 5\n{\"type\":\"WORD\",\"raw\":\"cat\"}\n{\"type\":\"HEREDOC\",\"raw\":\"<<\"}\n{\"type\":\"WORD\",\"raw\":\"eof\"}\n{\"type\":\"OUT\",\"raw\":\"2>\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}"
+        },
+        {
+            "type": "heredoc",
+            "body": "cat << \"e o f\"",
+            "golden_sample": "Input: \"cat << \\\"e o f\\\"\"\nOK: (null)\nToken count: 3\n{\"type\":\"WORD\",\"raw\":\"cat\"}\n{\"type\":\"HEREDOC\",\"raw\":\"<<\"}\n{\"type\":\"WORD\",\"raw\":\"\\\"e o f\\\"\"}"
+        },
+        {
+            "type": "heredoc",
+            "body": "cat << 'e o f'",
+            "golden_sample": "Input: \"cat << 'e o f'\"\nOK: (null)\nToken count: 3\n{\"type\":\"WORD\",\"raw\":\"cat\"}\n{\"type\":\"HEREDOC\",\"raw\":\"<<\"}\n{\"type\":\"WORD\",\"raw\":\"'e o f'\"}"
+        },
+        {
+            "type": "heredoc",
+            "body": "cat << e\\ o\\ f",
+            "golden_sample": "Input: \"cat << e\\\\ o\\\\ f\"\nOK: (null)\nToken count: 3\n{\"type\":\"WORD\",\"raw\":\"cat\"}\n{\"type\":\"HEREDOC\",\"raw\":\"<<\"}\n{\"type\":\"WORD\",\"raw\":\"e\\\\ o\\\\ f\"}"
+        },
+        {
+            "type": "heredoc",
+            "body": "cat << \"e\\ o\\ f\"",
+            "golden_sample": "Input: \"cat << \\\"e\\\\ o\\\\ f\\\"\"\nOK: (null)\nToken count: 3\n{\"type\":\"WORD\",\"raw\":\"cat\"}\n{\"type\":\"HEREDOC\",\"raw\":\"<<\"}\n{\"type\":\"WORD\",\"raw\":\"\\\"e\\\\ o\\\\ f\\\"\"}"
+        },
+        {
+            "type": "heredoc",
+            "body": "cat << 'e\\ o\\ f'",
+            "golden_sample": "Input: \"cat << 'e\\\\ o\\\\ f'\"\nOK: (null)\nToken count: 3\n{\"type\":\"WORD\",\"raw\":\"cat\"}\n{\"type\":\"HEREDOC\",\"raw\":\"<<\"}\n{\"type\":\"WORD\",\"raw\":\"'e\\\\ o\\\\ f'\"}"
+        },
+        {
+            "type": "heredoc",
+            "body": "cat << e\\o\\f",
+            "golden_sample": "Input: \"cat << e\\\\o\\\\f\"\nOK: (null)\nToken count: 3\n{\"type\":\"WORD\",\"raw\":\"cat\"}\n{\"type\":\"HEREDOC\",\"raw\":\"<<\"}\n{\"type\":\"WORD\",\"raw\":\"e\\\\o\\\\f\"}"
+        },
+        {
+            "type": "pipline",
+            "body": "(echo hello && (echo world | (cat | wc))) && ((echo done) | (echo finished)) > file2 < file1",
+            "golden_sample": "Input: \"(echo hello && (echo world | (cat | wc))) && ((echo done) | (echo finished)) > file2 < file1\"\nOK: (null)\nToken count: 31\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"AND\",\"raw\":\"&&\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"world\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"cat\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"WORD\",\"raw\":\"wc\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"AND\",\"raw\":\"&&\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"done\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"finished\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"OUT\",\"raw\":\">\"}\n{\"type\":\"WORD\",\"raw\":\"file2\"}\n{\"type\":\"IN\",\"raw\":\"<\"}\n{\"type\":\"WORD\",\"raw\":\"file1\"}"
+        },
+        {
+            "type": "pipline",
+            "body": "(echo hello && (echo world | (cat | wc))) && ((echo done) | (echo finished)) >> file2 < file1",
+            "golden_sample": "Input: \"(echo hello && (echo world | (cat | wc))) && ((echo done) | (echo finished)) >> file2 < file1\"\nOK: (null)\nToken count: 31\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"AND\",\"raw\":\"&&\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"world\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"cat\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"WORD\",\"raw\":\"wc\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"AND\",\"raw\":\"&&\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"done\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"finished\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"APPEND\",\"raw\":\">>\"}\n{\"type\":\"WORD\",\"raw\":\"file2\"}\n{\"type\":\"IN\",\"raw\":\"<\"}\n{\"type\":\"WORD\",\"raw\":\"file1\"}"
+        },
+        {
+            "type": "pipline",
+            "body": "(echo hello && (echo world | (cat | wc))) && ((echo done) | (echo finished)) 2> file2 < file1",
+            "golden_sample": "Input: \"(echo hello && (echo world | (cat | wc))) && ((echo done) | (echo finished)) 2> file2 < file1\"\nOK: (null)\nToken count: 31\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"AND\",\"raw\":\"&&\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"world\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"cat\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"WORD\",\"raw\":\"wc\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"AND\",\"raw\":\"&&\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"done\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"finished\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"OUT\",\"raw\":\"2>\"}\n{\"type\":\"WORD\",\"raw\":\"file2\"}\n{\"type\":\"IN\",\"raw\":\"<\"}\n{\"type\":\"WORD\",\"raw\":\"file1\"}"
+        },
+        {
+            "type": "pipline",
+            "body": "(echo hello && (echo world | (cat | wc))) && ((echo done) | (echo finished)) 2>> file",
+            "golden_sample": "Input: \"(echo hello && (echo world | (cat | wc))) && ((echo done) | (echo finished)) 2>> file\"\nOK: (null)\nToken count: 29\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"AND\",\"raw\":\"&&\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"world\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"cat\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"WORD\",\"raw\":\"wc\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"AND\",\"raw\":\"&&\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"done\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"finished\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"APPEND\",\"raw\":\"2>>\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}"
+        },
+        {
+            "type": "pipline",
+            "body": "(echo hello > file2) && ((echo done) | (echo finished)) < file1",
+            "golden_sample": "Input: \"(echo hello > file2) && ((echo done) | (echo finished)) < file1\"\nOK: (null)\nToken count: 20\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"OUT\",\"raw\":\">\"}\n{\"type\":\"WORD\",\"raw\":\"file2\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"AND\",\"raw\":\"&&\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"done\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"finished\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"IN\",\"raw\":\"<\"}\n{\"type\":\"WORD\",\"raw\":\"file1\"}"
+        },
+        {
+            "type": "pipline",
+            "body": "(<< eof cat > file 2> file 1>&2) | (wc) && (echo done > file 2> file) && (< file cat || wc 2>> file)",
+            "golden_sample": "Input: \"(<< eof cat > file 2> file 1>&2) | (wc) && (echo done > file 2> file) && (< file cat || wc 2>> file)\"\nOK: (null)\nToken count: 33\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"HEREDOC\",\"raw\":\"<<\"}\n{\"type\":\"WORD\",\"raw\":\"eof\"}\n{\"type\":\"WORD\",\"raw\":\"cat\"}\n{\"type\":\"OUT\",\"raw\":\">\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}\n{\"type\":\"OUT\",\"raw\":\"2>\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}\n{\"type\":\"FD\",\"raw\":\"1>&2\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"wc\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"AND\",\"raw\":\"&&\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"done\"}\n{\"type\":\"OUT\",\"raw\":\">\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}\n{\"type\":\"OUT\",\"raw\":\"2>\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"AND\",\"raw\":\"&&\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"IN\",\"raw\":\"<\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}\n{\"type\":\"WORD\",\"raw\":\"cat\"}\n{\"type\":\"OR\",\"raw\":\"||\"}\n{\"type\":\"WORD\",\"raw\":\"wc\"}\n{\"type\":\"APPEND\",\"raw\":\"2>>\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}"
+        },
+        {
+            "type": "multi-line",
+            "body": [
+                "echo hello \\",
+                "world"
+            ],
+            "golden_sample": "Input: \"echo hello \\\\\"\nCONTINUE: incomplete string\nInput: \"world\"\nOK: (null)\nToken count: 3\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"WORD\",\"raw\":\"\\\\\\nworld\"}"
+        },
+        {
+            "type": "multi-line",
+            "body": [
+                "echo \"hello ",
+                "world\""
+            ],
+            "golden_sample": "Input: \"echo \\\"hello \"\nCONTINUE: incomplete string\nInput: \"world\\\"\"\nOK: (null)\nToken count: 2\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"\\\"hello \\nworld\\\"\"}"
+        },
+        {
+            "type": "multi-line",
+            "body": [
+                "echo 'hello ",
+                "world'"
+            ],
+            "golden_sample": "Input: \"echo 'hello \"\nCONTINUE: incomplete string\nInput: \"world'\"\nOK: (null)\nToken count: 2\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"'hello \\nworld'\"}"
+        },
+        {
+            "type": "multi-line",
+            "body": [
+                "echo \"hello",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "world\""
+            ],
+            "golden_sample": "Input: \"echo \\\"hello\"\nCONTINUE: incomplete string\nInput: \"\"\nCONTINUE: incomplete string\nInput: \"\"\nCONTINUE: incomplete string\nInput: \"\"\nCONTINUE: incomplete string\nInput: \"\"\nCONTINUE: incomplete string\nInput: \"\"\nCONTINUE: incomplete string\nInput: \"\"\nCONTINUE: incomplete string\nInput: \"world\\\"\"\nOK: (null)\nToken count: 2\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"\\\"hello\\nworld\\\"\"}"
+        },
+        {
+            "type": "multi-line",
+            "body": [
+                "echo 'hello",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "world'"
+            ],
+            "golden_sample": "Input: \"echo 'hello\"\nCONTINUE: incomplete string\nInput: \"\"\nCONTINUE: incomplete string\nInput: \"\"\nCONTINUE: incomplete string\nInput: \"\"\nCONTINUE: incomplete string\nInput: \"\"\nCONTINUE: incomplete string\nInput: \"\"\nCONTINUE: incomplete string\nInput: \"\"\nCONTINUE: incomplete string\nInput: \"world'\"\nOK: (null)\nToken count: 2\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"'hello\\nworld'\"}"
+        },
+        {
+            "type": "multi-line",
+            "body": [
+                "echo hello\\",
+                "\\",
+                "\\",
+                "\\",
+                "\\",
+                "\\",
+                "\\",
+                "world"
+            ],
+            "golden_sample": "Input: \"echo hello\\\\\"\nCONTINUE: incomplete string\nInput: \"\\\\\"\nCONTINUE: incomplete string\nInput: \"\\\\\"\nCONTINUE: incomplete string\nInput: \"\\\\\"\nCONTINUE: incomplete string\nInput: \"\\\\\"\nCONTINUE: incomplete string\nInput: \"\\\\\"\nCONTINUE: incomplete string\nInput: \"\\\\\"\nCONTINUE: incomplete string\nInput: \"world\"\nOK: (null)\nToken count: 2\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\\\\\\n\\\\\\n\\\\\\n\\\\\\n\\\\\\n\\\\\\n\\\\\\nworld\"}"
+        },
+        {
+            "type": "whitespace",
+            "body": "hello&&wc",
+            "golden_sample": "Input: \"hello&&wc\"\nOK: (null)\nToken count: 3\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"AND\",\"raw\":\"&&\"}\n{\"type\":\"WORD\",\"raw\":\"wc\"}"
+        },
+        {
+            "type": "whitespace",
+            "body": "hello||wc",
+            "golden_sample": "Input: \"hello||wc\"\nOK: (null)\nToken count: 3\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"OR\",\"raw\":\"||\"}\n{\"type\":\"WORD\",\"raw\":\"wc\"}"
+        },
+        {
+            "type": "whitespace",
+            "body": "hello|wc",
+            "golden_sample": "Input: \"hello|wc\"\nOK: (null)\nToken count: 3\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"WORD\",\"raw\":\"wc\"}"
+        },
+        {
+            "type": "whitespace",
+            "body": "hello>file",
+            "golden_sample": "Input: \"hello>file\"\nOK: (null)\nToken count: 3\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"OUT\",\"raw\":\">\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}"
+        },
+        {
+            "type": "whitespace",
+            "body": "hello>>file",
+            "golden_sample": "Input: \"hello>>file\"\nOK: (null)\nToken count: 3\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"APPEND\",\"raw\":\">>\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}"
+        },
+        {
+            "type": "whitespace",
+            "body": "hello<file",
+            "golden_sample": "Input: \"hello<file\"\nOK: (null)\nToken count: 3\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"IN\",\"raw\":\"<\"}\n{\"type\":\"WORD\",\"raw\":\"file\"}"
+        },
+        {
+            "type": "whitespace",
+            "body": "hello2>&1wc",
+            "golden_sample": "Input: \"hello2>&1wc\"\nOK: (null)\nToken count: 3\n{\"type\":\"WORD\",\"raw\":\"hello2\"}\n{\"type\":\"FD\",\"raw\":\">&1\"}\n{\"type\":\"WORD\",\"raw\":\"wc\"}"
+        },
+        {
+            "type": "whitespace",
+            "body": "hello 2>&1wc",
+            "golden_sample": "Input: \"hello 2>&1wc\"\nOK: (null)\nToken count: 3\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"FD\",\"raw\":\"2>&1\"}\n{\"type\":\"WORD\",\"raw\":\"wc\"}"
+        },
+        {
+            "type": "whitespace",
+            "body": "hello2>& 1wc",
+            "golden_sample": "Input: \"hello2>& 1wc\"\nOK: (null)\nToken count: 3\n{\"type\":\"WORD\",\"raw\":\"hello2\"}\n{\"type\":\"OUT\",\"raw\":\">&\"}\n{\"type\":\"WORD\",\"raw\":\"1wc\"}"
+        },
+        {
+            "type": "whitespace",
+            "body": "(echo hello)&&(wc)",
+            "golden_sample": "Input: \"(echo hello)&&(wc)\"\nOK: (null)\nToken count: 8\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"AND\",\"raw\":\"&&\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"wc\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}"
+        },
+        {
+            "type": "whitespace",
+            "body": "(echo hello)||(wc)",
+            "golden_sample": "Input: \"(echo hello)||(wc)\"\nOK: (null)\nToken count: 8\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"OR\",\"raw\":\"||\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"wc\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}"
+        },
+        {
+            "type": "whitespace",
+            "body": "(echo hello)|(wc)",
+            "golden_sample": "Input: \"(echo hello)|(wc)\"\nOK: (null)\nToken count: 8\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}\n{\"type\":\"PIPE\",\"raw\":\"|\"}\n{\"type\":\"LPAREN\",\"raw\":\"(\"}\n{\"type\":\"WORD\",\"raw\":\"wc\"}\n{\"type\":\"RPAREN\",\"raw\":\")\"}"
+        },
+        {
+            "type": "whitespace",
+            "body": "(echo hello)>(file)",
+            "golden_sample": "Input: \"(echo hello)>(file)\"\nERROR: unexpected token"
+        },
+        {
+            "type": "whitespace",
+            "body": "(echo hello)>>(file)",
+            "golden_sample": "Input: \"(echo hello)>>(file)\"\nERROR: unexpected token"
+        },
+        {
+            "type": "whitespace",
+            "body": "(echo hello)<(file)",
+            "golden_sample": "Input: \"(echo hello)<(file)\"\nERROR: unexpected token"
+        },
+        {
+            "type": "whitespace",
+            "body": "echo               hello",
+            "golden_sample": "Input: \"echo               hello\"\nOK: (null)\nToken count: 2\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}"
+        },
+        {
+            "type": "whitespace",
+            "body": "                   echo hello",
+            "golden_sample": "Input: \"                   echo hello\"\nOK: (null)\nToken count: 2\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}"
+        },
+        {
+            "type": "whitespace",
+            "body": "\t\t\t\t\t\techo\thello",
+            "golden_sample": "Input: \"\\t\\t\\t\\t\\t\\techo\\thello\"\nOK: (null)\nToken count: 2\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}"
+        },
+        {
+            "type": "whitespace",
+            "body": "\t\t\techo \t\t hello",
+            "golden_sample": "Input: \"\\t\\t\\techo \\t\\t hello\"\nOK: (null)\nToken count: 2\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"hello\"}"
+        },
+        {
+            "type": "whitespace",
+            "body": "<\t\t\t\tfilename",
+            "golden_sample": "Input: \"<\\t\\t\\t\\tfilename\"\nOK: (null)\nToken count: 2\n{\"type\":\"IN\",\"raw\":\"<\"}\n{\"type\":\"WORD\",\"raw\":\"filename\"}"
+        },
+        {
+            "type": "whitespace",
+            "body": ">\t\t\tfilename",
+            "golden_sample": "Input: \">\\t\\t\\tfilename\"\nOK: (null)\nToken count: 2\n{\"type\":\"OUT\",\"raw\":\">\"}\n{\"type\":\"WORD\",\"raw\":\"filename\"}"
+        },
+        {
+            "type": "whitespace",
+            "body": ">>\t\t\t\tfilename",
+            "golden_sample": "Input: \">>\\t\\t\\t\\tfilename\"\nOK: (null)\nToken count: 2\n{\"type\":\"APPEND\",\"raw\":\">>\"}\n{\"type\":\"WORD\",\"raw\":\"filename\"}"
+        },
+        {
+            "type": "whitespace",
+            "body": "echo \"\t\t\t\t\t\thello\"",
+            "golden_sample": "Input: \"echo \\\"\\t\\t\\t\\t\\t\\thello\\\"\"\nOK: (null)\nToken count: 2\n{\"type\":\"WORD\",\"raw\":\"echo\"}\n{\"type\":\"WORD\",\"raw\":\"\\\"\\t\\t\\t\\t\\t\\thello\\\"\"}"
+        }
+    ]
+}

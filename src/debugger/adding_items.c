@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   adding_items.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 14:57:22 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/06/14 17:13:19 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/25 12:43:57 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 size_t	dbg_add_state(struct s_dbg_info *info, int state)
 {
-	if (info && !(info->fd_writable && info->fd_available))
+	if ((info && !(info->fd_writable && info->fd_available)) || !info)
 		return (0);
 	ft_lstadd_back(&info->states, ft_lstnew((void *)(unsigned long int)state));
 	return (1);

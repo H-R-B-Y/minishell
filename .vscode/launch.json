@@ -9,7 +9,7 @@
 		"type": "cppdbg",
 		"request": "launch",
 		"program": "${workspaceRoot}/minishell",
-		"args": [],
+		"args": ["echo hello world"],
 		"stopAtEntry": false,
 		"cwd": "${workspaceRoot}",
 		"environment": [
@@ -48,7 +48,7 @@
 				"ignoreFailures": true
 			}
 		],
-		"preLaunchTask": "Default make"
+		// "preLaunchTask": "Default make"
 	},
 {
 	"name": "(don't use)testing Launch",

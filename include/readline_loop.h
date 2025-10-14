@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 16:07:29 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/09/01 12:26:12 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/29 11:35:22 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,17 @@ enum e_readline_retcode
 	READ_FATAL,
 	/// @brief Count of possible return codes
 	READ_RETCODE_COUNT
+};
+
+static const char *g_readline_retcode_str[READ_RETCODE_COUNT]
+__attribute__((unused)) =
+{
+	[READ_START] = "START",
+	[READ_OK] = "OK",
+	[READ_NOTHING] = "NOTHING",
+	[READ_EOF] = "EOF",
+	[READ_BADPARSE] = "BADPARSE",
+	[READ_FATAL] = "FATAL",
 };
 
 typedef struct s_readline_data	t_readline_data;

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42london.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 12:02:24 by hbreeze           #+#    #+#             */
-/*   Updated: 2025/09/01 12:25:47 by hbreeze          ###   ########.fr       */
+/*   Updated: 2025/09/29 11:36:04 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,14 @@ enum e_quote_mode
 	QUOTE_DOUBLE,
 	/// @brief Count of quote modes
 	QUOTE_MODE_COUNT,
+};
+
+static const char *g_quote_mode_str[QUOTE_MODE_COUNT]
+__attribute__((unused)) =
+{
+	[QUOTE_NONE] = "NONE",
+	[QUOTE_SINGLE] = "SINGLE",
+	[QUOTE_DOUBLE] = "DOUBLE",
 };
 
 /**
@@ -79,6 +87,28 @@ enum e_tokentype
 	TOK_ERR,
 	/// @brief count of total token types
 	TOK_COUNT
+};
+
+static const char *g_token_type_str[TOK_COUNT]
+__attribute__((unused)) =
+{
+	[TOK_NONE] = "NONE",
+	[TOK_WORD] = "WORD",
+	[TOK_PIPE] = "PIPE",
+	[TOK_REDIR_OUT] = "OUT",
+	[TOK_REDIR_APPEND] = "APPEND",
+	[TOK_REDIR_IN] = "IN",
+	[TOK_HEREDOC] = "HEREDOC",
+	[TOK_AFTER] = "AFTER",
+	[TOK_AND_IF] = "AND",
+	[TOK_OR_IF] = "OR",
+	[TOK_LPAREN] = "LPAREN",
+	[TOK_RPAREN] = "RPAREN",
+	[TOK_AMP] = "AMP",
+	[TOK_EOF] = "EOF",
+	[TOK_INCOMPLETE_STRING] = "INCOMPLETE",
+	[TOK_REDIR_FD] = "FD",
+	[TOK_ERR] = "ERR",
 };
 
 /**
@@ -164,6 +194,16 @@ enum e_tokretcode
 	TOKENISER_RETURNCODE_COUNT
 };
 
+static const char *g_tokretcode_str[TOKENISER_RETURNCODE_COUNT]
+__attribute__((unused)) =
+{
+	[PARSE_OK] = "OK",
+	[PARSE_CONT] = "CONT",
+	[PARSE_ERROR] = "ERROR",
+	[PARSE_FATAL] = "FATAL",
+	[PARSE_NOTHING] = "EMPTY",
+};
+
 /**
  * @brief Finite list of states for the finite state machine parser
  * @param ST_WRNG Wrong state (not always an error depends on last token)
@@ -206,6 +246,22 @@ enum e_fsmstate
 	ST_END,
 	/// @brief Count of states 
 	STATE_COUNT
+};
+
+static const char *g_fsmstate_str[STATE_COUNT]
+__attribute__((unused)) =
+{
+	[ST_WRNG] = "WRNG",
+	[ST_STRT] = "STRT",
+	[ST_WORD] = "WORD",
+	[ST_OPRA] = "OPRA",
+	[ST_SEQ] = "SEQ",
+	[ST_LSSH] = "LSSH",
+	[ST_RSSH] = "RSSH",
+	[ST_HDOC] = "HDOC",
+	[ST_REDR] = "REDR",
+	[ST_CONT] = "CONT",
+	[ST_END] = "END",
 };
 
 /**
